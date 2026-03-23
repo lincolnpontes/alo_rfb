@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1565C0">
+    <link rel="manifest" href="manifest.json">
+    <title>Alô RFB v1</title>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <style>
+        :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8)}
+        html,body{font-family:Arial,sans-serif;background:var(--fundo);margin:0;padding:0;width:100%;transition:background .3s ease;user-select:none;-webkit-user-select:none}
+        body.modal-open{overflow:hidden!important;touch-action:none}
+        input,select,textarea{user-select:auto;-webkit-user-select:auto}
+        .app-container{width:100%;max-width:1200px;background:var(--bg-app);min-height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease}
+        #sticky-header{position:sticky;top:0;z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease;backdrop-filter: blur(5px)}
+        #splash-screen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primaria);transition:opacity .5s ease;background-color:#ffffff !important}
+        #splash-screen.hidden{opacity:0;pointer-events:none}
+        .splash-emoji{font-size:70px;margin-bottom:15px;display:block}
+        .splash-title{font-size:26px;font-weight:900;margin-bottom:5px;letter-spacing:1px}
+        .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px}
+        #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--primaria);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:5vh;color:#fff;transition:opacity .5s ease}
+        .header{background:var(--primaria);color:#fff;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+        .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:14px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
+        .modern-select option{color:#333;background:#fff}
+        .modal-select{height:38px;border-radius:8px!important;border:1px solid #ccc!important;background:#fff!important;color:#333!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
+        .status-conexao{font-size:14px;cursor:help;background:rgba(0,0,0,.2);padding:2px 6px;border-radius:12px; display: flex; align-items: center; justify-content: center; min-width: 24px;}
+        .search-box{background:var(--secundaria);padding:10px;display:flex;gap:6px;width:100%;box-sizing:border-box;align-items:center;overflow:hidden}
+        .search-box input{flex-grow:1;padding:12px 10px;border:1px solid #ccc;border-radius:6px;font-size:16px;font-weight:700}
+        .icon-group{display:flex;gap:18px;align-items:center;margin-left:auto;margin-right:8px}
+        .btn-icon{background:0 0;color:#333;border:none;padding:0;cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s}
+        .filters{padding:10px 15px;display:flex;gap:10px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #eee}
+        .chip{background:#e0e0e0;color:#333;padding:8px 16px;border-radius:20px;cursor:pointer;font-size:14px;font-weight:700;border:2px solid transparent}
+        .chip.active{border:2px solid #333;opacity:.9}
+        .list{padding:10px;margin:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;align-content:start}
+        .item{display:flex;align-items:center;padding:15px;border:1px solid #eee;border-radius:8px;cursor:pointer;background:var(--bg-item);box-shadow:0 1px 3px rgba(0,0,0,.05);backdrop-filter: blur(3px)}
+        .item:hover{filter:brightness(.95)}
+        .item-avatar{background:var(--secundaria);color:var(--primaria);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;margin-right:15px;flex-shrink:0;font-size:18px}
+        .item-info{flex:1;min-width:0}
+        .item-title{font-weight:700;font-size:18px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .item-subtitle{color:#666;font-size:14px}
+        
+        /* Modais */
+        .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(2px)}
+        .modal{background:#fff;padding:20px;border-radius:10px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box}
+        .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:#333;border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+        .form-group{margin-bottom:15px;position:relative}
+        .form-group label{display:block;margin-bottom:5px;color:#555;font-weight:700;font-size:14px}
+        .form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px}
+        .form-group input[type=color]{padding:0;border:1px solid #ccc;height:44px;width:100%;border-radius:8px;cursor:pointer}
+        .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+        .btn-cancel{background:#eee;color:#333;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;flex:1}
+        .btn-action{background:var(--primaria);color:#fff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;flex:1}
+        .btn-danger{background:#d32f2f;color:#fff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
+        .btn-outline{background:var(--secundaria);color:var(--primaria);border:1px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:15px}
+        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+        .gerenciar-info{flex:1;font-size:14px}
+        .gerenciar-actions button{background:#eee;border:none;cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px}
+        .switch-container{display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
+        .switch{position:relative;display:inline-block;width:50px;height:28px}
+        .switch input{opacity:0;width:0;height:0}
+        .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:34px}
+        .slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:#fff;transition:.4s;border-radius:50%}
+        input:checked+.slider{background-color:#4CAF50}
+        input:checked+.slider:before{transform:translateX(22px)}
+        #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
+        
+        /* Modificadores Cronômetro */
+        .crono-container { background: var(--bg-item); margin: 10px; border-radius: 8px; padding: 15px; text-align: center; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .crono-header { display: flex; justify-content: center; gap: 5px; margin-bottom: 10px;}
+        .crono-btn { background: #eee; color: #333; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;}
+        .crono-btn.active { background: var(--primaria); color: white; }
+        .crono-display { font-size: 50px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; margin: 10px 0; color: var(--primaria); }
+        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .crono-btn-circle { border: none; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s; }
+        .crono-btn-circle:active { transform: scale(0.95); }
+        .crono-stop { width: 45px; height: 45px; background: #d32f2f; font-size: 18px; }
+        .crono-play { width: 60px; height: 60px; background: #1E90FF; font-size: 28px; }
+        .crono-music { width: 45px; height: 45px; background: #2e7d32; font-size: 18px; }
+        .crono-mute { width: 45px; height: 45px; background: #555; font-size: 18px; }
+        .volume-container { display: flex; align-items: center; justify-content: center; margin-top: 15px; gap: 10px;}
+    </style>
+</head>
+<body>
+<div id="toast">Aviso!</div>
+
+<div id="splash-screen">
+    <div class="splash-emoji">🦅</div>
+    <div class="splash-title">Alô RFB</div>
+    <div class="splash-version">v1</div>
+</div>
+
+<div id="login-screen">
+    <div style="font-size: 70px; margin-bottom: 10px;">👤</div>
+    <h2 style="margin-top: 0; margin-bottom: 20px; font-size: 24px;">Identificação</h2>
+    <select id="loginOperador" style="padding: 15px; font-size: 18px; width: 85%; max-width: 350px; border-radius: 8px; margin-bottom: 15px; border: none; outline: none; font-weight: bold; color: #333;" onchange="checarSenhaLoginInicial()"></select>
+    <div id="loginSenhaContainer" style="display: none; flex-direction: column; align-items: center; width: 100%;">
+        <input type="password" id="loginSenha" inputmode="numeric" placeholder="Senha Numérica" style="padding: 15px; font-size: 20px; width: 85%; max-width: 350px; margin-bottom: 25px; border-radius: 8px; border: none; text-align: center; outline: none; font-weight: bold; color: #333;" onkeypress="if(event.key === 'Enter') fazerLoginInicial()">
+    </div>
+    <button onclick="fazerLoginInicial()" style="padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; border: none; background: #4CAF50; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">ENTRAR</button>
+</div>
+
+<div class="app-container">
+    <div id="sticky-header">
+        <div class="header">
+            <div style="flex: 1; font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">Alô RFB</div>
+            <div style="flex: 1.5; display: flex; justify-content: center;">
+                <div style="position: relative; width: 100%; max-width: 220px;">
+                    <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; z-index: 1;">👤</span>
+                    <select id="seletorOperador" class="modern-select" style="padding-left: 28px !important; width: 100%;" onchange="verificarTrocaOperador(this)"></select>
+                </div>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
+                <div id="indicadorConexao" class="status-conexao" title="Sincronização">🌐</div>
+                <button id="btnTemaRapido" onclick="abrirModalTemaRapido()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; display: none;">🎨</button>
+                <button id="btnConfigGear" onclick="abrirLoginAdmin()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer;">⚙️</button>
+            </div>
+        </div>
+        
+        <div class="crono-container">
+            <div class="crono-header">
+                <button class="crono-btn active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
+                <button class="crono-btn" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
+                <button class="crono-btn" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
+            </div>
+            <div class="crono-display" id="display-timer">00:00:00</div>
+            <div class="crono-controls">
+                <button class="crono-btn-circle crono-stop" onclick="resetTimer()" title="Parar/Zerar (Del)">⏹</button>
+                <button class="crono-btn-circle crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause (Espaço)">▶</button>
+                <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
+                <button class="crono-btn-circle crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">🎶</button>
+                <button class="crono-btn-circle crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute (.)">🔊</button>
+            </div>
+            <div class="volume-container">
+                <span style="color:#666; font-size:12px;">Vol:</span>
+                <input type="range" id="volume-slider-timer" min="0" max="100" value="100" oninput="ajustarVolumeTimer(this.value)" style="width: 60%; accent-color: var(--primaria);">
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="buscaNome" placeholder="Buscar disciplina...">
+            <div class="icon-group">
+                <button class="btn-icon" onclick="abrirHistorico()" title="Histórico de Estudos">📅</button>
+            </div>
+        </div>
+        <div class="filters" id="containerFiltros"></div>
+    </div>
+    <ul class="list" id="listaDisciplinas"></ul>
+</div>
+
+<div class="modal-overlay" id="modalPainelUnificado">
+    <div class="modal">
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1</div>
+        <button class="btn-outline" onclick="abrirConfigGeraisModal()">⚙️ Configurações</button>
+        <button class="btn-outline" onclick="abrirGerenciar('disciplinas')">📚 Disciplinas</button>
+        <button class="btn-outline" onclick="abrirGerenciar('concursos')">🎯 Concursos</button>
+        <button class="btn-outline" onclick="abrirGerenciarTiposAtividade()">📝 Tipos de Atividade</button>
+        
+        <div id="painelSecreto" style="display:none;">
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <button class="btn-outline" onclick="abrirGerenciar('operadores')">👥 Operadores</button>
+            <button class="btn-danger" onclick="abrirZonaRisco()">⚠️ Avançado / Nuvem</button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalPainelUnificado')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalConfigGerais">
+    <div class="modal">
+        <div class="modal-title" style="color:var(--primaria);">⚙️ Configurações</div>
+        <div class="form-group">
+            <label>Nome do Projeto/Foco:</label>
+            <input type="text" id="cfgProjeto">
+        </div>
+        <div class="form-group">
+            <label>Tema:</label>
+            <select id="cfgTema">
+                <option value="azul">🔵 Azul</option>
+                <option value="verde">🟢 Verde</option>
+                <option value="vermelho">🔴 Vermelho</option>
+                <option value="rosa">🌸 Rosa</option>
+                <option value="escuro">⚫ Escuro</option>
+                <option value="roxo">💜 Roxo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Senha Painel (Admin):</label>
+            <input type="password" id="cfgSenhaAdmin" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');" onchange="salvarSenhaPainel()">
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button>
+            <button class="btn-action" onclick="salvarConfigGerais()">💾 Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalTemaRapido">
+    <div class="modal">
+        <div class="modal-title" style="color:var(--primaria)">🎨 Escolher Tema</div>
+        <div class="form-group">
+            <label>Meu Tema Pessoal:</label>
+            <select id="cfgTemaRapido">
+                <option value="azul">🔵 Azul</option>
+                <option value="verde">🟢 Verde</option>
+                <option value="vermelho">🔴 Vermelho</option>
+                <option value="rosa">🌸 Rosa</option>
+                <option value="escuro">⚫ Escuro</option>
+                <option value="roxo">💜 Roxo</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalTemaRapido')">Cancelar</button>
+            <button class="btn-action" onclick="salvarTemaRapido()">💾 Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalGerenciarTipos">
+    <div class="modal" style="max-height: 90vh; overflow-y: auto;">
+        <div class="modal-title" style="color:#f57f17; border-color:#f57f17;">Tipos de Atividade</div>
+        <div style="font-size:12px; color:#666; margin-bottom: 15px;">Ex: Revisão, Questões, Lei Seca, Vídeo Aula.</div>
+        <div style="display:flex; gap:10px; margin-bottom: 15px;">
+            <input type="text" id="novoTipoInput" placeholder="Ex: PDF" style="flex:1; padding:8px; border:1px solid #ccc; border-radius:4px;">
+            <button class="btn-action" style="flex:none; padding: 0 15px;" onclick="adicionarTipo()">+ Add</button>
+        </div>
+        <div id="listaTiposCfg" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px;"></div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalGerenciarTipos'); abrirPainelUnificadoComNivel(true);">Voltar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalZonaRisco">
+    <div class="modal">
+        <div class="modal-title" style="color:#d32f2f;">Zona de Risco</div>
+        <div class="form-group">
+            <label>URL Apps Script:</label>
+            <input type="text" id="configUrlAppScript">
+            <button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        <h3 style="font-size: 14px; margin-bottom:10px; color:#1565C0;">Sincronização Manual</h3>
+        <div style="display: flex; gap: 10px; flex-direction: column;">
+            <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (PC ➡️ Nuvem)</button>
+            <button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ PC)</button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalZonaRisco'); abrirPainelUnificadoComNivel(true);">Voltar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalListagem">
+    <div class="modal">
+        <div class="modal-title" id="tituloListagem">Gerenciar</div>
+        <button class="btn-action" id="btnNovoListagem" style="width:100%;margin-bottom:15px">+ Novo</button>
+        <div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalListagem');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalFormDisciplina">
+    <div class="modal">
+        <div class="modal-title">Disciplina</div>
+        <input type="hidden" id="discIdOriginal">
+        <div class="form-group">
+            <label>Nome da Disciplina:</label>
+            <input type="text" id="discNome">
+        </div>
+        <div class="form-group">
+            <label>Concurso Alvo:</label>
+            <select id="discConcurso"></select>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalFormDisciplina');abrirGerenciar('disciplinas')">Cancelar</button>
+            <button class="btn-action" onclick="salvarDisciplina()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalFormConcurso">
+    <div class="modal">
+        <div class="modal-title">Concurso</div>
+        <input type="hidden" id="concNomeOriginal">
+        <div class="form-group">
+            <label>Nome/Sigla (Ex: TJ-PB):</label>
+            <input type="text" id="concNome">
+        </div>
+        <div style="display:flex;gap:10px">
+            <div class="form-group" style="flex:1"><label>Fundo:</label><input type="color" id="concCor" value="#1565C0"></div>
+            <div class="form-group" style="flex:1"><label>Texto:</label><input type="color" id="concCorTexto" value="#ffffff"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalFormConcurso');abrirGerenciar('concursos')">Cancelar</button>
+            <button class="btn-action" onclick="salvarConcurso()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalFormOperador">
+    <div class="modal">
+        <div class="modal-title">Estudante / Operador</div>
+        <input type="hidden" id="opNomeOriginal">
+        <div class="form-group"><label>Nome:</label><input type="text" id="opNome"></div>
+        <div class="form-group"><label>Senha (Vazio=sem):</label><input type="password" id="opSenha" inputmode="numeric"></div>
+        <div class="switch-container">
+            <span style="font-weight:bold;font-size:14px;">Ocultar Engrenagem ⚙️</span>
+            <label class="switch"><input type="checkbox" id="opOcultarEngrenagem"><span class="slider"></span></label>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalFormOperador');abrirGerenciar('operadores')">Cancelar</button>
+            <button class="btn-action" onclick="salvarOperador()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalRegistrarEstudo">
+    <div class="modal">
+        <div class="modal-title" id="regNomeDisciplina" style="font-size:18px; color:var(--primaria);">Disciplina</div>
+        <input type="hidden" id="regIdDisciplina">
+        
+        <div class="form-group" id="containerTempoCapturado" style="display:none; background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+            <label style="color: #2e7d32;">⏱️ Tempo Capturado:</label>
+            <div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #1b5e20;">00:00:00</div>
+            <input type="hidden" id="regDuracaoTimer" value="0">
+        </div>
+        
+        <div class="form-group">
+            <label>Tipo de Atividade (Trilha):</label>
+            <select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;"></select>
+        </div>
+        
+        <div class="form-group">
+            <label>Observação / Assunto (Opcional):</label>
+            <input type="text" id="regObs" placeholder="Ex: Atos Administrativos">
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Cancelar</button>
+            <button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalHistorico">
+    <div class="modal" style="max-height: 90vh; overflow-y: auto;">
+        <div class="modal-title">
+            <div>📅 Diário de Estudos</div>
+            <button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:#999; cursor:pointer; padding:0; line-height: 1;">&times;</button>
+        </div>
+        <div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
+<div class="modal-overlay" id="modalSenhaOperador"><div class="modal"><div class="modal-title">Identidade</div><input type="hidden" id="operadorAlvo"><div class="form-group"><label>Senha:</label><input type="password" id="senhaTrocaOperador" inputmode="numeric" onkeypress="if(event.key === 'Enter') confirmarTrocaOperador()"></div><div class="modal-actions"><button class="btn-cancel" onclick="cancelarTrocaOperador()">Cancelar</button><button class="btn-action" onclick="confirmarTrocaOperador()">Confirmar</button></div></div></div>
+
+<script>
+// --- PWA REGISTRO ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+
+let db = carregarBanco(), concursoAtual = null, operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
+
+const paletasDeCores = {
+    azul: {primaria:'#1565C0', secundaria:'#E3F2FD', fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
+    verde: {primaria:'#2e7d32', secundaria:'#e8f5e9', fundo:'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
+    vermelho: {primaria:'#c62828', secundaria:'#ffebee', fundo:'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
+    rosa: {primaria:'#d81b60', secundaria:'#fce4ec', fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
+    escuro: {primaria:'#212121', secundaria:'#e0e0e0', fundo:'linear-gradient(135deg, #434343 0%, #000000 100%)', bgApp:'rgba(255,255,255,0.8)', bgItem:'rgba(255,255,255,0.9)', bgHeader:'rgba(255,255,255,0.95)'},
+    roxo: {primaria:'#673ab7', secundaria:'#ede7f6', fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'}
+};
+
+function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
+function formatarTempoTimer(segs) { let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60), s = Math.floor(segs % 60); return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; }
+function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
+
+function carregarBanco(){
+    let d = {
+        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "Geral"}],
+        concursos: [{nome: "Geral", cor: "#1565C0", corTexto: "#ffffff"}],
+        operadores: [{nome: "Estudante", senha: "", ocultarEngrenagem: false}],
+        configs: {projeto: "Meus Estudos", urlAppScript: "", senhaAdmin: "", tiposAtividade: ["Estudo Teórico", "Revisão", "Questões", "Lei Seca"], tema: "azul", ultimaModificacaoLocal: 0, mestreAtivo: false},
+        historico: []
+    };
+    let l = JSON.parse(localStorage.getItem('estudos_db'));
+    if(l) { if(!l.configs.tiposAtividade) l.configs.tiposAtividade = ["Estudo Teórico", "Revisão", "Questões", "Lei Seca"]; return l; }
+    return d;
+}
+function salvarBancoLocal(){ localStorage.setItem('estudos_db', JSON.stringify(db)); }
+
+function aplicarTemaCores(){
+    let opAtual=localStorage.getItem('estudos_operadorAtual');
+    let opObj=db.operadores.find(o=>o.nome===opAtual);
+    let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul');
+    let c=paletasDeCores[t]||paletasDeCores.azul;
+    document.documentElement.style.setProperty('--primaria',c.primaria);
+    document.documentElement.style.setProperty('--secundaria',c.secundaria);
+    document.documentElement.style.setProperty('--fundo',c.fundo);
+    document.documentElement.style.setProperty('--bg-app',c.bgApp);
+    document.documentElement.style.setProperty('--bg-item',c.bgItem);
+    document.documentElement.style.setProperty('--bg-header',c.bgHeader);
+}
+
+// ================= CRONÔMETRO LOGIC =================
+let modoTimer = 'progressive', isRunningTimer = false, intervalTimer, tempoTimer = 0, targetTimer = 25 * 60;
+let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
+
+playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
+
+function carregarMusicas(event) {
+    const files = event.target.files;
+    if (files.length > 0) {
+        playlist = Array.from(files).map(file => URL.createObjectURL(file));
+        musicaIndex = 0; mostrarToast(`${files.length} músicas carregadas!`);
+    }
+}
+function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play(); }
+function ajustarVolumeTimer(val) { let v = val / 100; volumeSalvoTimer = v; if (isMutedTimer && v > 0) toggleMuteTimer(); playerAudio.volume = isMutedTimer ? 0 : v; document.getElementById('volume-slider-timer').value = val; }
+function toggleMuteTimer() {
+    isMutedTimer = !isMutedTimer; playerAudio.volume = isMutedTimer ? 0 : volumeSalvoTimer;
+    document.getElementById('btn-mute-timer').innerText = isMutedTimer ? '🔇' : '🔊';
+    document.getElementById('volume-slider-timer').value = isMutedTimer ? 0 : volumeSalvoTimer * 100;
+}
+
+function atualizarDisplayTimer() {
+    let dSegs = tempoTimer;
+    if (modoTimer !== 'progressive') {
+        dSegs = Math.max(0, targetTimer - tempoTimer);
+        if (dSegs === 0 && isRunningTimer) { startPauseTimer(); mostrarToast("Tempo esgotado!"); }
+    }
+    document.getElementById('display-timer').innerText = formatarTempoTimer(dSegs);
+}
+
+function startPauseTimer() {
+    isRunningTimer = !isRunningTimer;
+    document.getElementById('btn-play-timer').innerText = isRunningTimer ? '⏸' : '▶';
+    if (isRunningTimer) {
+        if(playlist.length > 0 && playerAudio.src) playerAudio.play();
+        else if (playlist.length > 0 && !playerAudio.src) tocarMusicaTimer();
+        intervalTimer = setInterval(() => { tempoTimer++; atualizarDisplayTimer(); }, 1000);
+    } else { clearInterval(intervalTimer); playerAudio.pause(); }
+}
+
+function resetTimer() {
+    if (tempoTimer > 0) {
+        if(confirm("Deseja associar esse tempo estudado a uma disciplina?")) {
+            startPauseTimer(); // pausa se tiver rodando
+            alert("Selecione a disciplina na lista abaixo para registrar o tempo.");
+            // O tempoTimer continua gravado para quando ele clicar na disciplina.
+            return;
+        }
+    }
+    clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; playerAudio.pause();
+    document.getElementById('btn-play-timer').innerText = '▶'; atualizarDisplayTimer();
+}
+
+function setModoTimer(novoModo) {
+    modoTimer = novoModo;
+    document.getElementById('btn-prog').classList.remove('active'); document.getElementById('btn-reg').classList.remove('active'); document.getElementById('btn-pomo').classList.remove('active');
+    document.getElementById(novoModo === 'progressive' ? 'btn-prog' : novoModo === 'regressive' ? 'btn-reg' : 'btn-pomo').classList.add('active');
+    tempoTimer = 0; atualizarDisplayTimer();
+}
+
+document.addEventListener('keydown', function(event) {
+    if(event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT' || event.target.tagName === 'TEXTAREA') return;
+    switch(event.code) {
+        case 'Space': event.preventDefault(); startPauseTimer(); break;
+        case 'Delete': resetTimer(); break;
+        case 'Period': case 'NumpadDecimal': toggleMuteTimer(); break;
+        case 'Equal': case 'NumpadAdd': ajustarVolumeTimer(Math.min(100, (volumeSalvoTimer * 100) + 10)); break;
+        case 'Minus': case 'NumpadSubtract': ajustarVolumeTimer(Math.max(0, (volumeSalvoTimer * 100) - 10)); break;
+    }
+});
+// =================================================
+
+function prepararTelaLogin(){
+    const s=document.getElementById('loginOperador');
+    s.innerHTML='<option value="">Selecione...</option>';
+    db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`});
+    const u=localStorage.getItem('estudos_operadorAtual');
+    if(u&&db.operadores.find(o=>o.nome===u)) s.value=u;
+    checarSenhaLoginInicial();
+}
+function checarSenhaLoginInicial(){
+    const n=document.getElementById('loginOperador').value, o=db.operadores.find(x=>x.nome===n), c=document.getElementById('loginSenhaContainer');
+    if(o&&o.senha!==""){ c.style.display="flex"; setTimeout(()=>document.getElementById('loginSenha').focus(),10); } else c.style.display="none";
+}
+function fazerLoginInicial(){
+    const n=document.getElementById('loginOperador').value;
+    if(!n) return alert("Selecione um perfil!");
+    const o=db.operadores.find(x=>x.nome===n);
+    if(o&&o.senha!==""){
+        const s=document.getElementById('loginSenha').value;
+        if(s!==o.senha){ alert("Senha Incorreta!"); document.getElementById('loginSenha').value=''; return; }
+    }
+    localStorage.setItem('estudos_operadorAtual',n);
+    document.getElementById('seletorOperador').value=n;
+    operadorAnteriorSelect=n;
+    aplicarTemaCores();
+    atualizarEngrenagem();
+    const l=document.getElementById('login-screen');
+    l.style.opacity='0'; setTimeout(()=>l.style.display='none',500);
+}
+
+function atualizarEngrenagem(){
+    let n=document.getElementById('seletorOperador').value, o=db.operadores.find(x=>x.nome===n);
+    if(o&&o.ocultarEngrenagem){ document.getElementById('btnConfigGear').style.display='none'; document.getElementById('btnTemaRapido').style.display='flex';
+    } else { document.getElementById('btnConfigGear').style.display='flex'; document.getElementById('btnTemaRapido').style.display='none'; }
+}
+
+function iniciar(){
+    aplicarTemaCores(); renderizarOperadores(); prepararTelaLogin(); atualizarEngrenagem();
+    
+    let opAtual = localStorage.getItem('estudos_operadorAtual');
+    const l = document.getElementById('login-screen');
+    if (opAtual && db.operadores.find(o => o.nome === opAtual)) {
+         l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual;
+    }
+    
+    setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
+    
+    renderizarFiltros(); renderizarLista();
+    document.getElementById('buscaNome').addEventListener('input', function(){ renderizarLista(); });
+    setInterval(sincronizarComNuvemSilencioso, 20000);
+    sincronizarComNuvemSilencioso();
+    atualizarDisplayTimer();
+}
+
+function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}
+function fecharModal(id){document.getElementById(id).style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(m=>m.style.display==='flex'))document.body.classList.remove('modal-open')}
+
+function abrirLoginAdmin(){
+    if(db.configs.senhaAdmin && db.configs.senhaAdmin.trim() !== ""){ document.getElementById('senhaAdmin').value=''; abrirModal('modalLoginAdmin');
+    } else abrirPainelUnificadoComNivel(true);
+}
+function abrirPainelUnificadoComNivel(mestre){
+    db.configs.mestreAtivo = mestre;
+    document.getElementById('cfgSenhaAdmin').value = db.configs.senhaAdmin || "";
+    document.getElementById('painelSecreto').style.display = mestre ? 'block' : 'none';
+    abrirModal('modalPainelUnificado');
+}
+
+function abrirConfigGeraisModal(){ fecharModal('modalPainelUnificado'); document.getElementById('cfgProjeto').value = db.configs.projeto; document.getElementById('cfgTema').value = db.configs.tema || "azul"; abrirModal('modalConfigGerais'); }
+function salvarConfigGerais(){
+    db.configs.projeto = document.getElementById('cfgProjeto').value.trim() || "Alô RFB"; db.configs.tema = document.getElementById('cfgTema').value;
+    db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); aplicarTemaCores(); sincronizarComNuvemSilencioso(); fecharModal('modalConfigGerais'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
+}
+
+function abrirGerenciarTiposAtividade(){ fecharModal('modalPainelUnificado'); renderizarTiposCfg(); abrirModal('modalGerenciarTipos'); }
+function renderizarTiposCfg(){
+    let l = document.getElementById('listaTiposCfg'); l.innerHTML = '';
+    db.configs.tiposAtividade.forEach(t => { l.innerHTML += `<div data-nome="${t}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> ${t} <span style="cursor:pointer;color:#d32f2f;font-weight:900;margin-left:auto;padding:0 10px" onclick="removerTipo('${t}')">X</span></div>`; });
+    if(sortableTipos) sortableTipos.destroy();
+    sortableTipos = new Sortable(l, {animation:150, handle:'.drag-handle', onEnd: function(){ db.configs.tiposAtividade = Array.from(l.children).map(e=>e.dataset.nome); salvarModificacaoBasica(); }});
+}
+function adicionarTipo(){ let v = document.getElementById('novoTipoInput').value.trim(); if(v && !db.configs.tiposAtividade.includes(v)){ db.configs.tiposAtividade.push(v); document.getElementById('novoTipoInput').value = ''; salvarModificacaoBasica(); renderizarTiposCfg(); } }
+function removerTipo(t){ if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x !== t); salvarModificacaoBasica(); renderizarTiposCfg(); }
+
+function renderizarFiltros(){
+    let h=`<div class="chip ${concursoAtual===null?'active':''}" style="${concursoAtual===null?'background:#ccc;color:#000':''}" onclick="filtrarConcurso(null)">TODOS</div>`;
+    db.concursos.forEach(c=>{ h+=`<div class="chip ${concursoAtual===c.nome?'active':''}" style="background:${c.cor};color:${c.corTexto||'#000'}" onclick="filtrarConcurso('${c.nome}')">${c.nome}</div>` });
+    document.getElementById('containerFiltros').innerHTML=h;
+}
+function filtrarConcurso(c){ concursoAtual = c; renderizarFiltros(); renderizarLista(); }
+
+function renderizarLista(){
+    const l = document.getElementById('listaDisciplinas'); l.innerHTML = '';
+    let busca = document.getElementById('buscaNome').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    let filtradas = db.disciplinas;
+    if(concursoAtual !== null) filtradas = filtradas.filter(d => d.concurso === concursoAtual);
+    if(busca !== '') filtradas = filtradas.filter(d => d.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(busca));
+    
+    filtradas.sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(d => {
+        const c = db.concursos.find(x=>x.nome===d.concurso) || {cor:'#eee', corTexto:'#333'};
+        l.innerHTML += `
+        <li class="item" onclick="abrirRegistroEstudo(${d.id})">
+            <div class="item-avatar" style="background:${c.cor};color:${c.corTexto}">${d.nome.charAt(0).toUpperCase()}</div>
+            <div class="item-info">
+                <div class="item-title">${d.nome}</div>
+                <div class="item-subtitle">🎯 ${d.concurso}</div>
+            </div>
+            <div style="font-size:24px">📝</div>
+        </li>`;
+    });
+}
+
+function abrirGerenciar(t){
+    fecharModal('modalPainelUnificado');
+    const l = document.getElementById('conteudoListagem'), b = document.getElementById('btnNovoListagem'), tit = document.getElementById('tituloListagem');
+    l.innerHTML = '';
+    if(t === 'disciplinas'){
+        tit.innerText = "Gerenciar Disciplinas"; b.onclick = () => abrirFormDisciplina(-1);
+        db.disciplinas.forEach((d,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${d.nome}</strong><br><span style="color:#666">${d.concurso}</span></div><div class="gerenciar-actions"><button onclick="abrirFormDisciplina(${i})">✏️</button><button onclick="excluirItem('disciplinas',${d.id})">🗑️</button></div></div>`; });
+    } else if (t === 'concursos') {
+        tit.innerText = "Gerenciar Concursos"; b.onclick = () => abrirFormConcurso(-1);
+        db.concursos.forEach((c,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div><div class="gerenciar-actions"><button onclick="abrirFormConcurso(${i})">✏️</button><button onclick="excluirItem('concursos','${c.nome}')">🗑️</button></div></div>`; });
+    } else if (t === 'operadores') {
+        tit.innerText = "Gerenciar Operadores"; b.onclick = () => abrirFormOperador(-1);
+        db.operadores.forEach((o,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${o.nome}</strong></div><div class="gerenciar-actions"><button onclick="abrirFormOperador(${i})">✏️</button><button onclick="excluirItem('operadores','${o.nome}')">🗑️</button></div></div>`; });
+    }
+    abrirModal('modalListagem');
+}
+function excluirItem(t, id){ if(!confirm("Certeza?")) return; if(t === 'disciplinas') db.disciplinas = db.disciplinas.filter(i => i.id !== id); if(t === 'concursos') db.concursos = db.concursos.filter(i => i.nome !== id); if(t === 'operadores') db.operadores = db.operadores.filter(i => i.nome !== id); salvarModificacaoBasica(); iniciar(); abrirGerenciar(t); }
+
+function abrirFormDisciplina(i){
+    fecharModal('modalListagem');
+    const c = document.getElementById('discConcurso'); c.innerHTML = ''; db.concursos.forEach(x => c.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
+    if(i >= 0){ const d = db.disciplinas[i]; document.getElementById('discIdOriginal').value = d.id; document.getElementById('discNome').value = d.nome; document.getElementById('discConcurso').value = d.concurso;
+    } else { document.getElementById('discIdOriginal').value = ''; document.getElementById('discNome').value = ''; }
+    abrirModal('modalFormDisciplina');
+}
+function salvarDisciplina(){
+    const idOriginal = document.getElementById('discIdOriginal').value, nome = document.getElementById('discNome').value.trim(), conc = document.getElementById('discConcurso').value;
+    if(!nome || !conc) return alert("Preencha tudo!");
+    let obj = { id: idOriginal ? parseInt(idOriginal) : Date.now(), nome: nome, concurso: conc };
+    if(idOriginal !== "") db.disciplinas[db.disciplinas.findIndex(d => d.id === parseInt(idOriginal))] = obj; else db.disciplinas.push(obj);
+    salvarModificacaoBasica(); fecharModal('modalFormDisciplina'); abrirGerenciar('disciplinas'); renderizarLista();
+}
+
+function abrirFormConcurso(i){
+    fecharModal('modalListagem');
+    if(i >= 0){ const c = db.concursos[i]; document.getElementById('concNomeOriginal').value = c.nome; document.getElementById('concNome').value = c.nome; document.getElementById('concCor').value = c.cor; document.getElementById('concCorTexto').value = c.corTexto;
+    } else { document.getElementById('concNomeOriginal').value = ''; document.getElementById('concNome').value = ''; document.getElementById('concCor').value = '#1565C0'; document.getElementById('concCorTexto').value = '#ffffff'; }
+    abrirModal('modalFormConcurso');
+}
+function salvarConcurso(){
+    const o = document.getElementById('concNomeOriginal').value, n = document.getElementById('concNome').value.trim();
+    if(!n) return alert("Preencha!");
+    if(o !== ""){ db.concursos[db.concursos.findIndex(x => x.nome === o)] = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value}; db.disciplinas.forEach(d => { if(d.concurso === o) d.concurso = n; });
+    } else { db.concursos.push({nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value}); }
+    salvarModificacaoBasica(); fecharModal('modalFormConcurso'); abrirGerenciar('concursos'); renderizarFiltros();
+}
+
+function abrirRegistroEstudo(id){
+    const d = db.disciplinas.find(x => x.id === id); if(!d) return;
+    document.getElementById('regNomeDisciplina').innerText = d.nome; document.getElementById('regIdDisciplina').value = d.id; document.getElementById('regObs').value = '';
+    const sel = document.getElementById('regTipoAtividade'); sel.innerHTML = '';
+    db.configs.tiposAtividade.forEach(t => sel.innerHTML += `<option value="${t}">${t}</option>`);
+    
+    // Mostra o tempo do cronômetro se houver
+    if (tempoTimer > 0) {
+        document.getElementById('containerTempoCapturado').style.display = 'block';
+        document.getElementById('displayTempoCapturado').innerText = formatarTempoTimer(tempoTimer);
+        document.getElementById('regDuracaoTimer').value = tempoTimer;
+    } else {
+        document.getElementById('containerTempoCapturado').style.display = 'none';
+        document.getElementById('regDuracaoTimer').value = 0;
+    }
+    abrirModal('modalRegistrarEstudo');
+}
+
+function salvarRegistroEstudo(){
+    const idDisc = parseInt(document.getElementById('regIdDisciplina').value), d = db.disciplinas.find(x => x.id === idDisc);
+    const tipo = document.getElementById('regTipoAtividade').value, obs = document.getElementById('regObs').value.trim(), op = document.getElementById('seletorOperador').value;
+    const duracaoCronometro = parseInt(document.getElementById('regDuracaoTimer').value) || 0;
+    
+    let infoTempo = duracaoCronometro > 0 ? ` (⏱️ ${Math.round(duracaoCronometro/60)} min)` : "";
+    
+    db.historico.push({ id: Date.now(), disciplina: d.nome, concurso: d.concurso, tipoAtividade: tipo, observacao: obs + infoTempo, duracaoRegistrada: duracaoCronometro, data: getDataHoraAtual(), operador: op });
+    
+    // Zera o cronômetro local após registrar
+    if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerText = '▶'; }
+    
+    salvarModificacaoBasica(); mostrarToast("✅ Atividade Registrada!"); fecharModal('modalRegistrarEstudo');
+}
+
+function abrirHistorico(){
+    const l = document.getElementById('listaHistorico'); l.innerHTML = '';
+    if(db.historico.length === 0){ l.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">Nenhuma atividade registrada ainda. Bora estudar!</div>';
+    } else {
+        [...db.historico].reverse().forEach(h => {
+            let tempoBadge = h.duracaoRegistrada ? `<span style="background:var(--secundaria); color:var(--primaria); padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>` : '';
+            l.innerHTML += `
+            <div style="background:#fcfcfc; border:1px solid #eee; border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:var(--primaria); font-size:16px;">${h.disciplina} ${tempoBadge}</strong>
+                    <span style="font-size:12px; color:#888;">${h.data.split(' ')[0]}</span>
+                </div>
+                <div style="font-size:14px;"><strong>Tipo:</strong> ${h.tipoAtividade}</div>
+                ${h.observacao ? `<div style="font-size:13px; color:#555;"><em>Obs: ${h.observacao}</em></div>` : ''}
+                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso} | 👤 Op: ${h.operador}</div>
+            </div>`;
+        });
+    }
+    abrirModal('modalHistorico');
+}
+
+function salvarModificacaoBasica(){ db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); sincronizarComNuvemSilencioso(); }
+function renderizarOperadores(){ const s=document.getElementById('seletorOperador'); s.innerHTML=''; db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`}); s.innerHTML+='<option value="sair">👋 Encerrar Turno</option>'; const u=localStorage.getItem('estudos_operadorAtual'); if(u&&db.operadores.find(o=>o.nome===u)){ s.value=u; operadorAnteriorSelect=u; } }
+
+function abrirZonaRisco(){ fecharModal('modalPainelUnificado'); document.getElementById('configUrlAppScript').value = db.configs.urlAppScript; abrirModal('modalZonaRisco'); }
+async function salvarUrlESincronizar(e){ const u = document.getElementById('configUrlAppScript').value.trim(); db.configs.urlAppScript = u; salvarBancoLocal(); if(!u) return alert("URL vazia!"); const b = e.target; let t = b.innerText; b.innerText="Salvando..."; b.disabled=true; await sincronizarComNuvemSilencioso(); b.innerText=t; b.disabled=false; mostrarToast("URL Salva!"); }
+
+async function sincronizarComNuvemSilencioso(){
+    const i=document.getElementById('indicadorConexao'); if(!navigator.onLine){i.innerText='🔴'; return} if(!db.configs.urlAppScript){i.innerText='🌐'; return} if(isSyncing) return;
+    isSyncing=true; i.innerText='🔄';
+    try {
+        let r = await fetch(db.configs.urlAppScript + '?t=' + Date.now()); let d = await r.json();
+        if(d && d.configs && d.configs.ultimaModificacaoLocal > db.configs.ultimaModificacaoLocal){ let urlSalva = db.configs.urlAppScript; db = d; db.configs.urlAppScript = urlSalva; salvarBancoLocal(); aplicarTemaCores(); renderizarLista(); renderizarFiltros(); }
+        i.innerText='🟢';
+    } catch(e) { i.innerText='🔴'; } isSyncing=false;
+}
+
+async function forcarEnvioNuvem(e){
+    if(!db.configs.urlAppScript) return alert("Configure a URL do Apps Script primeiro!"); if(!confirm("⚠️ Enviar e esmagar a nuvem?")) return;
+    db.configs.ultimaModificacaoLocal = Date.now() + 10000; salvarBancoLocal(); const btn = e.target; let txt = btn.innerText; btn.innerText = "Enviando..."; btn.disabled = true;
+    try { let r = await fetch(db.configs.urlAppScript, { method: 'POST', body: JSON.stringify({action: 'salvar_banco_completo', dados: db}) }); let resp = await r.json(); if(resp.status === 'ok') mostrarToast("Enviado com sucesso!"); } catch(err) { alert("Erro ao enviar."); } btn.innerText = txt; btn.disabled = false;
+}
+
+async function forcarDownloadNuvem(e){
+    if(!db.configs.urlAppScript) return alert("Configure a URL do Apps Script primeiro!"); if(!confirm("⚠️ Baixar e esmagar o local?")) return;
+    const btn = e.target; let txt = btn.innerText; btn.innerText = "Baixando..."; btn.disabled = true;
+    try { let r = await fetch(db.configs.urlAppScript + '?pull=1&t=' + Date.now()); let d = await r.json(); if(d && d.configs) { let urlSalva = db.configs.urlAppScript; db = d; db.configs.urlAppScript = urlSalva; salvarBancoLocal(); mostrarToast("Baixado!"); setTimeout(() => location.reload(), 1000); } } catch(err) { alert("Erro ao puxar."); } btn.innerText = txt; btn.disabled = false;
+}
+
+iniciar();
+</script>
+</body>
+</html>
