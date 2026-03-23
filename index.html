@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v2</title>
+    <title>Alô RFB v1.0.1</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3);}
@@ -95,7 +95,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v2.0</div>
+    <div class="splash-version">v1.0.1</div>
 </div>
 
 <div id="login-screen">
@@ -172,7 +172,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v2</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.1</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()">⚙️ Configurações</button>
         <button class="btn-outline" onclick="abrirConfigAtalhos()">⌨️ Teclas de Atalho</button>
         <button class="btn-outline" onclick="abrirGerenciar('disciplinas')">📚 Disciplinas</button>
@@ -338,8 +338,9 @@
             <button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button>
         </div>
         <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-        <h3 style="font-size: 14px; margin-bottom:10px; color:#1565C0;">Sincronização Manual</h3>
+        <h3 style="font-size: 14px; margin-bottom:10px; color:#1565C0;">Sincronização e Atualização</h3>
         <div style="display: flex; gap: 10px; flex-direction: column;">
+            <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
             <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (PC ➡️ Nuvem)</button>
             <button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ PC)</button>
         </div>
@@ -1027,6 +1028,17 @@ async function sincronizarComNuvemSilencioso(){
         if(d && d.configs && d.configs.ultimaModificacaoLocal > db.configs.ultimaModificacaoLocal){ let urlSalva = db.configs.urlAppScript; db = d; db.configs.urlAppScript = urlSalva; salvarBancoLocal(); aplicarTemaCores(); renderizarLista(); }
         i.innerText='🟢';
     } catch(e) { i.innerText='🔴'; } isSyncing=false;
+}
+
+function atualizarApp(e){
+    if(!confirm("⚠️ Forçar atualização do app? O cache será limpo e a página recarregada.")) return;
+    const btn = e.target; btn.innerText = "Atualizando..."; btn.disabled = true;
+    if ('caches' in window) {
+        caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+        });
+    }
+    setTimeout(() => window.location.reload(true), 500);
 }
 
 async function forcarEnvioNuvem(e){
