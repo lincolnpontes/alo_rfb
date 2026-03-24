@@ -7,17 +7,22 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.2</title>
+    <title>Alô RFB v1.1.3</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;}
-        html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;transition:background .3s ease;user-select:none;-webkit-user-select:none}
-        body.modal-open{overflow:hidden!important;touch-action:none}
-        input,select,textarea{user-select:auto;-webkit-user-select:auto}
-        .app-container{width:100%;max-width:1400px;background:var(--bg-app);min-height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
         
-        #sticky-header{position:sticky;top:0;z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
+        /* BLOQUEIO DE ROLAGEM GLOBAL - APENAS A TABELA ROLA */
+        html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none}
+        
+        body.modal-open{touch-action:none}
+        input,select,textarea{user-select:auto;-webkit-user-select:auto}
+        
+        .app-container{width:100%;max-width:1400px;background:var(--bg-app);height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
+        
+        #sticky-header{flex: none; z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
         
         #splash-screen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primaria);transition:opacity .5s ease;background-color:#ffffff !important}
         #splash-screen.hidden{opacity:0;pointer-events:none}
@@ -68,9 +73,10 @@
         .dash-prazo-bar { font-size: 16px; color: #333; display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         body[data-theme="transparente"] .dash-prazo-bar { color: #eee; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         
-        /* NOVA TABELA DE TAREFAS */
-        .table-wrapper { width: 100%; padding: 10px; box-sizing: border-box; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .table-scroll-container { max-height: 65vh; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* NOVA TABELA DE TAREFAS - SCROLL ISOLADO */
+        #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
+        .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
         .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 1fr 2fr 80px 140px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
         .tarefa-row:last-child { border-bottom: none; }
@@ -79,7 +85,7 @@
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 14px; color: #555; background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 15px; padding-bottom: 15px; backdrop-filter: blur(10px);}
         
         body[data-theme="transparente"] .tarefa-row, body[data-theme="escuro"] .tarefa-row { color: #eee; }
-        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { color: #fff; background: rgba(0,0,0,0.5); border-bottom-color: #888;}
+        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { color: #fff; background: rgba(0,0,0,0.8); border-bottom-color: #888;}
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -177,8 +183,9 @@
         
         .prod-details-row { display: none; background: #f9f9f9; border-bottom: 1px solid #ddd; padding: 20px; grid-column: 1 / -1; }
         
-        /* Container Gráficos */
-        .chart-box { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee; flex: 1; min-width: 280px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        /* Treemap e Abas */
+        .btn-tree { background: transparent; border: none; font-size: 15px; font-weight: bold; color: #888; cursor: pointer; padding: 10px 15px; transition: 0.2s; border-bottom: 3px solid transparent; outline: none;}
+        .btn-tree.active { color: var(--primaria); border-bottom: 3px solid var(--primaria); }
     </style>
 </head>
 <body>
@@ -187,7 +194,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.2</div>
+    <div class="splash-version">v1.1.3</div>
 </div>
 
 <div id="login-screen">
@@ -260,7 +267,8 @@
         <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
     </div>
     
-    <div id="listaTarefas"></div>
+    <div id="listaTarefas">
+        </div>
 </div>
 
 <div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;">
@@ -313,7 +321,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.2</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.3</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
@@ -661,12 +669,12 @@
             <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs"></div>
         </div>
         
-        <div style="display:flex; justify-content:space-between; margin-top:20px; align-items:center;">
-            <button class="btn-danger" id="btnExcluirTarefa" onclick="abrirModal('modalConfirmarExcluirTarefa')" style="margin:0; width:auto; padding: 10px 15px;" title="Excluir Tarefa">🗑️</button>
-            <div style="display: flex; gap:10px; width:100%; justify-content:flex-end;">
-                <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="flex: none; width: auto;">Cancelar</button>
-                <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:none; width:auto; padding: 10px 15px;">⏭️ Pular</button>
-                <button class="btn-action" onclick="salvarTarefa()" style="margin:0;">Salvar</button>
+        <div style="display:flex; justify-content:space-between; margin-top:20px; align-items:stretch; gap:10px; height: 45px;">
+            <button class="btn-danger" id="btnExcluirTarefa" onclick="abrirModal('modalConfirmarExcluirTarefa')" style="margin:0; width:45px; flex:none; padding:0; font-size: 20px; border-radius:8px;" title="Excluir Tarefa">🗑️</button>
+            <div style="display: flex; gap:10px; flex:1; justify-content:flex-end; align-items:stretch;">
+                <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="margin:0; flex:1; font-size:14px; padding:0; border-radius:8px;">Cancelar</button>
+                <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:2px solid var(--primaria); background:transparent; justify-content:center; border-radius:8px;">⏭️ Pular</button>
+                <button class="btn-action" onclick="salvarTarefa()" style="margin:0; flex:1.5; font-size:16px; padding:0; border-radius:8px;">Salvar</button>
             </div>
         </div>
     </div>
@@ -762,9 +770,14 @@
             </div>
         </div>
         
-        <div style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center; align-items:stretch; margin-top: 25px;">
-            <div class="chart-box"><canvas id="chartHoras"></canvas></div>
-            <div class="chart-box"><canvas id="chartQuestoes"></canvas></div>
+        <div style="margin-top: 25px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                 <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button>
+                 <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button>
+            </div>
+            <div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;">
+                 <canvas id="chartTreemap"></canvas>
+            </div>
         </div>
 
         <div class="modal-actions">
@@ -781,8 +794,12 @@ window.addEventListener('unhandledrejection', function(event) { console.error('R
 
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
-let chartsGerais = [];
 let chartsDetalhe = {}; 
+
+// Variáveis do Treemap
+let prodEstatisticasCache = {};
+let currentTreeMode = 'tempo';
+let treemapChart = null;
 
 function formatarHorasMinutos(segs) {
     if(!segs || segs === 0) return "0m";
@@ -859,7 +876,6 @@ function carregarBanco(){
                 if(tar.obs === undefined) tar.obs = ""; 
                 if(tar.pulada === undefined) tar.pulada = false;
                 
-                // Migração do "Pulada" antigo como tipo para nova flag
                 if(tar.tipoAtividade === "Pulada") {
                     tar.pulada = true;
                     tar.concluida = true;
@@ -879,7 +895,6 @@ function carregarBanco(){
             if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
             if(!l.configs.tiposAtividade) l.configs.tiposAtividade = d.configs.tiposAtividade;
             
-            // Migração dos Tipos de Atividade de Array simples para Array de Objetos
             if(l.configs.tiposAtividade.length > 0 && typeof l.configs.tiposAtividade[0] === 'string') {
                 l.configs.tiposAtividade = l.configs.tiposAtividade.map(t => {
                     return { nome: t, comDesempenho: /quest|teste/i.test(t) };
@@ -934,7 +949,6 @@ function carregarMusicas(event) {
     const files = event.target.files;
     if (files.length === 0) return; 
     
-    // Limpa forçado o antigo
     playlist.forEach(u => URL.revokeObjectURL(u));
     playlist = []; musicaIndex = 0; playerAudio.pause(); playerAudio.src = "";
     
@@ -942,7 +956,6 @@ function carregarMusicas(event) {
     document.getElementById('btnLimparMusica').style.display = 'flex';
     mostrarToast(`${files.length} músicas prontas!`); 
     
-    // Auto-play se o cronometro tiver rolando
     if(isRunningTimer) tocarMusicaTimer();
 }
 
@@ -1306,7 +1319,6 @@ function renderizarDashboardTrilha() {
         mediaFormat = Math.floor(mediaSegs/3600) + "h " + Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0') + "m";
     }
 
-    // 39 - Ordem Invertida
     box.innerHTML = `
         <div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho}</div></div>
         <div class="dash-box"><div class="dash-box-title">Questões</div><div class="dash-box-val">${qTot}</div></div>
@@ -1338,7 +1350,6 @@ function renderizarListaTarefas() {
         return; 
     }
 
-    // Ordenar pelo número contido no Título (ex: Tarefa 01)
     filtradas.sort((a, b) => {
         let numA = parseInt(a.titulo.match(/\d+/) ? a.titulo.match(/\d+/)[0] : 0);
         let numB = parseInt(b.titulo.match(/\d+/) ? b.titulo.match(/\d+/)[0] : 0);
@@ -1535,8 +1546,14 @@ function abrirGerenciarTiposAtividade(){ fecharModal('modalListagem'); fecharMod
 function renderizarTiposCfg(){
     let l = document.getElementById('listaTiposCfg'); l.innerHTML = '';
     db.configs.tiposAtividade.forEach(t => { 
-        let despLabel = t.comDesempenho ? '🎯 Tem Desempenho' : '➖ Sem Desempenho';
-        l.innerHTML += `<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> <span style="flex:1;">${t.nome} <small style="display:block; font-weight:normal; color:#666;">${despLabel}</small></span> <span style="cursor:pointer;color:#d32f2f;font-weight:900;margin-left:auto;padding:0 10px" onclick="removerTipo('${t.nome}')">X</span></div>`; 
+        l.innerHTML += `<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;">
+            <span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> 
+            <span style="flex:1;">${t.nome}</span> 
+            <label style="font-size:11px; display:flex; align-items:center; gap:4px; cursor:pointer;">
+                <input type="checkbox" ${t.comDesempenho ? 'checked' : ''} onchange="toggleDesempenhoTipo('${t.nome}', this.checked)"> Desempenho
+            </label>
+            <span style="cursor:pointer;color:#d32f2f;font-weight:900;padding:0 10px" onclick="removerTipo('${t.nome}')">X</span>
+        </div>`; 
     });
     if(sortableTipos) sortableTipos.destroy();
     sortableTipos = new Sortable(l, {
@@ -1565,6 +1582,18 @@ function removerTipo(nomeT){
     if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); 
     db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x.nome !== nomeT); 
     salvarModificacaoBasica(); renderizarTiposCfg(); 
+}
+function toggleDesempenhoTipo(nome, isChecked) {
+    let tipo = db.configs.tiposAtividade.find(t => t.nome === nome);
+    if(tipo) { 
+        tipo.comDesempenho = isChecked; 
+        salvarModificacaoBasica(); 
+        renderizarListaTarefas(); 
+        
+        // Atualiza as configs no HTML para a ordenação (Sortable) não se perder
+        let div = document.querySelector(`div[data-nome="${nome}"]`);
+        if(div) div.dataset.desempenho = isChecked;
+    }
 }
 
 // ================= FORMULÁRIOS DE ESTRUTURA =================
@@ -1878,7 +1907,6 @@ function abrirFormTarefa(id, numSugerido = 1){
         });
         atualizarDisplayAulas();
         
-        // Verifica se a atividade que estava salva ainda existe nas configs
         if(!db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade)) {
             selT.innerHTML += `<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;
         }
@@ -1890,7 +1918,7 @@ function abrirFormTarefa(id, numSugerido = 1){
             contStatus.style.display = 'none';
             document.getElementById('tarConcluida').checked = false;
             divEdicao.style.display = 'none';
-            btnPular.style.display = 'block';
+            btnPular.style.display = 'flex';
             btnPular.innerHTML = "↩️ Desfazer Pulo";
             btnPular.onclick = () => abrirModal('modalConfirmarDesfazerPulo');
         }
@@ -1900,7 +1928,6 @@ function abrirFormTarefa(id, numSugerido = 1){
             
             divEdicao.style.display = 'block';
             
-            // Verifica se tem desempenho
             let configTipo = db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade);
             if(configTipo && configTipo.comDesempenho) {
                 document.getElementById('tarQtdQuestoes').parentElement.style.display = 'block';
@@ -1916,7 +1943,7 @@ function abrirFormTarefa(id, numSugerido = 1){
         } else {
             contStatus.style.display = 'none';
             divEdicao.style.display = 'none';
-            btnPular.style.display = 'block';
+            btnPular.style.display = 'flex';
             btnPular.innerHTML = "⏭️ Pular";
             btnPular.onclick = () => abrirModal('modalConfirmarPular');
         }
@@ -1927,7 +1954,7 @@ function abrirFormTarefa(id, numSugerido = 1){
         contStatus.style.display = 'none';
         divEdicao.style.display = 'none';
         let btnPular = document.getElementById('btnPularTarefa');
-        btnPular.style.display = 'block';
+        btnPular.style.display = 'flex';
         btnPular.innerHTML = "⏭️ Pular";
         btnPular.onclick = () => abrirModal('modalConfirmarPular');
         popularDropdownAulasCustom(); 
@@ -2168,7 +2195,7 @@ function excluirHistorico(id) {
     }
 }
 
-// ================= PRODUTIVIDADE AVANÇADA (CHART.JS) =================
+// ================= PRODUTIVIDADE AVANÇADA E TREEMAP =================
 function abrirProdutividade() {
     let opAtual = document.getElementById('seletorOperador').value;
     let histOp = db.historico.filter(h => h.operador === opAtual);
@@ -2243,21 +2270,13 @@ function renderizarConteudoProdutividade() {
     // Tabela Lado Direito
     let tbody = document.getElementById('prodTableBody');
     tbody.innerHTML = '';
-    
-    let labels = []; let dataHoras = []; let dataQuest = [];
 
     for(let d in estatisticas) {
         let e = estatisticas[d];
-        labels.push(d);
-        dataHoras.push((e.tempo / 3600).toFixed(1));
-        dataQuest.push(e.questoes);
-        
         let pct = e.questoes > 0 ? ((e.acertos / e.questoes) * 100).toFixed(1) + "%" : "-";
         let hForm = Math.floor(e.tempo/3600) + "h " + Math.floor((e.tempo%3600)/60).toString().padStart(2,'0') + "m";
-        
         let idClean = d.replace(/[^a-zA-Z0-9]/g, '');
         
-        // Histórico embutido para expansão
         let htmlHist = `<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico de Desempenho e Histórico</div>`;
         htmlHist += `<canvas id="chartDisc_${idClean}" style="max-height: 200px; margin-bottom: 15px;"></canvas>`;
         
@@ -2294,28 +2313,90 @@ function renderizarConteudoProdutividade() {
         tbody.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">Sem dados registrados.</div>';
     }
 
-    // Gráficos Gerais
-    chartsGerais.forEach(c => c.destroy()); chartsGerais = [];
     Object.values(chartsDetalhe).forEach(c => c.destroy()); chartsDetalhe = {};
-    
     Chart.defaults.color = '#555';
     Chart.defaults.font.family = 'Arial, sans-serif';
 
-    if(labels.length > 0) {
-        let ctxHoras = document.getElementById('chartHoras').getContext('2d');
-        chartsGerais.push(new Chart(ctxHoras, {
-            type: 'bar',
-            data: { labels: labels, datasets: [{ label: 'Horas Estudadas', data: dataHoras, backgroundColor: '#1565C0', borderRadius: 4 }] },
-            options: { responsive: true, plugins: { title: { display: true, text: 'Horas por Disciplina' } }, scales: { y: { beginAtZero: true } } }
-        }));
+    // Salva globalmente para o Treemap
+    prodEstatisticasCache = estatisticas;
+    setTreeMode('tempo'); // Renderiza o treemap inicial
+}
 
-        let ctxQuestoes = document.getElementById('chartQuestoes').getContext('2d');
-        chartsGerais.push(new Chart(ctxQuestoes, {
-            type: 'bar',
-            data: { labels: labels, datasets: [{ label: 'Qtd. Questões', data: dataQuest, backgroundColor: '#f57f17', borderRadius: 4 }] },
-            options: { responsive: true, plugins: { title: { display: true, text: 'Questões Resolvidas' } }, scales: { y: { beginAtZero: true } } }
-        }));
+function setTreeMode(mode) {
+    currentTreeMode = mode;
+    document.getElementById('btnTreeTempo').classList.toggle('active', mode === 'tempo');
+    document.getElementById('btnTreeQuest').classList.toggle('active', mode === 'questoes');
+    renderTreemap();
+}
+
+function renderTreemap() {
+    if (treemapChart) { treemapChart.destroy(); }
+    
+    let dataArr = [];
+    for (let d in prodEstatisticasCache) {
+        let orig = prodEstatisticasCache[d];
+        let val = currentTreeMode === 'tempo' ? (orig.tempo / 3600) : orig.questoes;
+        if(val > 0) {
+            dataArr.push({ name: d, value: val, orig: orig });
+        }
     }
+    
+    if(dataArr.length === 0) {
+        document.getElementById('chartTreemap').style.display = 'none';
+        return;
+    } else {
+        document.getElementById('chartTreemap').style.display = 'block';
+    }
+
+    const ctx = document.getElementById('chartTreemap').getContext('2d');
+    treemapChart = new Chart(ctx, {
+        type: 'treemap',
+        data: {
+            datasets: [{
+                tree: dataArr,
+                key: 'value',
+                groups: ['name'],
+                spacing: 2,
+                borderWidth: 0,
+                backgroundColor: (ctx) => {
+                    if (ctx.type !== 'data') return 'transparent';
+                    return '#8bc34a'; // Cor verde padrão baseada na foto
+                },
+                labels: {
+                    display: true,
+                    align: 'center',
+                    position: 'middle',
+                    color: '#1b5e20',
+                    font: { size: 14, weight: 'bold' },
+                    formatter: (ctx) => {
+                        let label = ctx.raw._data.name;
+                        let val = currentTreeMode === 'tempo' ? formatarHorasMinutos(ctx.raw._data.orig.tempo) : ctx.raw._data.orig.questoes + " qts";
+                        let total = ctx.dataset.tree.reduce((a,b)=>a+b.value, 0);
+                        let pct = ((ctx.raw.v / total)*100).toFixed(2);
+                        return [label, pct + '%'];
+                    }
+                }
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => items[0].raw._data.name,
+                        label: (item) => {
+                            let orig = item.raw._data.orig;
+                            return [
+                                `Horas gastas: ${formatarHorasMinutos(orig.tempo)}`,
+                                `Questões: ${orig.questoes}`
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
 
 function toggleDetailsRow(idClean, discNome) {
@@ -2323,7 +2404,6 @@ function toggleDetailsRow(idClean, discNome) {
     if(div.style.display === 'block') { div.style.display = 'none'; return; }
     div.style.display = 'block';
     
-    // Gera o Gráfico de Linha na hora de abrir
     if(!chartsDetalhe[idClean]) {
         let opAtual = document.getElementById('seletorOperador').value;
         let filtroT = document.getElementById('filtroProdTrilha').value;
@@ -2331,7 +2411,6 @@ function toggleDetailsRow(idClean, discNome) {
         let histOp = db.historico.filter(h => h.operador === opAtual && h.disciplina === discNome);
         if(filtroT !== "TODAS") histOp = histOp.filter(h => h.trilha === filtroT);
         
-        // Agrupar por data para o gráfico (apenas dias que tiveram questões)
         let despPorDia = {};
         histOp.forEach(h => {
             if(h.questoes > 0) {
@@ -2343,7 +2422,6 @@ function toggleDetailsRow(idClean, discNome) {
         });
         
         let labelsDisc = []; let dataDisc = [];
-        // Ordenar as datas
         let datasOrdenadas = Object.keys(despPorDia).sort((a,b) => {
             let pA = a.split('/'); let pB = b.split('/');
             return new Date(`${pA[2]}-${pA[1]}-${pA[0]}`) - new Date(`${pB[2]}-${pB[1]}-${pB[0]}`);
