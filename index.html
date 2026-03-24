@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.0.7</title>
+    <title>Alô RFB v1.0.8</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0;}
@@ -47,35 +47,37 @@
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
         .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
 
-        /* Custom Dropdown Multi-Select */
         .custom-select-box { border: 1px solid #ccc; border-radius: 5px; background: #fff; padding: 10px; cursor: pointer; font-size: 14px; min-height: 20px; color: #333; display:flex; align-items:center; justify-content:space-between; }
         .custom-select-options { display: none; position: absolute; width: 100%; background: #fff; border: 1px solid #ccc; border-radius: 0 0 5px 5px; max-height: 150px; overflow-y: auto; z-index: 99; top: 100%; margin-top:-1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .custom-select-option { padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.1s; }
         .custom-select-option:hover { background: #f9f9f9; }
         .custom-select-option input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
 
-        /* Layout de Cabeçalho Trilhas Unificado */
-        .trilhas-top-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 8px 10px; flex-wrap: wrap;}
-        .concurso-badge { font-weight: 900; font-size: 18px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.5); white-space: nowrap;}
-        .sel-trilha-header { background: rgba(255,255,255,0.7); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 4px 8px; font-size: 14px; width: auto; flex: none; outline: none; cursor:pointer;}
-        .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 13px; padding: 6px 10px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
-        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 6px 10px; font-size: 13px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
-        .dash-prazo-bar { background: rgba(255,255,255,0.7); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); font-size: 12px; color: #333; display:flex; align-items:center; gap:8px; flex:1; white-space:nowrap; overflow-x:auto;}
-        .dash-prazo-bar::-webkit-scrollbar { display: none; }
+        /* Layout de Cabeçalho Trilhas Refeito */
+        .trilhas-top-bar { display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px 10px 8px 10px; }
+        .trilhas-top-row1 { display: flex; justify-content: space-between; align-items: center; gap: 10px;}
+        .trilhas-left { display: flex; align-items: center; gap: 10px; }
+        .trilhas-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
         
-        /* Lista de Tarefas (Padrão 3 Linhas) */
+        .concurso-badge { font-weight: 900; font-size: 22px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.5); white-space: nowrap;}
+        .sel-trilha-header { background: rgba(255,255,255,0.7); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
+        .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
+        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
+        
+        .dash-prazo-bar { background: rgba(255,255,255,0.8); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); font-size: 15px; color: #333; display:flex; justify-content:center; align-items:center; gap:12px; width:100%; box-sizing:border-box;}
+        
+        /* Lista de Tarefas */
         .list{padding:10px;margin:0;list-style:none;display:flex; flex-direction:column; gap:8px;}
         .item{display:flex; flex-direction:column; padding:12px; border:1px solid var(--glass-border);border-radius:8px;cursor:pointer;background:var(--bg-item);box-shadow:0 2px 4px rgba(0,0,0,.05);backdrop-filter: blur(8px); transition: transform 0.1s;}
         .item:active{transform: scale(0.98);}
-        .item-linha1 { font-size: 12px; font-weight: bold; color: #555; margin-bottom: 4px; display:flex; gap: 4px; flex-wrap: wrap; align-items: center;}
+        .item-linha1 { font-size: 14px; font-weight: bold; color: #555; margin-bottom: 4px; display:flex; gap: 4px; flex-wrap: wrap; align-items: center;}
         .item-linha2 { font-weight: 900; font-size: 16px; color: var(--title-color) !important; margin-bottom: 6px; white-space: normal; line-height: 1.2; }
-        .item-linha3 { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: bold; flex-wrap: wrap;}
-        .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:3px 8px; border-radius:12px; font-size:11px; font-weight:bold; color:inherit;}
+        .item-linha3 { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: bold; flex-wrap: wrap;}
+        .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:3px 8px; border-radius:12px; font-size:12px; font-weight:bold; color:inherit;}
         
         .item-concluida { background: #e8f5e9 !important; border-color: #4CAF50 !important; }
         .item-pulada { background: #f5f5f5 !important; border-color: #9e9e9e !important; opacity: 0.8; }
         
-        /* Tema Transparente Adaptações */
         body[data-theme="transparente"] .item-concluida { background: rgba(46, 125, 50, 0.4) !important; border-color: #81c784 !important; }
         body[data-theme="transparente"] .item-concluida .item-linha1 { color: #ddd; }
         body[data-theme="transparente"] .item-linha1 { color: #ccc; }
@@ -92,22 +94,25 @@
         input:checked+.slider:before{transform:translateX(20px)}
         #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
         
-        /* Cronômetro Verticalizado */
-        .crono-container { background: var(--bg-item); margin: 10px; border-radius: 12px; padding: 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
+        /* Cronômetro Verticalizado - Compacto */
+        .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 4px 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
         .crono-layout { display: flex; justify-content: center; align-items: center; gap: 15px; }
         .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; }
-        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-align:center;}
+        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-align:center;}
         .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         
-        .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; }
+        .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; position:relative;}
+        .crono-display-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px;}
         .crono-display { font-size: 50px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--primaria); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1;}
+        .pomo-status-side { font-size: 11px; font-weight: bold; color: #888; text-align: left; line-height: 1.3; max-width: 70px; display:none; border-left: 2px solid #ccc; padding-left: 8px;}
+        body[data-theme="transparente"] .pomo-status-side { color: #ccc; border-left-color: #666;}
         
-        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 5px;}
+        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 2px;}
         .crono-btn-icon { background: transparent; border: none; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));}
         .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
         
-        .crono-play { font-size: 44px; color: #1E90FF; }
+        .crono-play { font-size: 50px; color: #1E90FF; }
         .crono-stop { font-size: 50px; color: #9e9e9e; } 
         .crono-music { color: #2e7d32; position: relative; }
         .crono-edit { font-size: 20px; color: #ff9800; margin-right: 5px;}
@@ -119,7 +124,7 @@
         .crono-mute { color: #555; font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
-        .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
+        .meta-container { width: 100%; margin: 4px 0 0 0; text-align: left; }
         .meta-text { font-size: 10px; color: #555; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 3px;}
         .meta-bar { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; }
         .meta-fill { height: 100%; background: #4CAF50; width: 0%; transition: width 0.5s ease, background-color 0.3s; }
@@ -136,11 +141,11 @@
         .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         
-        /* Dashboard de Trilha (Vitória) */
+        /* Dashboard de Trilha */
         .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
         .dash-box { background: var(--secundaria); padding: 10px; border-radius: 8px; text-align: center; flex: 1; border: 1px solid rgba(0,0,0,0.05);}
-        .dash-box-title { font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase; margin-bottom: 4px; }
-        .dash-box-val { font-size: 24px; font-weight: 900; color: var(--primaria); }
+        .dash-box-title { font-size: 14px; font-weight: bold; color: #555; text-transform: uppercase; margin-bottom: 4px; }
+        .dash-box-val { font-size: 28px; font-weight: 900; color: var(--primaria); }
         body[data-theme="transparente"] .dash-box-title { color: #eee; }
     </style>
 </head>
@@ -150,7 +155,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.7</div>
+    <div class="splash-version">v1.0.8</div>
 </div>
 
 <div id="login-screen">
@@ -182,7 +187,6 @@
         </div>
         
         <div class="crono-container">
-            <div id="pomo-status" style="display:none; font-size: 11px; font-weight: bold; color: #888; margin-bottom: 5px; text-align:center;"></div>
             <div class="crono-layout">
                 <div class="crono-modos-vert">
                     <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
@@ -191,7 +195,10 @@
                 </div>
                 
                 <div class="crono-display-box">
-                    <div class="crono-display" id="display-timer">00:00:00</div>
+                    <div class="crono-display-wrapper">
+                        <div class="crono-display" id="display-timer">00:00:00</div>
+                        <div class="pomo-status-side" id="pomo-status-side"></div>
+                    </div>
                     
                     <div class="crono-controls">
                         <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
@@ -238,14 +245,12 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.7</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.8</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
-        <button class="btn-outline" onclick="abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         <button class="btn-outline" onclick="abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
-        <button class="btn-outline" onclick="abrirGerenciarTiposAtividade()"><span class="emoji-icon">📝</span> <span class="texto-btn">Tipos de Atividade</span></button>
         
         <div id="painelSecreto" style="display:none;">
             <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
@@ -281,7 +286,8 @@
 <div class="modal-overlay" id="modalConfigGerais">
     <div class="modal">
         <div class="modal-title">📱 Configurações do App</div>
-        <div class="form-group">
+        <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
+        <div class="form-group" style="margin-top:15px;">
             <label>Tema de Cores:</label>
             <select id="cfgTema">
                 <option value="azul">🔵 Azul</option>
@@ -374,7 +380,7 @@
         <div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div>
         
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button>
+            <button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button>
             <button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button>
         </div>
     </div>
@@ -417,7 +423,7 @@
         </div>
         <div id="listaTiposCfg" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px;"></div>
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalGerenciarTipos'); abrirPainelUnificadoComNivel(true);">Voltar</button>
+            <button class="btn-cancel" onclick="fecharModal('modalGerenciarTipos'); abrirGerenciar('concursos');">Voltar</button>
         </div>
     </div>
 </div>
@@ -426,7 +432,12 @@
     <div class="modal">
         <div class="modal-title" id="tituloListagem">Gerenciar</div>
         <input type="hidden" id="listagemContextoAtivo">
-        <button class="btn-action" id="btnNovoListagem" style="width:100%;margin-bottom:15px">+ Novo</button>
+        
+        <div id="divTopListagem" style="display:flex; gap:10px; margin-bottom:15px; width:100%;">
+            <button class="btn-action" id="btnNovoListagem" style="flex:1; margin:0;">+ Novo</button>
+            <button class="btn-outline" id="btnTiposListagem" style="flex:1; margin:0; justify-content:center;" onclick="abrirGerenciarTiposAtividade()"><span class="emoji-icon">📝</span> <span class="texto-btn">Tipos</span></button>
+        </div>
+        
         <div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div>
         <div class="modal-actions">
             <button class="btn-cancel" id="btnVoltarListagem">Voltar</button>
@@ -443,9 +454,16 @@
             <input type="text" id="concNome">
         </div>
         <div class="switch-container">
-            <span style="font-weight:bold;font-size:14px;">Ativar Concurso (Desativa os outros)</span>
+            <span style="font-weight:bold;font-size:14px;">🟢 Ativar Concurso (Desativa outros)</span>
             <label class="switch"><input type="checkbox" id="concAtivo"><span class="slider"></span></label>
         </div>
+        
+        <div class="switch-container" style="background:#fff3e0; border:1px solid #ffb74d;">
+            <span style="font-weight:bold;font-size:14px; color:#ef6c00;">⏸️ Pausar Concurso (Viagem/Férias)</span>
+            <label class="switch"><input type="checkbox" id="concPausado"><span class="slider"></span></label>
+        </div>
+        <p style="font-size:11px; color:#666; margin-top:-5px; margin-bottom:15px;">Pausar trava os prazos. Ao despausar, os dias pausados são adicionados aos prazos das trilhas automaticamente.</p>
+        
         <div style="display:flex;gap:10px">
             <div class="form-group" style="flex:1"><label>Fundo:</label><input type="color" id="concCor" value="#1565C0"></div>
             <div class="form-group" style="flex:1"><label>Texto:</label><input type="color" id="concCorTexto" value="#ffffff"></div>
@@ -464,7 +482,7 @@
 
 <div class="modal-overlay" id="modalFormTrilha">
     <div class="modal">
-        <div class="modal-title">Editar Trilha</div>
+        <div class="modal-title">Trilha</div>
         <input type="hidden" id="edtTrilhaId">
         <input type="hidden" id="edtTrilhaConcurso">
         <div class="form-group">
@@ -677,6 +695,12 @@ function formatarHorasMinutos(segs) {
     return (h > 0 ? h + "h" : "") + m.toString().padStart(h > 0 ? 2 : 1, '0') + "m";
 }
 function formataData(dataStrYMD) { if(!dataStrYMD) return '--/--/----'; let p = dataStrYMD.split('-'); if(p.length!==3) return dataStrYMD; return `${p[2]}/${p[1]}/${p[0]}`; }
+function shiftDateByDays(dateStringYMD, daysToShift) {
+    if(!dateStringYMD) return getHojeYMD();
+    let d = new Date(dateStringYMD + "T00:00:00");
+    d.setDate(d.getDate() + daysToShift);
+    return d.toISOString().split('T')[0];
+}
 
 const paletasDeCores = {
     azul: {primaria:'#1565C0', secundaria:'#E3F2FD', fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
@@ -695,7 +719,7 @@ function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;
 
 function carregarBanco(){
     let d = {
-        concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff"}],
+        concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff", pausado: false}],
         trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB", dataInicio: getHojeYMD(), duracaoDias: 7}],
         disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulaInicio: 1, aulas: 10}],
         tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Estudo Teórico", concluida: false}],
@@ -724,6 +748,7 @@ function carregarBanco(){
 
             let ativo = l.concursos.find(c => c.ativo);
             let concPadrao = ativo ? ativo.nome : (l.concursos[0] ? l.concursos[0].nome : "Geral");
+            l.concursos.forEach(c => { if(c.pausado === undefined) c.pausado = false; });
             l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; if(disc.aulaInicio === undefined) disc.aulaInicio = 1; });
             l.trilhas.forEach(tr => { if(!tr.dataInicio) tr.dataInicio = getHojeYMD(); if(!tr.duracaoDias) tr.duracaoDias = 7; });
             l.tarefas.forEach(tar => { if(tar.questoes === undefined) tar.questoes = 0; if(tar.acertos === undefined) tar.acertos = 0; if(tar.obs === undefined) tar.obs = ""; });
@@ -773,12 +798,10 @@ let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 
 let audioRestart = new Audio();
-audioRestart.loop = true; // Mantém o som reiniciando até você agir
+audioRestart.loop = true; 
 
 function initAudioRestart() {
-    if(db.configs.audioLink && db.configs.audioLink.trim() !== "") {
-        audioRestart.src = db.configs.audioLink.trim();
-    }
+    if(db.configs.audioLink && db.configs.audioLink.trim() !== "") { audioRestart.src = db.configs.audioLink.trim(); }
 }
 initAudioRestart();
 
@@ -786,32 +809,25 @@ playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { music
 
 function carregarMusicas(event) {
     const files = event.target.files;
+    document.getElementById('file-input-musica').value = ''; 
     if (files.length === 0) return; 
     
-    mostrarToast("Carregando músicas...");
+    playlist.forEach(u => URL.revokeObjectURL(u));
+    playlist = []; musicaIndex = 0;
     
-    setTimeout(() => {
-        playlist.forEach(u => URL.revokeObjectURL(u));
-        playlist = []; musicaIndex = 0;
-        
-        let aviso = false;
-        for(let i=0; i<files.length; i++) {
-            if(files[i].size > 30 * 1024 * 1024) aviso = true;
-            playlist.push(URL.createObjectURL(files[i]));
-        }
-        
-        if(aviso) alert("⚠️ Você inseriu uma música muito pesada (maior que 30MB). O sistema não faz upload e não depende de internet, mas o navegador pode demorar a processar esse peso na memória para tocar.");
-        
-        document.getElementById('btnLimparMusica').style.display = 'flex';
-        mostrarToast(`${files.length} músicas carregadas!`); 
-    }, 100);
+    for(let i=0; i<files.length; i++) { playlist.push(URL.createObjectURL(files[i])); }
+    document.getElementById('btnLimparMusica').style.display = 'flex';
+    mostrarToast(`${files.length} músicas prontas!`); 
 }
 
 function limparMusica() {
     playlist.forEach(u => URL.revokeObjectURL(u));
-    playlist = []; musicaIndex = 0; playerAudio.pause(); playerAudio.src = ""; document.getElementById('btnLimparMusica').style.display = 'none'; mostrarToast("Playlist limpa.");
+    playlist = []; musicaIndex = 0; playerAudio.pause(); playerAudio.src = ""; 
+    document.getElementById('file-input-musica').value = ''; 
+    document.getElementById('btnLimparMusica').style.display = 'none'; 
+    mostrarToast("Memória limpa.");
 }
-function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play().catch(()=>{}); }
+function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.load(); playerAudio.play().catch(()=>{}); }
 
 function ajustarVolumeTimer(val) { 
     let v = val / 100; volumeSalvoTimer = v; 
@@ -848,23 +864,27 @@ function avancarFasePomodoro() {
         if(pomoCicloAtual % db.configs.pomodoro.ciclos === 0) { pomoFase = 'longa'; targetTimer = db.configs.pomodoro.longa * 60; } 
         else { pomoFase = 'curta'; targetTimer = db.configs.pomodoro.curta * 60; }
     } else { pomoFase = 'estudo'; targetTimer = db.configs.pomodoro.estudo * 60; }
-    tempoTimer = 0; atualizarStatusPomodoro(); atualizarDisplayTimer();
+    tempoTimer = 0; atualizarStatusModo(); atualizarDisplayTimer();
 }
 
-function atualizarStatusPomodoro() {
-    const s = document.getElementById('pomo-status');
+function atualizarStatusModo() {
+    const s = document.getElementById('pomo-status-side');
     if(modoTimer === 'pomodoro') {
         s.style.display = 'block';
-        let lbl = pomoFase === 'estudo' ? '📚 Estudo' : (pomoFase === 'curta' ? '☕ Pausa Curta' : '🛌 Pausa Longa');
-        s.innerText = `Fase: ${lbl} | Ciclos: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}`;
-    } else { s.style.display = 'none'; }
+        let lbl = pomoFase === 'estudo' ? 'Estudo' : (pomoFase === 'curta' ? 'Pausa Curta' : 'Pausa Longa');
+        s.innerHTML = `Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}`;
+    } else if(modoTimer === 'regressive') {
+        s.style.display = 'block';
+        s.innerHTML = `Tempo Inic:<br>${db.configs.regressivo.estudo} min`;
+    } else {
+        s.style.display = 'none';
+    }
 }
 
 function startPauseTimer() {
     isRunningTimer = !isRunningTimer;
     let btnPlay = document.getElementById('btn-play-timer');
     if (isRunningTimer) {
-        // Interrompe o som de restart imediatamente e toca música
         audioRestart.pause(); 
         audioRestart.currentTime = 0;
         
@@ -904,7 +924,7 @@ function setModoTimer(novoModo) {
     if(novoModo === 'pomodoro') { targetTimer = db.configs.pomodoro.estudo * 60; }
     else if(novoModo === 'regressive') { targetTimer = (db.configs.regressivo.estudo || 60) * 60; }
     
-    atualizarStatusPomodoro(); atualizarDisplayTimer();
+    atualizarStatusModo(); atualizarDisplayTimer();
 }
 
 function abrirEdicaoTempo() {
@@ -969,7 +989,7 @@ document.addEventListener('keydown', function(event) {
 
 let atalhosTemp = {};
 function abrirConfigAtalhos() {
-    fecharModal('modalPainelUnificado'); atalhosTemp = JSON.parse(JSON.stringify(db.configs.atalhos)); 
+    fecharModal('modalConfigGerais'); atalhosTemp = JSON.parse(JSON.stringify(db.configs.atalhos)); 
     atualizarInputsAtalhos(); abrirModal('modalAtalhos');
 }
 function atualizarInputsAtalhos() {
@@ -983,7 +1003,7 @@ function capturarAtalho(e, field) { e.preventDefault(); if(!atalhosTemp[field].i
 function limparUmAtalho(field) { atalhosTemp[field] = []; atualizarInputsAtalhos(); }
 function salvarAtalhos() {
     db.configs.atalhos = JSON.parse(JSON.stringify(atalhosTemp)); salvarModificacaoBasica(); mostrarToast("Atalhos salvos!");
-    fecharModal('modalAtalhos'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
+    fecharModal('modalAtalhos'); abrirConfigGeraisModal();
 }
 
 // ================= GERAL / APP =================
@@ -1049,7 +1069,6 @@ function renderizarCabecalhoTrilhas() {
     trilhasDeste.forEach(t => { selHtml += `<option value="${t.nome}" ${t.nome === trilhaAtivaNome ? 'selected' : ''}>${t.nome}</option>`; });
     selHtml += `</select>`;
 
-    // Calculo do Prazo para jogar no header unificado
     let msgPrazo = "";
     let colorPrazo = "#333";
     let dataInicioFormatada = "--/--/----";
@@ -1064,36 +1083,47 @@ function renderizarCabecalhoTrilhas() {
         dataInicioFormatada = formataData(tObj.dataInicio);
         datePrevistaFormatada = formataData(datePrevista.toISOString().split('T')[0]);
 
-        let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === concNome);
-        let todasConcluidas = tarefasTrilha.length > 0 && tarefasTrilha.every(t => t.concluida === true);
-        let hj = new Date(); hj.setHours(0,0,0,0);
-        
-        if(todasConcluidas) {
-            let ultimaDataStr = "";
-            if(histTrilha.length > 0) {
-                ultimaDataStr = histTrilha[histTrilha.length-1].data.split(' ')[0];
-                let p = ultimaDataStr.split('/');
-                let dataEfetiva = new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
-                let diffTime = dataEfetiva - datePrevista;
-                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                if(diffDays > 0) { msgPrazo = `Concluída com ${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
-                else if(diffDays < 0) { msgPrazo = `Concluída com ${Math.abs(diffDays)} dias de antecipação!`; colorPrazo = "#2e7d32"; }
-                else { msgPrazo = `Concluída exatamente no prazo!`; colorPrazo = "#1565C0"; }
-            } else { msgPrazo = "Concluída"; colorPrazo = "#2e7d32"; }
+        if (objConc.pausado) {
+            msgPrazo = `⏸️ CONCURSO PAUSADO`;
+            colorPrazo = "#ef6c00";
         } else {
-            let diffTime = hj - datePrevista;
-            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            if(diffDays > 0) { msgPrazo = `${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
-            else if(diffDays < 0) { msgPrazo = `${Math.abs(diffDays)} dias restantes`; colorPrazo = "#333"; }
-            else { msgPrazo = `Termina Hoje!`; colorPrazo = "#f57f17"; }
+            let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === concNome);
+            let todasConcluidas = tarefasTrilha.length > 0 && tarefasTrilha.every(t => t.concluida === true);
+            let hj = new Date(); hj.setHours(0,0,0,0);
+            
+            if(todasConcluidas) {
+                let ultimaDataStr = "";
+                if(histTrilha.length > 0) {
+                    ultimaDataStr = histTrilha[histTrilha.length-1].data.split(' ')[0];
+                    let p = ultimaDataStr.split('/');
+                    let dataEfetiva = new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
+                    let diffTime = dataEfetiva - datePrevista;
+                    let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if(diffDays > 0) { msgPrazo = `Concluída com ${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
+                    else if(diffDays < 0) { msgPrazo = `Concluída com ${Math.abs(diffDays)} dias de antecipação!`; colorPrazo = "#2e7d32"; }
+                    else { msgPrazo = `Concluída exatamente no prazo!`; colorPrazo = "#1565C0"; }
+                } else { msgPrazo = "Concluída"; colorPrazo = "#2e7d32"; }
+            } else {
+                let diffTime = hj - datePrevista;
+                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if(diffDays > 0) { msgPrazo = `${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
+                else if(diffDays < 0) { msgPrazo = `${Math.abs(diffDays)} dias restantes`; colorPrazo = "#333"; }
+                else { msgPrazo = `Termina Hoje!`; colorPrazo = "#f57f17"; }
+            }
         }
     }
 
     cont.innerHTML = `
-        <span class="concurso-badge" style="color:${objConc.cor};">${concNome}</span>
-        ${selHtml}
-        <button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button>
-        <button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
+        <div class="trilhas-top-row1">
+            <div class="trilhas-left">
+                <span class="concurso-badge" style="color:${objConc.cor};">${concNome}</span>
+                ${selHtml}
+            </div>
+            <div class="trilhas-right">
+                <button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button>
+                <button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
+            </div>
+        </div>
         <div class="dash-prazo-bar">
             <strong>Início:</strong> ${dataInicioFormatada} &nbsp;|&nbsp; 
             <strong>Previsto:</strong> ${datePrevistaFormatada} &nbsp;|&nbsp;
@@ -1114,6 +1144,7 @@ function renderizarDashboardTrilha() {
     if(!conc || !trilhaAtivaNome) { box.style.display = 'none'; return; }
     
     let tObj = db.trilhas.find(t => t.nome === trilhaAtivaNome && t.concurso === conc);
+    let cObj = db.concursos.find(c => c.nome === conc);
     if(!tObj) { box.style.display = 'none'; return; }
     
     box.style.display = 'flex';
@@ -1231,26 +1262,18 @@ function iniciar(){
 function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}
 function fecharModal(id){document.getElementById(id).style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(m=>m.style.display==='flex'))document.body.classList.remove('modal-open')}
 
-// Confirmar Desmarcar Modal Logic
 document.getElementById('tarConcluida').addEventListener('change', function(e) {
-    if(!this.checked) {
-        this.checked = true; 
-        abrirModal('modalConfirmarDesmarcar');
-    }
+    if(!this.checked) { this.checked = true; abrirModal('modalConfirmarDesmarcar'); }
 });
 
 function confirmarDesmarcar() {
     document.getElementById('tarConcluida').checked = false;
-    document.getElementById('tarQtdQuestoes').value = 0;
-    document.getElementById('tarQtdAcertos').value = 0;
-    document.getElementById('tarObs').value = "";
-    document.getElementById('divEdicaoConcluida').style.display = 'none';
-    fecharModal('modalConfirmarDesmarcar');
+    document.getElementById('tarQtdQuestoes').value = 0; document.getElementById('tarQtdAcertos').value = 0; document.getElementById('tarObs').value = "";
+    document.getElementById('divEdicaoConcluida').style.display = 'none'; fecharModal('modalConfirmarDesmarcar');
 }
 
 function cancelarDesmarcar() { fecharModal('modalConfirmarDesmarcar'); }
 
-// Logic para o Dropdown Multi-select Customizado das Aulas
 function toggleDropdownAulas() {
     let opt = document.getElementById('tarAulasOptions');
     opt.style.display = opt.style.display === 'block' ? 'none' : 'block';
@@ -1273,39 +1296,25 @@ function popularDropdownAulasCustom() {
                 </div>
             `;
         }
-    } else {
-        cont.innerHTML = `<div style="padding:10px; color:#999; font-size:12px;">Nenhuma aula cadastrada</div>`;
-    }
+    } else { cont.innerHTML = `<div style="padding:10px; color:#999; font-size:12px;">Nenhuma aula cadastrada</div>`; }
     atualizarDisplayAulas();
 }
 
 function clickCheckboxAulas(e, divOpt) {
-    if(e.target.tagName === 'INPUT') {
-        atualizarDisplayAulas();
-        return; 
-    }
+    if(e.target.tagName === 'INPUT') { atualizarDisplayAulas(); return; }
     let cb = divOpt.querySelector('input[type="checkbox"]');
-    cb.checked = !cb.checked;
-    atualizarDisplayAulas();
+    cb.checked = !cb.checked; atualizarDisplayAulas();
 }
 
 function atualizarDisplayAulas() {
-    let selecionados = [];
-    document.querySelectorAll('#tarAulasOptions input[type="checkbox"]:checked').forEach(cb => {
-        selecionados.push(cb.value);
-    });
+    let selecionados = []; document.querySelectorAll('#tarAulasOptions input[type="checkbox"]:checked').forEach(cb => { selecionados.push(cb.value); });
     let display = document.getElementById('tarAulasDisplay');
-    if(selecionados.length === 0) display.innerText = "Selecione as aulas...";
-    else display.innerText = selecionados.join(', ');
+    if(selecionados.length === 0) display.innerText = "Selecione as aulas..."; else display.innerText = selecionados.join(', ');
 }
 
-// Fecha o dropdown se clicar fora
 document.addEventListener('click', function(e) {
-    let box = document.querySelector('.custom-select-box');
-    let opts = document.getElementById('tarAulasOptions');
-    if(box && opts && !box.contains(e.target) && !opts.contains(e.target)) {
-        opts.style.display = 'none';
-    }
+    let box = document.querySelector('.custom-select-box'); let opts = document.getElementById('tarAulasOptions');
+    if(box && opts && !box.contains(e.target) && !opts.contains(e.target)) { opts.style.display = 'none'; }
 });
 
 
@@ -1327,10 +1336,7 @@ function salvarConfigGerais(){
     fecharModal('modalConfigGerais'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
-function toggleInputsMeta() {
-    let exibir = document.getElementById('cfgExibirMeta').checked;
-    document.getElementById('divMetaHoras').style.display = exibir ? 'flex' : 'none';
-}
+function toggleInputsMeta() { let exibir = document.getElementById('cfgExibirMeta').checked; document.getElementById('divMetaHoras').style.display = exibir ? 'flex' : 'none'; }
 
 function abrirConfigCronometroModal() {
     fecharModal('modalPainelUnificado');
@@ -1355,7 +1361,6 @@ function salvarConfigCronometro(){
     db.configs.ocultarTempoMeta = document.getElementById('cfgOcultarTempoMeta').checked;
     db.configs.ocultarPctMeta = document.getElementById('cfgOcultarPctMeta').checked;
     db.configs.metaDiariaHrs = parseInt(document.getElementById('cfgMetaHoras').value) || 4;
-    
     db.configs.tocarRestart = document.getElementById('cfgTocarRestart').checked;
     
     let oldAudio = db.configs.audioLink;
@@ -1371,7 +1376,7 @@ function salvarConfigCronometro(){
     fecharModal('modalConfigCronometro'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
-function abrirGerenciarTiposAtividade(){ fecharModal('modalPainelUnificado'); renderizarTiposCfg(); abrirModal('modalGerenciarTipos'); }
+function abrirGerenciarTiposAtividade(){ fecharModal('modalListagem'); fecharModal('modalPainelUnificado'); renderizarTiposCfg(); abrirModal('modalGerenciarTipos'); }
 function renderizarTiposCfg(){
     let l = document.getElementById('listaTiposCfg'); l.innerHTML = '';
     db.configs.tiposAtividade.forEach(t => { l.innerHTML += `<div data-nome="${t}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> ${t} <span style="cursor:pointer;color:#d32f2f;font-weight:900;margin-left:auto;padding:0 10px" onclick="removerTipo('${t}')">X</span></div>`; });
@@ -1389,12 +1394,14 @@ function abrirGerenciar(t, context){
     
     const l = document.getElementById('conteudoListagem'), b = document.getElementById('btnNovoListagem'), tit = document.getElementById('tituloListagem');
     const bVoltar = document.getElementById('btnVoltarListagem');
+    const bTipos = document.getElementById('btnTiposListagem');
     l.innerHTML = '';
     
     document.getElementById('listagemContextoAtivo').value = t;
     
     if(t === 'disciplinas'){
         tit.innerText = `Disciplinas: ${context}`; 
+        b.style.display = 'block'; bTipos.style.display = 'none';
         b.onclick = () => abrirFormDisciplina(-1, context);
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
         
@@ -1403,7 +1410,8 @@ function abrirGerenciar(t, context){
     } 
     else if (t === 'trilhas') {
         tit.innerText = `Trilhas: ${context}`; 
-        b.style.display = 'none'; 
+        b.style.display = 'block'; bTipos.style.display = 'none';
+        b.onclick = () => { fecharModal('modalListagem'); document.getElementById('edtTrilhaId').value = ''; document.getElementById('edtTrilhaConcurso').value = context; document.getElementById('edtTrilhaNome').value = ''; document.getElementById('edtTrilhaDataInicio').value = getHojeYMD(); document.getElementById('edtTrilhaDias').value = 7; abrirModal('modalFormTrilha'); };
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
         
         let trs = db.trilhas.filter(tr => tr.concurso === context);
@@ -1412,7 +1420,7 @@ function abrirGerenciar(t, context){
         });
     }
     else if (t === 'concursos') {
-        b.style.display = 'block';
+        b.style.display = 'block'; bTipos.style.display = 'flex';
         tit.innerText = "Gerenciar Concursos"; b.onclick = () => abrirFormConcurso(-1);
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo); };
         
@@ -1421,8 +1429,10 @@ function abrirGerenciar(t, context){
             <div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;">
                 <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
                     <div><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div>
-                    <div class="gerenciar-actions">
+                    <div class="gerenciar-actions" style="display:flex; align-items:center;">
+                        ${c.pausado ? '<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>' : ''}
                         <small style="color:#666; margin-right:5px; font-weight:bold">${c.ativo ? '🟢 Ativo' : '⚪ Inativo'}</small>
+                        <button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button>
                         <button onclick="abrirFormConcurso(${i})">✏️</button>
                     </div>
                 </div>
@@ -1433,7 +1443,7 @@ function abrirGerenciar(t, context){
             </div>`; 
         });
     } else if (t === 'estudantes') {
-        b.style.display = 'block';
+        b.style.display = 'block'; bTipos.style.display = 'none';
         tit.innerText = "Gerenciar Usuários"; b.onclick = () => abrirFormOperador(-1);
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo); };
         db.operadores.forEach((o,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${o.nome}</strong></div><div class="gerenciar-actions"><button onclick="abrirFormOperador(${i})">✏️</button><button onclick="excluirItem('operadores','${o.nome}')">🗑️</button></div></div>`; });
@@ -1442,20 +1452,31 @@ function abrirGerenciar(t, context){
 }
 
 function excluirItem(t, id, context){ 
-    if(t === 'disciplinas'){
-        if(!confirm("Excluir esta disciplina?")) return;
-        db.disciplinas = db.disciplinas.filter(i => i.id !== id);
-        salvarModificacaoBasica(); abrirGerenciar(t, context);
-    }
-    if(t === 'trilhas') {
-        if(!confirm("Tem certeza? As TAREFAS desta trilha não serão apagadas, mas ficarão órfãs.")) return;
-        db.trilhas = db.trilhas.filter(i => i.id !== id);
-        salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t, context);
-    }
-    if(t === 'operadores') {
-        if(!confirm("Excluir usuário?")) return;
-        db.operadores = db.operadores.filter(i => i.nome !== id); salvarModificacaoBasica(); abrirGerenciar(t); 
-    }
+    if(t === 'disciplinas'){ if(!confirm("Excluir esta disciplina?")) return; db.disciplinas = db.disciplinas.filter(i => i.id !== id); salvarModificacaoBasica(); abrirGerenciar(t, context); }
+    if(t === 'trilhas') { if(!confirm("Tem certeza? As TAREFAS desta trilha não serão apagadas, mas ficarão órfãs.")) return; db.trilhas = db.trilhas.filter(i => i.id !== id); salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t, context); }
+    if(t === 'operadores') { if(!confirm("Excluir usuário?")) return; db.operadores = db.operadores.filter(i => i.nome !== id); salvarModificacaoBasica(); abrirGerenciar(t); }
+}
+
+function clonarConcurso(nomeOrig) {
+    let cOrig = db.concursos.find(c => c.nome === nomeOrig);
+    if(!cOrig) return;
+    let novoNome = prompt("Nome do novo concurso (Clone de " + nomeOrig + "):", nomeOrig + " (Cópia)");
+    if(!novoNome || db.concursos.find(c => c.nome === novoNome)) return alert("Nome inválido ou já existe.");
+
+    db.concursos.push({nome: novoNome, cor: cOrig.cor, corTexto: cOrig.corTexto, ativo: false, pausado: false});
+
+    let oldTrilhas = db.trilhas.filter(t => t.concurso === nomeOrig);
+    oldTrilhas.forEach(t => { db.trilhas.push({...t, id: Date.now() + Math.random(), concurso: novoNome}); });
+
+    let oldDisc = db.disciplinas.filter(d => d.concurso === nomeOrig);
+    oldDisc.forEach(d => { db.disciplinas.push({...d, id: Date.now() + Math.random(), concurso: novoNome}); });
+
+    let oldTar = db.tarefas.filter(t => t.concurso === nomeOrig);
+    oldTar.forEach(t => {
+        db.tarefas.push({...t, id: Date.now() + Math.random(), concurso: novoNome, concluida: false, tempoRegistrado: 0, questoes: 0, acertos: 0, obs: ""});
+    });
+
+    salvarModificacaoBasica(); abrirGerenciar('concursos'); mostrarToast("Concurso Clonado com Sucesso!");
 }
 
 function abrirEdicaoTrilha(id) {
@@ -1470,15 +1491,19 @@ function abrirEdicaoTrilha(id) {
     abrirModal('modalFormTrilha');
 }
 function salvarEdicaoTrilha() {
-    let id = parseInt(document.getElementById('edtTrilhaId').value);
+    let idStr = document.getElementById('edtTrilhaId').value;
     let n = document.getElementById('edtTrilhaNome').value.trim();
     let dInit = document.getElementById('edtTrilhaDataInicio').value;
     let dias = parseInt(document.getElementById('edtTrilhaDias').value) || 7;
     let conc = document.getElementById('edtTrilhaConcurso').value;
     if(!n || !dInit) return alert("Preencha tudo!");
     
-    let obj = db.trilhas.find(t => t.id === id);
-    if(obj) { obj.nome = n; obj.dataInicio = dInit; obj.duracaoDias = dias; }
+    if(idStr) {
+        let obj = db.trilhas.find(t => t.id === parseInt(idStr));
+        if(obj) { obj.nome = n; obj.dataInicio = dInit; obj.duracaoDias = dias; }
+    } else {
+        db.trilhas.push({ id: Date.now(), nome: n, concurso: conc, dataInicio: dInit, duracaoDias: dias });
+    }
     
     salvarModificacaoBasica(); fecharModal('modalFormTrilha'); renderizarCabecalhoTrilhas(); abrirGerenciar('trilhas', conc);
 }
@@ -1520,8 +1545,10 @@ function abrirFormConcurso(i){
     
     if(i >= 0){ 
         const c = db.concursos[i]; document.getElementById('concNomeOriginal').value = c.nome; document.getElementById('concNome').value = c.nome; document.getElementById('concCor').value = c.cor; document.getElementById('concCorTexto').value = c.corTexto; document.getElementById('concAtivo').checked = c.ativo;
+        document.getElementById('concPausado').checked = c.pausado || false;
     } else { 
         document.getElementById('concNomeOriginal').value = ''; document.getElementById('concNome').value = ''; document.getElementById('concCor').value = '#1565C0'; document.getElementById('concCorTexto').value = '#ffffff'; document.getElementById('concAtivo').checked = true;
+        document.getElementById('concPausado').checked = false;
     }
     abrirModal('modalFormConcurso');
 }
@@ -1529,19 +1556,43 @@ function salvarConcurso(){
     const o = document.getElementById('concNomeOriginal').value, n = document.getElementById('concNome').value.trim();
     if(!n) return alert("Preencha!");
     let isAtivo = document.getElementById('concAtivo').checked;
+    let isPausadoNow = document.getElementById('concPausado').checked;
     
     if(isAtivo) { db.concursos.forEach(c => c.ativo = false); } 
     
-    let obj = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value, ativo: isAtivo};
-    
+    let objToUpdate = null;
     if(o !== ""){ 
-        db.concursos[db.concursos.findIndex(x => x.nome === o)] = obj; 
-        db.trilhas.forEach(t => { if(t.concurso === o) t.concurso = n; });
-        db.tarefas.forEach(t => { if(t.concurso === o) t.concurso = n; });
-        db.disciplinas.forEach(t => { if(t.concurso === o) t.concurso = n; });
+        objToUpdate = db.concursos.find(x => x.nome === o);
+        let wasPausado = objToUpdate.pausado;
+        
+        if(!wasPausado && isPausadoNow) {
+            objToUpdate.dataPausa = getHojeYMD();
+        } else if (wasPausado && !isPausadoNow) {
+            if(objToUpdate.dataPausa) {
+                let d1 = new Date(objToUpdate.dataPausa + "T00:00:00");
+                let d2 = new Date(getHojeYMD() + "T00:00:00");
+                let diffTime = d2 - d1;
+                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if(diffDays > 0) {
+                    db.trilhas.filter(t => t.concurso === o).forEach(t => { t.dataInicio = shiftDateByDays(t.dataInicio, diffDays); });
+                }
+            }
+            objToUpdate.dataPausa = null;
+        }
+        
+        objToUpdate.nome = n; objToUpdate.cor = document.getElementById('concCor').value; objToUpdate.corTexto = document.getElementById('concCorTexto').value; objToUpdate.ativo = isAtivo; objToUpdate.pausado = isPausadoNow;
+        
+        if(o !== n) {
+            db.trilhas.forEach(t => { if(t.concurso === o) t.concurso = n; });
+            db.tarefas.forEach(t => { if(t.concurso === o) t.concurso = n; });
+            db.disciplinas.forEach(t => { if(t.concurso === o) t.concurso = n; });
+        }
     } else { 
-        db.concursos.push(obj); 
+        objToUpdate = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value, ativo: isAtivo, pausado: isPausadoNow};
+        if(isPausadoNow) objToUpdate.dataPausa = getHojeYMD();
+        db.concursos.push(objToUpdate); 
     }
+    
     salvarModificacaoBasica(); fecharModal('modalFormConcurso'); abrirGerenciar('concursos'); renderizarCabecalhoTrilhas();
 }
 
@@ -1876,6 +1927,10 @@ function abrirProdutividade() {
     const selFiltro = document.getElementById('filtroProdTrilha');
     selFiltro.innerHTML = '<option value="TODAS">📚 Todas as Trilhas</option>';
     trilhasUnicas.forEach(tr => selFiltro.innerHTML += `<option value="${tr}">${tr}</option>`);
+    
+    if(trilhaAtivaNome && trilhasUnicas.includes(trilhaAtivaNome)) {
+        selFiltro.value = trilhaAtivaNome;
+    }
     
     renderizarConteudoProdutividade();
     abrirModal('modalProdutividade');
