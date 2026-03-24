@@ -230,6 +230,26 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modalZonaRisco">
+    <div class="modal">
+        <div class="modal-title" style="color:#d32f2f;">Zona de Risco</div>
+        <div class="form-group">
+            <label>URL Apps Script:</label>
+            <input type="text" id="configUrlAppScript">
+            <button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        <div style="display: flex; gap: 10px; flex-direction: column;">
+            <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
+            <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (Local ➡️ Nuvem)</button>
+            <button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ Local)</button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalZonaRisco'); abrirPainelUnificadoComNivel(true);">Voltar</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalConfigGerais">
     <div class="modal">
         <div class="modal-title">📱 Configurações do App</div>
@@ -682,7 +702,6 @@ let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 
-// O Som Sintético Imbatível (Web Audio API)
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function tocarBeepLocal() {
     if(!db.configs.tocarRestart) return;
@@ -691,7 +710,7 @@ function tocarBeepLocal() {
         const osc = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Nota A5
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
         gainNode.gain.setValueAtTime(isMutedTimer ? 0 : volumeSalvoTimer, audioCtx.currentTime);
         gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
         osc.connect(gainNode);
@@ -751,7 +770,7 @@ function atualizarStatusPomodoro() {
 }
 
 function startPauseTimer() {
-    if(audioCtx.state === 'suspended') audioCtx.resume(); // Destrava o audio system
+    if(audioCtx.state === 'suspended') audioCtx.resume();
     isRunningTimer = !isRunningTimer;
     let btnPlay = document.getElementById('btn-play-timer');
     if (isRunningTimer) {
@@ -775,7 +794,7 @@ function resetTimer() {
 function zeroTimerConfirm() {
     if(confirm("Deseja ZERAR o cronômetro (descartar os " + formatarHorasMinutos(tempoTimer) + " percorridos)?")) {
         tempoTimer = 0; atualizarDisplayTimer();
-        atualizarBarraMeta(); // Força a descida da barra
+        atualizarBarraMeta();
     }
 }
 
@@ -816,8 +835,6 @@ function atualizarBarraMeta() {
     let hojeStr = getDataHoraAtual().split(' ')[0];
     db.historico.forEach(h => { if(h.duracaoRegistrada && h.data.startsWith(hojeStr)) estudadoHoje += h.duracaoRegistrada; });
     
-    // ATENÇÃO LÓGICA: Só soma o tempoTimer temporariamente visualmente.
-    // Se o user zerar o tempoTimer, ele volta a ser 0 e esse 'atual' regride certinho.
     let atual = estudadoHoje;
     if(modoTimer === 'progressive' || (modoTimer === 'pomodoro' && pomoFase === 'estudo') || modoTimer === 'regressive') atual += tempoTimer;
     
@@ -952,7 +969,6 @@ function renderizarDashboardTrilha() {
     
     box.style.display = 'grid';
     
-    // Matematicas
     let histTrilha = db.historico.filter(h => h.trilha === trilhaAtivaNome && h.concurso === conc);
     let totalSegs = 0, qTot = 0, acTot = 0;
     let diasUnicos = new Set();
@@ -972,20 +988,17 @@ function renderizarDashboardTrilha() {
         mediaFormat = Math.floor(mediaSegs/3600) + "h" + Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0') + "m";
     }
     
-    // Logica de Prazo
     let msgPrazo = "";
     let colorPrazo = "#333";
     let dateInicio = new Date(tObj.dataInicio + "T00:00:00");
     let datePrevista = new Date(dateInicio.getTime() + (tObj.duracaoDias * 24 * 60 * 60 * 1000));
     
-    // Verifica se completou toda a trilha
     let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === conc);
     let todasConcluidas = tarefasTrilha.length > 0 && tarefasTrilha.every(t => t.concluida === true);
     
     let hj = new Date(); hj.setHours(0,0,0,0);
     
     if(todasConcluidas) {
-        // Pega data da ultima tarefa registrada no historico
         let ultimaDataStr = "";
         if(histTrilha.length > 0) {
             ultimaDataStr = histTrilha[histTrilha.length-1].data.split(' ')[0];
@@ -1222,7 +1235,6 @@ function excluirItem(t, id, context){
     }
 }
 
-// Trilhas Edit
 function abrirEdicaoTrilha(id) {
     fecharModal('modalListagem');
     let tr = db.trilhas.find(t => t.id === id);
@@ -1417,7 +1429,6 @@ function salvarTarefa(){
     
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
-        // Se estava editando uma concluida, checa o botao switch de desmarcar
         let checkConcluida = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
         obj.concluida = checkConcluida;
         if(!checkConcluida) obj.tempoRegistrado = 0; else obj.tempoRegistrado = old.tempoRegistrado;
@@ -1426,7 +1437,7 @@ function salvarTarefa(){
     } else { 
         db.tarefas.push(obj); 
     }
-    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarCabecalhoTrilhas(); // Reload dash and list
+    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarCabecalhoTrilhas(); 
 }
 
 // ================= REGISTRO =================
@@ -1457,7 +1468,6 @@ function abrirRegistroEstudo(id){
     db.configs.tiposAtividade.forEach(x => sel.innerHTML += `<option value="${x}">${x}</option>`);
     sel.value = t.tipoAtividade;
     
-    // TEMPO CORRETO PARA REGISTRO
     let segs = tempoTimer; 
     
     if (segs > 0) {
