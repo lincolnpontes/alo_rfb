@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.0.4</title>
+    <title>Alô RFB v1.0.5</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3);}
@@ -38,22 +38,21 @@
         .form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
         .form-group input[type=color]{padding:0;border:1px solid #ccc;height:44px;width:100%;border-radius:8px;cursor:pointer}
         .modal-select{height:38px;border-radius:8px!important;border:1px solid #ccc!important;background:#fff!important;color:#333!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
+        .modal-select:disabled { background: #eee !important; color: #888 !important; cursor: not-allowed; }
         .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
-        .btn-cancel{background:#eee;color:#333;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;flex:1}
-        .btn-action{background:var(--primaria);color:#fff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;flex:1}
-        .btn-danger{background:#d32f2f;color:#fff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
+        .btn-cancel{background:#e0e0e0;color:#333 !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid #ccc;flex:1}
+        .btn-action{background:var(--primaria);color:#fff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--primaria);flex:1}
+        .btn-danger{background:#d32f2f;color:#fff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
         .btn-outline{background:var(--secundaria);color:var(--primaria);border:1px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
         .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
         
-        /* Layout de Trilhas (Header Secundário) */
-        .trilhas-bar { display: flex; align-items: center; background: rgba(0,0,0,0.03); border-bottom: 1px solid var(--glass-border); padding: 8px 10px; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+        /* Layout de Trilhas */
+        .trilhas-bar { display: flex; align-items: center; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 5px; }
         .trilhas-bar::-webkit-scrollbar { display: none; }
-        .concurso-badge { font-weight: 900; background: var(--primaria); color: white; padding: 4px 10px; border-radius: 6px; font-size: 14px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .trilha-tab { padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.06); color: #555 !important; white-space: nowrap; flex-shrink: 0; border: 1px solid transparent; transition: 0.2s;}
+        .concurso-badge { font-weight: 900; background: var(--primaria); color: white; padding: 6px 12px; border-radius: 6px; font-size: 14px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .trilha-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.06); color: #555 !important; white-space: nowrap; flex-shrink: 0; border: 1px solid transparent; transition: 0.2s;}
         .trilha-tab.active { background: var(--secundaria); color: var(--primaria) !important; border: 1px solid var(--primaria); }
-        .btn-add-trilha { background: none; border: 1px dashed #888; color: #666; font-weight: bold; padding: 2px 8px; border-radius: 6px; cursor: pointer; font-size: 14px; flex-shrink: 0;}
-        .btn-add-trilha:hover { border-color: var(--primaria); color: var(--primaria); }
         
         .list{padding:10px;margin:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;align-content:start}
         .item{display:flex;align-items:center;padding:15px;border:1px solid var(--glass-border);border-radius:8px;cursor:pointer;background:var(--bg-item);box-shadow:0 4px 6px rgba(0,0,0,.05);backdrop-filter: blur(8px); transition: transform 0.1s;}
@@ -62,10 +61,11 @@
         .item-title{font-weight:900;font-size:16px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; color:var(--primaria);}
         .item-subtitle{color:#555;font-size:12px; font-weight: bold;}
         .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:2px 6px; border-radius:10px; font-size:11px; margin-top:4px;}
+        .item-concluida { background: #e8f5e9 !important; border-color: #4CAF50 !important; opacity: 0.85; }
         
-        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
         .gerenciar-info{flex:1;font-size:14px}
-        .gerenciar-actions button{background:#eee;border:none;cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px}
+        .gerenciar-actions button{background:#eee;border:none;cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px; font-weight:bold;}
         .switch-container{display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
         .switch{position:relative;display:inline-block;width:44px;height:24px}
         .switch input{opacity:0;width:0;height:0}
@@ -87,11 +87,11 @@
         .crono-btn-icon:hover { transform: scale(1.15); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
         .crono-btn-icon:active { transform: scale(0.9); }
         .crono-play { font-size: 50px; color: #1E90FF; }
-        .crono-stop { font-size: 60px; color: #9e9e9e; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); } /* Modificado */
+        .crono-stop { font-size: 60px; color: #9e9e9e; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); } 
         .crono-music { color: #2e7d32; }
         .crono-mute { color: #555; }
         
-        .crono-edit { background: transparent; color: #888; border: none; font-size: 20px; margin-left: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px;} /* Modificado */
+        .crono-edit { background: transparent; color: #888; border: none; font-size: 20px; margin-left: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px;}
         .crono-edit:active { transform: scale(0.9); color: var(--primaria); }
         
         .volume-container { display: flex; align-items: center; justify-content: center; margin-top: 15px; gap: 10px;}
@@ -113,6 +113,8 @@
         .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .btn-sub-gerenciar { font-size: 12px !important; padding: 4px 8px !important; background: var(--secundaria) !important; color: var(--primaria) !important; border: 1px solid var(--primaria) !important; }
     </style>
 </head>
 <body>
@@ -121,7 +123,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.4</div>
+    <div class="splash-version">v1.0.5</div>
 </div>
 
 <div id="login-screen">
@@ -152,9 +154,6 @@
             </div>
         </div>
         
-        <div class="trilhas-bar" id="trilhas-bar-container">
-            </div>
-        
         <div class="crono-container">
             <div class="crono-header">
                 <button class="crono-btn active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
@@ -183,14 +182,17 @@
             <div class="meta-container" id="meta-container" style="display: none;">
                 <div class="meta-text">
                     <span id="meta-label">Meta: 0%</span> 
-                    <span id="meta-valores">0h / 4h</span>
+                    <span id="meta-valores">0h00m / 4h</span>
                 </div>
                 <div class="meta-bar"><div class="meta-fill" id="meta-fill"></div></div>
             </div>
         </div>
 
+        <div class="trilhas-bar" id="trilhas-bar-container">
+            </div>
+
         <div style="padding: 0 10px; display:flex; gap:10px; justify-content: flex-end; align-items: center; margin-bottom: 5px;">
-            <span style="font-size:12px; font-weight:bold; color:var(--primaria); margin-right:auto;" id="label-tarefas-trilha">Tarefas da Trilha</span>
+            <span style="font-size:12px; font-weight:bold; color:var(--primaria); margin-right:auto;" id="label-tarefas-trilha">Tarefas</span>
             <button class="btn-action" style="margin:0; background: #2e7d32; padding: 6px 15px; font-size: 14px; border-radius: 20px;" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
         </div>
     </div>
@@ -200,14 +202,13 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.4</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.5</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         <button class="btn-outline" onclick="abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
         
         <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
         <button class="btn-outline" onclick="abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
-        <button class="btn-outline" onclick="abrirGerenciar('disciplinas')"><span class="emoji-icon">📚</span> <span class="texto-btn">Gerenciar Disciplinas</span></button>
         <button class="btn-outline" onclick="abrirGerenciarTiposAtividade()"><span class="emoji-icon">📝</span> <span class="texto-btn">Tipos de Atividade</span></button>
         
         <div id="painelSecreto" style="display:none;">
@@ -259,12 +260,16 @@
                     <label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label>
                 </div>
                 <div class="switch-container" style="margin:0; flex:1; padding:5px;">
+                    <span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span>
+                    <label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label>
+                </div>
+                <div class="switch-container" style="margin:0; flex:1; padding:5px;">
                     <span style="font-weight:bold;font-size:12px;">Ocultar %</span>
                     <label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label>
                 </div>
             </div>
             <div class="form-group" id="divMetaHoras" style="margin-bottom:0;">
-                <label style="font-size:12px;">Meta Diária (horas):</label>
+                <label style="font-size:12px;">Meta Diária (horas completas):</label>
                 <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 6px;">
             </div>
         </fieldset>
@@ -340,7 +345,7 @@
 <div class="modal-overlay" id="modalSelecionarTarefaRegistro">
     <div class="modal">
         <div class="modal-title">Vincular Tempo</div>
-        <p style="font-size: 14px;">Selecione a Tarefa concluída para registrar este tempo:</p>
+        <p style="font-size: 14px;">Selecione a Tarefa (não concluída) para registrar este tempo:</p>
         <div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid #eee; border-radius: 8px;"></div>
         <div class="modal-actions" style="margin-top: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button>
@@ -362,33 +367,14 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="modalZonaRisco">
-    <div class="modal">
-        <div class="modal-title" style="color:#d32f2f;">Zona de Risco</div>
-        <div class="form-group">
-            <label>URL Apps Script:</label>
-            <input type="text" id="configUrlAppScript">
-            <button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button>
-        </div>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-        <div style="display: flex; gap: 10px; flex-direction: column;">
-            <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
-            <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (PC ➡️ Nuvem)</button>
-            <button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ PC)</button>
-        </div>
-        <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalZonaRisco'); abrirPainelUnificadoComNivel(true);">Voltar</button>
-        </div>
-    </div>
-</div>
-
 <div class="modal-overlay" id="modalListagem">
     <div class="modal">
         <div class="modal-title" id="tituloListagem">Gerenciar</div>
+        <input type="hidden" id="listagemContextoAtivo">
         <button class="btn-action" id="btnNovoListagem" style="width:100%;margin-bottom:15px">+ Novo</button>
         <div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div>
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalListagem');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button>
+            <button class="btn-cancel" id="btnVoltarListagem">Voltar</button>
         </div>
     </div>
 </div>
@@ -402,8 +388,8 @@
             <input type="text" id="concNome">
         </div>
         <div class="switch-container">
-            <span style="font-weight:bold;font-size:14px;">Ativo no Painel</span>
-            <label class="switch"><input type="checkbox" id="concAtivo" checked><span class="slider"></span></label>
+            <span style="font-weight:bold;font-size:14px;">Ativar Concurso (Desativa os outros)</span>
+            <label class="switch"><input type="checkbox" id="concAtivo"><span class="slider"></span></label>
         </div>
         <div style="display:flex;gap:10px">
             <div class="form-group" style="flex:1"><label>Fundo:</label><input type="color" id="concCor" value="#1565C0"></div>
@@ -420,12 +406,17 @@
     <div class="modal">
         <div class="modal-title">Disciplina</div>
         <input type="hidden" id="discIdOriginal">
+        <input type="hidden" id="discConcursoPai">
         <div class="form-group">
-            <label>Nome da Disciplina (Ex: Direito Constitucional):</label>
-            <input type="text" id="discNome">
+            <label>Nome da Disciplina:</label>
+            <input type="text" id="discNome" placeholder="Ex: Direito Constitucional">
+        </div>
+        <div class="form-group">
+            <label>Qtd. de Aulas/Assuntos (Opcional):</label>
+            <input type="number" id="discAulas" placeholder="Ex: 15" min="0">
         </div>
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalFormDisciplina');abrirGerenciar('disciplinas')">Cancelar</button>
+            <button class="btn-cancel" onclick="fecharModal('modalFormDisciplina');abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button>
             <button class="btn-action" onclick="salvarDisciplina()">Salvar</button>
         </div>
     </div>
@@ -439,21 +430,19 @@
             <label>Título da Tarefa:</label>
             <input type="text" id="tarTitulo" placeholder="Ex: Tarefa 01">
         </div>
-        <div class="form-group">
-            <label>Concurso:</label>
-            <select id="tarConcurso" class="modal-select" onchange="popularTrilhasNoFormTarefa()"></select>
+        
+        <div style="background:#f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 13px;">
+            <div><strong>Concurso:</strong> <span id="tarLabelConcurso"></span></div>
+            <div><strong>Trilha:</strong> <span id="tarLabelTrilha"></span></div>
         </div>
-        <div class="form-group">
-            <label>Trilha:</label>
-            <select id="tarTrilha" class="modal-select"></select>
-        </div>
+        
         <div class="form-group">
             <label>Disciplina:</label>
-            <select id="tarDisciplina" class="modal-select"></select>
+            <select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulas()"></select>
         </div>
         <div class="form-group">
-            <label>Aulas / Assuntos (Opcional):</label>
-            <input type="text" id="tarAulas" placeholder="Ex: Aulas 00 e 01">
+            <label>Aula / Assunto:</label>
+            <select id="tarAulas" class="modal-select"></select>
         </div>
         <div class="form-group">
             <label>Tipo de Atividade Principal:</label>
@@ -462,7 +451,7 @@
         
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')">Cancelar</button>
-            <button class="btn-action" onclick="salvarTarefa()">Criar Tarefa</button>
+            <button class="btn-action" onclick="salvarTarefa()">Salvar Tarefa</button>
         </div>
     </div>
 </div>
@@ -491,13 +480,13 @@
         <div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div>
         
         <div class="form-group" id="containerTempoCapturado" style="display:none; background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
-            <label style="color: #2e7d32; font-size:13px;">⏱️ Tempo Estudado:</label>
+            <label style="color: #2e7d32; font-size:13px;">⏱️ Tempo Estudado (Descontado do Timer):</label>
             <div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #1b5e20;">00:00:00</div>
             <input type="hidden" id="regDuracaoTimer" value="0">
         </div>
         
         <div class="form-group">
-            <label>Tipo Final de Atividade (Ajuste se necessário):</label>
+            <label>Tipo Final de Atividade:</label>
             <select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" onchange="checarTipoAtividade()"></select>
         </div>
         
@@ -512,8 +501,8 @@
         </div>
 
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar (Manter tempo)</button>
-            <button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button>
+            <button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button>
+            <button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa Definitiva</button>
         </div>
     </div>
 </div>
@@ -535,7 +524,7 @@
             <label>Filtrar por Trilha:</label>
             <select id="filtroProdTrilha" class="modal-select" onchange="renderizarConteudoProdutividade()"></select>
         </div>
-        <p style="font-size:12px; margin-top:-5px;">Seus dados (Clique na disciplina para detalhes).</p>
+        <p style="font-size:12px; margin-top:-5px;">Clique na disciplina para ver detalhes.</p>
         <div id="conteudoProdutividade" style="display:flex; flex-direction:column; gap:5px;"></div>
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar</button>
@@ -546,16 +535,18 @@
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
 <script>
-// Capturador Global de Erros
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
-
-// --- PWA REGISTRO ---
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
 
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
 let audioDesbloqueado = false;
+
+function formatarHorasMinutos(segs) {
+    if(segs === 0) return "0m";
+    let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60);
+    return (h > 0 ? h + "h" : "") + m.toString().padStart(h > 0 ? 2 : 1, '0') + "m";
+}
 
 const paletasDeCores = {
     azul: {primaria:'#1565C0', secundaria:'#E3F2FD', fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
@@ -575,16 +566,15 @@ function carregarBanco(){
     let d = {
         concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff"}],
         trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB"}],
-        disciplinas: [{id: 1, nome: "Direito Constitucional"}],
-        tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 00", tipoAtividade: "Estudo Teórico"}],
+        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulas: 10}],
+        tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Estudo Teórico", concluida: false}],
         operadores: [{nome: "Usuário", senha: "", ocultarEngrenagem: false}],
         configs: {
             urlAppScript: "", senhaAdmin: "", 
             tiposAtividade: ["Estudo Teórico", "Revisão", "Questões", "Lei Seca"], 
-            tema: "azul", exibirMeta: true, ocultarPctMeta: false, metaDiariaHrs: 4, tocarRestart: true,
+            tema: "azul", exibirMeta: true, ocultarPctMeta: false, ocultarTempoMeta: false, metaDiariaHrs: 4, tocarRestart: true,
             atalhos: { play: ['Space'], reset: ['Delete'], mute: ['Period'], volUp: ['Equal'], volDown: ['Minus'] },
-            pomodoro: { estudo: 25, curta: 5, longa: 15, ciclos: 4 },
-            regressivo: { estudo: 60 },
+            pomodoro: { estudo: 25, curta: 5, longa: 15, ciclos: 4 }, regressivo: { estudo: 60 },
             ultimaModificacaoLocal: 0, mestreAtivo: false
         },
         historico: []
@@ -596,11 +586,18 @@ function carregarBanco(){
             let l = JSON.parse(txt);
             if(!Array.isArray(l.operadores)) l.operadores = d.operadores;
             if(!Array.isArray(l.concursos)) l.concursos = d.concursos;
-            l.concursos.forEach(c => { if(c.ativo === undefined) c.ativo = true; }); 
             if(!Array.isArray(l.trilhas)) l.trilhas = d.trilhas;
             if(!Array.isArray(l.disciplinas)) l.disciplinas = d.disciplinas;
             if(!Array.isArray(l.tarefas)) l.tarefas = d.tarefas;
             if(!Array.isArray(l.historico)) l.historico = d.historico;
+
+            // Migração de Disciplinas (garantir vinculo com concurso)
+            let ativo = l.concursos.find(c => c.ativo);
+            let concPadrao = ativo ? ativo.nome : (l.concursos[0] ? l.concursos[0].nome : "Geral");
+            l.disciplinas.forEach(disc => {
+                if(!disc.concurso) disc.concurso = concPadrao;
+                if(disc.aulas === undefined) disc.aulas = 0;
+            });
 
             if(!l.configs || typeof l.configs !== 'object') l.configs = d.configs;
             if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
@@ -609,6 +606,7 @@ function carregarBanco(){
             if(!l.configs.regressivo) l.configs.regressivo = d.configs.regressivo;
             if(l.configs.exibirMeta === undefined) l.configs.exibirMeta = true;
             if(l.configs.ocultarPctMeta === undefined) l.configs.ocultarPctMeta = false;
+            if(l.configs.ocultarTempoMeta === undefined) l.configs.ocultarTempoMeta = false;
             if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
             if(!l.configs.tiposAtividade) l.configs.tiposAtividade = d.configs.tiposAtividade;
             
@@ -620,34 +618,24 @@ function carregarBanco(){
 function salvarBancoLocal(){ localStorage.setItem('estudos_db', JSON.stringify(db)); }
 
 function aplicarTemaCores(){
-    let opAtual=localStorage.getItem('estudos_operadorAtual');
-    let opObj=db.operadores.find(o=>o.nome===opAtual);
-    let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul');
-    let c=paletasDeCores[t]||paletasDeCores.azul;
-    document.documentElement.style.setProperty('--primaria',c.primaria);
-    document.documentElement.style.setProperty('--secundaria',c.secundaria);
-    document.documentElement.style.setProperty('--fundo',c.fundo);
-    document.documentElement.style.setProperty('--bg-app',c.bgApp);
-    document.documentElement.style.setProperty('--bg-item',c.bgItem);
-    document.documentElement.style.setProperty('--bg-header',c.bgHeader);
+    let opAtual=localStorage.getItem('estudos_operadorAtual'); let opObj=db.operadores.find(o=>o.nome===opAtual);
+    let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul'); let c=paletasDeCores[t]||paletasDeCores.azul;
+    document.documentElement.style.setProperty('--primaria',c.primaria); document.documentElement.style.setProperty('--secundaria',c.secundaria);
+    document.documentElement.style.setProperty('--fundo',c.fundo); document.documentElement.style.setProperty('--bg-app',c.bgApp);
+    document.documentElement.style.setProperty('--bg-item',c.bgItem); document.documentElement.style.setProperty('--bg-header',c.bgHeader);
     
     if(t === 'transparente') {
-        document.body.style.color = '#fff';
-        document.getElementById('display-timer').style.color = '#fff';
-        document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.2)');
+        document.body.style.color = '#fff'; document.getElementById('display-timer').style.color = '#fff'; document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.2)');
         let titulos = document.querySelectorAll('.item-title'); titulos.forEach(x => x.style.color = '#fff');
     } else {
-        document.body.style.color = '';
-        document.getElementById('display-timer').style.color = 'var(--primaria)';
-        document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
+        document.body.style.color = ''; document.getElementById('display-timer').style.color = 'var(--primaria)'; document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
         let titulos = document.querySelectorAll('.item-title'); titulos.forEach(x => x.style.color = 'var(--primaria)');
     }
 }
 
 // ================= CRONÔMETRO LOGIC =================
 let modoTimer = 'progressive', isRunningTimer = false, intervalTimer, tempoTimer = 0;
-let targetTimer = 25 * 60; 
-let pomoFase = 'estudo', pomoCicloAtual = 0;
+let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3'); 
@@ -656,7 +644,11 @@ playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { music
 
 function carregarMusicas(event) {
     const files = event.target.files;
-    if (files.length > 0) { playlist = Array.from(files).map(file => URL.createObjectURL(file)); musicaIndex = 0; mostrarToast(`${files.length} músicas!`); }
+    if (files.length > 0) { 
+        playlist = Array.from(files).map(file => URL.createObjectURL(file)); 
+        musicaIndex = 0; 
+        mostrarToast(`${files.length} músicas! Selecione novamente a cada nova sessão.`); 
+    }
 }
 function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play().catch(()=>{}); }
 function ajustarVolumeTimer(val) { let v = val / 100; volumeSalvoTimer = v; if (isMutedTimer && v > 0) toggleMuteTimer(); playerAudio.volume = isMutedTimer ? 0 : v; document.getElementById('volume-slider-timer').value = val; }
@@ -701,6 +693,8 @@ function desbloquearAudioMobile() {
     if(audioDesbloqueado) return;
     audioRestart.play().then(() => { audioRestart.pause(); audioRestart.currentTime = 0; audioDesbloqueado = true; }).catch(()=>{});
 }
+document.body.addEventListener('touchstart', desbloquearAudioMobile, {once:true});
+document.body.addEventListener('click', desbloquearAudioMobile, {once:true});
 
 function startPauseTimer() {
     desbloquearAudioMobile();
@@ -729,7 +723,7 @@ function resetTimer() {
 }
 
 function zeroTimerConfirm() {
-    if(confirm("Deseja ZERAR o cronômetro (descartar o tempo percorrido)?")) {
+    if(confirm("Deseja ZERAR o cronômetro (descartar os " + formatarHorasMinutos(tempoTimer) + " percorrido)?")) {
         tempoTimer = 0; atualizarDisplayTimer();
     }
 }
@@ -739,7 +733,6 @@ function setModoTimer(novoModo) {
     document.getElementById('btn-prog').classList.remove('active'); document.getElementById('btn-reg').classList.remove('active'); document.getElementById('btn-pomo').classList.remove('active');
     document.getElementById(novoModo === 'progressive' ? 'btn-prog' : novoModo === 'regressive' ? 'btn-reg' : 'btn-pomo').classList.add('active');
     
-    // Nao zera mais o tempoTimer! Apenas atualiza as metas.
     if(novoModo === 'pomodoro') { targetTimer = db.configs.pomodoro.estudo * 60; }
     else if(novoModo === 'regressive') { targetTimer = (db.configs.regressivo.estudo || 60) * 60; }
     
@@ -779,12 +772,16 @@ function atualizarBarraMeta() {
     document.getElementById('meta-fill').style.width = pct + '%';
     document.getElementById('meta-fill').style.backgroundColor = pct >= 100 ? '#FF8C00' : '#4CAF50';
     
-    if(db.configs.ocultarPctMeta) {
-        document.getElementById('meta-label').innerText = `Meta Diária`;
+    document.getElementById('meta-label').innerText = db.configs.ocultarPctMeta ? `Meta Diária` : `Meta: ${Math.round(pct)}%`;
+    
+    if(db.configs.ocultarTempoMeta) {
+        document.getElementById('meta-valores').style.display = 'none';
     } else {
-        document.getElementById('meta-label').innerText = `Meta: ${Math.round(pct)}%`;
+        document.getElementById('meta-valores').style.display = 'inline';
+        let hFormat = Math.floor(atual/3600);
+        let mFormat = Math.floor((atual%3600)/60).toString().padStart(2,'0');
+        document.getElementById('meta-valores').innerText = `${hFormat}h${mFormat}m / ${db.configs.metaDiariaHrs}h`;
     }
-    document.getElementById('meta-valores').innerText = `${(atual/3600).toFixed(1)}h / ${db.configs.metaDiariaHrs}h`;
 }
 
 // ================= ATALHOS =================
@@ -804,10 +801,8 @@ document.addEventListener('keydown', function(event) {
 
 let atalhosTemp = {};
 function abrirConfigAtalhos() {
-    fecharModal('modalPainelUnificado');
-    atalhosTemp = JSON.parse(JSON.stringify(db.configs.atalhos)); 
-    atualizarInputsAtalhos();
-    abrirModal('modalAtalhos');
+    fecharModal('modalPainelUnificado'); atalhosTemp = JSON.parse(JSON.stringify(db.configs.atalhos)); 
+    atualizarInputsAtalhos(); abrirModal('modalAtalhos');
 }
 function atualizarInputsAtalhos() {
     document.getElementById('keyPlay').value = renderizarTextoAtalho(atalhosTemp.play);
@@ -819,8 +814,7 @@ function atualizarInputsAtalhos() {
 function capturarAtalho(e, field) { e.preventDefault(); if(!atalhosTemp[field].includes(e.code)) atalhosTemp[field].push(e.code); atualizarInputsAtalhos(); }
 function limparUmAtalho(field) { atalhosTemp[field] = []; atualizarInputsAtalhos(); }
 function salvarAtalhos() {
-    db.configs.atalhos = JSON.parse(JSON.stringify(atalhosTemp));
-    salvarModificacaoBasica(); mostrarToast("Atalhos salvos!");
+    db.configs.atalhos = JSON.parse(JSON.stringify(atalhosTemp)); salvarModificacaoBasica(); mostrarToast("Atalhos salvos!");
     fecharModal('modalAtalhos'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
@@ -844,12 +838,9 @@ function fazerLoginInicial(){
         const s=document.getElementById('loginSenha').value;
         if(s!==o.senha){ alert("Senha Incorreta!"); document.getElementById('loginSenha').value=''; return; }
     }
-    localStorage.setItem('estudos_operadorAtual',n);
-    document.getElementById('seletorOperador').value=n;
-    operadorAnteriorSelect=n;
+    localStorage.setItem('estudos_operadorAtual',n); document.getElementById('seletorOperador').value=n; operadorAnteriorSelect=n;
     aplicarTemaCores(); atualizarEngrenagem();
-    const l=document.getElementById('login-screen');
-    l.style.opacity='0'; setTimeout(()=>l.style.display='none',500);
+    const l=document.getElementById('login-screen'); l.style.opacity='0'; setTimeout(()=>l.style.display='none',500);
     renderizarCabecalhoTrilhas();
 }
 
@@ -867,7 +858,12 @@ function atualizarEngrenagem(){
 // ================= HEADER DINÂMICO DE TRILHAS =================
 function getConcursoAtivoNome() {
     let ativo = db.concursos.find(c => c.ativo);
-    return ativo ? ativo.nome : (db.concursos[0] ? db.concursos[0].nome : null);
+    if (ativo) return ativo.nome;
+    if (db.concursos.length > 0) {
+        db.concursos[0].ativo = true;
+        return db.concursos[0].nome;
+    }
+    return null;
 }
 
 function renderizarCabecalhoTrilhas() {
@@ -880,11 +876,7 @@ function renderizarCabecalhoTrilhas() {
     cont.innerHTML += `<div class="concurso-badge" style="background:${objConc.cor};">${concNome}</div>`;
     
     let trilhasDeste = db.trilhas.filter(t => t.concurso === concNome);
-    
-    // Auto-select se a atual for inválida
-    if(!trilhaAtivaNome || !trilhasDeste.find(t => t.nome === trilhaAtivaNome)) {
-        trilhaAtivaNome = trilhasDeste.length > 0 ? trilhasDeste[0].nome : null;
-    }
+    if(!trilhaAtivaNome || !trilhasDeste.find(t => t.nome === trilhaAtivaNome)) { trilhaAtivaNome = trilhasDeste.length > 0 ? trilhasDeste[0].nome : null; }
     
     trilhasDeste.forEach(t => {
         let isAtiva = t.nome === trilhaAtivaNome;
@@ -902,10 +894,9 @@ function criarTrilhaAutoModal() {
     let count = db.trilhas.filter(t => t.concurso === conc).length + 1;
     let novoNome = "Trilha " + String(count).padStart(2, '0');
     
-    const selC = document.getElementById('trilhaConcursoSel'); selC.innerHTML = `<option value="${conc}">${conc}</option>`;
-    document.getElementById('trilhaIdOriginal').value = '';
-    document.getElementById('trilhaNome').value = novoNome;
-    abrirModal('modalFormTrilhaDireto');
+    db.trilhas.push({ id: Date.now(), nome: novoNome, concurso: conc });
+    trilhaAtivaNome = novoNome;
+    salvarModificacaoBasica(); mostrarToast("Nova Trilha adicionada!"); renderizarCabecalhoTrilhas();
 }
 
 function criarTarefaAutoModal() {
@@ -915,11 +906,7 @@ function criarTarefaAutoModal() {
     let count = db.tarefas.filter(t => t.concurso === conc && t.trilha === trilhaAtivaNome).length + 1;
     let tituloSugerido = "Tarefa " + String(count).padStart(2, '0');
     
-    abrirFormTarefa(-1);
-    document.getElementById('tarTitulo').value = tituloSugerido;
-    document.getElementById('tarConcurso').value = conc;
-    popularTrilhasNoFormTarefa();
-    document.getElementById('tarTrilha').value = trilhaAtivaNome;
+    abrirFormTarefa(-1, tituloSugerido);
 }
 
 function renderizarListaTarefas() {
@@ -928,22 +915,37 @@ function renderizarListaTarefas() {
     if(!conc) return;
     
     let label = document.getElementById('label-tarefas-trilha');
-    if(trilhaAtivaNome) { label.innerText = `Tarefas: ${trilhaAtivaNome}`; } else { label.innerText = `Nenhuma Trilha Ativa`; }
+    if(trilhaAtivaNome) { label.innerText = `Tarefas de: ${trilhaAtivaNome}`; } else { label.innerText = `Nenhuma Trilha Ativa`; }
     
     let filtradas = db.tarefas.filter(t => t.concurso === conc && t.trilha === trilhaAtivaNome);
     
     filtradas.forEach(t => {
-        const c = db.concursos.find(x=>x.nome===t.concurso) || {cor:'#eee'};
+        const isConcluida = t.concluida === true;
+        let cCor = db.concursos.find(x=>x.nome===t.concurso)?.cor || '#eee';
+        let classeItem = isConcluida ? 'item item-concluida' : 'item';
+        let statusHtml = isConcluida ? `<div style="font-size:11px; font-weight:bold; color:#2e7d32; margin-top:4px;">✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}</div>` : '';
+        
         l.innerHTML += `
-        <li class="item" onclick="abrirFormTarefa(${t.id})" style="border-left: 5px solid ${c.cor};">
+        <li class="${classeItem}" onclick="clicarTarefaListagem(${t.id})" style="border-left: 5px solid ${cCor};">
             <div class="item-info">
-                <div class="item-title">${t.titulo}</div>
+                <div class="item-title" style="color: ${isConcluida ? '#2e7d32' : 'var(--primaria)'}">${t.titulo}</div>
                 <div class="item-subtitle">${t.disciplina} ${t.aulas ? ' - ' + t.aulas : ''}</div>
                 <div class="item-badge">${t.tipoAtividade}</div>
+                ${statusHtml}
             </div>
         </li>`;
     });
-    if(filtradas.length === 0) { l.innerHTML = `<div style="text-align:center; padding: 20px; color: #fff;">Nenhuma tarefa cadastrada nesta trilha.</div>`; }
+    if(filtradas.length === 0) { l.innerHTML = `<div style="text-align:center; padding: 20px; color: #fff;">Nenhuma tarefa. Clique no botão acima para criar.</div>`; }
+}
+
+function clicarTarefaListagem(id) {
+    let t = db.tarefas.find(x => x.id === id);
+    if(t.concluida) {
+        alert("Esta tarefa já foi concluída! Para refazê-la, você pode editá-la e desmarcar a conclusão ou criar uma nova.");
+        // Opcional: abrirFormTarefa(id) se quiser permitir edição
+    } else {
+        abrirFormTarefa(id);
+    }
 }
 
 
@@ -975,9 +977,7 @@ function abrirPainelUnificadoComNivel(mestre){
 }
 
 function abrirConfigGeraisModal(){ 
-    fecharModal('modalPainelUnificado'); 
-    document.getElementById('cfgTema').value = db.configs.tema || "azul"; 
-    abrirModal('modalConfigGerais'); 
+    fecharModal('modalPainelUnificado'); document.getElementById('cfgTema').value = db.configs.tema || "azul"; abrirModal('modalConfigGerais'); 
 }
 function salvarConfigGerais(){
     db.configs.tema = document.getElementById('cfgTema').value;
@@ -993,6 +993,7 @@ function toggleInputsMeta() {
 function abrirConfigCronometroModal() {
     fecharModal('modalPainelUnificado');
     document.getElementById('cfgExibirMeta').checked = db.configs.exibirMeta;
+    document.getElementById('cfgOcultarTempoMeta').checked = db.configs.ocultarTempoMeta;
     document.getElementById('cfgOcultarPctMeta').checked = db.configs.ocultarPctMeta;
     document.getElementById('cfgMetaHoras').value = db.configs.metaDiariaHrs;
     toggleInputsMeta();
@@ -1007,22 +1008,16 @@ function abrirConfigCronometroModal() {
 }
 function salvarConfigCronometro(){
     db.configs.exibirMeta = document.getElementById('cfgExibirMeta').checked;
+    db.configs.ocultarTempoMeta = document.getElementById('cfgOcultarTempoMeta').checked;
     db.configs.ocultarPctMeta = document.getElementById('cfgOcultarPctMeta').checked;
     db.configs.metaDiariaHrs = parseInt(document.getElementById('cfgMetaHoras').value) || 4;
     db.configs.tocarRestart = document.getElementById('cfgTocarRestart').checked;
-    db.configs.pomodoro = {
-        estudo: parseInt(document.getElementById('cfgPomoEstudo').value) || 25,
-        curta: parseInt(document.getElementById('cfgPomoCurta').value) || 5,
-        longa: parseInt(document.getElementById('cfgPomoLonga').value) || 15,
-        ciclos: parseInt(document.getElementById('cfgPomoCiclos').value) || 4
-    };
+    db.configs.pomodoro = { estudo: parseInt(document.getElementById('cfgPomoEstudo').value) || 25, curta: parseInt(document.getElementById('cfgPomoCurta').value) || 5, longa: parseInt(document.getElementById('cfgPomoLonga').value) || 15, ciclos: parseInt(document.getElementById('cfgPomoCiclos').value) || 4 };
     db.configs.regressivo = { estudo: parseInt(document.getElementById('cfgRegEstudo').value) || 60 };
     
-    if(modoTimer === 'pomodoro') setModoTimer('pomodoro');
-    else if(modoTimer === 'regressive') setModoTimer('regressive');
+    if(modoTimer === 'pomodoro') setModoTimer('pomodoro'); else if(modoTimer === 'regressive') setModoTimer('regressive');
     
-    db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); sincronizarComNuvemSilencioso(); 
-    atualizarBarraMeta();
+    db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); sincronizarComNuvemSilencioso(); atualizarBarraMeta();
     fecharModal('modalConfigCronometro'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
@@ -1036,129 +1031,143 @@ function renderizarTiposCfg(){
 function adicionarTipo(){ let v = document.getElementById('novoTipoInput').value.trim(); if(v && !db.configs.tiposAtividade.includes(v)){ db.configs.tiposAtividade.push(v); document.getElementById('novoTipoInput').value = ''; salvarModificacaoBasica(); renderizarTiposCfg(); } }
 function removerTipo(t){ if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x !== t); salvarModificacaoBasica(); renderizarTiposCfg(); }
 
-// ================= FORMULÁRIOS =================
-function abrirFormTarefa(id){
-    if(document.getElementById('modalListagem').style.display === 'flex') fecharModal('modalListagem');
+
+// ================= FORMULÁRIOS DE ESTRUTURA =================
+function abrirGerenciar(t, context){
     if(document.getElementById('modalPainelUnificado').style.display === 'flex') fecharModal('modalPainelUnificado');
+    if(document.getElementById('modalFormDisciplina').style.display === 'flex') fecharModal('modalFormDisciplina');
     
-    const selC = document.getElementById('tarConcurso'); selC.innerHTML = ''; db.concursos.forEach(x => selC.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
-    const selD = document.getElementById('tarDisciplina'); selD.innerHTML = ''; db.disciplinas.forEach(x => selD.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
-    const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x}">${x}</option>`);
-    
-    if(id >= 0){ 
-        const t = db.tarefas.find(x => x.id === id); 
-        document.getElementById('tarefaIdOriginal').value = t.id; 
-        document.getElementById('tarTitulo').value = t.titulo; 
-        document.getElementById('tarConcurso').value = t.concurso;
-        popularTrilhasNoFormTarefa();
-        document.getElementById('tarTrilha').value = t.trilha;
-        document.getElementById('tarDisciplina').value = t.disciplina;
-        document.getElementById('tarAulas').value = t.aulas;
-        document.getElementById('tarTipo').value = t.tipoAtividade;
-    } else { 
-        document.getElementById('tarefaIdOriginal').value = ''; 
-        // document.getElementById('tarTitulo').value = ''; -- Removido para respeitar auto fill
-        // document.getElementById('tarConcurso').value = ''; 
-        popularTrilhasNoFormTarefa();
-        document.getElementById('tarAulas').value = '';
-    }
-    abrirModal('modalFormTarefa');
-}
-
-function popularTrilhasNoFormTarefa() {
-    let c = document.getElementById('tarConcurso').value;
-    const selT = document.getElementById('tarTrilha'); selT.innerHTML = ''; 
-    let trilhasFiltradas = db.trilhas.filter(x => x.concurso === c);
-    trilhasFiltradas.forEach(x => selT.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
-}
-
-function salvarTarefa(){
-    const idO = document.getElementById('tarefaIdOriginal').value;
-    const tit = document.getElementById('tarTitulo').value.trim();
-    if(!tit) return alert("Preencha o título!");
-    
-    let obj = { 
-        id: idO ? parseInt(idO) : Date.now(), 
-        titulo: tit, 
-        concurso: document.getElementById('tarConcurso').value, 
-        trilha: document.getElementById('tarTrilha').value, 
-        disciplina: document.getElementById('tarDisciplina').value,
-        aulas: document.getElementById('tarAulas').value.trim(),
-        tipoAtividade: document.getElementById('tarTipo').value
-    };
-    if(idO !== "") db.tarefas[db.tarefas.findIndex(x => x.id === parseInt(idO))] = obj; else db.tarefas.push(obj);
-    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarListaTarefas();
-}
-
-function salvarTrilha() {
-    const n = document.getElementById('trilhaNome').value.trim();
-    const c = document.getElementById('trilhaConcursoSel').value;
-    if(!n) return alert("Preencha!");
-    
-    let objId = document.getElementById('trilhaIdOriginal').value;
-    if(objId) {
-        db.trilhas[db.trilhas.findIndex(x=>x.id == objId)].nome = n;
-        // opcional: atualizar tarefas antigas com a trilha velha
-    } else {
-        db.trilhas.push({ id: Date.now(), nome: n, concurso: c });
-    }
-    
-    salvarModificacaoBasica(); fecharModal('modalFormTrilhaDireto'); mostrarToast("Trilha salva!"); renderizarCabecalhoTrilhas();
-}
-
-function abrirGerenciar(t){
-    fecharModal('modalPainelUnificado');
     const l = document.getElementById('conteudoListagem'), b = document.getElementById('btnNovoListagem'), tit = document.getElementById('tituloListagem');
+    const bVoltar = document.getElementById('btnVoltarListagem');
     l.innerHTML = '';
+    
+    document.getElementById('listagemContextoAtivo').value = t;
+    
     if(t === 'disciplinas'){
-        tit.innerText = "Gerenciar Disciplinas"; b.onclick = () => abrirFormDisciplina(-1);
-        db.disciplinas.forEach((d,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${d.nome}</strong></div><div class="gerenciar-actions"><button onclick="abrirFormDisciplina(${i})">✏️</button><button onclick="excluirItem('disciplinas',${d.id})">🗑️</button></div></div>`; });
-    } else if (t === 'concursos') {
+        // 'context' tem o nome do concurso
+        tit.innerText = `Disciplinas: ${context}`; 
+        b.onclick = () => abrirFormDisciplina(-1, context);
+        bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
+        
+        let discs = db.disciplinas.filter(d => d.concurso === context);
+        discs.forEach((d) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${d.nome}</strong><br><small>${d.aulas || 0} Aulas</small></div><div class="gerenciar-actions"><button onclick="abrirFormDisciplina(${d.id}, '${context}')">✏️</button><button onclick="excluirItem('disciplinas',${d.id}, '${context}')">🗑️</button></div></div>`; });
+    } 
+    else if (t === 'trilhas') {
+        tit.innerText = `Trilhas: ${context}`; 
+        b.style.display = 'none'; // Trilhas adicionadas pelo atalho ou podemos deixar add aqui
+        bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
+        
+        let trs = db.trilhas.filter(tr => tr.concurso === context);
+        trs.forEach((tr) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${tr.nome}</strong></div><div class="gerenciar-actions"><button onclick="excluirItem('trilhas',${tr.id}, '${context}')">🗑️</button></div></div>`; });
+    }
+    else if (t === 'concursos') {
+        b.style.display = 'block';
         tit.innerText = "Gerenciar Concursos"; b.onclick = () => abrirFormConcurso(-1);
-        db.concursos.forEach((c,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div><div class="gerenciar-actions"><small style="color:#666; margin-right:10px">${c.ativo ? '🟢 Ativo' : '🔴 Inativo'}</small><button onclick="abrirFormConcurso(${i})">✏️</button><button onclick="excluirItem('concursos','${c.nome}')">🗑️</button></div></div>`; });
+        bVoltar.onclick = () => { fecharModal('modalListagem'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo); };
+        
+        db.concursos.forEach((c,i) => { 
+            l.innerHTML += `
+            <div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;">
+                <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
+                    <div><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div>
+                    <div class="gerenciar-actions">
+                        <small style="color:#666; margin-right:5px; font-weight:bold">${c.ativo ? '🟢 Ativo' : '⚪ Inativo'}</small>
+                        <button onclick="abrirFormConcurso(${i})">✏️</button>
+                    </div>
+                </div>
+                <div style="margin-top:10px; display:flex; gap:10px;">
+                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button>
+                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">🛤️ Trilhas</button>
+                    <button class="btn-sub-gerenciar" style="background:#ffebee!important; color:#c62828!important; border-color:#c62828!important;" onclick="excluirItem('concursos','${c.nome}')">🗑️</button>
+                </div>
+            </div>`; 
+        });
     } else if (t === 'estudantes') {
+        b.style.display = 'block';
         tit.innerText = "Gerenciar Usuários"; b.onclick = () => abrirFormOperador(-1);
+        bVoltar.onclick = () => { fecharModal('modalListagem'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo); };
         db.operadores.forEach((o,i) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${o.nome}</strong></div><div class="gerenciar-actions"><button onclick="abrirFormOperador(${i})">✏️</button><button onclick="excluirItem('operadores','${o.nome}')">🗑️</button></div></div>`; });
     }
     abrirModal('modalListagem');
 }
-function excluirItem(t, id){ 
-    if(!confirm("Certeza?")) return; 
-    if(t === 'disciplinas') db.disciplinas = db.disciplinas.filter(i => i.id !== id); 
-    if(t === 'concursos') { db.concursos = db.concursos.filter(i => i.nome !== id); db.trilhas = db.trilhas.filter(i => i.concurso !== id); db.tarefas = db.tarefas.filter(i => i.concurso !== id); } 
-    if(t === 'operadores') db.operadores = db.operadores.filter(i => i.nome !== id); 
-    salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t); 
+
+function excluirItem(t, id, context){ 
+    if(t === 'disciplinas'){
+        if(!confirm("Excluir esta disciplina?")) return;
+        db.disciplinas = db.disciplinas.filter(i => i.id !== id);
+        salvarModificacaoBasica(); abrirGerenciar(t, context);
+    }
+    if(t === 'trilhas') {
+        if(!confirm("Tem certeza? As TAREFAS desta trilha não serão apagadas, mas ficarão órfãs.")) return;
+        db.trilhas = db.trilhas.filter(i => i.id !== id);
+        // Não apagamos as tarefas!
+        salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t, context);
+    }
+    if(t === 'concursos') { 
+        if(!confirm("Excluir concurso apaga todas as trilhas e tarefas dele. Certeza?")) return;
+        db.concursos = db.concursos.filter(i => i.nome !== id); db.trilhas = db.trilhas.filter(i => i.concurso !== id); db.tarefas = db.tarefas.filter(i => i.concurso !== id); db.disciplinas = db.disciplinas.filter(i => i.concurso !== id);
+        salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t); 
+    } 
+    if(t === 'operadores') {
+        if(!confirm("Excluir usuário?")) return;
+        db.operadores = db.operadores.filter(i => i.nome !== id); salvarModificacaoBasica(); abrirGerenciar(t); 
+    }
 }
 
-function abrirFormDisciplina(i){
+function abrirFormDisciplina(id, concursoNome){
     fecharModal('modalListagem');
-    if(i >= 0){ const d = db.disciplinas[i]; document.getElementById('discIdOriginal').value = d.id; document.getElementById('discNome').value = d.nome; 
-    } else { document.getElementById('discIdOriginal').value = ''; document.getElementById('discNome').value = ''; }
+    document.getElementById('discConcursoPai').value = concursoNome;
+    
+    if(id >= 0){ 
+        const d = db.disciplinas.find(x => x.id === id); 
+        document.getElementById('discIdOriginal').value = d.id; 
+        document.getElementById('discNome').value = d.nome; 
+        document.getElementById('discAulas').value = d.aulas || 0;
+    } else { 
+        document.getElementById('discIdOriginal').value = ''; 
+        document.getElementById('discNome').value = ''; 
+        document.getElementById('discAulas').value = '';
+    }
     abrirModal('modalFormDisciplina');
 }
 function salvarDisciplina(){
-    const idOriginal = document.getElementById('discIdOriginal').value, nome = document.getElementById('discNome').value.trim();
-    if(!nome) return alert("Preencha!");
-    let obj = { id: idOriginal ? parseInt(idOriginal) : Date.now(), nome: nome };
+    const idOriginal = document.getElementById('discIdOriginal').value;
+    const nome = document.getElementById('discNome').value.trim();
+    const conc = document.getElementById('discConcursoPai').value;
+    const aulas = parseInt(document.getElementById('discAulas').value) || 0;
+    
+    if(!nome) return alert("Preencha o nome!");
+    let obj = { id: idOriginal ? parseInt(idOriginal) : Date.now(), nome: nome, concurso: conc, aulas: aulas };
     if(idOriginal !== "") db.disciplinas[db.disciplinas.findIndex(d => d.id === parseInt(idOriginal))] = obj; else db.disciplinas.push(obj);
-    salvarModificacaoBasica(); fecharModal('modalFormDisciplina'); abrirGerenciar('disciplinas'); 
+    salvarModificacaoBasica(); fecharModal('modalFormDisciplina'); abrirGerenciar('disciplinas', conc); 
 }
 
 function abrirFormConcurso(i){
     fecharModal('modalListagem');
-    if(i >= 0){ const c = db.concursos[i]; document.getElementById('concNomeOriginal').value = c.nome; document.getElementById('concNome').value = c.nome; document.getElementById('concCor').value = c.cor; document.getElementById('concCorTexto').value = c.corTexto; document.getElementById('concAtivo').checked = c.ativo;
-    } else { document.getElementById('concNomeOriginal').value = ''; document.getElementById('concNome').value = ''; document.getElementById('concCor').value = '#1565C0'; document.getElementById('concCorTexto').value = '#ffffff'; document.getElementById('concAtivo').checked = true;}
+    if(i >= 0){ 
+        const c = db.concursos[i]; document.getElementById('concNomeOriginal').value = c.nome; document.getElementById('concNome').value = c.nome; document.getElementById('concCor').value = c.cor; document.getElementById('concCorTexto').value = c.corTexto; document.getElementById('concAtivo').checked = c.ativo;
+    } else { 
+        document.getElementById('concNomeOriginal').value = ''; document.getElementById('concNome').value = ''; document.getElementById('concCor').value = '#1565C0'; document.getElementById('concCorTexto').value = '#ffffff'; document.getElementById('concAtivo').checked = true;
+    }
     abrirModal('modalFormConcurso');
 }
 function salvarConcurso(){
     const o = document.getElementById('concNomeOriginal').value, n = document.getElementById('concNome').value.trim();
     if(!n) return alert("Preencha!");
-    let obj = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value, ativo: document.getElementById('concAtivo').checked};
+    let isAtivo = document.getElementById('concAtivo').checked;
+    
+    if(isAtivo) { db.concursos.forEach(c => c.ativo = false); } // Monopólio
+    
+    let obj = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value, ativo: isAtivo};
+    
     if(o !== ""){ 
         db.concursos[db.concursos.findIndex(x => x.nome === o)] = obj; 
         db.trilhas.forEach(t => { if(t.concurso === o) t.concurso = n; });
         db.tarefas.forEach(t => { if(t.concurso === o) t.concurso = n; });
-    } else { db.concursos.push(obj); }
+        db.disciplinas.forEach(t => { if(t.concurso === o) t.concurso = n; });
+    } else { 
+        db.concursos.push(obj); 
+    }
     salvarModificacaoBasica(); fecharModal('modalFormConcurso'); abrirGerenciar('concursos'); renderizarCabecalhoTrilhas();
 }
 
@@ -1170,27 +1179,106 @@ function abrirFormOperador(i){
 }
 function salvarEstudante() {
     const oOrig = document.getElementById('opNomeOriginal').value, n = document.getElementById('opNome').value.trim();
-    if(!n) return alert("Preencha o nome!");
+    if(!n) return alert("Preencha!");
     let novo = { nome: n, senha: document.getElementById('opSenha').value, ocultarEngrenagem: document.getElementById('opOcultarEngrenagem').checked };
     if(oOrig !== "") db.operadores[db.operadores.findIndex(x => x.nome === oOrig)] = novo; else db.operadores.push(novo);
     salvarModificacaoBasica(); fecharModal('modalFormOperador'); abrirGerenciar('estudantes'); renderizarOperadores();
+}
+
+// ================= TAREFAS =================
+function abrirFormTarefa(id, sugeridoTitulo = ""){
+    if(document.getElementById('modalListagem').style.display === 'flex') fecharModal('modalListagem');
+    
+    const conc = getConcursoAtivoNome();
+    if(!conc) return alert("Nenhum concurso ativo!");
+    const tr = trilhaAtivaNome;
+    
+    document.getElementById('tarLabelConcurso').innerText = conc;
+    document.getElementById('tarLabelTrilha').innerText = tr || 'Nenhuma';
+    
+    const selD = document.getElementById('tarDisciplina'); selD.innerHTML = ''; 
+    let discsDoConcurso = db.disciplinas.filter(d => d.concurso === conc);
+    discsDoConcurso.forEach(x => selD.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
+    
+    const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; 
+    db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x}">${x}</option>`);
+    
+    if(id >= 0){ 
+        const t = db.tarefas.find(x => x.id === id); 
+        document.getElementById('tarefaIdOriginal').value = t.id; 
+        document.getElementById('tarTitulo').value = t.titulo; 
+        
+        selD.value = t.disciplina;
+        popularDropdownAulas();
+        document.getElementById('tarAulas').value = t.aulas;
+        
+        selT.value = t.tipoAtividade;
+    } else { 
+        document.getElementById('tarefaIdOriginal').value = ''; 
+        document.getElementById('tarTitulo').value = sugeridoTitulo; 
+        popularDropdownAulas();
+    }
+    abrirModal('modalFormTarefa');
+}
+
+function popularDropdownAulas() {
+    const conc = getConcursoAtivoNome();
+    const dNome = document.getElementById('tarDisciplina').value;
+    const selA = document.getElementById('tarAulas'); selA.innerHTML = '';
+    
+    let discObj = db.disciplinas.find(d => d.concurso === conc && d.nome === dNome);
+    if(discObj && discObj.aulas > 0) {
+        for(let i=1; i<=discObj.aulas; i++) {
+            selA.innerHTML += `<option value="Aula ${String(i).padStart(2,'0')}">Aula ${String(i).padStart(2,'0')}</option>`;
+        }
+        selA.disabled = false;
+    } else {
+        selA.innerHTML = '<option value="">(Geral / Sem Aula Específica)</option>';
+        selA.disabled = true;
+    }
+}
+
+function salvarTarefa(){
+    const idO = document.getElementById('tarefaIdOriginal').value;
+    const tit = document.getElementById('tarTitulo').value.trim();
+    if(!tit) return alert("Preencha o título!");
+    
+    let obj = { 
+        id: idO ? parseInt(idO) : Date.now(), 
+        titulo: tit, 
+        concurso: getConcursoAtivoNome(), 
+        trilha: trilhaAtivaNome, 
+        disciplina: document.getElementById('tarDisciplina').value,
+        aulas: document.getElementById('tarAulas').value,
+        tipoAtividade: document.getElementById('tarTipo').value,
+        concluida: false
+    };
+    
+    if(idO !== "") {
+        let old = db.tarefas.find(x => x.id === parseInt(idO));
+        obj.concluida = old.concluida;
+        obj.tempoRegistrado = old.tempoRegistrado;
+        db.tarefas[db.tarefas.findIndex(x => x.id === parseInt(idO))] = obj; 
+    } else { 
+        db.tarefas.push(obj); 
+    }
+    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarListaTarefas();
 }
 
 // ================= REGISTRO =================
 function abrirSelecionadorDeTarefaParaRegistro() {
     let l = document.getElementById('listaTarefasParaRegistro'); l.innerHTML = '';
     
-    // Adiciona o botao de descartar tempo no final
     let btnZerar = `<button onclick="fecharModal('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;
 
-    let concursosAtivos = db.concursos.filter(c => c.ativo).map(c => c.nome);
-    let filtradas = db.tarefas.filter(t => concursosAtivos.includes(t.concurso));
+    let conc = getConcursoAtivoNome();
+    let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida); // Apenas NÂO concluídas
     
     filtradas.forEach(t => {
         l.innerHTML += `<div style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:#333; background: #fafafa; margin-bottom: 5px; border-radius: 8px;" onclick="fecharModal('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
     });
     
-    if(filtradas.length === 0) l.innerHTML = `<div style="padding:15px;">Nenhuma tarefa.</div>`;
+    if(filtradas.length === 0) l.innerHTML = `<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;
     l.innerHTML += btnZerar;
     abrirModal('modalSelecionarTarefaRegistro');
 }
@@ -1205,7 +1293,9 @@ function abrirRegistroEstudo(id){
     db.configs.tiposAtividade.forEach(x => sel.innerHTML += `<option value="${x}">${x}</option>`);
     sel.value = t.tipoAtividade;
     
-    let segs = modoTimer === 'progressive' ? tempoTimer : Math.max(0, targetTimer - tempoTimer);
+    // TEMPO CORRETO PARA REGISTRO! Apenas o tempo percorrido!
+    let segs = tempoTimer; 
+    
     if (segs > 0) {
         document.getElementById('containerTempoCapturado').style.display = 'block';
         document.getElementById('displayTempoCapturado').innerText = formatarTempoTimer(segs);
@@ -1233,7 +1323,7 @@ function salvarRegistroEstudo(){
     if(tipo.toLowerCase().includes('quest')) {
         q = parseInt(document.getElementById('qtdQuestoes').value) || 0;
         a = parseInt(document.getElementById('qtdAcertos').value) || 0;
-        if(q > 0) { let pct = Math.round((a/q)*100); obs += ` [${a}/${q} - ${pct}%]`; }
+        if(q > 0) { let pct = Math.round((a/q)*100); obs += ` [🎯 ${a}/${q} - ${pct}%]`; }
     }
     
     let baseHist = { disciplina: t.disciplina, tarefa: t.titulo, concurso: t.concurso, trilha: t.trilha, tipoAtividade: tipo, operador: op, questoes: q, acertos: a };
@@ -1251,12 +1341,16 @@ function salvarRegistroEstudo(){
         db.historico.push({ id: Date.now(), ...baseHist, observacao: obs + infoTempo, duracaoRegistrada: duracaoCronometro, data: getDataHoraAtual() });
     }
     
-    mostrarToast("✅ Registrado!");
+    // Atualiza a Tarefa para CONCLUÍDA
+    t.concluida = true;
+    t.tempoRegistrado = duracaoCronometro;
+    
+    mostrarToast("✅ Tarefa Concluída e Registrada!");
     
     if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerText = '▶'; document.getElementById('btn-play-timer').classList.remove('is-paused'); }
     
     document.getElementById('qtdQuestoes').value = 0; document.getElementById('qtdAcertos').value = 0;
-    salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo');
+    salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo'); renderizarListaTarefas();
 }
 
 function abrirHistorico(){
@@ -1285,7 +1379,6 @@ function abrirProdutividade() {
     let opAtual = document.getElementById('seletorOperador').value;
     let histOp = db.historico.filter(h => h.operador === opAtual);
     
-    // Povoar filtro de Trilhas
     let trilhasUnicas = [...new Set(histOp.map(h => h.trilha).filter(x=>x))];
     const selFiltro = document.getElementById('filtroProdTrilha');
     selFiltro.innerHTML = '<option value="TODAS">📚 Todas as Trilhas</option>';
@@ -1303,7 +1396,7 @@ function renderizarConteudoProdutividade() {
     if(filtroT !== "TODAS") histOp = histOp.filter(h => h.trilha === filtroT);
     
     let estatisticas = {};
-    let rawItemsByDisc = {}; // Para o sub-menu
+    let rawItemsByDisc = {};
 
     histOp.forEach(h => {
         if(!estatisticas[h.disciplina]) {
@@ -1322,13 +1415,13 @@ function renderizarConteudoProdutividade() {
         let pct = e.questoes > 0 ? Math.round((e.acertos / e.questoes) * 100) : 0;
         let badgeQ = e.questoes > 0 ? `<span class="prod-badge">🎯 ${pct}% (${e.acertos}/${e.questoes})</span>` : '';
         
-        // Montar sub-lista detalhada
         let subHtml = `<div class="prod-details" id="detalhe-${d.replace(/\s+/g,'')}">`;
         rawItemsByDisc[d].reverse().forEach(reg => {
-            let pts = reg.questoes > 0 ? `🎯 ${reg.acertos}/${reg.questoes}` : '';
+            let rPct = reg.questoes > 0 ? Math.round((reg.acertos/reg.questoes)*100) : 0;
+            let pts = reg.questoes > 0 ? `🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)` : '';
             subHtml += `<div class="prod-detail-item">
-                <span><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa || reg.tipoAtividade}</span>
-                <span>⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m ${pts}</span>
+                <span style="flex:1;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa || reg.tipoAtividade}</span>
+                <span style="text-align:right;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span>
             </div>`;
         });
         subHtml += `</div>`;
@@ -1338,7 +1431,7 @@ function renderizarConteudoProdutividade() {
             <div class="prod-header-info">
                 <div>
                     <div class="prod-title">${d}</div>
-                    <div class="prod-val">⏱️ ${Math.round(e.tempo/3600)}h ${Math.round((e.tempo%3600)/60)}m</div>
+                    <div class="prod-val">⏱️ ${Math.floor(e.tempo/3600)}h ${Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')}m</div>
                 </div>
                 ${badgeQ}
             </div>
