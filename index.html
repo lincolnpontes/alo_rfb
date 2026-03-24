@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.0.5</title>
+    <title>Alô RFB v1.0.6</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3);}
@@ -38,12 +38,12 @@
         .form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
         .form-group input[type=color]{padding:0;border:1px solid #ccc;height:44px;width:100%;border-radius:8px;cursor:pointer}
         .modal-select{height:38px;border-radius:8px!important;border:1px solid #ccc!important;background:#fff!important;color:#333!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
-        .modal-select:disabled { background: #eee !important; color: #888 !important; cursor: not-allowed; }
+        .modal-select:disabled { background: #e0e0e0 !important; color: #666 !important; cursor: not-allowed; opacity: 1; -webkit-opacity: 1; border-color: #bbb !important;}
         .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
         .btn-cancel{background:#e0e0e0;color:#333 !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid #ccc;flex:1}
-        .btn-action{background:var(--primaria);color:#fff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--primaria);flex:1}
-        .btn-danger{background:#d32f2f;color:#fff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
-        .btn-outline{background:var(--secundaria);color:var(--primaria);border:1px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
+        .btn-action{background:var(--primaria);color:#ffffff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1}
+        .btn-danger{background:#d32f2f;color:#ffffff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
+        .btn-outline{background:var(--secundaria);color:var(--primaria) !important;border:2px solid var(--primaria) !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
         .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
         
@@ -107,14 +107,22 @@
         .prod-title { font-weight: 900; color: var(--primaria); font-size: 15px; margin-bottom: 4px;}
         .prod-val { font-size: 13px; color: #555; }
         .prod-badge { background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; border: 1px solid #c8e6c9;}
-        .prod-details { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; color: #444; }
-        .prod-detail-item { padding: 4px 0; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; }
+        .prod-details { display: none; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 14px; color: #444; }
+        .prod-detail-item { padding: 6px 0; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; }
         
         .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .btn-sub-gerenciar { font-size: 12px !important; padding: 4px 8px !important; background: var(--secundaria) !important; color: var(--primaria) !important; border: 1px solid var(--primaria) !important; }
+        .btn-sub-gerenciar { font-size: 14px !important; padding: 8px 12px !important; font-weight: bold; background: var(--secundaria) !important; color: var(--primaria) !important; border: 2px solid var(--primaria) !important; display: flex; align-items: center; justify-content: center; gap: 5px;}
+        .btn-sub-gerenciar span.emj { font-size: 18px; }
+
+        /* Dashboard de Trilha */
+        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
+        .dash-box { background: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
+        .dash-box-title { font-size: 10px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 3px; }
+        .dash-box-val { font-size: 15px; font-weight: 900; color: var(--primaria); }
+        .dash-prazo-bar { grid-column: span 2; background: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); font-size: 12px; color: #333;}
     </style>
 </head>
 <body>
@@ -123,7 +131,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.5</div>
+    <div class="splash-version">v1.0.6</div>
 </div>
 
 <div id="login-screen">
@@ -188,12 +196,12 @@
             </div>
         </div>
 
-        <div class="trilhas-bar" id="trilhas-bar-container">
-            </div>
+        <div class="trilhas-bar" id="trilhas-bar-container"></div>
+        
+        <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
 
-        <div style="padding: 0 10px; display:flex; gap:10px; justify-content: flex-end; align-items: center; margin-bottom: 5px;">
-            <span style="font-size:12px; font-weight:bold; color:var(--primaria); margin-right:auto;" id="label-tarefas-trilha">Tarefas</span>
-            <button class="btn-action" style="margin:0; background: #2e7d32; padding: 6px 15px; font-size: 14px; border-radius: 20px;" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
+        <div style="padding: 0 10px; display:flex; gap:10px; justify-content: center; align-items: center; margin-bottom: 5px;">
+            <button class="btn-action" style="margin:0; background: #2e7d32; padding: 10px 15px; font-size: 15px; border-radius: 8px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
         </div>
     </div>
     
@@ -202,7 +210,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.5</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.6</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         <button class="btn-outline" onclick="abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
@@ -259,6 +267,12 @@
                     <span style="font-weight:bold;font-size:12px;">Exibir Meta</span>
                     <label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label>
                 </div>
+                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1;">
+                    <label style="font-size:12px; margin-bottom:2px;">Meta Diária (horas):</label>
+                    <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 6px; width: 100%;">
+                </div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
                 <div class="switch-container" style="margin:0; flex:1; padding:5px;">
                     <span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span>
                     <label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label>
@@ -268,16 +282,12 @@
                     <label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label>
                 </div>
             </div>
-            <div class="form-group" id="divMetaHoras" style="margin-bottom:0;">
-                <label style="font-size:12px;">Meta Diária (horas completas):</label>
-                <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 6px;">
-            </div>
         </fieldset>
 
         <fieldset class="fieldset-config">
             <legend>Geral</legend>
             <div class="switch-container" style="padding:5px;">
-                <span style="font-weight:bold;font-size:13px;">Tocar restart.mp3 ao Pausar</span>
+                <span style="font-weight:bold;font-size:13px;">Tocar som/beep ao Pausar</span>
                 <label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label>
             </div>
         </fieldset>
@@ -395,9 +405,38 @@
             <div class="form-group" style="flex:1"><label>Fundo:</label><input type="color" id="concCor" value="#1565C0"></div>
             <div class="form-group" style="flex:1"><label>Texto:</label><input type="color" id="concCorTexto" value="#ffffff"></div>
         </div>
+        
+        <div id="divExcluirConcurso" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+            <button class="btn-danger" onclick="excluirConcursoConfirm()">🗑️ Excluir Concurso Definitivamente</button>
+        </div>
+
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalFormConcurso');abrirGerenciar('concursos')">Cancelar</button>
             <button class="btn-action" onclick="salvarConcurso()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalFormTrilha">
+    <div class="modal">
+        <div class="modal-title">Editar Trilha</div>
+        <input type="hidden" id="edtTrilhaId">
+        <input type="hidden" id="edtTrilhaConcurso">
+        <div class="form-group">
+            <label>Nome da Trilha:</label>
+            <input type="text" id="edtTrilhaNome">
+        </div>
+        <div class="form-group">
+            <label>Data de Início:</label>
+            <input type="date" id="edtTrilhaDataInicio">
+        </div>
+        <div class="form-group">
+            <label>Duração Prevista (em dias):</label>
+            <input type="number" id="edtTrilhaDias" min="1" placeholder="Ex: 7">
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalFormTrilha'); abrirGerenciar('trilhas', document.getElementById('edtTrilhaConcurso').value)">Cancelar</button>
+            <button class="btn-action" onclick="salvarEdicaoTrilha()">Salvar</button>
         </div>
     </div>
 </div>
@@ -424,8 +463,14 @@
 
 <div class="modal-overlay" id="modalFormTarefa">
     <div class="modal">
-        <div class="modal-title">Nova Tarefa</div>
+        <div class="modal-title">Tarefa</div>
         <input type="hidden" id="tarefaIdOriginal">
+        
+        <div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50; background:#e8f5e9;">
+            <span style="font-weight:900;font-size:14px; color:#2e7d32;">✅ Tarefa Concluída</span>
+            <label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label>
+        </div>
+
         <div class="form-group">
             <label>Título da Tarefa:</label>
             <input type="text" id="tarTitulo" placeholder="Ex: Tarefa 01">
@@ -486,8 +531,8 @@
         </div>
         
         <div class="form-group">
-            <label>Tipo Final de Atividade:</label>
-            <select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" onchange="checarTipoAtividade()"></select>
+            <label>Tipo Final de Atividade (Vinculado à Tarefa):</label>
+            <select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select>
         </div>
         
         <div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: #f5f5f5; padding: 10px; border-radius: 8px;">
@@ -540,13 +585,13 @@ window.addEventListener('unhandledrejection', function(event) { console.error('R
 
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
-let audioDesbloqueado = false;
 
 function formatarHorasMinutos(segs) {
     if(segs === 0) return "0m";
     let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60);
     return (h > 0 ? h + "h" : "") + m.toString().padStart(h > 0 ? 2 : 1, '0') + "m";
 }
+function formataData(dataStrYMD) { if(!dataStrYMD) return '--/--/----'; let p = dataStrYMD.split('-'); if(p.length!==3) return dataStrYMD; return `${p[2]}/${p[1]}/${p[0]}`; }
 
 const paletasDeCores = {
     azul: {primaria:'#1565C0', secundaria:'#E3F2FD', fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
@@ -559,13 +604,14 @@ const paletasDeCores = {
 };
 
 function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
+function getHojeYMD() { const hj=new Date(); return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`; }
 function formatarTempoTimer(segs) { let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60), s = Math.floor(segs % 60); return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; }
 function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
 
 function carregarBanco(){
     let d = {
         concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff"}],
-        trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB"}],
+        trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB", dataInicio: getHojeYMD(), duracaoDias: 7}],
         disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulas: 10}],
         tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Estudo Teórico", concluida: false}],
         operadores: [{nome: "Usuário", senha: "", ocultarEngrenagem: false}],
@@ -591,13 +637,10 @@ function carregarBanco(){
             if(!Array.isArray(l.tarefas)) l.tarefas = d.tarefas;
             if(!Array.isArray(l.historico)) l.historico = d.historico;
 
-            // Migração de Disciplinas (garantir vinculo com concurso)
             let ativo = l.concursos.find(c => c.ativo);
             let concPadrao = ativo ? ativo.nome : (l.concursos[0] ? l.concursos[0].nome : "Geral");
-            l.disciplinas.forEach(disc => {
-                if(!disc.concurso) disc.concurso = concPadrao;
-                if(disc.aulas === undefined) disc.aulas = 0;
-            });
+            l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; });
+            l.trilhas.forEach(tr => { if(!tr.dataInicio) tr.dataInicio = getHojeYMD(); if(!tr.duracaoDias) tr.duracaoDias = 7; });
 
             if(!l.configs || typeof l.configs !== 'object') l.configs = d.configs;
             if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
@@ -633,12 +676,30 @@ function aplicarTemaCores(){
     }
 }
 
-// ================= CRONÔMETRO LOGIC =================
+// ================= CRONÔMETRO LOGIC E AUDIO WEB API =================
 let modoTimer = 'progressive', isRunningTimer = false, intervalTimer, tempoTimer = 0;
 let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
-let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3'); 
+
+// O Som Sintético Imbatível (Web Audio API)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function tocarBeepLocal() {
+    if(!db.configs.tocarRestart) return;
+    try {
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Nota A5
+        gainNode.gain.setValueAtTime(isMutedTimer ? 0 : volumeSalvoTimer, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+    } catch(e) { console.log("Audio block", e); }
+}
 
 playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
 
@@ -647,7 +708,7 @@ function carregarMusicas(event) {
     if (files.length > 0) { 
         playlist = Array.from(files).map(file => URL.createObjectURL(file)); 
         musicaIndex = 0; 
-        mostrarToast(`${files.length} músicas! Selecione novamente a cada nova sessão.`); 
+        mostrarToast(`${files.length} músicas carregadas! Selecione novamente na próxima sessão.`); 
     }
 }
 function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play().catch(()=>{}); }
@@ -689,15 +750,8 @@ function atualizarStatusPomodoro() {
     } else { s.style.display = 'none'; }
 }
 
-function desbloquearAudioMobile() {
-    if(audioDesbloqueado) return;
-    audioRestart.play().then(() => { audioRestart.pause(); audioRestart.currentTime = 0; audioDesbloqueado = true; }).catch(()=>{});
-}
-document.body.addEventListener('touchstart', desbloquearAudioMobile, {once:true});
-document.body.addEventListener('click', desbloquearAudioMobile, {once:true});
-
 function startPauseTimer() {
-    desbloquearAudioMobile();
+    if(audioCtx.state === 'suspended') audioCtx.resume(); // Destrava o audio system
     isRunningTimer = !isRunningTimer;
     let btnPlay = document.getElementById('btn-play-timer');
     if (isRunningTimer) {
@@ -707,11 +761,7 @@ function startPauseTimer() {
     } else { 
         clearInterval(intervalTimer); playerAudio.pause(); 
         btnPlay.innerText = '▶'; btnPlay.classList.remove('is-paused');
-        
-        if(tempoTimer > 0 && db.configs.tocarRestart) {
-            audioRestart.volume = isMutedTimer ? 0 : volumeSalvoTimer;
-            audioRestart.play().catch(()=>{});
-        }
+        if(tempoTimer > 0) tocarBeepLocal();
     }
 }
 
@@ -723,8 +773,9 @@ function resetTimer() {
 }
 
 function zeroTimerConfirm() {
-    if(confirm("Deseja ZERAR o cronômetro (descartar os " + formatarHorasMinutos(tempoTimer) + " percorrido)?")) {
+    if(confirm("Deseja ZERAR o cronômetro (descartar os " + formatarHorasMinutos(tempoTimer) + " percorridos)?")) {
         tempoTimer = 0; atualizarDisplayTimer();
+        atualizarBarraMeta(); // Força a descida da barra
     }
 }
 
@@ -765,8 +816,10 @@ function atualizarBarraMeta() {
     let hojeStr = getDataHoraAtual().split(' ')[0];
     db.historico.forEach(h => { if(h.duracaoRegistrada && h.data.startsWith(hojeStr)) estudadoHoje += h.duracaoRegistrada; });
     
+    // ATENÇÃO LÓGICA: Só soma o tempoTimer temporariamente visualmente.
+    // Se o user zerar o tempoTimer, ele volta a ser 0 e esse 'atual' regride certinho.
     let atual = estudadoHoje;
-    if(modoTimer === 'progressive' || (modoTimer === 'pomodoro' && pomoFase === 'estudo')) atual += tempoTimer;
+    if(modoTimer === 'progressive' || (modoTimer === 'pomodoro' && pomoFase === 'estudo') || modoTimer === 'regressive') atual += tempoTimer;
     
     let pct = Math.min(100, (atual / metaSegs) * 100);
     document.getElementById('meta-fill').style.width = pct + '%';
@@ -855,14 +908,11 @@ function atualizarEngrenagem(){
     if(btnEngrenagem) { btnEngrenagem.style.display = (o && o.ocultarEngrenagem) ? 'none' : 'flex'; }
 }
 
-// ================= HEADER DINÂMICO DE TRILHAS =================
+// ================= HEADER DINÂMICO DE TRILHAS E DASHBOARD =================
 function getConcursoAtivoNome() {
     let ativo = db.concursos.find(c => c.ativo);
     if (ativo) return ativo.nome;
-    if (db.concursos.length > 0) {
-        db.concursos[0].ativo = true;
-        return db.concursos[0].nome;
-    }
+    if (db.concursos.length > 0) { db.concursos[0].ativo = true; return db.concursos[0].nome; }
     return null;
 }
 
@@ -884,17 +934,96 @@ function renderizarCabecalhoTrilhas() {
     });
     
     cont.innerHTML += `<button class="btn-add-trilha" onclick="criarTrilhaAutoModal()">+ Trilha</button>`;
+    
+    renderizarDashboardTrilha();
     renderizarListaTarefas();
 }
 
 function mudarTrilhaAtiva(nome) { trilhaAtivaNome = nome; renderizarCabecalhoTrilhas(); }
+
+function renderizarDashboardTrilha() {
+    const box = document.getElementById('dash-trilha-box');
+    let conc = getConcursoAtivoNome();
+    
+    if(!conc || !trilhaAtivaNome) { box.style.display = 'none'; return; }
+    
+    let tObj = db.trilhas.find(t => t.nome === trilhaAtivaNome && t.concurso === conc);
+    if(!tObj) { box.style.display = 'none'; return; }
+    
+    box.style.display = 'grid';
+    
+    // Matematicas
+    let histTrilha = db.historico.filter(h => h.trilha === trilhaAtivaNome && h.concurso === conc);
+    let totalSegs = 0, qTot = 0, acTot = 0;
+    let diasUnicos = new Set();
+    
+    histTrilha.forEach(h => {
+        totalSegs += (h.duracaoRegistrada || 0);
+        qTot += (h.questoes || 0);
+        acTot += (h.acertos || 0);
+        diasUnicos.add(h.data.split(' ')[0]);
+    });
+    
+    let desempenho = qTot > 0 ? ((acTot/qTot)*100).toFixed(1) + "%" : "--%";
+    let hFormat = Math.floor(totalSegs/3600) + "h" + Math.floor((totalSegs%3600)/60).toString().padStart(2,'0') + "m";
+    let mediaFormat = "--h--m";
+    if(diasUnicos.size > 0) {
+        let mediaSegs = totalSegs / diasUnicos.size;
+        mediaFormat = Math.floor(mediaSegs/3600) + "h" + Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0') + "m";
+    }
+    
+    // Logica de Prazo
+    let msgPrazo = "";
+    let colorPrazo = "#333";
+    let dateInicio = new Date(tObj.dataInicio + "T00:00:00");
+    let datePrevista = new Date(dateInicio.getTime() + (tObj.duracaoDias * 24 * 60 * 60 * 1000));
+    
+    // Verifica se completou toda a trilha
+    let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === conc);
+    let todasConcluidas = tarefasTrilha.length > 0 && tarefasTrilha.every(t => t.concluida === true);
+    
+    let hj = new Date(); hj.setHours(0,0,0,0);
+    
+    if(todasConcluidas) {
+        // Pega data da ultima tarefa registrada no historico
+        let ultimaDataStr = "";
+        if(histTrilha.length > 0) {
+            ultimaDataStr = histTrilha[histTrilha.length-1].data.split(' ')[0];
+            let p = ultimaDataStr.split('/');
+            let dataEfetiva = new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
+            let diffTime = dataEfetiva - datePrevista;
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if(diffDays > 0) { msgPrazo = `Concluída com ${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
+            else if(diffDays < 0) { msgPrazo = `Concluída com ${Math.abs(diffDays)} dias de antecipação!`; colorPrazo = "#2e7d32"; }
+            else { msgPrazo = `Concluída exatamente no prazo!`; colorPrazo = "#1565C0"; }
+        } else { msgPrazo = "Concluída"; }
+    } else {
+        let diffTime = hj - datePrevista;
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if(diffDays > 0) { msgPrazo = `${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
+        else if(diffDays < 0) { msgPrazo = `${Math.abs(diffDays)} dias restantes`; colorPrazo = "#333"; }
+        else { msgPrazo = `Termina Hoje!`; colorPrazo = "#f57f17"; }
+    }
+
+    box.innerHTML = `
+        <div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho}</div></div>
+        <div class="dash-box"><div class="dash-box-title">Horas Estudadas</div><div class="dash-box-val" style="color:#555;">${hFormat}</div></div>
+        <div class="dash-box"><div class="dash-box-title">Questões</div><div class="dash-box-val" style="color:#555;">${qTot}</div></div>
+        <div class="dash-box"><div class="dash-box-title">Média Diária</div><div class="dash-box-val" style="color:#555;">${mediaFormat}</div></div>
+        <div class="dash-prazo-bar">
+            <strong>Início:</strong> ${formataData(tObj.dataInicio)} &nbsp;|&nbsp; 
+            <strong>Previsto:</strong> ${formataData(datePrevista.toISOString().split('T')[0])} <br>
+            <span style="color:${colorPrazo}; font-weight:bold; font-size:13px; margin-top:4px; display:inline-block;">${msgPrazo}</span>
+        </div>
+    `;
+}
 
 function criarTrilhaAutoModal() {
     let conc = getConcursoAtivoNome(); if(!conc) return alert("Sem concurso ativo!");
     let count = db.trilhas.filter(t => t.concurso === conc).length + 1;
     let novoNome = "Trilha " + String(count).padStart(2, '0');
     
-    db.trilhas.push({ id: Date.now(), nome: novoNome, concurso: conc });
+    db.trilhas.push({ id: Date.now(), nome: novoNome, concurso: conc, dataInicio: getHojeYMD(), duracaoDias: 7 });
     trilhaAtivaNome = novoNome;
     salvarModificacaoBasica(); mostrarToast("Nova Trilha adicionada!"); renderizarCabecalhoTrilhas();
 }
@@ -902,10 +1031,8 @@ function criarTrilhaAutoModal() {
 function criarTarefaAutoModal() {
     let conc = getConcursoAtivoNome(); if(!conc) return alert("Sem concurso ativo!");
     if(!trilhaAtivaNome) return alert("Crie ou selecione uma Trilha primeiro!");
-    
     let count = db.tarefas.filter(t => t.concurso === conc && t.trilha === trilhaAtivaNome).length + 1;
     let tituloSugerido = "Tarefa " + String(count).padStart(2, '0');
-    
     abrirFormTarefa(-1, tituloSugerido);
 }
 
@@ -913,9 +1040,6 @@ function renderizarListaTarefas() {
     const l = document.getElementById('listaTarefas'); l.innerHTML = '';
     let conc = getConcursoAtivoNome();
     if(!conc) return;
-    
-    let label = document.getElementById('label-tarefas-trilha');
-    if(trilhaAtivaNome) { label.innerText = `Tarefas de: ${trilhaAtivaNome}`; } else { label.innerText = `Nenhuma Trilha Ativa`; }
     
     let filtradas = db.tarefas.filter(t => t.concurso === conc && t.trilha === trilhaAtivaNome);
     
@@ -926,7 +1050,7 @@ function renderizarListaTarefas() {
         let statusHtml = isConcluida ? `<div style="font-size:11px; font-weight:bold; color:#2e7d32; margin-top:4px;">✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}</div>` : '';
         
         l.innerHTML += `
-        <li class="${classeItem}" onclick="clicarTarefaListagem(${t.id})" style="border-left: 5px solid ${cCor};">
+        <li class="${classeItem}" onclick="abrirFormTarefa(${t.id})" style="border-left: 5px solid ${cCor};">
             <div class="item-info">
                 <div class="item-title" style="color: ${isConcluida ? '#2e7d32' : 'var(--primaria)'}">${t.titulo}</div>
                 <div class="item-subtitle">${t.disciplina} ${t.aulas ? ' - ' + t.aulas : ''}</div>
@@ -935,19 +1059,8 @@ function renderizarListaTarefas() {
             </div>
         </li>`;
     });
-    if(filtradas.length === 0) { l.innerHTML = `<div style="text-align:center; padding: 20px; color: #fff;">Nenhuma tarefa. Clique no botão acima para criar.</div>`; }
+    if(filtradas.length === 0) { l.innerHTML = `<div style="text-align:center; padding: 20px; color: #fff;">Nenhuma tarefa cadastrada.</div>`; }
 }
-
-function clicarTarefaListagem(id) {
-    let t = db.tarefas.find(x => x.id === id);
-    if(t.concluida) {
-        alert("Esta tarefa já foi concluída! Para refazê-la, você pode editá-la e desmarcar a conclusão ou criar uma nova.");
-        // Opcional: abrirFormTarefa(id) se quiser permitir edição
-    } else {
-        abrirFormTarefa(id);
-    }
-}
-
 
 function iniciar(){
     try {
@@ -1036,6 +1149,7 @@ function removerTipo(t){ if(db.configs.tiposAtividade.length <= 1) return alert(
 function abrirGerenciar(t, context){
     if(document.getElementById('modalPainelUnificado').style.display === 'flex') fecharModal('modalPainelUnificado');
     if(document.getElementById('modalFormDisciplina').style.display === 'flex') fecharModal('modalFormDisciplina');
+    if(document.getElementById('modalFormTrilha').style.display === 'flex') fecharModal('modalFormTrilha');
     
     const l = document.getElementById('conteudoListagem'), b = document.getElementById('btnNovoListagem'), tit = document.getElementById('tituloListagem');
     const bVoltar = document.getElementById('btnVoltarListagem');
@@ -1044,7 +1158,6 @@ function abrirGerenciar(t, context){
     document.getElementById('listagemContextoAtivo').value = t;
     
     if(t === 'disciplinas'){
-        // 'context' tem o nome do concurso
         tit.innerText = `Disciplinas: ${context}`; 
         b.onclick = () => abrirFormDisciplina(-1, context);
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
@@ -1054,11 +1167,13 @@ function abrirGerenciar(t, context){
     } 
     else if (t === 'trilhas') {
         tit.innerText = `Trilhas: ${context}`; 
-        b.style.display = 'none'; // Trilhas adicionadas pelo atalho ou podemos deixar add aqui
+        b.style.display = 'none'; 
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
         
         let trs = db.trilhas.filter(tr => tr.concurso === context);
-        trs.forEach((tr) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${tr.nome}</strong></div><div class="gerenciar-actions"><button onclick="excluirItem('trilhas',${tr.id}, '${context}')">🗑️</button></div></div>`; });
+        trs.forEach((tr) => { 
+            l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${tr.nome}</strong><br><small>Duração: ${tr.duracaoDias || 7} dias</small></div><div class="gerenciar-actions"><button onclick="abrirEdicaoTrilha(${tr.id})">✏️</button><button onclick="excluirItem('trilhas',${tr.id}, '${context}')">🗑️</button></div></div>`; 
+        });
     }
     else if (t === 'concursos') {
         b.style.display = 'block';
@@ -1076,9 +1191,8 @@ function abrirGerenciar(t, context){
                     </div>
                 </div>
                 <div style="margin-top:10px; display:flex; gap:10px;">
-                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button>
-                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">🛤️ Trilhas</button>
-                    <button class="btn-sub-gerenciar" style="background:#ffebee!important; color:#c62828!important; border-color:#c62828!important;" onclick="excluirItem('concursos','${c.nome}')">🗑️</button>
+                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')"><span class="emj">📚</span> Disciplinas</button>
+                    <button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')"><span class="emj">👣</span> Trilhas</button>
                 </div>
             </div>`; 
         });
@@ -1100,18 +1214,38 @@ function excluirItem(t, id, context){
     if(t === 'trilhas') {
         if(!confirm("Tem certeza? As TAREFAS desta trilha não serão apagadas, mas ficarão órfãs.")) return;
         db.trilhas = db.trilhas.filter(i => i.id !== id);
-        // Não apagamos as tarefas!
         salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t, context);
     }
-    if(t === 'concursos') { 
-        if(!confirm("Excluir concurso apaga todas as trilhas e tarefas dele. Certeza?")) return;
-        db.concursos = db.concursos.filter(i => i.nome !== id); db.trilhas = db.trilhas.filter(i => i.concurso !== id); db.tarefas = db.tarefas.filter(i => i.concurso !== id); db.disciplinas = db.disciplinas.filter(i => i.concurso !== id);
-        salvarModificacaoBasica(); renderizarCabecalhoTrilhas(); abrirGerenciar(t); 
-    } 
     if(t === 'operadores') {
         if(!confirm("Excluir usuário?")) return;
         db.operadores = db.operadores.filter(i => i.nome !== id); salvarModificacaoBasica(); abrirGerenciar(t); 
     }
+}
+
+// Trilhas Edit
+function abrirEdicaoTrilha(id) {
+    fecharModal('modalListagem');
+    let tr = db.trilhas.find(t => t.id === id);
+    if(!tr) return;
+    document.getElementById('edtTrilhaId').value = tr.id;
+    document.getElementById('edtTrilhaConcurso').value = tr.concurso;
+    document.getElementById('edtTrilhaNome').value = tr.nome;
+    document.getElementById('edtTrilhaDataInicio').value = tr.dataInicio;
+    document.getElementById('edtTrilhaDias').value = tr.duracaoDias || 7;
+    abrirModal('modalFormTrilha');
+}
+function salvarEdicaoTrilha() {
+    let id = parseInt(document.getElementById('edtTrilhaId').value);
+    let n = document.getElementById('edtTrilhaNome').value.trim();
+    let dInit = document.getElementById('edtTrilhaDataInicio').value;
+    let dias = parseInt(document.getElementById('edtTrilhaDias').value) || 7;
+    let conc = document.getElementById('edtTrilhaConcurso').value;
+    if(!n || !dInit) return alert("Preencha tudo!");
+    
+    let obj = db.trilhas.find(t => t.id === id);
+    if(obj) { obj.nome = n; obj.dataInicio = dInit; obj.duracaoDias = dias; }
+    
+    salvarModificacaoBasica(); fecharModal('modalFormTrilha'); renderizarCabecalhoTrilhas(); abrirGerenciar('trilhas', conc);
 }
 
 function abrirFormDisciplina(id, concursoNome){
@@ -1144,6 +1278,8 @@ function salvarDisciplina(){
 
 function abrirFormConcurso(i){
     fecharModal('modalListagem');
+    document.getElementById('divExcluirConcurso').style.display = (i >= 0) ? 'block' : 'none';
+    
     if(i >= 0){ 
         const c = db.concursos[i]; document.getElementById('concNomeOriginal').value = c.nome; document.getElementById('concNome').value = c.nome; document.getElementById('concCor').value = c.cor; document.getElementById('concCorTexto').value = c.corTexto; document.getElementById('concAtivo').checked = c.ativo;
     } else { 
@@ -1156,7 +1292,7 @@ function salvarConcurso(){
     if(!n) return alert("Preencha!");
     let isAtivo = document.getElementById('concAtivo').checked;
     
-    if(isAtivo) { db.concursos.forEach(c => c.ativo = false); } // Monopólio
+    if(isAtivo) { db.concursos.forEach(c => c.ativo = false); } 
     
     let obj = {nome: n, cor: document.getElementById('concCor').value, corTexto: document.getElementById('concCorTexto').value, ativo: isAtivo};
     
@@ -1169,6 +1305,21 @@ function salvarConcurso(){
         db.concursos.push(obj); 
     }
     salvarModificacaoBasica(); fecharModal('modalFormConcurso'); abrirGerenciar('concursos'); renderizarCabecalhoTrilhas();
+}
+
+function excluirConcursoConfirm() {
+    let conc = document.getElementById('concNomeOriginal').value;
+    if(!conc) return;
+    let frase = prompt("Digite exatamente a frase para confirmar: quero excluir esse concurso");
+    if(frase === "quero excluir esse concurso") {
+        db.concursos = db.concursos.filter(i => i.nome !== conc); 
+        db.trilhas = db.trilhas.filter(i => i.concurso !== conc); 
+        db.tarefas = db.tarefas.filter(i => i.concurso !== conc); 
+        db.disciplinas = db.disciplinas.filter(i => i.concurso !== conc);
+        salvarModificacaoBasica(); fecharModal('modalFormConcurso'); abrirGerenciar('concursos'); renderizarCabecalhoTrilhas();
+    } else {
+        alert("Frase incorreta. Exclusão cancelada.");
+    }
 }
 
 function abrirFormOperador(i){
@@ -1203,6 +1354,8 @@ function abrirFormTarefa(id, sugeridoTitulo = ""){
     const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; 
     db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x}">${x}</option>`);
     
+    let contStatus = document.getElementById('containerStatusConcluida');
+    
     if(id >= 0){ 
         const t = db.tarefas.find(x => x.id === id); 
         document.getElementById('tarefaIdOriginal').value = t.id; 
@@ -1213,9 +1366,17 @@ function abrirFormTarefa(id, sugeridoTitulo = ""){
         document.getElementById('tarAulas').value = t.aulas;
         
         selT.value = t.tipoAtividade;
+        
+        if(t.concluida) {
+            contStatus.style.display = 'flex';
+            document.getElementById('tarConcluida').checked = true;
+        } else {
+            contStatus.style.display = 'none';
+        }
     } else { 
         document.getElementById('tarefaIdOriginal').value = ''; 
         document.getElementById('tarTitulo').value = sugeridoTitulo; 
+        contStatus.style.display = 'none';
         popularDropdownAulas();
     }
     abrirModal('modalFormTarefa');
@@ -1256,13 +1417,16 @@ function salvarTarefa(){
     
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
-        obj.concluida = old.concluida;
-        obj.tempoRegistrado = old.tempoRegistrado;
+        // Se estava editando uma concluida, checa o botao switch de desmarcar
+        let checkConcluida = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
+        obj.concluida = checkConcluida;
+        if(!checkConcluida) obj.tempoRegistrado = 0; else obj.tempoRegistrado = old.tempoRegistrado;
+        
         db.tarefas[db.tarefas.findIndex(x => x.id === parseInt(idO))] = obj; 
     } else { 
         db.tarefas.push(obj); 
     }
-    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarListaTarefas();
+    salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarCabecalhoTrilhas(); // Reload dash and list
 }
 
 // ================= REGISTRO =================
@@ -1272,7 +1436,7 @@ function abrirSelecionadorDeTarefaParaRegistro() {
     let btnZerar = `<button onclick="fecharModal('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;
 
     let conc = getConcursoAtivoNome();
-    let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida); // Apenas NÂO concluídas
+    let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida);
     
     filtradas.forEach(t => {
         l.innerHTML += `<div style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:#333; background: #fafafa; margin-bottom: 5px; border-radius: 8px;" onclick="fecharModal('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
@@ -1293,7 +1457,7 @@ function abrirRegistroEstudo(id){
     db.configs.tiposAtividade.forEach(x => sel.innerHTML += `<option value="${x}">${x}</option>`);
     sel.value = t.tipoAtividade;
     
-    // TEMPO CORRETO PARA REGISTRO! Apenas o tempo percorrido!
+    // TEMPO CORRETO PARA REGISTRO
     let segs = tempoTimer; 
     
     if (segs > 0) {
@@ -1341,16 +1505,13 @@ function salvarRegistroEstudo(){
         db.historico.push({ id: Date.now(), ...baseHist, observacao: obs + infoTempo, duracaoRegistrada: duracaoCronometro, data: getDataHoraAtual() });
     }
     
-    // Atualiza a Tarefa para CONCLUÍDA
-    t.concluida = true;
-    t.tempoRegistrado = duracaoCronometro;
-    
+    t.concluida = true; t.tempoRegistrado = duracaoCronometro;
     mostrarToast("✅ Tarefa Concluída e Registrada!");
     
     if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerText = '▶'; document.getElementById('btn-play-timer').classList.remove('is-paused'); }
     
     document.getElementById('qtdQuestoes').value = 0; document.getElementById('qtdAcertos').value = 0;
-    salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo'); renderizarListaTarefas();
+    salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo'); renderizarCabecalhoTrilhas(); 
 }
 
 function abrirHistorico(){
@@ -1360,18 +1521,29 @@ function abrirHistorico(){
         [...db.historico].reverse().forEach(h => {
             let tempoBadge = h.duracaoRegistrada ? `<span style="background:var(--secundaria); color:var(--primaria); padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>` : '';
             l.innerHTML += `
-            <div style="background:#fcfcfc; border:1px solid #eee; border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:#333;">
+            <div style="background:#fcfcfc; border:1px solid #eee; border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:#333; position:relative;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <strong style="color:var(--primaria); font-size:16px;">${h.tarefa || h.disciplina} ${tempoBadge}</strong>
-                    <span style="font-size:12px; color:#888;">${h.data.split(' ')[0]}</span>
+                    <button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button>
                 </div>
                 <div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>
                 ${h.observacao ? `<div style="font-size:13px; color:#555;"><em>Obs: ${h.observacao}</em></div>` : ''}
-                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'}</div>
+                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'}  | ${h.data.split(' ')[0]}</div>
             </div>`;
         });
     }
     abrirModal('modalHistorico');
+}
+
+function excluirHistorico(id) {
+    let adm = db.configs.senhaAdmin || "1999";
+    let pwd = prompt("Digite a senha do painel para excluir este registro (Padrão: 1999):");
+    if(pwd === adm || pwd === "1999") {
+        db.historico = db.historico.filter(h => h.id !== id);
+        salvarModificacaoBasica(); abrirHistorico(); renderizarCabecalhoTrilhas(); mostrarToast("Registro excluído.");
+    } else {
+        alert("Senha incorreta!");
+    }
 }
 
 // ================= PRODUTIVIDADE AVANÇADA =================
@@ -1395,14 +1567,10 @@ function renderizarConteudoProdutividade() {
     let histOp = db.historico.filter(h => h.operador === opAtual);
     if(filtroT !== "TODAS") histOp = histOp.filter(h => h.trilha === filtroT);
     
-    let estatisticas = {};
-    let rawItemsByDisc = {};
+    let estatisticas = {}; let rawItemsByDisc = {};
 
     histOp.forEach(h => {
-        if(!estatisticas[h.disciplina]) {
-            estatisticas[h.disciplina] = { tempo: 0, questoes: 0, acertos: 0 };
-            rawItemsByDisc[h.disciplina] = [];
-        }
+        if(!estatisticas[h.disciplina]) { estatisticas[h.disciplina] = { tempo: 0, questoes: 0, acertos: 0 }; rawItemsByDisc[h.disciplina] = []; }
         estatisticas[h.disciplina].tempo += (h.duracaoRegistrada || 0);
         estatisticas[h.disciplina].questoes += (h.questoes || 0);
         estatisticas[h.disciplina].acertos += (h.acertos || 0);
