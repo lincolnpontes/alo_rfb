@@ -32,10 +32,10 @@
         .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
         .modal{background:#fff;padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: #333 !important;}
         .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:#333 !important;border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-        .modal p, .modal label, .modal div:not(.modal-actions):not(.item-avatar):not(.trilha-tab):not(.concurso-badge):not(.item-badge) { color: #333 !important; }
+        .modal p, .modal label, .modal div:not(.modal-actions):not(.item-avatar):not(.trilha-tab):not(.concurso-badge):not(.item-badge):not(.custom-select-option) { color: #333 !important; }
         .form-group{margin-bottom:15px;position:relative}
         .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
-        .form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
+        .form-group input:not([type=checkbox]),.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
         .form-group input[type=color]{padding:0;border:1px solid #ccc;height:44px;width:100%;border-radius:8px;cursor:pointer}
         .modal-select{height:38px;border-radius:8px!important;border:1px solid #ccc!important;background:#fff!important;color:#333!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
         .modal-select:disabled { background: #e0e0e0 !important; color: #666 !important; cursor: not-allowed; opacity: 1; -webkit-opacity: 1; border-color: #bbb !important;}
@@ -47,22 +47,30 @@
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
         .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
 
-        /* Layout de Trilhas */
-        .trilhas-bar { display: flex; align-items: center; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 5px; }
-        .trilhas-bar::-webkit-scrollbar { display: none; }
-        .concurso-badge { font-weight: 900; background: var(--primaria); color: white; padding: 6px 12px; border-radius: 6px; font-size: 14px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .trilha-tab { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; background: rgba(0,0,0,0.06); color: #555 !important; white-space: nowrap; flex-shrink: 0; border: 1px solid transparent; transition: 0.2s;}
-        .trilha-tab.active { background: var(--secundaria); color: var(--primaria) !important; border: 1px solid var(--primaria); }
+        /* Custom Dropdown Multi-Select */
+        .custom-select-box { border: 1px solid #ccc; border-radius: 5px; background: #fff; padding: 10px; cursor: pointer; font-size: 14px; min-height: 20px; color: #333; display:flex; align-items:center; justify-content:space-between; }
+        .custom-select-options { display: none; position: absolute; width: 100%; background: #fff; border: 1px solid #ccc; border-radius: 0 0 5px 5px; max-height: 150px; overflow-y: auto; z-index: 99; top: 100%; margin-top:-1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .custom-select-option { padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.1s; }
+        .custom-select-option:hover { background: #f9f9f9; }
+        .custom-select-option input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
+
+        /* Layout de Cabeçalho Trilhas (Novo Select) */
+        .trilhas-top-bar { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; }
+        .concurso-badge { font-weight: 900; font-size: 20px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
+        .sel-trilha-header { background: rgba(255,255,255,0.7); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 10px; font-size: 15px; flex: 1; outline: none; }
+        .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         
-        .list{padding:10px;margin:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;align-content:start}
-        .item{display:flex;align-items:center;padding:15px;border:1px solid var(--glass-border);border-radius:8px;cursor:pointer;background:var(--bg-item);box-shadow:0 4px 6px rgba(0,0,0,.05);backdrop-filter: blur(8px); transition: transform 0.1s;}
+        /* Lista de Tarefas (Refeita Padrão Fiscal) */
+        .list{padding:10px;margin:0;list-style:none;display:flex; flex-direction:column; gap:8px;}
+        .item{display:flex; flex-direction:column; padding:12px; border:1px solid var(--glass-border);border-radius:8px;cursor:pointer;background:var(--bg-item);box-shadow:0 2px 4px rgba(0,0,0,.05);backdrop-filter: blur(8px); transition: transform 0.1s;}
         .item:active{transform: scale(0.98);}
-        .item-info{flex:1;min-width:0}
-        .item-title{font-weight:900;font-size:16px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; color:var(--title-color) !important;}
-        .item-subtitle{color:#555;font-size:12px; font-weight: bold;}
-        .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:2px 6px; border-radius:10px; font-size:12px; font-weight:bold; margin-top:4px; color:inherit;}
-        .item-concluida { background: #e8f5e9 !important; border-color: #4CAF50 !important; opacity: 0.85; }
-        .item-pulada { background: #f5f5f5 !important; border-color: #9e9e9e !important; opacity: 0.7; }
+        .item-linha1 { font-size: 12px; font-weight: bold; color: #666; margin-bottom: 4px; display:flex; gap: 4px; flex-wrap: wrap; align-items: center;}
+        .item-linha2 { font-weight: 900; font-size: 16px; color: var(--title-color) !important; margin-bottom: 6px; white-space: normal; line-height: 1.2; }
+        .item-linha3 { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .item-linha4 { font-size: 11px; font-weight: bold; }
+        .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:3px 8px; border-radius:12px; font-size:11px; font-weight:bold; color:inherit;}
+        .item-concluida { background: #e8f5e9 !important; border-color: #4CAF50 !important; }
+        .item-pulada { background: #f5f5f5 !important; border-color: #9e9e9e !important; opacity: 0.8; }
         
         .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
         .gerenciar-info{flex:1;font-size:14px}
@@ -74,37 +82,38 @@
         .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:#fff;transition:.4s;border-radius:50%}
         input:checked+.slider{background-color:var(--primaria)}
         input:checked+.slider:before{transform:translateX(20px)}
-        #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
+        #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
         
-        /* Modificadores Cronômetro */
-        .crono-container { background: var(--bg-item); margin: 10px; border-radius: 12px; padding: 15px; text-align: center; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
-        .crono-header { display: flex; justify-content: center; gap: 5px; margin-bottom: 5px;}
-        .crono-btn { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s;}
-        .crono-btn.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
-        .crono-display { font-size: 55px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; margin: 10px 0; color: var(--primaria); text-shadow: 1px 1px 2px rgba(0,0,0,0.1);}
+        /* Modificadores Cronômetro Verticalizado */
+        .crono-container { background: var(--bg-item); margin: 10px; border-radius: 12px; padding: 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
+        .crono-layout { display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; }
+        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 10px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 11px; transition: 0.2s; writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); height: 50px; display:flex; align-items:center; justify-content:center;}
+        .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         
-        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;}
-        .crono-btn-icon { background: transparent; border: none; font-size: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));}
-        .crono-btn-icon:hover { transform: scale(1.15); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .crono-display-box { display: flex; flex-direction: column; align-items: center; }
+        .crono-display { font-size: 50px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--primaria); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1;}
+        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 10px;}
+        .crono-btn-icon { background: transparent; border: none; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));}
+        .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
-        .crono-play { font-size: 50px; color: #1E90FF; }
-        .crono-stop { font-size: 60px; color: #9e9e9e; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); } 
+        .crono-play { font-size: 44px; color: #1E90FF; }
+        .crono-stop { font-size: 50px; color: #9e9e9e; } 
         .crono-music { color: #2e7d32; position: relative; }
-        .btn-limpar-musica { position: absolute; top: -5px; right: -10px; background: #d32f2f; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
-        .crono-mute { color: #555; }
+        .btn-limpar-musica { position: absolute; top: -5px; right: -10px; background: #d32f2f; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         
-        .crono-edit { background: transparent; color: #888; border: none; font-size: 20px; margin-left: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px;}
-        .crono-edit:active { transform: scale(0.9); color: var(--primaria); }
+        /* Volume Vertical */
+        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: -5px; }
+        .crono-mute { color: #555; font-size: 20px;}
+        input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
-        .volume-container { display: flex; align-items: center; justify-content: center; margin-top: 15px; gap: 10px;}
-        .meta-container { width: 90%; margin: 15px auto 0; text-align: left; }
-        .meta-text { font-size: 11px; color: #555; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 4px;}
-        .meta-bar { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; }
+        .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
+        .meta-text { font-size: 10px; color: #555; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 3px;}
+        .meta-bar { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; }
         .meta-fill { height: 100%; background: #4CAF50; width: 0%; transition: width 0.5s ease, background-color 0.3s; }
 
         /* Produtividade */
         .prod-card { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.2s;}
-        .prod-card:hover { border-color: var(--primaria); background: #f0f7ff; }
         .prod-header-info { display:flex; justify-content: space-between; align-items: center; }
         .prod-title { font-weight: 900; color: var(--primaria); font-size: 15px; margin-bottom: 4px;}
         .prod-val { font-size: 13px; color: #555; }
@@ -114,17 +123,15 @@
         
         .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
-        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .btn-sub-gerenciar { font-size: 14px !important; padding: 8px 12px !important; font-weight: bold; background: var(--secundaria) !important; color: var(--primaria) !important; border: 2px solid var(--primaria) !important; display: flex; align-items: center; justify-content: center; gap: 5px;}
-        .btn-sub-gerenciar span.emj { font-size: 18px; }
-
-        /* Dashboard de Trilha */
-        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
-        .dash-box { background: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); flex: 1; min-width: 22%; }
-        .dash-box-title { font-size: 12px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 2px; }
-        .dash-box-val { font-size: 20px; font-weight: 900; color: var(--primaria); }
-        .dash-prazo-bar { background: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); font-size: 14px; color: #333;}
+        /* Dashboard de Trilha (Linha Única) */
+        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 8px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
+        .dash-box { background: rgba(255,255,255,0.7); padding: 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); flex: 1; }
+        .dash-box-title { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 2px; }
+        .dash-box-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
+        
+        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 12px 10px; font-size: 14px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); height: 44px; display:flex; align-items:center; justify-content:center;}
+        .dash-prazo-bar { background: rgba(255,255,255,0.7); padding: 0 10px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); font-size: 13px; color: #333; height: 44px; display:flex; align-items:center; justify-content:center; gap:8px;}
     </style>
 </head>
 <body>
@@ -165,48 +172,49 @@
         </div>
         
         <div class="crono-container">
-            <div class="crono-header">
-                <button class="crono-btn active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
-                <button class="crono-btn" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
-                <button class="crono-btn" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
-            </div>
-            <div id="pomo-status" style="display:none; font-size: 12px; font-weight: bold; color: #888; margin-bottom: 5px;"></div>
-            
-            <div style="display: flex; justify-content: center; align-items: center;">
-                <div class="crono-display" id="display-timer" style="margin-left: 33px;">00:00:00</div>
-                <button class="crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
-            </div>
+            <div id="pomo-status" style="display:none; font-size: 11px; font-weight: bold; color: #888; margin-bottom: 5px; text-align:center;"></div>
+            <div class="crono-layout">
+                <div class="crono-modos-vert">
+                    <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Prog</button>
+                    <button class="crono-btn-vert" id="btn-reg" onclick="setModoTimer('regressive')">Reg</button>
+                    <button class="crono-btn-vert" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomo</button>
+                </div>
+                
+                <div class="crono-display-box">
+                    <div style="display:flex; align-items:center;">
+                        <div class="crono-display" id="display-timer">00:00:00</div>
+                        <button class="crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
+                    </div>
+                    
+                    <div class="crono-controls">
+                        <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar">⏹</button>
+                        <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause">▶</button>
+                        <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
+                        <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">
+                            🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-container" id="meta-container" style="display: none;">
+                        <div class="meta-text"><span id="meta-label">Meta: 0%</span><span id="meta-valores">0h00m / 4h</span></div>
+                        <div class="meta-bar"><div class="meta-fill" id="meta-fill"></div></div>
+                    </div>
+                </div>
 
-            <div class="crono-controls">
-                <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar">⏹</button>
-                <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause">▶</button>
-                <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
-                <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">
-                    🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button>
+                <div class="vol-vert-container">
+                    <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
+                    <input type="range" id="volume-slider-timer" min="0" max="100" value="100" orient="vertical" oninput="ajustarVolumeTimer(this.value)">
                 </div>
-                <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
-            </div>
-            <div class="volume-container">
-                <span style="color:#666; font-size:12px; font-weight:bold;">Vol:</span>
-                <input type="range" id="volume-slider-timer" min="0" max="100" value="100" oninput="ajustarVolumeTimer(this.value)" style="width: 60%; accent-color: var(--primaria);">
-            </div>
-            
-            <div class="meta-container" id="meta-container" style="display: none;">
-                <div class="meta-text">
-                    <span id="meta-label">Meta: 0%</span> 
-                    <span id="meta-valores">0h00m / 4h</span>
-                </div>
-                <div class="meta-bar"><div class="meta-fill" id="meta-fill"></div></div>
             </div>
         </div>
 
-        <div class="trilhas-bar" id="trilhas-bar-container"></div>
+        <div class="trilhas-top-bar" id="trilhas-bar-container"></div>
         
         <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
 
-        <div style="display:flex; gap:10px; margin: 0 10px 10px 10px;">
-            <button class="btn-action" style="flex: 1; margin:0; background: #2e7d32; font-size: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
-            <div class="dash-prazo-bar" id="dash-prazo-bar-content" style="flex: 3; margin:0; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; gap:10px; margin: 0 10px 10px 10px; align-items:center;">
+            <button class="btn-nova-tarefa" style="flex: 1; min-width: 25%;" onclick="criarTarefaAutoModal()">+ Nova Tarefa</button>
+            <div class="dash-prazo-bar" id="dash-prazo-bar-content" style="flex: 3; min-width: 65%;">
                 </div>
         </div>
     </div>
@@ -214,7 +222,7 @@
     <ul class="list" id="listaTarefas"></ul>
 </div>
 
-<div class="modal-overlay" id="modalConfirmarDesmarcar">
+<div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;">
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
         <h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3>
@@ -300,13 +308,13 @@
         
         <fieldset class="fieldset-config">
             <legend>Meta Diária</legend>
-            <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom: 10px;">
+            <div style="display:flex; gap:10px; align-items:center; margin-bottom: 10px;">
                 <div class="switch-container" style="margin:0; padding:5px; flex:none; width:auto; gap:10px;">
                     <span style="font-weight:bold;font-size:12px;">Exibir Meta</span>
                     <label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label>
                 </div>
-                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1;">
-                    <label style="font-size:12px; margin-bottom:2px;">Meta Diária (horas):</label>
+                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px;">
+                    <label style="font-size:12px; margin:0; white-space:nowrap;">Meta (h):</label>
                     <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 6px; width: 100%;">
                 </div>
             </div>
@@ -528,18 +536,23 @@
         
         <div class="form-group">
             <label>Disciplina:</label>
-            <select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulas()"></select>
-        </div>
-
-        <div class="form-group">
-            <label>Título / Assunto (Opcional):</label>
-            <input type="text" id="tarTituloPersonalizado" placeholder="Ex: PDF Aula 00">
+            <select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulasCustom()"></select>
         </div>
 
         <div class="form-group">
             <label>Aulas / Assuntos (Selecione várias):</label>
-            <select id="tarAulas" class="modal-select" multiple size="3" style="height:auto; min-height:80px;"></select>
-            <small style="font-size:11px; color:#666;">* Segure CTRL (ou arraste no celular) para selecionar várias.</small>
+            <div style="position:relative;">
+                <div class="custom-select-box" onclick="toggleDropdownAulas()">
+                    <span id="tarAulasDisplay">Selecione as aulas...</span>
+                    <span>▼</span>
+                </div>
+                <div class="custom-select-options" id="tarAulasOptions"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Título / Assunto (Opcional):</label>
+            <input type="text" id="tarTituloPersonalizado" placeholder="Ex: PDF Aula 00">
         </div>
 
         <div class="form-group">
@@ -551,10 +564,10 @@
             <h4 style="margin:0 0 10px 0; font-size:13px; color:#1E90FF;">Dados do Registro</h4>
             <div style="display:flex; gap:10px;">
                 <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Qtd. Questões</label>
-                    <input type="number" id="tarQtdQuestoes" value="0">
+                    <input type="number" id="tarQtdQuestoes" value="0" oninput="ajustarTravaAcertos()">
                 </div>
                 <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Acertos</label>
-                    <input type="number" id="tarQtdAcertos" value="0" oninput="if(parseInt(this.value) > parseInt(document.getElementById('tarQtdQuestoes').value)) this.value = document.getElementById('tarQtdQuestoes').value;">
+                    <input type="number" id="tarQtdAcertos" value="0" oninput="ajustarTravaAcertos()">
                 </div>
             </div>
             <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs"></div>
@@ -606,10 +619,10 @@
         
         <div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: #f5f5f5; padding: 10px; border-radius: 8px;">
             <div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label>
-                <input type="number" id="qtdQuestoes" value="0">
+                <input type="number" id="qtdQuestoes" value="0" oninput="ajustarTravaAcertosReg()">
             </div>
             <div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label>
-                <input type="number" id="qtdAcertos" value="0" oninput="if(parseInt(this.value) > parseInt(document.getElementById('qtdQuestoes').value)) this.value = document.getElementById('qtdQuestoes').value;">
+                <input type="number" id="qtdAcertos" value="0" oninput="ajustarTravaAcertosReg()">
             </div>
         </div>
         
@@ -660,7 +673,7 @@ let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toas
 let trilhaAtivaNome = null;
 
 function formatarHorasMinutos(segs) {
-    if(segs === 0) return "0m";
+    if(!segs || segs === 0) return "0m";
     let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60);
     return (h > 0 ? h + "h" : "") + m.toString().padStart(h > 0 ? 2 : 1, '0') + "m";
 }
@@ -744,11 +757,11 @@ function aplicarTemaCores(){
     if(t === 'transparente') {
         document.body.style.color = '#fff'; document.getElementById('display-timer').style.color = '#fff'; document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.4)');
         document.documentElement.style.setProperty('--title-color', '#ffffff');
-        document.querySelectorAll('.item-badge').forEach(b => { b.style.background = 'rgba(255,255,255,0.3)'; b.style.color = '#fff'; });
+        document.querySelectorAll('.item-badge:not(.concluida-badge)').forEach(b => { b.style.background = 'rgba(255,255,255,0.3)'; b.style.color = '#fff'; });
     } else {
         document.body.style.color = ''; document.getElementById('display-timer').style.color = 'var(--primaria)'; document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
         document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
-        document.querySelectorAll('.item-badge').forEach(b => { b.style.background = 'rgba(0,0,0,0.1)'; b.style.color = 'inherit'; });
+        document.querySelectorAll('.item-badge:not(.concluida-badge)').forEach(b => { b.style.background = 'rgba(0,0,0,0.1)'; b.style.color = 'inherit'; });
     }
 }
 
@@ -758,21 +771,45 @@ let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 
-// O áudio restart forçando o bypass de cache do github
-let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3?cb=' + Date.now());
+// O áudio restart com bypass de cache + injeção base64
+let audioRestart = new Audio();
+function initAudioRestart() {
+    let b64 = localStorage.getItem('restart_b64');
+    if(b64) { audioRestart.src = b64; }
+    else {
+        fetch('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3?cb=' + Date.now())
+        .then(r => r.blob()).then(blob => {
+            let reader = new FileReader();
+            reader.onloadend = () => { localStorage.setItem('restart_b64', reader.result); audioRestart.src = reader.result; };
+            reader.readAsDataURL(blob);
+        }).catch(e=>{});
+    }
+}
+initAudioRestart();
 
 playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
 
 function carregarMusicas(event) {
     const files = event.target.files;
-    if (files.length > 0) { 
-        playlist = Array.from(files).map(file => URL.createObjectURL(file)); 
-        musicaIndex = 0; 
-        document.getElementById('btnLimparMusica').style.display = 'flex';
-        mostrarToast(`${files.length} músicas carregadas!`); 
+    if (files.length === 0) return; 
+    
+    // Limpeza pesada de memória
+    playlist.forEach(u => URL.revokeObjectURL(u));
+    playlist = []; musicaIndex = 0;
+    
+    let aviso = false;
+    for(let i=0; i<files.length; i++) {
+        if(files[i].size > 30 * 1024 * 1024) aviso = true;
+        playlist.push(URL.createObjectURL(files[i]));
     }
+    
+    if(aviso) alert("⚠️ Alguma música é muito grande (maior que 30MB). Se o aplicativo travar ou não tocar, diminua o tamanho do arquivo ou limpe a lista.");
+    
+    document.getElementById('btnLimparMusica').style.display = 'flex';
+    mostrarToast(`${files.length} músicas carregadas!`); 
 }
 function limparMusica() {
+    playlist.forEach(u => URL.revokeObjectURL(u));
     playlist = []; musicaIndex = 0; playerAudio.pause(); playerAudio.src = ""; document.getElementById('btnLimparMusica').style.display = 'none'; mostrarToast("Playlist limpa.");
 }
 function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play().catch(()=>{}); }
@@ -956,8 +993,8 @@ function fazerLoginInicial(){
     }
     localStorage.setItem('estudos_operadorAtual',n); document.getElementById('seletorOperador').value=n; operadorAnteriorSelect=n;
     
-    // Força o carregamento do audio após o clique do usuário
-    audioRestart.load();
+    // Força o navegador a engatar o áudio
+    audioRestart.play().then(()=>audioRestart.pause()).catch(()=>{});
 
     aplicarTemaCores(); atualizarEngrenagem();
     const l=document.getElementById('login-screen'); l.style.opacity='0'; setTimeout(()=>l.style.display='none',500);
@@ -990,17 +1027,19 @@ function renderizarCabecalhoTrilhas() {
     if(!concNome) { cont.innerHTML = '<span style="font-size:12px;color:#888;">Nenhum concurso ativo.</span>'; renderizarListaTarefas(); return; }
     
     let objConc = db.concursos.find(c => c.nome === concNome) || {cor: 'var(--primaria)'};
-    cont.innerHTML += `<div class="concurso-badge" style="background:${objConc.cor};">${concNome}</div>`;
     
     let trilhasDeste = db.trilhas.filter(t => t.concurso === concNome);
     if(!trilhaAtivaNome || !trilhasDeste.find(t => t.nome === trilhaAtivaNome)) { trilhaAtivaNome = trilhasDeste.length > 0 ? trilhasDeste[0].nome : null; }
     
-    trilhasDeste.forEach(t => {
-        let isAtiva = t.nome === trilhaAtivaNome;
-        cont.innerHTML += `<div class="trilha-tab ${isAtiva ? 'active' : ''}" onclick="mudarTrilhaAtiva('${t.nome}')">${t.nome}</div>`;
-    });
-    
-    cont.innerHTML += `<button class="btn-add-trilha" onclick="criarTrilhaAutoModal()">+ Trilha</button>`;
+    let selHtml = `<select class="sel-trilha-header" onchange="mudarTrilhaAtiva(this.value)">`;
+    trilhasDeste.forEach(t => { selHtml += `<option value="${t.nome}" ${t.nome === trilhaAtivaNome ? 'selected' : ''}>${t.nome}</option>`; });
+    selHtml += `</select>`;
+
+    cont.innerHTML = `
+        <span class="concurso-badge" style="color:${objConc.cor};">${concNome}</span>
+        ${selHtml}
+        <button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button>
+    `;
     
     renderizarDashboardTrilha();
     renderizarListaTarefas();
@@ -1105,21 +1144,39 @@ function renderizarListaTarefas() {
         const isPulada = t.tipoAtividade === "Pulada";
         let cCor = db.concursos.find(x=>x.nome===t.concurso)?.cor || '#eee';
         let classeItem = isPulada ? 'item item-pulada' : (isConcluida ? 'item item-concluida' : 'item');
-        let txtStatus = isPulada ? '⏭️ Pulada' : `✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}`;
-        let statusHtml = isConcluida ? `<div style="font-size:11px; font-weight:bold; color:${isPulada ? '#666' : '#2e7d32'}; margin-top:4px;">${txtStatus}</div>` : '';
         
+        let splitTit = t.titulo.split(' - ');
+        let numeroTarefaStr = splitTit[0]; // "Tarefa 01"
+        let tituloCustom = splitTit.length > 1 ? splitTit.slice(1).join(' - ') : "";
+        
+        let stringAulas = t.aulas ? ` - ${t.aulas}` : '';
+        
+        let desempenhoStr = (t.questoes && t.questoes > 0) ? `<span style="font-size:12px; font-weight:bold; color:#555;">🎯 ${t.acertos}/${t.questoes} (${Math.round((t.acertos/t.questoes)*100)}%)</span>` : '';
+        let badgeClasseExtra = (isConcluida && !isPulada) ? "concluida-badge" : "";
+        let classTitleExtra = (isConcluida && !isPulada) ? "style='color:#2e7d32 !important;'" : "";
+
+        let linha4 = '';
+        if(isPulada) {
+            linha4 = `<div class="item-linha4" style="color:#666;">⏭️ Pulada</div>`;
+        } else if (isConcluida) {
+            linha4 = `<div class="item-linha4" style="color:#2e7d32;">✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}${t.dataConclusao ? ' - ' + t.dataConclusao : ''}</div>`;
+        }
+
         l.innerHTML += `
         <li class="${classeItem}" onclick="abrirFormTarefa(${t.id})" style="border-left: 5px solid ${cCor};">
             <div class="item-info">
-                <div class="item-title" style="color: ${(isConcluida && !isPulada) ? '#2e7d32' : 'var(--title-color)'} !important;">${t.titulo}</div>
-                <div class="item-subtitle">${t.disciplina} ${t.aulas ? ' - ' + t.aulas : ''}</div>
-                <div class="item-badge">${t.tipoAtividade}</div>
-                ${statusHtml}
+                <div class="item-linha1">${numeroTarefaStr} - ${t.disciplina}${stringAulas}</div>
+                ${tituloCustom ? `<div class="item-linha2" ${classTitleExtra}>${tituloCustom}</div>` : ''}
+                <div class="item-linha3">
+                    <span class="item-badge ${badgeClasseExtra}">${t.tipoAtividade}</span>
+                    ${desempenhoStr}
+                </div>
+                ${linha4}
             </div>
         </li>`;
     });
     if(filtradas.length === 0) { l.innerHTML = `<div style="text-align:center; padding: 20px; color: #fff;">Nenhuma tarefa cadastrada.</div>`; }
-    aplicarTemaCores(); // Reaplica as cores para os itens recém renderizados no tema transparente
+    aplicarTemaCores();
 }
 
 function iniciar(){
@@ -1161,6 +1218,61 @@ function cancelarDesmarcar() {
     fecharModal('modalConfirmarDesmarcar');
 }
 
+// Logic para o Dropdown Multi-select Customizado das Aulas
+function toggleDropdownAulas() {
+    let opt = document.getElementById('tarAulasOptions');
+    opt.style.display = opt.style.display === 'block' ? 'none' : 'block';
+}
+
+function popularDropdownAulasCustom() {
+    const conc = getConcursoAtivoNome();
+    const dNome = document.getElementById('tarDisciplina').value;
+    const cont = document.getElementById('tarAulasOptions'); cont.innerHTML = '';
+    
+    let discObj = db.disciplinas.find(d => d.concurso === conc && d.nome === dNome);
+    if(discObj && discObj.aulas > 0) {
+        let aInit = discObj.aulaInicio !== undefined ? discObj.aulaInicio : 1;
+        for(let i=0; i<discObj.aulas; i++) {
+            let n = aInit + i;
+            let strAula = `Aula ${String(n).padStart(2,'0')}`;
+            cont.innerHTML += `
+                <div class="custom-select-option" onclick="event.stopPropagation(); clickCheckboxAulas(this)">
+                    <input type="checkbox" value="${strAula}"> <span>${strAula}</span>
+                </div>
+            `;
+        }
+    } else {
+        cont.innerHTML = `<div style="padding:10px; color:#999; font-size:12px;">Nenhuma aula cadastrada</div>`;
+    }
+    atualizarDisplayAulas();
+}
+
+function clickCheckboxAulas(divOpt) {
+    let cb = divOpt.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    atualizarDisplayAulas();
+}
+
+function atualizarDisplayAulas() {
+    let selecionados = [];
+    document.querySelectorAll('#tarAulasOptions input[type="checkbox"]:checked').forEach(cb => {
+        selecionados.push(cb.value);
+    });
+    let display = document.getElementById('tarAulasDisplay');
+    if(selecionados.length === 0) display.innerText = "Selecione as aulas...";
+    else display.innerText = selecionados.join(', ');
+}
+
+// Fecha o dropdown se clicar fora
+document.addEventListener('click', function(e) {
+    let box = document.querySelector('.custom-select-box');
+    let opts = document.getElementById('tarAulasOptions');
+    if(box && opts && !box.contains(e.target) && !opts.contains(e.target)) {
+        opts.style.display = 'none';
+    }
+});
+
+
 function abrirLoginAdmin(){
     if(db.configs.senhaAdmin && db.configs.senhaAdmin.trim() !== ""){ document.getElementById('senhaAdmin').value=''; abrirModal('modalLoginAdmin');
     } else abrirPainelUnificadoComNivel(true);
@@ -1181,7 +1293,7 @@ function salvarConfigGerais(){
 
 function toggleInputsMeta() {
     let exibir = document.getElementById('cfgExibirMeta').checked;
-    document.getElementById('divMetaHoras').style.display = exibir ? 'block' : 'none';
+    document.getElementById('divMetaHoras').style.display = exibir ? 'flex' : 'none';
 }
 
 function abrirConfigCronometroModal() {
@@ -1454,6 +1566,8 @@ function abrirFormTarefa(id, numSugerido = 1){
     let contStatus = document.getElementById('containerStatusConcluida');
     let divEdicao = document.getElementById('divEdicaoConcluida');
     
+    document.getElementById('tarAulasOptions').style.display = 'none'; // garante fechado
+    
     if(id >= 0){ 
         const t = db.tarefas.find(x => x.id === id); 
         document.getElementById('tarefaIdOriginal').value = t.id; 
@@ -1464,18 +1578,17 @@ function abrirFormTarefa(id, numSugerido = 1){
         selTr.value = t.trilha;
         selD.value = t.disciplina;
         
-        // Pega o titulo personalizado extraindo "Tarefa 01 - Customizado"
         let splitTit = t.titulo.split(' - ');
         document.getElementById('tarTituloPersonalizado').value = splitTit.length > 1 ? splitTit.slice(1).join(' - ') : "";
         
-        popularDropdownAulas();
+        popularDropdownAulasCustom();
         
-        // Seleciona as opções multiplas no Select
+        // Marca caixinhas salvas
         let selectedAulas = t.aulas ? t.aulas.split(', ') : [];
-        const selA = document.getElementById('tarAulas');
-        Array.from(selA.options).forEach(opt => {
-            opt.selected = selectedAulas.includes(opt.value);
+        document.querySelectorAll('#tarAulasOptions input[type="checkbox"]').forEach(cb => {
+            if(selectedAulas.includes(cb.value)) cb.checked = true;
         });
+        atualizarDisplayAulas();
         
         selT.value = t.tipoAtividade;
         
@@ -1507,25 +1620,21 @@ function abrirFormTarefa(id, numSugerido = 1){
         contStatus.style.display = 'none';
         divEdicao.style.display = 'none';
         document.getElementById('btnPularTarefa').style.display = 'block';
-        popularDropdownAulas(); // Popula zerado
+        popularDropdownAulasCustom(); 
     }
     abrirModal('modalFormTarefa');
 }
 
-function popularDropdownAulas() {
-    const conc = getConcursoAtivoNome();
-    const dNome = document.getElementById('tarDisciplina').value;
-    const selA = document.getElementById('tarAulas'); selA.innerHTML = '';
-    
-    let discObj = db.disciplinas.find(d => d.concurso === conc && d.nome === dNome);
-    if(discObj && discObj.aulas > 0) {
-        let aInit = discObj.aulaInicio !== undefined ? discObj.aulaInicio : 1;
-        for(let i=0; i<discObj.aulas; i++) {
-            let n = aInit + i;
-            let strAula = `Aula ${String(n).padStart(2,'0')}`;
-            selA.innerHTML += `<option value="${strAula}">${strAula}</option>`;
-        }
-    }
+function ajustarTravaAcertos() {
+    let q = parseInt(document.getElementById('tarQtdQuestoes').value) || 0;
+    let a = parseInt(document.getElementById('tarQtdAcertos').value) || 0;
+    if (a > q) { document.getElementById('tarQtdAcertos').value = q; }
+}
+
+function ajustarTravaAcertosReg() {
+    let q = parseInt(document.getElementById('qtdQuestoes').value) || 0;
+    let a = parseInt(document.getElementById('qtdAcertos').value) || 0;
+    if (a > q) { document.getElementById('qtdAcertos').value = q; }
 }
 
 function pularTarefa() {
@@ -1544,9 +1653,8 @@ function salvarTarefa(isPulo = false){
     let txtPers = document.getElementById('tarTituloPersonalizado').value.trim();
     if(txtPers !== "") tit += " - " + txtPers;
 
-    // Pega os itens selecionados do dropdown multiselect
-    let selA = document.getElementById('tarAulas');
-    let aulasSelecionadas = Array.from(selA.selectedOptions).map(opt => opt.value).join(', ');
+    let aulasSelecionadas = [];
+    document.querySelectorAll('#tarAulasOptions input[type="checkbox"]:checked').forEach(cb => { aulasSelecionadas.push(cb.value); });
     
     let obj = { 
         id: idO ? parseInt(idO) : Date.now(), 
@@ -1554,7 +1662,7 @@ function salvarTarefa(isPulo = false){
         concurso: getConcursoAtivoNome(), 
         trilha: document.getElementById('tarTrilhaSelect').value, 
         disciplina: document.getElementById('tarDisciplina').value,
-        aulas: aulasSelecionadas,
+        aulas: aulasSelecionadas.join(', '),
         tipoAtividade: document.getElementById('tarTipo').value,
         concluida: false,
         questoes: 0, acertos: 0, obs: ""
@@ -1576,6 +1684,7 @@ function salvarTarefa(isPulo = false){
             obj.questoes = parseInt(document.getElementById('tarQtdQuestoes').value) || 0;
             obj.acertos = parseInt(document.getElementById('tarQtdAcertos').value) || 0;
             obj.obs = document.getElementById('tarObs').value;
+            obj.dataConclusao = old.dataConclusao || getDataHoraAtual().split(' ')[0]; // Mantem data antiga ou coloca hoje se nao tiver
         }
 
         db.tarefas[db.tarefas.findIndex(x => x.id === parseInt(idO))] = obj; 
@@ -1661,6 +1770,7 @@ function salvarRegistroEstudo(){
     }
     
     t.concluida = true; t.tempoRegistrado = duracaoCronometro; t.questoes = q; t.acertos = a; t.obs = document.getElementById('regObs').value.trim();
+    t.dataConclusao = getDataHoraAtual().split(' ')[0];
     mostrarToast("✅ Tarefa Concluída e Registrada!");
     
     if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerText = '▶'; document.getElementById('btn-play-timer').classList.remove('is-paused'); }
@@ -1703,7 +1813,7 @@ function excluirHistorico(id) {
                 if(restam.length === 0) {
                     taskObj.concluida = false;
                     taskObj.tempoRegistrado = 0;
-                    taskObj.questoes = 0; taskObj.acertos = 0; taskObj.obs = "";
+                    taskObj.questoes = 0; taskObj.acertos = 0; taskObj.obs = ""; delete taskObj.dataConclusao;
                 }
             }
         }
@@ -1792,7 +1902,7 @@ async function pushParaNuvemSilencioso() {
 function salvarModificacaoBasica(){ 
     db.configs.ultimaModificacaoLocal = Date.now(); 
     salvarBancoLocal(); 
-    pushParaNuvemSilencioso(); // Força update imediato pra nuvem
+    pushParaNuvemSilencioso(); 
 }
 
 function renderizarOperadores(){ const s=document.getElementById('seletorOperador'); s.innerHTML=''; db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`}); s.innerHTML+='<option value="sair">👋 Sair</option>'; const u=localStorage.getItem('estudos_operadorAtual'); if(u&&db.operadores.find(o=>o.nome===u)){ s.value=u; operadorAnteriorSelect=u; } }
