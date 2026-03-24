@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô AFRB v1.0.2</title>
+    <title>Alô AFRB v1.0.3</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3);}
@@ -105,7 +105,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô AFRB</div>
-    <div class="splash-version">v1.0.2</div>
+    <div class="splash-version">v1.0.3</div>
 </div>
 
 <div id="login-screen">
@@ -184,7 +184,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô AFRB - v1.0.2</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô AFRB - v1.0.3</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()">📱 Configurações do App</button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()">⏱️ Configurações do Cronômetro</button>
         <button class="btn-outline" onclick="abrirConfigAtalhos()">⌨️ Teclas de Atalho</button>
@@ -530,6 +530,14 @@
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
 <script>
+// Capturador Global de Erros (Escudo Defletor)
+window.addEventListener('error', function(event) {
+    alert('💥 ALERTA DE CRASH: ' + event.message + '\nArquivo: ' + event.filename + '\nLinha: ' + event.lineno + '\n\nTire um print e mande para a engenharia!');
+});
+window.addEventListener('unhandledrejection', function(event) {
+    alert('💥 REJEIÇÃO NÃO TRATADA: ' + event.reason + '\n\nTire um print e mande para a engenharia!');
+});
+
 // --- PWA REGISTRO ---
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
 
@@ -566,29 +574,39 @@ function carregarBanco(){
         },
         historico: []
     };
-    let l = JSON.parse(localStorage.getItem('estudos_db'));
-    if(l) { 
-        // Proteção blindada contra faltas de array no BD antigo
-        if(!l.operadores) l.operadores = d.operadores;
-        if(!l.concursos) l.concursos = d.concursos;
-        l.concursos.forEach(c => { if(c.ativo === undefined) c.ativo = true; }); // Força ativos nos antigos
-        if(!l.trilhas) l.trilhas = d.trilhas; 
-        if(!l.disciplinas) l.disciplinas = d.disciplinas;
-        if(!l.tarefas) l.tarefas = d.tarefas; 
-        if(!l.historico) l.historico = d.historico;
-        
-        if(!l.configs) l.configs = d.configs;
-        if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
-        else { 
-            for(let key in l.configs.atalhos){ 
-                if(typeof l.configs.atalhos[key] === 'string') 
-                    l.configs.atalhos[key] = [l.configs.atalhos[key]]; 
+    
+    try {
+        let txt = localStorage.getItem('estudos_db');
+        if(txt) {
+            let l = JSON.parse(txt);
+            // Malha Fina (Proteção Anti-Crash)
+            if(!Array.isArray(l.operadores)) l.operadores = d.operadores;
+            if(!Array.isArray(l.concursos)) l.concursos = d.concursos;
+            l.concursos.forEach(c => { if(c.ativo === undefined) c.ativo = true; }); // Força ativos nos antigos
+            if(!Array.isArray(l.trilhas)) l.trilhas = d.trilhas;
+            if(!Array.isArray(l.disciplinas)) l.disciplinas = d.disciplinas;
+            if(!Array.isArray(l.tarefas)) l.tarefas = d.tarefas;
+            if(!Array.isArray(l.historico)) l.historico = d.historico;
+
+            if(!l.configs || typeof l.configs !== 'object') l.configs = d.configs;
+            if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
+            else { 
+                for(let k in d.configs.atalhos) {
+                    if(!l.configs.atalhos[k]) l.configs.atalhos[k] = d.configs.atalhos[k];
+                    else if(typeof l.configs.atalhos[k] === 'string') l.configs.atalhos[k] = [l.configs.atalhos[k]]; 
+                }
             }
+            if(!l.configs.pomodoro) l.configs.pomodoro = d.configs.pomodoro;
+            if(l.configs.exibirMeta === undefined) l.configs.exibirMeta = true;
+            if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
+            if(!l.configs.tiposAtividade) l.configs.tiposAtividade = d.configs.tiposAtividade;
+            
+            return l; 
         }
-        if(!l.configs.pomodoro) l.configs.pomodoro = d.configs.pomodoro;
-        if(l.configs.exibirMeta === undefined) l.configs.exibirMeta = true;
-        if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
-        return l; 
+    } catch(e) {
+        console.error("Erro ao processar banco local:", e);
+        alert("Ocorreu um erro ao carregar os dados antigos. O banco foi restaurado para o padrão. Detalhe: " + e.message);
+        return d;
     }
     return d;
 }
@@ -626,7 +644,6 @@ let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3'); 
-// Removido o .load() solto no código para evitar bloqueio do DOM.
 
 playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
 
@@ -847,24 +864,32 @@ function verificarTrocaOperador(sel) {
     }
 }
 
+// 🔥 BUG CORRIGIDO AQUI!
 function atualizarEngrenagem(){
-    let n=document.getElementById('seletorOperador').value, o=db.operadores.find(x=>x.nome===n);
-    if(o&&o.ocultarEngrenagem){ document.getElementById('btnConfigGear').style.display='none'; document.getElementById('btnTemaRapido').style.display='flex';
-    } else { document.getElementById('btnConfigGear').style.display='flex'; document.getElementById('btnTemaRapido').style.display='none'; }
+    let n=document.getElementById('seletorOperador').value;
+    let o=db.operadores.find(x=>x.nome===n);
+    let btnEngrenagem = document.getElementById('btnConfigGear');
+    if(btnEngrenagem) {
+        btnEngrenagem.style.display = (o && o.ocultarEngrenagem) ? 'none' : 'flex';
+    }
 }
 
 function iniciar(){
-    aplicarTemaCores(); renderizarOperadores(); prepararTelaLogin(); atualizarEngrenagem();
-    let opAtual = localStorage.getItem('estudos_operadorAtual');
-    const l = document.getElementById('login-screen');
-    if (opAtual && db.operadores.find(o => o.nome === opAtual)) { l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual; }
-    setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
-    
-    renderizarListaTarefas();
-    document.getElementById('buscaNome').addEventListener('input', function(){ renderizarListaTarefas(); });
-    setInterval(sincronizarComNuvemSilencioso, 20000);
-    sincronizarComNuvemSilencioso();
-    atualizarDisplayTimer();
+    try {
+        aplicarTemaCores(); renderizarOperadores(); prepararTelaLogin(); atualizarEngrenagem();
+        let opAtual = localStorage.getItem('estudos_operadorAtual');
+        const l = document.getElementById('login-screen');
+        if (opAtual && db.operadores.find(o => o.nome === opAtual)) { l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual; }
+        setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
+        
+        renderizarListaTarefas();
+        document.getElementById('buscaNome').addEventListener('input', function(){ renderizarListaTarefas(); });
+        setInterval(sincronizarComNuvemSilencioso, 20000);
+        sincronizarComNuvemSilencioso();
+        atualizarDisplayTimer();
+    } catch(erro) {
+        alert("Falha Crítica ao Inicializar o App! Tirar print e mandar para engenharia: \n" + erro.message);
+    }
 }
 
 function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}
@@ -1039,7 +1064,7 @@ function excluirItem(t, id){
     if(t === 'disciplinas') db.disciplinas = db.disciplinas.filter(i => i.id !== id); 
     if(t === 'concursos') { db.concursos = db.concursos.filter(i => i.nome !== id); db.trilhas = db.trilhas.filter(i => i.concurso !== id); db.tarefas = db.tarefas.filter(i => i.concurso !== id); } 
     if(t === 'operadores') db.operadores = db.operadores.filter(i => i.nome !== id); 
-    salvarModificacaoBasica(); iniciar(); abrirGerenciar(t); 
+    salvarModificacaoBasica(); renderizarListaTarefas(); abrirGerenciar(t); 
 }
 
 function abrirFormDisciplina(i){
