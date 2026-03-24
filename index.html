@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô AFRB v1.0.1</title>
+    <title>Alô AFRB v1.0.2</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
         :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3);}
@@ -105,7 +105,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô AFRB</div>
-    <div class="splash-version">v1.0.1</div>
+    <div class="splash-version">v1.0.2</div>
 </div>
 
 <div id="login-screen">
@@ -184,7 +184,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô AFRB - v1.0.1</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô AFRB - v1.0.2</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()">📱 Configurações do App</button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()">⏱️ Configurações do Cronômetro</button>
         <button class="btn-outline" onclick="abrirConfigAtalhos()">⌨️ Teclas de Atalho</button>
@@ -568,14 +568,26 @@ function carregarBanco(){
     };
     let l = JSON.parse(localStorage.getItem('estudos_db'));
     if(l) { 
-        if(!l.tarefas) l.tarefas = d.tarefas; // Migração se não existir
-        if(!l.trilhas) l.trilhas = d.trilhas; // Migração se não existir
+        // Proteção blindada contra faltas de array no BD antigo
+        if(!l.operadores) l.operadores = d.operadores;
+        if(!l.concursos) l.concursos = d.concursos;
+        l.concursos.forEach(c => { if(c.ativo === undefined) c.ativo = true; }); // Força ativos nos antigos
+        if(!l.trilhas) l.trilhas = d.trilhas; 
+        if(!l.disciplinas) l.disciplinas = d.disciplinas;
+        if(!l.tarefas) l.tarefas = d.tarefas; 
+        if(!l.historico) l.historico = d.historico;
+        
+        if(!l.configs) l.configs = d.configs;
         if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
-        else { // Convert old string shortcuts to arrays
-            for(let key in l.configs.atalhos){ if(typeof l.configs.atalhos[key] === 'string') l.configs.atalhos[key] = [l.configs.atalhos[key]]; }
+        else { 
+            for(let key in l.configs.atalhos){ 
+                if(typeof l.configs.atalhos[key] === 'string') 
+                    l.configs.atalhos[key] = [l.configs.atalhos[key]]; 
+            }
         }
         if(!l.configs.pomodoro) l.configs.pomodoro = d.configs.pomodoro;
         if(l.configs.exibirMeta === undefined) l.configs.exibirMeta = true;
+        if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
         return l; 
     }
     return d;
@@ -614,7 +626,7 @@ let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
 let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3'); 
-audioRestart.load(); // Força o preload
+// Removido o .load() solto no código para evitar bloqueio do DOM.
 
 playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
 
@@ -820,6 +832,19 @@ function fazerLoginInicial(){
     const l=document.getElementById('login-screen');
     l.style.opacity='0'; setTimeout(()=>l.style.display='none',500);
     renderizarListaTarefas();
+}
+
+function verificarTrocaOperador(sel) {
+    if(sel.value === 'sair') {
+        localStorage.removeItem('estudos_operadorAtual');
+        location.reload();
+    } else {
+        localStorage.setItem('estudos_operadorAtual', sel.value);
+        operadorAnteriorSelect = sel.value;
+        aplicarTemaCores();
+        atualizarEngrenagem();
+        renderizarListaTarefas();
+    }
 }
 
 function atualizarEngrenagem(){
@@ -1151,12 +1176,12 @@ function abrirHistorico(){
             l.innerHTML += `
             <div style="background:#fcfcfc; border:1px solid #eee; border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:#333;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong style="color:var(--primaria); font-size:16px;">${h.tarefa} ${tempoBadge}</strong>
+                    <strong style="color:var(--primaria); font-size:16px;">${h.tarefa || h.disciplina} ${tempoBadge}</strong>
                     <span style="font-size:12px; color:#888;">${h.data.split(' ')[0]}</span>
                 </div>
                 <div style="font-size:14px;"><strong>Disciplina:</strong> ${h.disciplina} | <strong>Tipo:</strong> ${h.tipoAtividade}</div>
                 ${h.observacao ? `<div style="font-size:13px; color:#555;"><em>Obs: ${h.observacao}</em></div>` : ''}
-                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso} • ${h.trilha} | 👤 Op: ${h.operador}</div>
+                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'} | 👤 Op: ${h.operador}</div>
             </div>`;
         });
     }
