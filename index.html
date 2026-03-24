@@ -47,6 +47,9 @@
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
         .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
         
+        .chip-aula { display:inline-block; padding:4px 8px; background:var(--secundaria); border:1px solid var(--primaria); color:var(--primaria) !important; font-size:12px; font-weight:bold; border-radius:12px; cursor:pointer; margin-right:4px; margin-bottom:4px; transition:0.2s; }
+        .chip-aula:active { transform:scale(0.9); }
+
         /* Layout de Trilhas */
         .trilhas-bar { display: flex; align-items: center; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 5px; }
         .trilhas-bar::-webkit-scrollbar { display: none; }
@@ -62,6 +65,7 @@
         .item-subtitle{color:#555;font-size:12px; font-weight: bold;}
         .item-badge{display:inline-block; background:rgba(0,0,0,0.1); padding:2px 6px; border-radius:10px; font-size:11px; margin-top:4px;}
         .item-concluida { background: #e8f5e9 !important; border-color: #4CAF50 !important; opacity: 0.85; }
+        .item-pulada { background: #f5f5f5 !important; border-color: #9e9e9e !important; opacity: 0.7; }
         
         .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
         .gerenciar-info{flex:1;font-size:14px}
@@ -88,7 +92,8 @@
         .crono-btn-icon:active { transform: scale(0.9); }
         .crono-play { font-size: 50px; color: #1E90FF; }
         .crono-stop { font-size: 60px; color: #9e9e9e; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3)); } 
-        .crono-music { color: #2e7d32; }
+        .crono-music { color: #2e7d32; position: relative; }
+        .btn-limpar-musica { position: absolute; top: -5px; right: -10px; background: #d32f2f; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         .crono-mute { color: #555; }
         
         .crono-edit { background: transparent; color: #888; border: none; font-size: 20px; margin-left: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 5px;}
@@ -118,11 +123,11 @@
         .btn-sub-gerenciar span.emj { font-size: 18px; }
 
         /* Dashboard de Trilha */
-        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 12px; border-radius: 12px; border: 1px solid var(--glass-border); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
-        .dash-box { background: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
-        .dash-box-title { font-size: 10px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 3px; }
-        .dash-box-val { font-size: 15px; font-weight: 900; color: var(--primaria); }
-        .dash-prazo-bar { grid-column: span 2; background: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); font-size: 12px; color: #333;}
+        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
+        .dash-box { background: rgba(255,255,255,0.7); padding: 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); flex: 1; min-width: 22%; }
+        .dash-box-title { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 2px; }
+        .dash-box-val { font-size: 17px; font-weight: 900; color: var(--primaria); }
+        .dash-prazo-bar { width: 100%; background: rgba(255,255,255,0.7); padding: 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(0,0,0,0.05); font-size: 13px; color: #333;}
     </style>
 </head>
 <body>
@@ -179,7 +184,9 @@
                 <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar">⏹</button>
                 <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause">▶</button>
                 <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
-                <button class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">🎶</button>
+                <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">
+                    🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button>
+                </div>
                 <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
             </div>
             <div class="volume-container">
@@ -307,7 +314,7 @@
         <fieldset class="fieldset-config">
             <legend>Geral</legend>
             <div class="switch-container" style="padding:5px;">
-                <span style="font-weight:bold;font-size:13px;">Tocar som/beep ao Pausar</span>
+                <span style="font-weight:bold;font-size:13px;">Tocar restart.mp3 ao Pausar</span>
                 <label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label>
             </div>
         </fieldset>
@@ -470,9 +477,15 @@
             <label>Nome da Disciplina:</label>
             <input type="text" id="discNome" placeholder="Ex: Direito Constitucional">
         </div>
-        <div class="form-group">
-            <label>Qtd. de Aulas/Assuntos (Opcional):</label>
-            <input type="number" id="discAulas" placeholder="Ex: 15" min="0">
+        <div style="display:flex; gap:10px;">
+            <div class="form-group" style="flex:1;">
+                <label>Inicia na Aula:</label>
+                <input type="number" id="discAulaInicio" placeholder="Ex: 0" value="1">
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Qtd Aulas:</label>
+                <input type="number" id="discAulas" placeholder="Ex: 15" min="0">
+            </div>
         </div>
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalFormDisciplina');abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button>
@@ -483,7 +496,7 @@
 
 <div class="modal-overlay" id="modalFormTarefa">
     <div class="modal">
-        <div class="modal-title">Tarefa</div>
+        <div class="modal-title">Tarefa - <span id="tarHeaderConcurso" style="color:var(--primaria);"></span></div>
         <input type="hidden" id="tarefaIdOriginal">
         
         <div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50; background:#e8f5e9;">
@@ -491,14 +504,15 @@
             <label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label>
         </div>
 
-        <div class="form-group">
-            <label>Título da Tarefa:</label>
-            <input type="text" id="tarTitulo" placeholder="Ex: Tarefa 01">
-        </div>
-        
-        <div style="background:#f5f5f5; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 13px;">
-            <div><strong>Concurso:</strong> <span id="tarLabelConcurso"></span></div>
-            <div><strong>Trilha:</strong> <span id="tarLabelTrilha"></span></div>
+        <div style="display:flex; gap:10px;">
+            <div class="form-group" style="flex:1;">
+                <label>Tarefa Nº:</label>
+                <input type="number" id="tarNumero" placeholder="Ex: 1" min="1">
+            </div>
+            <div class="form-group" style="flex:2;">
+                <label>Trilha:</label>
+                <select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select>
+            </div>
         </div>
         
         <div class="form-group">
@@ -506,17 +520,30 @@
             <select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulas()"></select>
         </div>
         <div class="form-group">
-            <label>Aula / Assunto:</label>
-            <select id="tarAulas" class="modal-select"></select>
+            <label>Aulas / Assuntos:</label>
+            <input type="text" id="tarAulas" placeholder="Ex: Aula 00, Aula 01" style="margin-bottom: 5px;">
+            <div id="tarAulasChips" style="display:flex; gap:4px; flex-wrap:wrap;"></div>
         </div>
         <div class="form-group">
             <label>Tipo de Atividade Principal:</label>
             <select id="tarTipo" class="modal-select"></select>
         </div>
         
-        <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')">Cancelar</button>
-            <button class="btn-action" onclick="salvarTarefa()">Salvar Tarefa</button>
+        <div id="divEdicaoConcluida" style="display:none; background:#f0f7ff; border:1px solid #1E90FF; padding:10px; border-radius:8px; margin-bottom:15px;">
+            <h4 style="margin:0 0 10px 0; font-size:13px; color:#1E90FF;">Dados do Registro</h4>
+            <div style="display:flex; gap:10px;">
+                <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Qtd. Questões</label><input type="number" id="tarQtdQuestoes" value="0"></div>
+                <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Acertos</label><input type="number" id="tarQtdAcertos" value="0"></div>
+            </div>
+            <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs"></div>
+        </div>
+        
+        <div class="modal-actions" style="justify-content: space-between;">
+            <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="flex: none; width: auto;">Cancelar</button>
+            <div style="display: flex; gap:10px;">
+                <button class="btn-outline" id="btnPularTarefa" onclick="pularTarefa()" style="margin:0; flex:none; width:auto; padding: 10px 15px;">⏭️ Pular</button>
+                <button class="btn-action" onclick="salvarTarefa()" style="margin:0;">Salvar Tarefa</button>
+            </div>
         </div>
     </div>
 </div>
@@ -605,6 +632,7 @@ window.addEventListener('unhandledrejection', function(event) { console.error('R
 
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
+let audioDesbloqueado = false;
 
 function formatarHorasMinutos(segs) {
     if(segs === 0) return "0m";
@@ -620,7 +648,7 @@ const paletasDeCores = {
     rosa: {primaria:'#d81b60', secundaria:'#fce4ec', fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     escuro: {primaria:'#212121', secundaria:'#e0e0e0', fundo:'linear-gradient(135deg, #434343 0%, #000000 100%)', bgApp:'rgba(255,255,255,0.8)', bgItem:'rgba(255,255,255,0.9)', bgHeader:'rgba(255,255,255,0.95)'},
     roxo: {primaria:'#673ab7', secundaria:'#ede7f6', fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
-    transparente: {primaria:'rgba(255,255,255,0.6)', secundaria:'rgba(255,255,255,0.1)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.1)', bgItem:'rgba(255,255,255,0.15)', bgHeader:'rgba(255,255,255,0.15)'}
+    transparente: {primaria:'#2c3e50', secundaria:'rgba(255,255,255,0.3)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.15)', bgItem:'rgba(255,255,255,0.25)', bgHeader:'rgba(255,255,255,0.25)'}
 };
 
 function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
@@ -632,7 +660,7 @@ function carregarBanco(){
     let d = {
         concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff"}],
         trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB", dataInicio: getHojeYMD(), duracaoDias: 7}],
-        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulas: 10}],
+        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulaInicio: 1, aulas: 10}],
         tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Estudo Teórico", concluida: false}],
         operadores: [{nome: "Usuário", senha: "", ocultarEngrenagem: false}],
         configs: {
@@ -659,8 +687,9 @@ function carregarBanco(){
 
             let ativo = l.concursos.find(c => c.ativo);
             let concPadrao = ativo ? ativo.nome : (l.concursos[0] ? l.concursos[0].nome : "Geral");
-            l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; });
+            l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; if(disc.aulaInicio === undefined) disc.aulaInicio = 1; });
             l.trilhas.forEach(tr => { if(!tr.dataInicio) tr.dataInicio = getHojeYMD(); if(!tr.duracaoDias) tr.duracaoDias = 7; });
+            l.tarefas.forEach(tar => { if(tar.questoes === undefined) tar.questoes = 0; if(tar.acertos === undefined) tar.acertos = 0; if(tar.obs === undefined) tar.obs = ""; });
 
             if(!l.configs || typeof l.configs !== 'object') l.configs = d.configs;
             if(!l.configs.atalhos) l.configs.atalhos = d.configs.atalhos;
@@ -688,7 +717,7 @@ function aplicarTemaCores(){
     document.documentElement.style.setProperty('--bg-item',c.bgItem); document.documentElement.style.setProperty('--bg-header',c.bgHeader);
     
     if(t === 'transparente') {
-        document.body.style.color = '#fff'; document.getElementById('display-timer').style.color = '#fff'; document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.2)');
+        document.body.style.color = '#fff'; document.getElementById('display-timer').style.color = '#fff'; document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.4)');
         let titulos = document.querySelectorAll('.item-title'); titulos.forEach(x => x.style.color = '#fff');
     } else {
         document.body.style.color = ''; document.getElementById('display-timer').style.color = 'var(--primaria)'; document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
@@ -696,29 +725,16 @@ function aplicarTemaCores(){
     }
 }
 
-// ================= CRONÔMETRO LOGIC E AUDIO WEB API =================
+// ================= CRONÔMETRO E AUDIO =================
 let modoTimer = 'progressive', isRunningTimer = false, intervalTimer, tempoTimer = 0;
 let targetTimer = 25 * 60; let pomoFase = 'estudo', pomoCicloAtual = 0;
 
 let playerAudio = new Audio(), playlist = [], musicaIndex = 0, isMutedTimer = false, volumeSalvoTimer = 1.0;
+let audioRestart = new Audio('https://raw.githubusercontent.com/lincolnpv/assets/main/restart.mp3');
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function tocarBeepLocal() {
-    if(!db.configs.tocarRestart) return;
-    try {
-        if(audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime); 
-        gainNode.gain.setValueAtTime(isMutedTimer ? 0 : volumeSalvoTimer, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-        osc.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.5);
-    } catch(e) { console.log("Audio block", e); }
-}
+document.body.addEventListener('click', () => {
+    if(!audioDesbloqueado) { audioRestart.play().then(()=>audioRestart.pause()).catch(()=>{}); audioDesbloqueado = true; }
+}, {once:true});
 
 playerAudio.onended = () => { if (playlist.length > 0 && isRunningTimer) { musicaIndex = (musicaIndex + 1) % playlist.length; tocarMusicaTimer(); } };
 
@@ -727,8 +743,12 @@ function carregarMusicas(event) {
     if (files.length > 0) { 
         playlist = Array.from(files).map(file => URL.createObjectURL(file)); 
         musicaIndex = 0; 
-        mostrarToast(`${files.length} músicas carregadas! Selecione novamente na próxima sessão.`); 
+        document.getElementById('btnLimparMusica').style.display = 'flex';
+        mostrarToast(`${files.length} músicas carregadas!`); 
     }
+}
+function limparMusica() {
+    playlist = []; musicaIndex = 0; playerAudio.pause(); playerAudio.src = ""; document.getElementById('btnLimparMusica').style.display = 'none'; mostrarToast("Playlist limpa.");
 }
 function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.play().catch(()=>{}); }
 function ajustarVolumeTimer(val) { let v = val / 100; volumeSalvoTimer = v; if (isMutedTimer && v > 0) toggleMuteTimer(); playerAudio.volume = isMutedTimer ? 0 : v; document.getElementById('volume-slider-timer').value = val; }
@@ -770,7 +790,6 @@ function atualizarStatusPomodoro() {
 }
 
 function startPauseTimer() {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
     isRunningTimer = !isRunningTimer;
     let btnPlay = document.getElementById('btn-play-timer');
     if (isRunningTimer) {
@@ -780,7 +799,9 @@ function startPauseTimer() {
     } else { 
         clearInterval(intervalTimer); playerAudio.pause(); 
         btnPlay.innerText = '▶'; btnPlay.classList.remove('is-paused');
-        if(tempoTimer > 0) tocarBeepLocal();
+        if(tempoTimer > 0 && db.configs.tocarRestart) {
+            audioRestart.currentTime = 0; audioRestart.volume = isMutedTimer ? 0 : volumeSalvoTimer; audioRestart.play().catch(()=>{});
+        }
     }
 }
 
@@ -967,7 +988,7 @@ function renderizarDashboardTrilha() {
     let tObj = db.trilhas.find(t => t.nome === trilhaAtivaNome && t.concurso === conc);
     if(!tObj) { box.style.display = 'none'; return; }
     
-    box.style.display = 'grid';
+    box.style.display = 'flex';
     
     let histTrilha = db.historico.filter(h => h.trilha === trilhaAtivaNome && h.concurso === conc);
     let totalSegs = 0, qTot = 0, acTot = 0;
@@ -1020,7 +1041,7 @@ function renderizarDashboardTrilha() {
 
     box.innerHTML = `
         <div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho}</div></div>
-        <div class="dash-box"><div class="dash-box-title">Horas Estudadas</div><div class="dash-box-val" style="color:#555;">${hFormat}</div></div>
+        <div class="dash-box"><div class="dash-box-title">Horas Estud.</div><div class="dash-box-val" style="color:#555;">${hFormat}</div></div>
         <div class="dash-box"><div class="dash-box-title">Questões</div><div class="dash-box-val" style="color:#555;">${qTot}</div></div>
         <div class="dash-box"><div class="dash-box-title">Média Diária</div><div class="dash-box-val" style="color:#555;">${mediaFormat}</div></div>
         <div class="dash-prazo-bar">
@@ -1041,14 +1062,6 @@ function criarTrilhaAutoModal() {
     salvarModificacaoBasica(); mostrarToast("Nova Trilha adicionada!"); renderizarCabecalhoTrilhas();
 }
 
-function criarTarefaAutoModal() {
-    let conc = getConcursoAtivoNome(); if(!conc) return alert("Sem concurso ativo!");
-    if(!trilhaAtivaNome) return alert("Crie ou selecione uma Trilha primeiro!");
-    let count = db.tarefas.filter(t => t.concurso === conc && t.trilha === trilhaAtivaNome).length + 1;
-    let tituloSugerido = "Tarefa " + String(count).padStart(2, '0');
-    abrirFormTarefa(-1, tituloSugerido);
-}
-
 function renderizarListaTarefas() {
     const l = document.getElementById('listaTarefas'); l.innerHTML = '';
     let conc = getConcursoAtivoNome();
@@ -1058,14 +1071,16 @@ function renderizarListaTarefas() {
     
     filtradas.forEach(t => {
         const isConcluida = t.concluida === true;
+        const isPulada = t.tipoAtividade === "Pulada";
         let cCor = db.concursos.find(x=>x.nome===t.concurso)?.cor || '#eee';
-        let classeItem = isConcluida ? 'item item-concluida' : 'item';
-        let statusHtml = isConcluida ? `<div style="font-size:11px; font-weight:bold; color:#2e7d32; margin-top:4px;">✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}</div>` : '';
+        let classeItem = isPulada ? 'item item-pulada' : (isConcluida ? 'item item-concluida' : 'item');
+        let txtStatus = isPulada ? '⏭️ Pulada' : `✅ Concluída em ${formatarHorasMinutos(t.tempoRegistrado || 0)}`;
+        let statusHtml = isConcluida ? `<div style="font-size:11px; font-weight:bold; color:${isPulada ? '#666' : '#2e7d32'}; margin-top:4px;">${txtStatus}</div>` : '';
         
         l.innerHTML += `
         <li class="${classeItem}" onclick="abrirFormTarefa(${t.id})" style="border-left: 5px solid ${cCor};">
             <div class="item-info">
-                <div class="item-title" style="color: ${isConcluida ? '#2e7d32' : 'var(--primaria)'}">${t.titulo}</div>
+                <div class="item-title" style="color: ${(isConcluida && !isPulada) ? '#2e7d32' : 'var(--primaria)'}">${t.titulo}</div>
                 <div class="item-subtitle">${t.disciplina} ${t.aulas ? ' - ' + t.aulas : ''}</div>
                 <div class="item-badge">${t.tipoAtividade}</div>
                 ${statusHtml}
@@ -1107,7 +1122,7 @@ function abrirConfigGeraisModal(){
 }
 function salvarConfigGerais(){
     db.configs.tema = document.getElementById('cfgTema').value;
-    db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); aplicarTemaCores(); sincronizarComNuvemSilencioso(); 
+    salvarModificacaoBasica(); aplicarTemaCores(); 
     fecharModal('modalConfigGerais'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
@@ -1143,7 +1158,7 @@ function salvarConfigCronometro(){
     
     if(modoTimer === 'pomodoro') setModoTimer('pomodoro'); else if(modoTimer === 'regressive') setModoTimer('regressive');
     
-    db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); sincronizarComNuvemSilencioso(); atualizarBarraMeta();
+    salvarModificacaoBasica(); atualizarBarraMeta();
     fecharModal('modalConfigCronometro'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
 }
 
@@ -1156,7 +1171,6 @@ function renderizarTiposCfg(){
 }
 function adicionarTipo(){ let v = document.getElementById('novoTipoInput').value.trim(); if(v && !db.configs.tiposAtividade.includes(v)){ db.configs.tiposAtividade.push(v); document.getElementById('novoTipoInput').value = ''; salvarModificacaoBasica(); renderizarTiposCfg(); } }
 function removerTipo(t){ if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x !== t); salvarModificacaoBasica(); renderizarTiposCfg(); }
-
 
 // ================= FORMULÁRIOS DE ESTRUTURA =================
 function abrirGerenciar(t, context){
@@ -1268,10 +1282,12 @@ function abrirFormDisciplina(id, concursoNome){
         const d = db.disciplinas.find(x => x.id === id); 
         document.getElementById('discIdOriginal').value = d.id; 
         document.getElementById('discNome').value = d.nome; 
+        document.getElementById('discAulaInicio').value = d.aulaInicio !== undefined ? d.aulaInicio : 1;
         document.getElementById('discAulas').value = d.aulas || 0;
     } else { 
         document.getElementById('discIdOriginal').value = ''; 
         document.getElementById('discNome').value = ''; 
+        document.getElementById('discAulaInicio').value = 1;
         document.getElementById('discAulas').value = '';
     }
     abrirModal('modalFormDisciplina');
@@ -1280,10 +1296,11 @@ function salvarDisciplina(){
     const idOriginal = document.getElementById('discIdOriginal').value;
     const nome = document.getElementById('discNome').value.trim();
     const conc = document.getElementById('discConcursoPai').value;
+    const aInit = parseInt(document.getElementById('discAulaInicio').value) || 0;
     const aulas = parseInt(document.getElementById('discAulas').value) || 0;
     
     if(!nome) return alert("Preencha o nome!");
-    let obj = { id: idOriginal ? parseInt(idOriginal) : Date.now(), nome: nome, concurso: conc, aulas: aulas };
+    let obj = { id: idOriginal ? parseInt(idOriginal) : Date.now(), nome: nome, concurso: conc, aulaInicio: aInit, aulas: aulas };
     if(idOriginal !== "") db.disciplinas[db.disciplinas.findIndex(d => d.id === parseInt(idOriginal))] = obj; else db.disciplinas.push(obj);
     salvarModificacaoBasica(); fecharModal('modalFormDisciplina'); abrirGerenciar('disciplinas', conc); 
 }
@@ -1349,46 +1366,76 @@ function salvarEstudante() {
 }
 
 // ================= TAREFAS =================
-function abrirFormTarefa(id, sugeridoTitulo = ""){
+function criarTarefaAutoModal() {
+    let conc = getConcursoAtivoNome(); if(!conc) return alert("Sem concurso ativo!");
+    if(!trilhaAtivaNome) return alert("Crie ou selecione uma Trilha primeiro!");
+    
+    // Pega o maior numero de tarefa no concurso todo
+    let maxN = 0;
+    db.tarefas.filter(t => t.concurso === conc).forEach(t => {
+        let match = t.titulo.match(/\d+/);
+        if(match) { let n = parseInt(match[0]); if(n > maxN) maxN = n; }
+    });
+    
+    abrirFormTarefa(-1, maxN + 1);
+}
+
+function abrirFormTarefa(id, numSugerido = 1){
     if(document.getElementById('modalListagem').style.display === 'flex') fecharModal('modalListagem');
     
     const conc = getConcursoAtivoNome();
     if(!conc) return alert("Nenhum concurso ativo!");
-    const tr = trilhaAtivaNome;
     
-    document.getElementById('tarLabelConcurso').innerText = conc;
-    document.getElementById('tarLabelTrilha').innerText = tr || 'Nenhuma';
+    document.getElementById('tarHeaderConcurso').innerText = conc;
     
     const selD = document.getElementById('tarDisciplina'); selD.innerHTML = ''; 
     let discsDoConcurso = db.disciplinas.filter(d => d.concurso === conc);
     discsDoConcurso.forEach(x => selD.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     
+    const selTr = document.getElementById('tarTrilhaSelect'); selTr.innerHTML = '';
+    db.trilhas.filter(t => t.concurso === conc).forEach(x => selTr.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
+    selTr.value = trilhaAtivaNome;
+    
     const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; 
     db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x}">${x}</option>`);
     
     let contStatus = document.getElementById('containerStatusConcluida');
+    let divEdicao = document.getElementById('divEdicaoConcluida');
     
     if(id >= 0){ 
         const t = db.tarefas.find(x => x.id === id); 
         document.getElementById('tarefaIdOriginal').value = t.id; 
-        document.getElementById('tarTitulo').value = t.titulo; 
         
+        let m = t.titulo.match(/\d+/);
+        document.getElementById('tarNumero').value = m ? parseInt(m[0]) : 1; 
+        
+        selTr.value = t.trilha;
         selD.value = t.disciplina;
         popularDropdownAulas();
         document.getElementById('tarAulas').value = t.aulas;
-        
         selT.value = t.tipoAtividade;
         
         if(t.concluida) {
             contStatus.style.display = 'flex';
             document.getElementById('tarConcluida').checked = true;
+            if(t.tipoAtividade && t.tipoAtividade.toLowerCase().includes('quest')) {
+                divEdicao.style.display = 'block';
+                document.getElementById('tarQtdQuestoes').value = t.questoes || 0;
+                document.getElementById('tarQtdAcertos').value = t.acertos || 0;
+            } else { divEdicao.style.display = 'block'; document.getElementById('tarQtdQuestoes').parentElement.style.display = 'none'; document.getElementById('tarQtdAcertos').parentElement.style.display = 'none';}
+            document.getElementById('tarObs').value = t.obs || "";
+            document.getElementById('btnPularTarefa').style.display = 'none';
         } else {
             contStatus.style.display = 'none';
+            divEdicao.style.display = 'none';
+            document.getElementById('btnPularTarefa').style.display = 'block';
         }
     } else { 
         document.getElementById('tarefaIdOriginal').value = ''; 
-        document.getElementById('tarTitulo').value = sugeridoTitulo; 
+        document.getElementById('tarNumero').value = numSugerido; 
         contStatus.style.display = 'none';
+        divEdicao.style.display = 'none';
+        document.getElementById('btnPularTarefa').style.display = 'block';
         popularDropdownAulas();
     }
     abrirModal('modalFormTarefa');
@@ -1397,42 +1444,71 @@ function abrirFormTarefa(id, sugeridoTitulo = ""){
 function popularDropdownAulas() {
     const conc = getConcursoAtivoNome();
     const dNome = document.getElementById('tarDisciplina').value;
-    const selA = document.getElementById('tarAulas'); selA.innerHTML = '';
+    const cont = document.getElementById('tarAulasChips'); cont.innerHTML = '';
     
     let discObj = db.disciplinas.find(d => d.concurso === conc && d.nome === dNome);
     if(discObj && discObj.aulas > 0) {
-        for(let i=1; i<=discObj.aulas; i++) {
-            selA.innerHTML += `<option value="Aula ${String(i).padStart(2,'0')}">Aula ${String(i).padStart(2,'0')}</option>`;
+        let aInit = discObj.aulaInicio !== undefined ? discObj.aulaInicio : 1;
+        for(let i=0; i<discObj.aulas; i++) {
+            let n = aInit + i;
+            let strAula = `Aula ${String(n).padStart(2,'0')}`;
+            cont.innerHTML += `<div class="chip-aula" onclick="addAulaChip('${strAula}')">${strAula}</div>`;
         }
-        selA.disabled = false;
-    } else {
-        selA.innerHTML = '<option value="">(Geral / Sem Aula Específica)</option>';
-        selA.disabled = true;
     }
 }
 
-function salvarTarefa(){
+function addAulaChip(aula) {
+    let inp = document.getElementById('tarAulas');
+    if(inp.value.trim() === "") inp.value = aula;
+    else inp.value += ", " + aula;
+}
+
+function pularTarefa() {
+    document.getElementById('tarConcluida').checked = true;
+    document.getElementById('containerStatusConcluida').style.display = 'flex';
+    document.getElementById('tarTipo').value = "Pulada";
+    salvarTarefa(true);
+}
+
+function salvarTarefa(isPulo = false){
     const idO = document.getElementById('tarefaIdOriginal').value;
-    const tit = document.getElementById('tarTitulo').value.trim();
-    if(!tit) return alert("Preencha o título!");
+    const num = document.getElementById('tarNumero').value;
+    if(!num) return alert("Preencha o número da tarefa!");
+    const tit = "Tarefa " + String(num).padStart(2, '0');
     
     let obj = { 
         id: idO ? parseInt(idO) : Date.now(), 
         titulo: tit, 
         concurso: getConcursoAtivoNome(), 
-        trilha: trilhaAtivaNome, 
+        trilha: document.getElementById('tarTrilhaSelect').value, 
         disciplina: document.getElementById('tarDisciplina').value,
         aulas: document.getElementById('tarAulas').value,
         tipoAtividade: document.getElementById('tarTipo').value,
-        concluida: false
+        concluida: false,
+        questoes: 0, acertos: 0, obs: ""
     };
+    
+    if(isPulo) { obj.concluida = true; obj.tempoRegistrado = 0; obj.tipoAtividade = "Pulada"; }
     
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
-        let checkConcluida = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
+        let checkConcluida = false;
+        if(isPulo) checkConcluida = true;
+        else checkConcluida = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
+        
+        if(old.concluida && !checkConcluida) {
+            if(!confirm("Deseja realmente desmarcar esta tarefa? O tempo será zerado nela (mas seu histórico geral de estudos não será apagado).")) return;
+        }
+
         obj.concluida = checkConcluida;
         if(!checkConcluida) obj.tempoRegistrado = 0; else obj.tempoRegistrado = old.tempoRegistrado;
         
+        if(checkConcluida && !isPulo) {
+            obj.questoes = parseInt(document.getElementById('tarQtdQuestoes').value) || 0;
+            obj.acertos = parseInt(document.getElementById('tarQtdAcertos').value) || 0;
+            obj.obs = document.getElementById('tarObs').value;
+        }
+
         db.tarefas[db.tarefas.findIndex(x => x.id === parseInt(idO))] = obj; 
     } else { 
         db.tarefas.push(obj); 
@@ -1515,7 +1591,7 @@ function salvarRegistroEstudo(){
         db.historico.push({ id: Date.now(), ...baseHist, observacao: obs + infoTempo, duracaoRegistrada: duracaoCronometro, data: getDataHoraAtual() });
     }
     
-    t.concluida = true; t.tempoRegistrado = duracaoCronometro;
+    t.concluida = true; t.tempoRegistrado = duracaoCronometro; t.questoes = q; t.acertos = a; t.obs = document.getElementById('regObs').value.trim();
     mostrarToast("✅ Tarefa Concluída e Registrada!");
     
     if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerText = '▶'; document.getElementById('btn-play-timer').classList.remove('is-paused'); }
@@ -1546,10 +1622,24 @@ function abrirHistorico(){
 }
 
 function excluirHistorico(id) {
-    let adm = db.configs.senhaAdmin || "1999";
-    let pwd = prompt("Digite a senha do painel para excluir este registro (Padrão: 1999):");
-    if(pwd === adm || pwd === "1999") {
+    let pwd = prompt("Digite a senha do painel para excluir este registro:");
+    if(pwd === (db.configs.senhaAdmin || "1999")) {
+        let hInfo = db.historico.find(x => x.id === id);
         db.historico = db.historico.filter(h => h.id !== id);
+        
+        // Magia da Sincronização: Se excluiu, checa se a tarefa ficou sem nada e zera.
+        if(hInfo && hInfo.tarefa) {
+            let taskObj = db.tarefas.find(t => t.concurso === hInfo.concurso && t.trilha === hInfo.trilha && t.titulo === hInfo.tarefa);
+            if(taskObj) {
+                let restam = db.historico.filter(x => x.concurso === hInfo.concurso && x.trilha === hInfo.trilha && x.tarefa === hInfo.tarefa);
+                if(restam.length === 0) {
+                    taskObj.concluida = false;
+                    taskObj.tempoRegistrado = 0;
+                    taskObj.questoes = 0; taskObj.acertos = 0; taskObj.obs = "";
+                }
+            }
+        }
+        
         salvarModificacaoBasica(); abrirHistorico(); renderizarCabecalhoTrilhas(); mostrarToast("Registro excluído.");
     } else {
         alert("Senha incorreta!");
@@ -1626,7 +1716,18 @@ function toggleDetalheProd(idEscapado) {
     if(div) { div.style.display = (div.style.display === 'block') ? 'none' : 'block'; }
 }
 
-function salvarModificacaoBasica(){ db.configs.ultimaModificacaoLocal = Date.now(); salvarBancoLocal(); sincronizarComNuvemSilencioso(); }
+async function pushParaNuvemSilencioso() {
+    if(!navigator.onLine || !db.configs.urlAppScript) return;
+    try { await fetch(db.configs.urlAppScript, { method: 'POST', body: JSON.stringify({action: 'salvar_banco_completo', dados: db}) }); } catch(e) {}
+}
+
+function salvarModificacaoBasica(){ 
+    db.configs.ultimaModificacaoLocal = Date.now(); 
+    salvarBancoLocal(); 
+    pushParaNuvemSilencioso(); // Força update imediato pra nuvem
+    sincronizarComNuvemSilencioso(); 
+}
+
 function renderizarOperadores(){ const s=document.getElementById('seletorOperador'); s.innerHTML=''; db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`}); s.innerHTML+='<option value="sair">👋 Sair</option>'; const u=localStorage.getItem('estudos_operadorAtual'); if(u&&db.operadores.find(o=>o.nome===u)){ s.value=u; operadorAnteriorSelect=u; } }
 
 function abrirZonaRisco(){ fecharModal('modalPainelUnificado'); document.getElementById('configUrlAppScript').value = db.configs.urlAppScript; abrirModal('modalZonaRisco'); }
