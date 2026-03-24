@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.0</title>
+    <title>Alô RFB v1.1.2</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -15,7 +15,7 @@
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;transition:background .3s ease;user-select:none;-webkit-user-select:none}
         body.modal-open{overflow:hidden!important;touch-action:none}
         input,select,textarea{user-select:auto;-webkit-user-select:auto}
-        .app-container{width:100%;max-width:1200px;background:var(--bg-app);min-height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
+        .app-container{width:100%;max-width:1400px;background:var(--bg-app);min-height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
         
         #sticky-header{position:sticky;top:0;z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
         
@@ -34,7 +34,7 @@
         .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
         .modal{background:#fff;padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: #333 !important;}
         .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:#333 !important;border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-        .modal p, .modal label, .modal div:not(.modal-actions):not(.trilha-tab):not(.concurso-badge):not(.custom-select-option):not(.tarefas-grid):not(.tarefa-row):not(.tarefa-col) { color: #333 !important; }
+        .modal p, .modal label, .modal div:not(.modal-actions):not(.trilha-tab):not(.concurso-badge):not(.custom-select-option):not(.tarefas-grid):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell) { color: #333 !important; }
         .form-group{margin-bottom:15px;position:relative}
         .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
         .form-group input:not([type=checkbox]),.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
@@ -69,26 +69,29 @@
         body[data-theme="transparente"] .dash-prazo-bar { color: #eee; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         
         /* NOVA TABELA DE TAREFAS */
-        .table-container { width: 100%; overflow-x: auto; padding: 10px; box-sizing: border-box; }
-        .tarefas-grid { min-width: 800px; display: flex; flex-direction: column; gap: 4px; }
-        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 2.5fr 80px 100px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-radius: 8px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
-        .tarefa-row:hover { filter: brightness(0.95); transform: translateY(-1px); }
-        .tarefa-row:active { transform: translateY(1px); }
-        .tarefa-header { font-weight: 900; font-size: 14px; color: #555; background: transparent; border: none; padding-bottom: 5px; cursor: default; border-bottom: 2px solid var(--glass-border); border-radius: 0; box-shadow: none; backdrop-filter: none;}
-        .tarefa-header:hover { filter: none; transform: none; }
+        .table-wrapper { width: 100%; padding: 10px; box-sizing: border-box; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .table-scroll-container { max-height: 65vh; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
+        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 1fr 2fr 80px 140px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
+        .tarefa-row:last-child { border-bottom: none; }
+        .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
+        
+        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 14px; color: #555; background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 15px; padding-bottom: 15px; backdrop-filter: blur(10px);}
         
         body[data-theme="transparente"] .tarefa-row, body[data-theme="escuro"] .tarefa-row { color: #eee; }
-        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { color: #ccc; }
+        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { color: #fff; background: rgba(0,0,0,0.5); border-bottom-color: #888;}
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
+        .tarefa-col.center { text-align: center; }
+        
         .dot-status { width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.15); display: inline-block; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); margin: 0 auto;}
         body[data-theme="transparente"] .dot-status, body[data-theme="escuro"] .dot-status { background: rgba(255,255,255,0.2); }
         .dot-concluida { background: #64dd17 !important; box-shadow: 0 0 8px #64dd17 !important; }
-        .dot-pulada { background: #9e9e9e !important; box-shadow: none !important;}
+        .dot-pulada { background: #d32f2f !important; box-shadow: 0 0 8px rgba(211, 47, 47, 0.6) !important;}
         
         .row-concluida { background: rgba(100, 221, 23, 0.05); }
-        .row-pulada { opacity: 0.6; }
+        .row-pulada { opacity: 0.65; background: rgba(211, 47, 47, 0.03); }
         
         .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
         .gerenciar-info{flex:1;font-size:14px}
@@ -105,8 +108,8 @@
         /* Cronômetro Verticalizado - Compacto */
         .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 4px 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
         .crono-layout { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; }
-        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-align:center;}
+        .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; align-items: stretch;}
+        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 6px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.2s; text-align:center;}
         .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         
         .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; position:relative;}
@@ -122,13 +125,13 @@
         
         .crono-play { width: 50px; height: 50px;}
         .crono-stop { width: 50px; height: 50px;} 
-        .crono-music { font-size: 26px; color: #2e7d32; position: relative; }
-        .crono-edit { font-size: 20px; color: #ff9800; margin-right: 5px;}
+        .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .crono-edit { font-size: 14px; background: #fff3e0; border: 1px solid #ffe0b2; padding: 4px; border-radius: 6px; width: 100%; margin-top: 2px; color: #e65100; font-weight: bold;}
         
-        .btn-limpar-musica { position: absolute; top: -5px; right: -10px; background: #d32f2f; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
+        .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         
         /* Volume Vertical */
-        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-left: -5px; }
+        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: -5px; }
         .crono-mute { color: #555; font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
@@ -137,12 +140,6 @@
         .meta-bar { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; }
         .meta-fill { height: 100%; background: #4CAF50; width: 0%; transition: width 0.5s ease, background-color 0.3s; }
 
-        /* Produtividade */
-        .prod-card { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
-        .prod-title { font-weight: 900; color: var(--primaria); font-size: 18px;}
-        .prod-val { font-size: 16px; color: #555; font-weight: bold;}
-        .prod-badge { background: #e8f5e9; color: #2e7d32; padding: 6px 12px; border-radius: 12px; font-weight: 900; font-size: 15px; border: 1px solid #c8e6c9; align-self: flex-start;}
-        
         .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         
@@ -155,6 +152,31 @@
         
         .btn-sub-gerenciar { background:var(--secundaria); color:var(--primaria) !important; border:1px solid var(--primaria); padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:bold; font-size:12px; flex:1; }
         
+        /* SUPER PAINEL DE PRODUTIVIDADE */
+        .prod-layout { display: flex; gap: 20px; align-items: stretch; margin-top: 15px; flex-wrap: wrap; }
+        .prod-col-left { flex: 0 0 250px; display: flex; flex-direction: column; gap: 15px; }
+        .prod-col-right { flex: 1; min-width: 400px; display: flex; flex-direction: column; gap: 15px;}
+        
+        .prod-dash-card { border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: white !important;}
+        .prod-dash-card::after { content: ''; position: absolute; right: -15px; bottom: -15px; font-size: 60px; opacity: 0.2; }
+        .prod-dash-title { font-size: 14px; font-weight: bold; z-index: 1; color: white !important;}
+        .prod-dash-val { font-size: 32px; font-weight: 900; margin-top: 10px; z-index: 1; color: white !important;}
+        
+        .c-blue { background: linear-gradient(135deg, #29b6f6, #0288d1); } .c-blue::after { content: '⭐'; }
+        .c-green { background: linear-gradient(135deg, #66bb6a, #388e3c); } .c-green::after { content: '⏱️'; }
+        .c-orange { background: linear-gradient(135deg, #ffa726, #f57c00); } .c-orange::after { content: '🎯'; }
+        .c-yellow { background: linear-gradient(135deg, #ffca28, #fbc02d); } .c-yellow::after { content: '⏳'; }
+
+        .prod-table-container { background: #333; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .prod-table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid #444; color: #eee !important; cursor: pointer; transition: 0.2s;}
+        .prod-table-row:hover:not(.prod-table-header) { background: #444; }
+        .prod-table-header { font-weight: bold; background: #222; font-size: 13px; color: #bbb !important; cursor: default; }
+        .prod-table-cell { padding: 12px 10px; font-size: 14px; display: flex; align-items: center; color: #eee !important;}
+        .prod-table-cell.center { justify-content: center; text-align: center; }
+        .prod-table-row.total { background: #111; font-weight: bold; }
+        
+        .prod-details-row { display: none; background: #f9f9f9; border-bottom: 1px solid #ddd; padding: 20px; grid-column: 1 / -1; }
+        
         /* Container Gráficos */
         .chart-box { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #eee; flex: 1; min-width: 280px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
     </style>
@@ -165,7 +187,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.0</div>
+    <div class="splash-version">v1.1.2</div>
 </div>
 
 <div id="login-screen">
@@ -202,6 +224,7 @@
                     <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
                     <button class="crono-btn-vert" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
                     <button class="crono-btn-vert" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
+                    <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️ Edit</button>
                 </div>
                 
                 <div class="crono-display-box">
@@ -211,13 +234,8 @@
                     </div>
                     
                     <div class="crono-controls">
-                        <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
                         <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button>
                         <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button>
-                        <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
-                        <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">
-                            🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button>
-                        </div>
                     </div>
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
@@ -229,6 +247,10 @@
                 <div class="vol-vert-container">
                     <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
                     <input type="range" id="volume-slider-timer" min="0" max="100" value="100" orient="vertical" oninput="ajustarVolumeTimer(this.value)">
+                    <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
+                    <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">
+                        🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,10 +279,22 @@
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 50px; margin-bottom: 10px;">⏭️</div>
         <h3 style="margin-top:0; color:var(--primaria);">Pular Tarefa?</h3>
-        <p style="font-size: 15px; color:#555;">Deseja realmente pular esta tarefa? Ela será marcada como concluída sem contabilizar tempo ou questões.</p>
+        <p style="font-size: 15px; color:#555;">Deseja realmente pular esta tarefa? Ela será marcada como pulada sem contabilizar tempo ou questões.</p>
         <div class="modal-actions" style="justify-content: center; gap: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalConfirmarPular')">Cancelar</button>
             <button class="btn-action" onclick="confirmarPularTarefa()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Pular</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalConfirmarDesfazerPulo" style="z-index: 1005;">
+    <div class="modal" style="max-width: 400px; text-align:center;">
+        <div style="font-size: 50px; margin-bottom: 10px;">↩️</div>
+        <h3 style="margin-top:0; color:var(--primaria);">Desfazer Pulo?</h3>
+        <p style="font-size: 15px; color:#555;">Esta tarefa voltará a ficar PENDENTE e pronta para ser estudada.</p>
+        <div class="modal-actions" style="justify-content: center; gap: 15px;">
+            <button class="btn-cancel" onclick="fecharModal('modalConfirmarDesfazerPulo')">Cancelar</button>
+            <button class="btn-action" onclick="confirmarDesfazerPulo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Desfazer</button>
         </div>
     </div>
 </div>
@@ -279,7 +313,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.0</div>
+        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.2</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
@@ -443,7 +477,7 @@
         <p style="font-size: 14px;">Selecione a Tarefa (não concluída) para registrar este tempo:</p>
         <div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid #eee; border-radius: 8px;"></div>
         <div class="modal-actions" style="margin-top: 15px;">
-            <button class="btn-cancel" onclick="fecharModal('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button>
+            <button class="btn-cancel" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button>
         </div>
     </div>
 </div>
@@ -451,9 +485,16 @@
 <div class="modal-overlay" id="modalGerenciarTipos">
     <div class="modal" style="max-height: 90vh; overflow-y: auto;">
         <div class="modal-title" style="color:#f57f17; border-color:#f57f17;">📝 Tipos de Atividade</div>
-        <div style="display:flex; gap:10px; margin-bottom: 15px;">
-            <input type="text" id="novoTipoInput" placeholder="Ex: PDF" style="flex:1; padding:8px; border:1px solid #ccc; border-radius:4px;">
-            <button class="btn-action" style="flex:none; padding: 0 15px;" onclick="adicionarTipo()">+ Add</button>
+        <div style="display:flex; gap:10px; margin-bottom: 15px; align-items:flex-end;">
+            <div style="flex:1;">
+                <label style="font-size:12px; font-weight:bold;">Nome da Atividade:</label>
+                <input type="text" id="novoTipoInput" placeholder="Ex: Questões" style="padding:8px; border:1px solid #ccc; border-radius:4px; width:100%; box-sizing:border-box;">
+            </div>
+            <div style="flex:none;">
+                <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Tem Desempenho?</label>
+                <div style="background:#eee; padding:7px; border-radius:4px; text-align:center;"><input type="checkbox" id="novoTipoDesempenho" style="transform: scale(1.3);"></div>
+            </div>
+            <button class="btn-action" style="flex:none; padding: 0 15px; height:37px;" onclick="adicionarTipo()">+ Add</button>
         </div>
         <div id="listaTiposCfg" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px;"></div>
         <div class="modal-actions">
@@ -587,10 +628,10 @@
         </div>
 
         <div class="form-group">
-            <label>Aulas / Assuntos (Selecione várias):</label>
+            <label>Aula(s):</label>
             <div style="position:relative;">
                 <div class="custom-select-box" onclick="toggleDropdownAulas()">
-                    <span id="tarAulasDisplay">Selecione as aulas...</span>
+                    <span id="tarAulasDisplay">Selecione...</span>
                     <span>▼</span>
                 </div>
                 <div class="custom-select-options" id="tarAulasOptions"></div>
@@ -598,12 +639,12 @@
         </div>
         
         <div class="form-group">
-            <label>Título / Assunto (Opcional):</label>
+            <label>Título da Tarefa:</label>
             <input type="text" id="tarTituloPersonalizado" placeholder="Ex: PDF Aula 00">
         </div>
 
         <div class="form-group">
-            <label>Tipo de Atividade Principal:</label>
+            <label>Atividade (Tipo):</label>
             <select id="tarTipo" class="modal-select"></select>
         </div>
         
@@ -622,7 +663,7 @@
         
         <div style="display:flex; justify-content:space-between; margin-top:20px; align-items:center;">
             <button class="btn-danger" id="btnExcluirTarefa" onclick="abrirModal('modalConfirmarExcluirTarefa')" style="margin:0; width:auto; padding: 10px 15px;" title="Excluir Tarefa">🗑️</button>
-            <div style="display: flex; gap:10px;">
+            <div style="display: flex; gap:10px; width:100%; justify-content:flex-end;">
                 <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="flex: none; width: auto;">Cancelar</button>
                 <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:none; width:auto; padding: 10px 15px;">⏭️ Pular</button>
                 <button class="btn-action" onclick="salvarTarefa()" style="margin:0;">Salvar</button>
@@ -697,19 +738,33 @@
 </div>
 
 <div class="modal-overlay" id="modalProdutividade">
-    <div class="modal modal-prod" style="max-width: 1000px; width: 95%; max-height: 95vh; overflow-y: auto;">
-        <div class="modal-title">📊 Produtividade e Estatísticas</div>
+    <div class="modal" style="max-width: 1300px; width: 95%; max-height: 95vh; overflow-y: auto;">
+        <div class="modal-title">📊 Produtividade Geral</div>
         <div class="form-group" style="max-width:300px;">
             <label>Filtrar por Trilha:</label>
             <select id="filtroProdTrilha" class="modal-select" onchange="renderizarConteudoProdutividade()"></select>
         </div>
         
-        <div id="conteudoProdutividade" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:15px; margin-bottom: 25px;"></div>
+        <div class="prod-layout">
+            <div class="prod-col-left" id="prodDashCards"></div>
+            
+            <div class="prod-col-right">
+                <div class="prod-table-container">
+                    <div class="prod-table-row prod-table-header">
+                        <div class="prod-table-cell">Disciplina</div>
+                        <div class="prod-table-cell center">Acertos</div>
+                        <div class="prod-table-cell center">Questões</div>
+                        <div class="prod-table-cell center">% Acertos</div>
+                        <div class="prod-table-cell center">Tempo</div>
+                    </div>
+                    <div id="prodTableBody"></div>
+                </div>
+            </div>
+        </div>
         
-        <div style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center; align-items:stretch;">
+        <div style="display:flex; flex-wrap:wrap; gap:15px; justify-content:center; align-items:stretch; margin-top: 25px;">
             <div class="chart-box"><canvas id="chartHoras"></canvas></div>
             <div class="chart-box"><canvas id="chartQuestoes"></canvas></div>
-            <div class="chart-box"><canvas id="chartDesempenho"></canvas></div>
         </div>
 
         <div class="modal-actions">
@@ -726,7 +781,8 @@ window.addEventListener('unhandledrejection', function(event) { console.error('R
 
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
-let chartsProdutividade = []; // Armazena instâncias do chart.js
+let chartsGerais = [];
+let chartsDetalhe = {}; 
 
 function formatarHorasMinutos(segs) {
     if(!segs || segs === 0) return "0m";
@@ -761,11 +817,17 @@ function carregarBanco(){
         concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff", pausado: false}],
         trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB", dataInicio: getHojeYMD(), duracaoDias: 7}],
         disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulaInicio: 1, aulas: 10}],
-        tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Estudo Teórico", concluida: false}],
+        tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Teoria", concluida: false, pulada: false}],
         operadores: [{nome: "Usuário", senha: "", ocultarEngrenagem: false}],
         configs: {
             urlAppScript: "", senhaAdmin: "", audioLink: "https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",
-            tiposAtividade: ["Teoria", "Revisão", "Questões", "Mapeamento", "Teste"], 
+            tiposAtividade: [
+                {nome: "Teoria", comDesempenho: false}, 
+                {nome: "Revisão", comDesempenho: false}, 
+                {nome: "Questões", comDesempenho: true}, 
+                {nome: "Mapeamento", comDesempenho: false}, 
+                {nome: "Teste", comDesempenho: true}
+            ], 
             tema: "azul", exibirMeta: true, ocultarPctMeta: false, ocultarTempoMeta: false, metaDiariaHrs: 4, tocarRestart: true,
             atalhos: { play: ['Space'], reset: ['Delete'], mute: ['Period'], volUp: ['Equal'], volDown: ['Minus'] },
             pomodoro: { estudo: 25, curta: 5, longa: 15, ciclos: 4 }, regressivo: { estudo: 60 },
@@ -790,7 +852,20 @@ function carregarBanco(){
             l.concursos.forEach(c => { if(c.pausado === undefined) c.pausado = false; });
             l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; if(disc.aulaInicio === undefined) disc.aulaInicio = 1; });
             l.trilhas.forEach(tr => { if(!tr.dataInicio) tr.dataInicio = getHojeYMD(); if(!tr.duracaoDias) tr.duracaoDias = 7; });
-            l.tarefas.forEach(tar => { if(tar.questoes === undefined) tar.questoes = 0; if(tar.acertos === undefined) tar.acertos = 0; if(tar.obs === undefined) tar.obs = ""; });
+            
+            l.tarefas.forEach(tar => { 
+                if(tar.questoes === undefined) tar.questoes = 0; 
+                if(tar.acertos === undefined) tar.acertos = 0; 
+                if(tar.obs === undefined) tar.obs = ""; 
+                if(tar.pulada === undefined) tar.pulada = false;
+                
+                // Migração do "Pulada" antigo como tipo para nova flag
+                if(tar.tipoAtividade === "Pulada") {
+                    tar.pulada = true;
+                    tar.concluida = true;
+                    tar.tipoAtividade = "Teoria"; 
+                }
+            });
 
             if(!l.configs || typeof l.configs !== 'object') l.configs = d.configs;
             if(!l.configs.audioLink) l.configs.audioLink = "https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3";
@@ -803,6 +878,13 @@ function carregarBanco(){
             if(l.configs.ocultarTempoMeta === undefined) l.configs.ocultarTempoMeta = false;
             if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
             if(!l.configs.tiposAtividade) l.configs.tiposAtividade = d.configs.tiposAtividade;
+            
+            // Migração dos Tipos de Atividade de Array simples para Array de Objetos
+            if(l.configs.tiposAtividade.length > 0 && typeof l.configs.tiposAtividade[0] === 'string') {
+                l.configs.tiposAtividade = l.configs.tiposAtividade.map(t => {
+                    return { nome: t, comDesempenho: /quest|teste/i.test(t) };
+                });
+            }
             
             return l; 
         }
@@ -860,6 +942,7 @@ function carregarMusicas(event) {
     document.getElementById('btnLimparMusica').style.display = 'flex';
     mostrarToast(`${files.length} músicas prontas!`); 
     
+    // Auto-play se o cronometro tiver rolando
     if(isRunningTimer) tocarMusicaTimer();
 }
 
@@ -870,7 +953,12 @@ function limparMusica() {
     document.getElementById('btnLimparMusica').style.display = 'none'; 
     mostrarToast("Memória limpa.");
 }
-function tocarMusicaTimer() { if (playlist.length === 0) return; playerAudio.src = playlist[musicaIndex]; playerAudio.load(); playerAudio.play().catch(()=>{}); }
+function tocarMusicaTimer() { 
+    if (playlist.length === 0) return; 
+    playerAudio.src = playlist[musicaIndex]; 
+    playerAudio.load(); 
+    playerAudio.play().catch(()=>{}); 
+}
 
 function ajustarVolumeTimer(val) { 
     let v = val / 100; volumeSalvoTimer = v; 
@@ -958,6 +1046,12 @@ function zeroTimerConfirm() {
         atualizarBarraMeta();
         audioRestart.pause(); audioRestart.currentTime = 0;
     }
+}
+
+function fecharModalEPararAlarme(id) {
+    fecharModal(id);
+    audioRestart.pause(); 
+    audioRestart.currentTime = 0;
 }
 
 function setModoTimer(novoModo) {
@@ -1212,6 +1306,7 @@ function renderizarDashboardTrilha() {
         mediaFormat = Math.floor(mediaSegs/3600) + "h " + Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0') + "m";
     }
 
+    // 39 - Ordem Invertida
     box.innerHTML = `
         <div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho}</div></div>
         <div class="dash-box"><div class="dash-box-title">Questões</div><div class="dash-box-val">${qTot}</div></div>
@@ -1230,7 +1325,7 @@ function criarTrilhaAutoModal() {
     salvarModificacaoBasica(); mostrarToast("Nova Trilha adicionada!"); renderizarCabecalhoTrilhas();
 }
 
-// NOVO DESIGN TABULAR
+// NOVO DESIGN TABULAR E FIXO
 function renderizarListaTarefas() {
     const l = document.getElementById('listaTarefas'); l.innerHTML = '';
     let conc = getConcursoAtivoNome();
@@ -1243,36 +1338,48 @@ function renderizarListaTarefas() {
         return; 
     }
 
-    let html = `<div class="table-container"><div class="tarefas-grid">
-        <div class="tarefa-row tarefa-header">
-            <div class="tarefa-col"></div>
-            <div class="tarefa-col">#</div>
-            <div class="tarefa-col">Disciplina</div>
-            <div class="tarefa-col">Tipo</div>
-            <div class="tarefa-col">Título</div>
-            <div class="tarefa-col">Tempo</div>
-            <div class="tarefa-col">Desempenho</div>
-        </div>`;
+    // Ordenar pelo número contido no Título (ex: Tarefa 01)
+    filtradas.sort((a, b) => {
+        let numA = parseInt(a.titulo.match(/\d+/) ? a.titulo.match(/\d+/)[0] : 0);
+        let numB = parseInt(b.titulo.match(/\d+/) ? b.titulo.match(/\d+/)[0] : 0);
+        return numA - numB;
+    });
+
+    let html = `<div class="table-wrapper">
+        <div class="table-scroll-container">
+            <div class="tarefas-grid">
+                <div class="tarefa-row tarefa-header">
+                    <div class="tarefa-col"></div>
+                    <div class="tarefa-col">#</div>
+                    <div class="tarefa-col">Disciplina</div>
+                    <div class="tarefa-col">Atividade</div>
+                    <div class="tarefa-col">Aula</div>
+                    <div class="tarefa-col">Título da Tarefa</div>
+                    <div class="tarefa-col center">Tempo</div>
+                    <div class="tarefa-col">Desempenho</div>
+                </div>`;
         
     filtradas.forEach(t => {
         const isConcluida = t.concluida === true;
-        const isPulada = t.tipoAtividade === "Pulada";
+        const isPulada = t.pulada === true;
         
         let dotClass = isPulada ? "dot-pulada" : (isConcluida ? "dot-concluida" : "");
         let rowClass = isPulada ? "row-pulada" : (isConcluida ? "row-concluida" : "");
         
         let splitTit = t.titulo.split(' - ');
         let numeroStr = splitTit[0].replace(/\D/g, '') || '-'; 
-        let tituloCustom = splitTit.length > 1 ? splitTit.slice(1).join(' - ') : "";
+        let tituloCustom = splitTit.length > 1 ? splitTit.slice(1).join(' - ') : "-";
         
-        let concatTitulo = tituloCustom;
-        if(t.aulas && concatTitulo) concatTitulo += ` (${t.aulas})`;
-        else if (t.aulas) concatTitulo = t.aulas;
-        
-        if(!concatTitulo) concatTitulo = "-";
+        let aulaApresentacao = t.aulas ? t.aulas : "-";
 
         let tempoStr = (isConcluida && !isPulada && t.tempoRegistrado > 0) ? formatarHorasMinutos(t.tempoRegistrado) : "-";
-        let despStr = (isConcluida && t.questoes > 0) ? `🎯 ${Math.round((t.acertos/t.questoes)*100)}%` : "-";
+        
+        let despStr = "-";
+        let configTipo = db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade);
+        if (configTipo && configTipo.comDesempenho && isConcluida && !isPulada) {
+            let pct = t.questoes > 0 ? Math.round((t.acertos/t.questoes)*100) : 0;
+            despStr = `${pct}% (${t.acertos}/${t.questoes})`;
+        }
 
         html += `
         <div class="tarefa-row ${rowClass}" onclick="abrirFormTarefa(${t.id})">
@@ -1280,13 +1387,14 @@ function renderizarListaTarefas() {
             <div class="tarefa-col bold">${numeroStr}</div>
             <div class="tarefa-col bold" style="color:var(--primaria)">${t.disciplina}</div>
             <div class="tarefa-col">${t.tipoAtividade}</div>
-            <div class="tarefa-col" title="${concatTitulo}">${concatTitulo}</div>
-            <div class="tarefa-col">${tempoStr}</div>
+            <div class="tarefa-col">${aulaApresentacao}</div>
+            <div class="tarefa-col" title="${tituloCustom}">${tituloCustom}</div>
+            <div class="tarefa-col center">${tempoStr}</div>
             <div class="tarefa-col">${despStr}</div>
         </div>`;
     });
     
-    html += `</div></div>`;
+    html += `</div></div></div>`;
     l.innerHTML = html;
 }
 
@@ -1355,7 +1463,7 @@ function clickCheckboxAulas(e, divOpt) {
 function atualizarDisplayAulas() {
     let selecionados = []; document.querySelectorAll('#tarAulasOptions input[type="checkbox"]:checked').forEach(cb => { selecionados.push(cb.value); });
     let display = document.getElementById('tarAulasDisplay');
-    if(selecionados.length === 0) display.innerText = "Selecione as aulas..."; else display.innerText = selecionados.join(', ');
+    if(selecionados.length === 0) display.innerText = "Selecione..."; else display.innerText = selecionados.join(', ');
 }
 
 document.addEventListener('click', function(e) {
@@ -1423,14 +1531,41 @@ function salvarConfigCronometro(){
 }
 
 function abrirGerenciarTiposAtividade(){ fecharModal('modalListagem'); fecharModal('modalPainelUnificado'); renderizarTiposCfg(); abrirModal('modalGerenciarTipos'); }
+
 function renderizarTiposCfg(){
     let l = document.getElementById('listaTiposCfg'); l.innerHTML = '';
-    db.configs.tiposAtividade.forEach(t => { l.innerHTML += `<div data-nome="${t}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> ${t} <span style="cursor:pointer;color:#d32f2f;font-weight:900;margin-left:auto;padding:0 10px" onclick="removerTipo('${t}')">X</span></div>`; });
+    db.configs.tiposAtividade.forEach(t => { 
+        let despLabel = t.comDesempenho ? '🎯 Tem Desempenho' : '➖ Sem Desempenho';
+        l.innerHTML += `<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> <span style="flex:1;">${t.nome} <small style="display:block; font-weight:normal; color:#666;">${despLabel}</small></span> <span style="cursor:pointer;color:#d32f2f;font-weight:900;margin-left:auto;padding:0 10px" onclick="removerTipo('${t.nome}')">X</span></div>`; 
+    });
     if(sortableTipos) sortableTipos.destroy();
-    sortableTipos = new Sortable(l, {animation:150, handle:'.drag-handle', onEnd: function(){ db.configs.tiposAtividade = Array.from(l.children).map(e=>e.dataset.nome); salvarModificacaoBasica(); }});
+    sortableTipos = new Sortable(l, {
+        animation:150, handle:'.drag-handle', 
+        onEnd: function(){ 
+            let novaOrdem = [];
+            Array.from(l.children).forEach(e => {
+                novaOrdem.push({ nome: e.dataset.nome, comDesempenho: e.dataset.desempenho === "true" });
+            });
+            db.configs.tiposAtividade = novaOrdem;
+            salvarModificacaoBasica(); 
+        }
+    });
 }
-function adicionarTipo(){ let v = document.getElementById('novoTipoInput').value.trim(); if(v && !db.configs.tiposAtividade.includes(v)){ db.configs.tiposAtividade.push(v); document.getElementById('novoTipoInput').value = ''; salvarModificacaoBasica(); renderizarTiposCfg(); } }
-function removerTipo(t){ if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x !== t); salvarModificacaoBasica(); renderizarTiposCfg(); }
+function adicionarTipo(){ 
+    let v = document.getElementById('novoTipoInput').value.trim(); 
+    let d = document.getElementById('novoTipoDesempenho').checked;
+    if(v && !db.configs.tiposAtividade.find(x => x.nome === v)){ 
+        db.configs.tiposAtividade.push({nome: v, comDesempenho: d}); 
+        document.getElementById('novoTipoInput').value = ''; 
+        document.getElementById('novoTipoDesempenho').checked = false;
+        salvarModificacaoBasica(); renderizarTiposCfg(); 
+    } 
+}
+function removerTipo(nomeT){ 
+    if(db.configs.tiposAtividade.length <= 1) return alert("Mínimo de 1 tipo!"); 
+    db.configs.tiposAtividade = db.configs.tiposAtividade.filter(x => x.nome !== nomeT); 
+    salvarModificacaoBasica(); renderizarTiposCfg(); 
+}
 
 // ================= FORMULÁRIOS DE ESTRUTURA =================
 function abrirGerenciar(t, context){
@@ -1530,7 +1665,7 @@ function clonarConcurso(nomeOrig) {
 
     let oldTar = db.tarefas.filter(t => t.concurso === nomeOrig);
     oldTar.forEach(t => {
-        db.tarefas.push({...t, id: Date.now() + Math.random(), concurso: novoNome, concluida: false, tempoRegistrado: 0, questoes: 0, acertos: 0, obs: ""});
+        db.tarefas.push({...t, id: Date.now() + Math.random(), concurso: novoNome, concluida: false, pulada: false, tempoRegistrado: 0, questoes: 0, acertos: 0, obs: ""});
     });
 
     salvarModificacaoBasica(); abrirGerenciar('concursos'); mostrarToast("Concurso Clonado com Sucesso!");
@@ -1713,7 +1848,7 @@ function abrirFormTarefa(id, numSugerido = 1){
     selTr.value = trilhaAtivaNome;
     
     const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; 
-    db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x}">${x}</option>`);
+    db.configs.tiposAtividade.forEach(x => selT.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     
     let contStatus = document.getElementById('containerStatusConcluida');
     let divEdicao = document.getElementById('divEdicaoConcluida');
@@ -1743,24 +1878,31 @@ function abrirFormTarefa(id, numSugerido = 1){
         });
         atualizarDisplayAulas();
         
+        // Verifica se a atividade que estava salva ainda existe nas configs
+        if(!db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade)) {
+            selT.innerHTML += `<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;
+        }
         selT.value = t.tipoAtividade;
         
         let btnPular = document.getElementById('btnPularTarefa');
         
-        if(t.tipoAtividade === "Pulada") {
-            contStatus.style.display = 'flex';
-            document.getElementById('tarConcluida').checked = true;
+        if(t.pulada) {
+            contStatus.style.display = 'none';
+            document.getElementById('tarConcluida').checked = false;
             divEdicao.style.display = 'none';
             btnPular.style.display = 'block';
             btnPular.innerHTML = "↩️ Desfazer Pulo";
-            btnPular.onclick = desfazerPuloTarefa;
+            btnPular.onclick = () => abrirModal('modalConfirmarDesfazerPulo');
         }
         else if(t.concluida) {
             contStatus.style.display = 'flex';
             document.getElementById('tarConcluida').checked = true;
             
             divEdicao.style.display = 'block';
-            if(t.tipoAtividade && t.tipoAtividade.toLowerCase().includes('quest')) {
+            
+            // Verifica se tem desempenho
+            let configTipo = db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade);
+            if(configTipo && configTipo.comDesempenho) {
                 document.getElementById('tarQtdQuestoes').parentElement.style.display = 'block';
                 document.getElementById('tarQtdAcertos').parentElement.style.display = 'block';
                 document.getElementById('tarQtdQuestoes').value = t.questoes || 0;
@@ -1806,18 +1948,22 @@ function ajustarTravaAcertosReg() {
 }
 
 function confirmarPularTarefa() {
-    document.getElementById('tarConcluida').checked = true;
-    document.getElementById('containerStatusConcluida').style.display = 'flex';
-    document.getElementById('tarTipo').value = "Pulada";
     salvarTarefa(true);
     fecharModal('modalConfirmarPular');
 }
 
-function desfazerPuloTarefa() {
-    document.getElementById('tarConcluida').checked = false;
-    document.getElementById('containerStatusConcluida').style.display = 'none';
-    document.getElementById('tarTipo').value = db.configs.tiposAtividade[0] || "Teoria";
-    salvarTarefa();
+function confirmarDesfazerPulo() {
+    const idO = document.getElementById('tarefaIdOriginal').value;
+    if(idO !== "") {
+        let t = db.tarefas.find(x => x.id === parseInt(idO));
+        t.pulada = false;
+        t.concluida = false;
+        salvarModificacaoBasica();
+    }
+    fecharModal('modalConfirmarDesfazerPulo');
+    fecharModal('modalFormTarefa');
+    renderizarListaTarefas();
+    renderizarDashboardTrilha();
 }
 
 function confirmarExcluirTarefaDefinitivo() {
@@ -1851,22 +1997,31 @@ function salvarTarefa(isPulo = false){
         aulas: aulasSelecionadas.join(', '),
         tipoAtividade: document.getElementById('tarTipo').value,
         concluida: false,
+        pulada: false,
         questoes: 0, acertos: 0, obs: ""
     };
     
-    if(isPulo) { obj.concluida = true; obj.tempoRegistrado = 0; obj.tipoAtividade = "Pulada"; }
+    if(isPulo) { 
+        obj.concluida = true; 
+        obj.pulada = true; 
+        obj.tempoRegistrado = 0; 
+    }
     
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
-        let checkConcluida = false;
         
-        if(isPulo) checkConcluida = true;
-        else checkConcluida = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
+        if(isPulo) {
+            obj.concluida = true;
+            obj.pulada = true;
+        } else {
+            let chk = document.getElementById('containerStatusConcluida').style.display === 'flex' ? document.getElementById('tarConcluida').checked : old.concluida;
+            obj.concluida = chk;
+            obj.pulada = false;
+        }
+
+        if(!obj.concluida) obj.tempoRegistrado = 0; else obj.tempoRegistrado = old.tempoRegistrado || 0;
         
-        obj.concluida = checkConcluida;
-        if(!checkConcluida) obj.tempoRegistrado = 0; else obj.tempoRegistrado = old.tempoRegistrado || 0;
-        
-        if(checkConcluida && !isPulo) {
+        if(obj.concluida && !obj.pulada) {
             obj.questoes = parseInt(document.getElementById('tarQtdQuestoes').value) || 0;
             obj.acertos = parseInt(document.getElementById('tarQtdAcertos').value) || 0;
             obj.obs = document.getElementById('tarObs').value;
@@ -1884,13 +2039,13 @@ function salvarTarefa(isPulo = false){
 function abrirSelecionadorDeTarefaParaRegistro() {
     let l = document.getElementById('listaTarefasParaRegistro'); l.innerHTML = '';
     
-    let btnZerar = `<button onclick="fecharModal('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;
+    let btnZerar = `<button onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;
 
     let conc = getConcursoAtivoNome();
     let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida);
     
     filtradas.forEach(t => {
-        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:#333; background: #fafafa; margin-bottom: 5px; border-radius: 8px;" onclick="fecharModal('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
+        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:#333; background: #fafafa; margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
     });
     
     if(filtradas.length === 0) l.innerHTML = `<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;
@@ -1905,7 +2060,7 @@ function abrirRegistroEstudo(id){
     document.getElementById('regIdTarefa').value = t.id; document.getElementById('regObs').value = '';
     
     const sel = document.getElementById('regTipoAtividade'); sel.innerHTML = '';
-    db.configs.tiposAtividade.forEach(x => sel.innerHTML += `<option value="${x}">${x}</option>`);
+    db.configs.tiposAtividade.forEach(x => sel.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     sel.value = t.tipoAtividade;
     
     let segs = tempoTimer; 
@@ -1923,8 +2078,9 @@ function abrirRegistroEstudo(id){
 }
 
 function checarTipoAtividade() {
-    let t = document.getElementById('regTipoAtividade').value;
-    document.getElementById('divQuestoes').style.display = t.toLowerCase().includes('quest') ? 'flex' : 'none';
+    let nomeT = document.getElementById('regTipoAtividade').value;
+    let obj = db.configs.tiposAtividade.find(x => x.nome === nomeT);
+    document.getElementById('divQuestoes').style.display = (obj && obj.comDesempenho) ? 'flex' : 'none';
 }
 
 function salvarRegistroEstudo(){
@@ -1934,7 +2090,8 @@ function salvarRegistroEstudo(){
     const duracaoCronometro = parseInt(document.getElementById('regDuracaoTimer').value) || 0;
     
     let q = 0, a = 0;
-    if(tipo.toLowerCase().includes('quest')) {
+    let objConfig = db.configs.tiposAtividade.find(x => x.nome === tipo);
+    if(objConfig && objConfig.comDesempenho) {
         q = parseInt(document.getElementById('qtdQuestoes').value) || 0;
         a = parseInt(document.getElementById('qtdAcertos').value) || 0;
         if(q > 0) { let pct = Math.round((a/q)*100); obs += ` [🎯 ${a}/${q} - ${pct}%]`; }
@@ -1955,7 +2112,7 @@ function salvarRegistroEstudo(){
         db.historico.push({ id: Date.now(), ...baseHist, observacao: obs + infoTempo, duracaoRegistrada: duracaoCronometro, data: getDataHoraAtual() });
     }
     
-    t.concluida = true; t.tempoRegistrado = duracaoCronometro; t.questoes = q; t.acertos = a; t.obs = document.getElementById('regObs').value.trim();
+    t.concluida = true; t.pulada = false; t.tempoRegistrado = duracaoCronometro; t.questoes = q; t.acertos = a; t.obs = document.getElementById('regObs').value.trim();
     t.dataConclusao = getDataHoraAtual().split(' ')[0];
     mostrarToast("✅ Tarefa Concluída e Registrada!");
     
@@ -1998,6 +2155,7 @@ function excluirHistorico(id) {
                 let restam = db.historico.filter(x => x.concurso === hInfo.concurso && x.trilha === hInfo.trilha && x.tarefa === hInfo.tarefa);
                 if(restam.length === 0) {
                     taskObj.concluida = false;
+                    taskObj.pulada = false;
                     taskObj.tempoRegistrado = 0;
                     taskObj.questoes = 0; taskObj.acertos = 0; taskObj.obs = ""; delete taskObj.dataConclusao;
                 }
@@ -2036,19 +2194,57 @@ function renderizarConteudoProdutividade() {
     if(filtroT !== "TODAS") histOp = histOp.filter(h => h.trilha === filtroT);
     
     let estatisticas = {};
+    let totalSegs = 0, totalQuest = 0, totalAcertos = 0;
+    let diasUnicos = new Set();
+    
+    let rawItemsByDisc = {};
 
     histOp.forEach(h => {
-        if(!estatisticas[h.disciplina]) { estatisticas[h.disciplina] = { tempo: 0, questoes: 0, acertos: 0 }; }
+        if(!estatisticas[h.disciplina]) { estatisticas[h.disciplina] = { tempo: 0, questoes: 0, acertos: 0 }; rawItemsByDisc[h.disciplina] = []; }
         estatisticas[h.disciplina].tempo += (h.duracaoRegistrada || 0);
         estatisticas[h.disciplina].questoes += (h.questoes || 0);
         estatisticas[h.disciplina].acertos += (h.acertos || 0);
+        rawItemsByDisc[h.disciplina].push(h);
+        
+        totalSegs += (h.duracaoRegistrada || 0);
+        totalQuest += (h.questoes || 0);
+        totalAcertos += (h.acertos || 0);
+        diasUnicos.add(h.data.split(' ')[0]);
     });
 
-    let html = '';
-    let labels = [];
-    let dataHoras = [];
-    let dataQuest = [];
-    let dataDesp = [];
+    // Cards Superiores
+    let despGeral = totalQuest > 0 ? ((totalAcertos/totalQuest)*100).toFixed(1) + "%" : "0%";
+    let hFormGeral = Math.floor(totalSegs/3600) + "h " + Math.floor((totalSegs%3600)/60).toString().padStart(2,'0') + "m";
+    let mediaGeral = "0h 00m";
+    if(diasUnicos.size > 0) {
+        let mediaSegs = totalSegs / diasUnicos.size;
+        mediaGeral = Math.floor(mediaSegs/3600) + "h " + Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0') + "m";
+    }
+
+    document.getElementById('prodDashCards').innerHTML = `
+        <div class="prod-dash-card c-blue">
+            <div class="prod-dash-title">Desempenho atingido</div>
+            <div class="prod-dash-val">${despGeral}</div>
+        </div>
+        <div class="prod-dash-card c-green">
+            <div class="prod-dash-title">Horas estudadas</div>
+            <div class="prod-dash-val">${hFormGeral}</div>
+        </div>
+        <div class="prod-dash-card c-orange">
+            <div class="prod-dash-title">Questões resolvidas</div>
+            <div class="prod-dash-val">${totalQuest}</div>
+        </div>
+        <div class="prod-dash-card c-yellow">
+            <div class="prod-dash-title">Média de horas diárias</div>
+            <div class="prod-dash-val">${mediaGeral}</div>
+        </div>
+    `;
+
+    // Tabela Lado Direito
+    let tbody = document.getElementById('prodTableBody');
+    tbody.innerHTML = '';
+    
+    let labels = []; let dataHoras = []; let dataQuest = [];
 
     for(let d in estatisticas) {
         let e = estatisticas[d];
@@ -2056,50 +2252,118 @@ function renderizarConteudoProdutividade() {
         dataHoras.push((e.tempo / 3600).toFixed(1));
         dataQuest.push(e.questoes);
         
-        let pct = e.questoes > 0 ? Math.round((e.acertos / e.questoes) * 100) : 0;
-        dataDesp.push(pct);
+        let pct = e.questoes > 0 ? ((e.acertos / e.questoes) * 100).toFixed(1) + "%" : "-";
+        let hForm = Math.floor(e.tempo/3600) + "h " + Math.floor((e.tempo%3600)/60).toString().padStart(2,'0') + "m";
         
-        let badgeQ = e.questoes > 0 ? `<div class="prod-badge">🎯 ${pct}% (${e.acertos}/${e.questoes})</div>` : '';
+        let idClean = d.replace(/[^a-zA-Z0-9]/g, '');
+        
+        // Histórico embutido para expansão
+        let htmlHist = `<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico de Desempenho e Histórico</div>`;
+        htmlHist += `<canvas id="chartDisc_${idClean}" style="max-height: 200px; margin-bottom: 15px;"></canvas>`;
+        
+        rawItemsByDisc[d].reverse().forEach(reg => {
+            let rPct = reg.questoes > 0 ? Math.round((reg.acertos/reg.questoes)*100) : 0;
+            let pts = reg.questoes > 0 ? `🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)` : '';
+            htmlHist += `<div style="padding: 6px 0; border-bottom: 1px dashed #ccc; display: flex; justify-content: space-between; font-size:13px;">
+                <span style="flex:1; color:#333;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa || reg.tipoAtividade}</span>
+                <span style="text-align:right; color:#333;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span>
+            </div>`;
+        });
 
-        html += `
-        <div class="prod-card">
-            <div class="prod-title">${d}</div>
-            <div class="prod-val">⏱️ ${Math.floor(e.tempo/3600)}h ${Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')}m</div>
-            ${badgeQ}
-        </div>`;
+        tbody.innerHTML += `
+        <div class="prod-table-row" onclick="toggleDetailsRow('${idClean}', '${d}')">
+            <div class="prod-table-cell" style="font-weight:bold;">${d}</div>
+            <div class="prod-table-cell center">${e.acertos}</div>
+            <div class="prod-table-cell center">${e.questoes}</div>
+            <div class="prod-table-cell center">${pct}</div>
+            <div class="prod-table-cell center">${hForm}</div>
+        </div>
+        <div class="prod-details-row" id="detalhe_${idClean}">${htmlHist}</div>`;
     }
     
-    if(html === '') html = '<div style="text-align:center; padding:20px; color:#666; width:100%;">Sem dados de produtividade para este filtro.</div>';
-    document.getElementById('conteudoProdutividade').innerHTML = html;
+    if(Object.keys(estatisticas).length > 0) {
+        tbody.innerHTML += `
+        <div class="prod-table-row total">
+            <div class="prod-table-cell">TOTAL</div>
+            <div class="prod-table-cell center">${totalAcertos}</div>
+            <div class="prod-table-cell center">${totalQuest}</div>
+            <div class="prod-table-cell center">${despGeral}</div>
+            <div class="prod-table-cell center">${hFormGeral}</div>
+        </div>`;
+    } else {
+        tbody.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">Sem dados registrados.</div>';
+    }
 
-    // Renderizar Gráficos
-    chartsProdutividade.forEach(c => c.destroy());
-    chartsProdutividade = [];
+    // Gráficos Gerais
+    chartsGerais.forEach(c => c.destroy()); chartsGerais = [];
+    Object.values(chartsDetalhe).forEach(c => c.destroy()); chartsDetalhe = {};
     
     Chart.defaults.color = '#555';
     Chart.defaults.font.family = 'Arial, sans-serif';
 
     if(labels.length > 0) {
         let ctxHoras = document.getElementById('chartHoras').getContext('2d');
-        chartsProdutividade.push(new Chart(ctxHoras, {
+        chartsGerais.push(new Chart(ctxHoras, {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: 'Horas Estudadas', data: dataHoras, backgroundColor: '#1565C0', borderRadius: 4 }] },
             options: { responsive: true, plugins: { title: { display: true, text: 'Horas por Disciplina' } }, scales: { y: { beginAtZero: true } } }
         }));
 
         let ctxQuestoes = document.getElementById('chartQuestoes').getContext('2d');
-        chartsProdutividade.push(new Chart(ctxQuestoes, {
+        chartsGerais.push(new Chart(ctxQuestoes, {
             type: 'bar',
             data: { labels: labels, datasets: [{ label: 'Qtd. Questões', data: dataQuest, backgroundColor: '#f57f17', borderRadius: 4 }] },
             options: { responsive: true, plugins: { title: { display: true, text: 'Questões Resolvidas' } }, scales: { y: { beginAtZero: true } } }
         }));
+    }
+}
 
-        let ctxDesempenho = document.getElementById('chartDesempenho').getContext('2d');
-        chartsProdutividade.push(new Chart(ctxDesempenho, {
-            type: 'line',
-            data: { labels: labels, datasets: [{ label: 'Desempenho (%)', data: dataDesp, borderColor: '#2e7d32', backgroundColor: 'rgba(46, 125, 50, 0.2)', fill: true, tension: 0.3, pointRadius: 5 }] },
-            options: { responsive: true, plugins: { title: { display: true, text: 'Aproveitamento (%)' } }, scales: { y: { beginAtZero: true, max: 100 } } }
-        }));
+function toggleDetailsRow(idClean, discNome) {
+    let div = document.getElementById('detalhe_' + idClean);
+    if(div.style.display === 'block') { div.style.display = 'none'; return; }
+    div.style.display = 'block';
+    
+    // Gera o Gráfico de Linha na hora de abrir
+    if(!chartsDetalhe[idClean]) {
+        let opAtual = document.getElementById('seletorOperador').value;
+        let filtroT = document.getElementById('filtroProdTrilha').value;
+        
+        let histOp = db.historico.filter(h => h.operador === opAtual && h.disciplina === discNome);
+        if(filtroT !== "TODAS") histOp = histOp.filter(h => h.trilha === filtroT);
+        
+        // Agrupar por data para o gráfico (apenas dias que tiveram questões)
+        let despPorDia = {};
+        histOp.forEach(h => {
+            if(h.questoes > 0) {
+                let d = h.data.split(' ')[0];
+                if(!despPorDia[d]) despPorDia[d] = { q: 0, a: 0 };
+                despPorDia[d].q += h.questoes;
+                despPorDia[d].a += h.acertos;
+            }
+        });
+        
+        let labelsDisc = []; let dataDisc = [];
+        // Ordenar as datas
+        let datasOrdenadas = Object.keys(despPorDia).sort((a,b) => {
+            let pA = a.split('/'); let pB = b.split('/');
+            return new Date(`${pA[2]}-${pA[1]}-${pA[0]}`) - new Date(`${pB[2]}-${pB[1]}-${pB[0]}`);
+        });
+        
+        datasOrdenadas.forEach(d => {
+            labelsDisc.push(d);
+            dataDisc.push(Math.round((despPorDia[d].a / despPorDia[d].q) * 100));
+        });
+
+        if(labelsDisc.length > 0) {
+            let ctx = document.getElementById('chartDisc_' + idClean).getContext('2d');
+            chartsDetalhe[idClean] = new Chart(ctx, {
+                type: 'line',
+                data: { labels: labelsDisc, datasets: [{ label: 'Desempenho (%)', data: dataDisc, borderColor: '#2e7d32', backgroundColor: 'rgba(46, 125, 50, 0.2)', fill: true, tension: 0.3, pointRadius: 5 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        } else {
+            document.getElementById('chartDisc_' + idClean).style.display = 'none';
+        }
     }
 }
 
