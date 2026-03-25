@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.6</title>
+    <title>Alô RFB v1.1.7</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -34,14 +34,21 @@
         }
 
         body[data-theme="medieval"] {
-            --primaria: #5c3a21; --secundaria: #e6d2b5; --fundo: radial-gradient(circle at center, #5c4033 0%, #27140c 100%);
-            --bg-app: rgba(230, 210, 180, 0.92); --bg-item: rgba(245, 230, 205, 0.95); --bg-header: rgba(180, 140, 100, 0.98);
-            --text-color: #3e2723; --title-color: #5c3a21; --glass-border: rgba(92, 58, 33, 0.3);
-            --bg-modal: #fdf5e6; --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: #faebd7; --text-input: #3e2723; --bg-hover: #e6d2b5;
+            --primaria: #5c3a21; --secundaria: #e6d2b5; --fundo: radial-gradient(circle at center, #3b2415 0%, #170b06 100%);
+            --bg-app: url('https://www.transparenttextures.com/patterns/aged-paper.png'), #e6d2b5; 
+            --bg-item: rgba(245, 230, 205, 0.85); --bg-header: rgba(210, 180, 140, 0.95);
+            --text-color: #3e2723; --title-color: #4e2916; --glass-border: rgba(92, 58, 33, 0.5);
+            --bg-modal: url('https://www.transparenttextures.com/patterns/parchment.png'), #fdf5e6;
+            --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: rgba(250,235,215,0.6); --text-input: #3e2723; --bg-hover: #e6d2b5;
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
         }
-        body[data-theme="medieval"] .app-container { background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px); }
-        body[data-theme="medieval"] .modal { box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(139, 90, 43, 0.1); border: 2px solid #8b5a2b; }
+        body[data-theme="medieval"] .modal { 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); 
+            border: 4px solid #8b5a2b; 
+            border-radius: 4px;
+        }
+        body[data-theme="medieval"] .btn-action { background: #5c3a21; color: #fdf5e6; border-color: #3e2723; }
+        body[data-theme="medieval"] .app-container { box-shadow: 0 0 30px rgba(0,0,0,0.8); }
 
         /* BLOQUEIO DE ROLAGEM GLOBAL */
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
@@ -177,13 +184,13 @@
         .crono-mute { color: var(--text-color); font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
-        /* Barra de Meta */
+        /* Barra de Meta Editada (Tamanhos Aumentados) */
         .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
-        .meta-text { font-size: 10px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
+        .meta-text { font-size: 14px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
         .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
         body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
         .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; }
-        .meta-runner { position: absolute; right: -12px; top: -11px; font-size: 20px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .meta-runner { position: absolute; right: -12px; top: -14px; font-size: 26px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
         .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
@@ -254,7 +261,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.6</div>
+    <div class="splash-version">v1.1.7</div>
 </div>
 
 <div id="login-screen">
@@ -385,7 +392,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.6</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.7</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
@@ -437,7 +444,7 @@
                 <option value="roxo">💜 Roxo</option>
                 <option value="escuro">⚫ Escuro</option>
                 <option value="transparente">🧊 Transparente (Glass)</option>
-                <option value="medieval">🛡️ Medieval</option>
+                <option value="medieval">⚔️ Medieval</option>
             </select>
         </div>
         <div class="form-group">
@@ -713,7 +720,7 @@
         
         <div class="form-group">
             <label>Título da Tarefa:</label>
-            <input type="text" id="tarTituloPersonalizado" placeholder="Ex: PDF Aula 00">
+            <input type="text" id="tarTituloPersonalizado" placeholder="">
         </div>
 
         <div class="form-group">
@@ -734,7 +741,7 @@
                     <input type="number" id="tarTempoMinutos" value="0" min="0">
                 </div>
             </div>
-            <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs"></div>
+            <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs" placeholder=""></div>
         </div>
         
         <div style="display:flex; justify-content:space-between; margin-top:20px; align-items:stretch; gap:10px; height: 45px;">
@@ -793,7 +800,7 @@
         
         <div class="form-group">
             <label>Observação Extra (Opcional):</label>
-            <input type="text" id="regObs" placeholder="Ex: Parei na página 15">
+            <input type="text" id="regObs" placeholder="">
         </div>
 
         <div class="modal-actions">
@@ -1179,7 +1186,7 @@ function startPauseTimer() {
             audioRestart.play().catch(()=>{});
         }
         
-        // Sincronização ao pausar (Pedido 7)
+        // Sincronização ao pausar
         db.configs.estadoTimer = { tempo: tempoTimer, target: targetTimer, modo: modoTimer, fase: pomoFase, ciclo: pomoCicloAtual };
         salvarModificacaoBasica();
     }
@@ -1571,7 +1578,7 @@ function iniciar(){
         if (opAtual && db.operadores.find(o => o.nome === opAtual)) { l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual; }
         setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
         
-        // Carrega estado do cronômetro da nuvem/local (Pedido 7)
+        // Carrega estado do cronômetro da nuvem/local
         if(db.configs.estadoTimer && db.configs.estadoTimer.tempo > 0) {
             tempoTimer = db.configs.estadoTimer.tempo;
             targetTimer = db.configs.estadoTimer.target;
@@ -2099,7 +2106,7 @@ function abrirFormTarefa(id, numSugerido = 1){
         
         let btnPular = document.getElementById('btnPularTarefa');
         
-        // Regra de Bloqueio (Pedido 4)
+        // Regra de Bloqueio
         let isConc = t.concluida && !t.pulada;
         if(isConc) {
             document.getElementById('tarNumero').disabled = true;
@@ -2280,6 +2287,13 @@ function abrirSelecionadorDeTarefaParaRegistro() {
     let conc = getConcursoAtivoNome();
     let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida);
     
+    // ORDENAÇÃO NUMÉRICA DAS TAREFAS
+    filtradas.sort((a, b) => {
+        let numA = parseInt(a.titulo.match(/\d+/) ? a.titulo.match(/\d+/)[0] : 0);
+        let numB = parseInt(b.titulo.match(/\d+/) ? b.titulo.match(/\d+/)[0] : 0);
+        return numA - numB;
+    });
+    
     filtradas.forEach(t => {
         l.innerHTML += `<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
     });
@@ -2356,7 +2370,6 @@ function salvarRegistroEstudo(){
     
     document.getElementById('qtdQuestoes').value = 0; document.getElementById('qtdAcertos').value = 0;
     
-    // Limpar estado do timer ativo da nuvem
     db.configs.estadoTimer = null;
     
     salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo'); renderizarCabecalhoTrilhas(); 
@@ -2799,14 +2812,18 @@ function abrirHabilidades() {
         let dNome = d.nome;
         let totalAulas = d.aulas || 0;
         
-        // Peso das Aulas (80%)
+        // Peso das Aulas (80%) Corrigido
         let aulasSet = new Set();
         tarefasOp.filter(t => t.disciplina === dNome).forEach(t => {
-            if(t.aulas) { t.aulas.split(', ').forEach(a => aulasSet.add(a)); }
+            if(t.aulas) { 
+                t.aulas.split(',').forEach(a => {
+                    let aClean = a.trim();
+                    if(aClean) aulasSet.add(aClean); 
+                });
+            }
         });
         let unqAulas = aulasSet.size;
-        let pctAulas = totalAulas > 0 ? (unqAulas / totalAulas) * 80 : 0;
-        if(totalAulas === 0 && unqAulas > 0) pctAulas = 80; // Caso excepcional sem aulas cadastradas
+        let pctAulas = totalAulas > 0 ? Math.min(80, (unqAulas / totalAulas) * 80) : 0;
         
         // Peso do Desempenho (20%) + Bônus
         let acertos = 0; let questoes = 0;
