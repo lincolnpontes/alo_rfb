@@ -129,7 +129,7 @@
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
         .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
-        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 1fr 2fr 80px 140px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
+        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 70px 3.5fr 80px 140px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
         .tarefa-row:last-child { border-bottom: none; }
         .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
         
@@ -183,7 +183,7 @@
         .crono-play { width: 50px; height: 50px;}
         .crono-stop { width: 50px; height: 50px;} 
         .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .crono-edit { font-size: 16px; background: var(--secundaria); border: 2px solid var(--primaria); width: 32px; height: 32px; border-radius: 50%; margin: 2px auto 0 auto; display: flex; align-items: center; justify-content: center; font-weight: bold;}
+        .crono-edit { font-size: 16px; background: var(--secundaria); border: 2px solid var(--primaria); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         
@@ -240,7 +240,7 @@
         .btn-tree.active { color: var(--primaria); opacity: 1; border-bottom: 3px solid var(--primaria); }
 
         /* Habilidades */
-        .hab-row { display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
+        .hab-row { display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
         .hab-nivel { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);}
         .hab-bar-bg { background: rgba(0,0,0,0.1); border-radius: 10px; height: 18px; width: 100%; position: relative; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);}
         body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
@@ -308,7 +308,10 @@
                     <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
                     <button class="crono-btn-vert" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
                     <button class="crono-btn-vert" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
-                    <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
+                    <div style="display:flex; justify-content:center; gap:8px;">
+                        <button class="crono-btn-icon crono-edit" onclick="abrirConfigCronometroModal()" title="Configurações do Cronômetro" style="margin: 0;">⏱️</button>
+                        <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo" style="margin: 0;">✏️</button>
+                    </div>
                 </div>
                 
                 <div class="crono-display-box">
@@ -402,16 +405,10 @@
     <div class="modal">
         <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.7</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
-        <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         <button class="btn-outline" onclick="abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
 
-        <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
-        <button class="btn-outline" onclick="exportarBackup()"><span class="emoji-icon">💾</span> <span class="texto-btn">Exportar Backup (TXT)</span></button>
-        <button class="btn-outline" onclick="document.getElementById('importBackupFile').click()"><span class="emoji-icon">📂</span> <span class="texto-btn">Importar Backup (TXT)</span></button>
-        <input type="file" id="importBackupFile" accept=".txt" style="display:none;" onchange="importarBackup(event)">
-        
         <div id="painelSecreto" style="display:none;">
             <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
             <button class="btn-outline" onclick="abrirGerenciar('estudantes')"><span class="emoji-icon">👥</span> <span class="texto-btn">Usuários</span></button>
@@ -433,7 +430,11 @@
         </div>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 15px 0;">
         <div style="display: flex; gap: 10px; flex-direction: column;">
-            <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
+            <button class="btn-action" style="margin:0; width:100%; background:#4CAF50; padding:15px;" onclick="exportarBackup()">💾 Exportar Backup (TXT)</button>
+            <button class="btn-action" style="margin:0; width:100%; background:#1976D2; padding:15px;" onclick="document.getElementById('importBackupFile').click()">📂 Importar Backup (TXT)</button>
+            <input type="file" id="importBackupFile" accept=".txt" style="display:none;" onchange="importarBackup(event)">
+            
+            <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px; margin-top:10px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
             <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (Local ➡️ Nuvem)</button>
             <button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ Local)</button>
         </div>
@@ -523,7 +524,7 @@
         </fieldset>
         
         <div class="modal-actions">
-            <button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button>
+            <button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button>
             <button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button>
         </div>
     </div>
@@ -906,8 +907,7 @@
             <strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota (Ex: 3 de 10 aulas = 30% concluído -> 24% na nota final). O percentual de acertos nas questões vale até 20%. A cada 1.000 questões corretas na disciplina, você ganha um bônus de 1%. O limite é 100% (Grande Mestre).
         </div>
         
-        <div style="display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);">
-            <div>ID</div>
+        <div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);">
             <div>Título</div>
             <div style="text-align: center;">Nível</div>
             <div>Percentual</div>
@@ -1245,7 +1245,13 @@ function abrirEdicaoTempo() {
     document.getElementById('editMins').value = Math.floor((dSegs % 3600) / 60);
     document.getElementById('editSegs').value = Math.floor(dSegs % 60);
     abrirModal('modalEditarTempo');
+    setTimeout(() => {
+        let el = document.getElementById('editHoras');
+        el.focus();
+        el.select();
+    }, 50);
 }
+
 function confirmarEdicaoTempo() {
     let h = parseInt(document.getElementById('editHoras').value) || 0;
     let m = parseInt(document.getElementById('editMins').value) || 0;
@@ -1361,6 +1367,7 @@ function atualizarEngrenagem(){
 
 // ================= EXPORTAR / IMPORTAR BACKUP =================
 function exportarBackup() {
+    db.configs.estadoTimer = { tempo: tempoTimer, target: targetTimer, modo: modoTimer, fase: pomoFase, ciclo: pomoCicloAtual };
     let dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
     let downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
@@ -1410,7 +1417,7 @@ function renderizarCabecalhoTrilhas() {
     
     let objConc = db.concursos.find(c => c.nome === concNome) || {cor: 'var(--primaria)'};
     
-    let trilhasDeste = db.trilhas.filter(t => t.concurso === concNome);
+    let trilhasDeste = db.trilhas.filter(t => t.concurso === concNome).sort((a,b)=>a.nome.localeCompare(b.nome));
     if(!trilhaAtivaNome || !trilhasDeste.find(t => t.nome === trilhaAtivaNome)) { trilhaAtivaNome = trilhasDeste.length > 0 ? trilhasDeste[0].nome : null; }
     
     let selHtml = `<select class="sel-trilha-header" onchange="mudarTrilhaAtiva(this.value)">`;
@@ -1428,7 +1435,7 @@ function renderizarCabecalhoTrilhas() {
 
     if(tObj) {
         let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === concNome);
-        numDisc = new Set(tarefasTrilha.map(t => t.disciplina)).size;
+        numDisc = new Set(tarefasTrilha.map(t => t.disciplina).filter(d => d && d.toLowerCase() !== "geral")).size;
         numAtiv = tarefasTrilha.length;
         
         let histTrilha = db.historico.filter(h => h.trilha === trilhaAtivaNome && h.concurso === concNome);
@@ -1539,8 +1546,13 @@ function renderizarDashboardTrilha() {
 
 function criarTrilhaAutoModal() {
     let conc = getConcursoAtivoNome(); if(!conc) return alert("Sem concurso ativo!");
-    let count = db.trilhas.filter(t => t.concurso === conc).length + 1;
-    let novoNome = "Trilha " + String(count).padStart(2, '0');
+    
+    let trilhasConc = db.trilhas.filter(t => t.concurso === conc);
+    let nums = trilhasConc.map(t => { let m = t.nome.match(/\d+/); return m ? parseInt(m[0]) : 0; });
+    let nextNum = 1;
+    while(nums.includes(nextNum)) nextNum++;
+    
+    let novoNome = "Trilha " + String(nextNum).padStart(2, '0');
     
     db.trilhas.push({ id: Date.now(), nome: novoNome, concurso: conc, dataInicio: getHojeYMD(), duracaoDias: 7 });
     trilhaAtivaNome = novoNome;
@@ -1778,7 +1790,7 @@ function salvarConfigCronometro(){
     if(modoTimer === 'pomodoro') setModoTimer('pomodoro'); else if(modoTimer === 'regressive') setModoTimer('regressive');
     
     salvarModificacaoBasica(); atualizarBarraMeta();
-    fecharModal('modalConfigCronometro'); abrirPainelUnificadoComNivel(db.configs.mestreAtivo);
+    fecharModal('modalConfigCronometro');
 }
 
 function abrirGerenciarTiposAtividade(){ fecharModal('modalListagem'); fecharModal('modalPainelUnificado'); renderizarTiposCfg(); abrirModal('modalGerenciarTipos'); }
@@ -1853,7 +1865,7 @@ function abrirGerenciar(t, context){
         b.onclick = () => abrirFormDisciplina(-1, context);
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
         
-        let discs = db.disciplinas.filter(d => d.concurso === context);
+        let discs = db.disciplinas.filter(d => d.concurso === context).sort((a,b)=>a.nome.localeCompare(b.nome));
         discs.forEach((d) => { l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${d.nome}</strong><br><small>${d.aulas || 0} Aulas</small></div><div class="gerenciar-actions"><button onclick="abrirFormDisciplina(${d.id}, '${context}')">✏️</button><button onclick="excluirItem('disciplinas',${d.id}, '${context}')">🗑️</button></div></div>`; });
     } 
     else if (t === 'trilhas') {
@@ -1864,8 +1876,12 @@ function abrirGerenciar(t, context){
             document.getElementById('edtTrilhaId').value = ''; 
             document.getElementById('edtTrilhaConcurso').value = context; 
             
-            let count = db.trilhas.filter(tr => tr.concurso === context).length + 1;
-            document.getElementById('edtTrilhaNome').value = "Trilha " + String(count).padStart(2, '0');
+            let trilhasConc = db.trilhas.filter(tr => tr.concurso === context);
+            let nums = trilhasConc.map(tr => { let m = tr.nome.match(/\d+/); return m ? parseInt(m[0]) : 0; });
+            let nextNum = 1;
+            while(nums.includes(nextNum)) nextNum++;
+            
+            document.getElementById('edtTrilhaNome').value = "Trilha " + String(nextNum).padStart(2, '0');
             
             document.getElementById('edtTrilhaDataInicio').value = getHojeYMD(); 
             document.getElementById('edtTrilhaDias').value = 7; 
@@ -1873,7 +1889,7 @@ function abrirGerenciar(t, context){
         };
         bVoltar.onclick = () => { fecharModal('modalListagem'); abrirGerenciar('concursos'); };
         
-        let trs = db.trilhas.filter(tr => tr.concurso === context);
+        let trs = db.trilhas.filter(tr => tr.concurso === context).sort((a,b)=>a.nome.localeCompare(b.nome));
         trs.forEach((tr) => { 
             l.innerHTML += `<div class="gerenciar-item"><div class="gerenciar-info"><strong>${tr.nome}</strong><br><small>Duração: ${tr.duracaoDias || 7} dias</small></div><div class="gerenciar-actions"><button onclick="abrirEdicaoTrilha(${tr.id})">✏️</button><button onclick="excluirItem('trilhas',${tr.id}, '${context}')">🗑️</button></div></div>`; 
         });
@@ -1960,7 +1976,16 @@ function salvarEdicaoTrilha() {
     
     if(idStr) {
         let obj = db.trilhas.find(t => t.id === parseInt(idStr));
-        if(obj) { obj.nome = n; obj.dataInicio = dInit; obj.duracaoDias = dias; }
+        if(obj) { 
+            let oldName = obj.nome;
+            obj.nome = n; obj.dataInicio = dInit; obj.duracaoDias = dias; 
+            
+            if(oldName !== n) {
+                db.tarefas.forEach(t => { if(t.concurso === conc && t.trilha === oldName) t.trilha = n; });
+                db.historico.forEach(h => { if(h.concurso === conc && h.trilha === oldName) h.trilha = n; });
+                if(trilhaAtivaNome === oldName) trilhaAtivaNome = n;
+            }
+        }
     } else {
         db.trilhas.push({ id: Date.now(), nome: n, concurso: conc, dataInicio: dInit, duracaoDias: dias });
     }
@@ -2108,11 +2133,11 @@ function abrirFormTarefa(id, numSugerido = 1){
     document.getElementById('tarHeaderConcurso').innerText = conc;
     
     const selD = document.getElementById('tarDisciplina'); selD.innerHTML = '<option value="">-- Nenhuma / Geral --</option>'; 
-    let discsDoConcurso = db.disciplinas.filter(d => d.concurso === conc);
+    let discsDoConcurso = db.disciplinas.filter(d => d.concurso === conc).sort((a,b)=>a.nome.localeCompare(b.nome));
     discsDoConcurso.forEach(x => selD.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     
     const selTr = document.getElementById('tarTrilhaSelect'); selTr.innerHTML = '';
-    db.trilhas.filter(t => t.concurso === conc).forEach(x => selTr.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
+    db.trilhas.filter(t => t.concurso === conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x => selTr.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     selTr.value = trilhaAtivaNome;
     
     const selT = document.getElementById('tarTipo'); selT.innerHTML = ''; 
@@ -2530,7 +2555,8 @@ function abrirRitmoEstudo() {
     
     trilhasDoConcurso.forEach((tr, index) => {
         let tNome = tr.nome;
-        let numVisual = index + 1;
+        let matchNum = tNome.match(/\d+/);
+        let numVisual = matchNum ? matchNum[0] : (index + 1);
         
         // --- Cálculo Desempenho ---
         let acertos = 0; let questoes = 0;
@@ -2607,7 +2633,7 @@ function abrirProdutividade() {
     let opAtual = document.getElementById('seletorOperador').value;
     let histOp = db.historico.filter(h => h.operador === opAtual);
     
-    let trilhasUnicas = [...new Set(histOp.map(h => h.trilha).filter(x=>x))];
+    let trilhasUnicas = [...new Set(histOp.map(h => h.trilha).filter(x=>x))].sort((a,b)=>a.localeCompare(b));
     const selFiltro = document.getElementById('filtroProdTrilha');
     selFiltro.innerHTML = '<option value="TODAS">📚 Todas as Trilhas</option>';
     trilhasUnicas.forEach(tr => selFiltro.innerHTML += `<option value="${tr}">${tr}</option>`);
@@ -2862,7 +2888,7 @@ function abrirHabilidades() {
     let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc);
     let tarefasOp = db.tarefas.filter(t => t.concurso === conc && t.concluida && !t.pulada);
     
-    let discs = db.disciplinas.filter(d => d.concurso === conc);
+    let discs = db.disciplinas.filter(d => d.concurso === conc).sort((a,b)=>a.nome.localeCompare(b.nome));
     let html = '';
     
     discs.forEach((d, index) => {
@@ -2907,11 +2933,8 @@ function abrirHabilidades() {
         else if(totalPct < 100) { nivel = "Mestre"; corBg = "#ffccbc"; corTxt = "#bf360c"; }
         else { nivel = "Gr. Mestre"; corBg = "#ffd54f"; corTxt = "#b45f06"; }
         
-        let idFormat = String(index + 1).padStart(4, '0');
-        
         html += `
         <div class="hab-row">
-            <div>${idFormat}</div>
             <div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div>
             <div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div>
             <div class="hab-bar-bg">
