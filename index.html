@@ -7,17 +7,33 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.4</title>
+    <title>Alô RFB v1.1.5</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
-    
     <style>
-        :root{--primaria:#1565C0;--secundaria:#E3F2FD;--fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);--bg-app:rgba(255,255,255,0.6);--bg-item:rgba(255,255,255,0.7);--bg-header:rgba(255,255,255,0.8); --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;}
-        
-        /* BLOQUEIO DE ROLAGEM GLOBAL - APENAS A TABELA ROLA */
-        html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none}
+        :root {
+            --primaria:#1565C0; --secundaria:#E3F2FD; --fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);
+            --bg-app:rgba(255,255,255,0.6); --bg-item:rgba(255,255,255,0.7); --bg-header:rgba(255,255,255,0.8);
+            --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;
+            /* Variáveis Dinâmicas para Modais */
+            --bg-modal: #ffffff; --text-modal: #333333; --border-input: #cccccc; --bg-input: #ffffff; --text-input: #333333; --bg-hover: #f9f9f9;
+        }
+
+        body[data-theme="escuro"] {
+            --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(40,40,40,0.9); --bg-header: rgba(20,20,20,0.95);
+            --text-color: #eee; --title-color: #4fc3f7; --glass-border: rgba(255,255,255,0.1);
+            --bg-modal: #222222; --text-modal: #eeeeee; --border-input: #444444; --bg-input: #333333; --text-input: #eeeeee; --bg-hover: #333333;
+        }
+
+        body[data-theme="transparente"] {
+            --bg-app: rgba(255,255,255,0.15); --bg-item: rgba(255,255,255,0.25); --bg-header: rgba(20, 35, 45, 0.98);
+            --text-color: #eee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.2);
+            --bg-modal: rgba(20, 35, 45, 0.98); --text-modal: #eeeeee; --border-input: rgba(255,255,255,0.2); --bg-input: rgba(0,0,0,0.4); --text-input: #eeeeee; --bg-hover: rgba(255,255,255,0.1);
+        }
+
+        /* BLOQUEIO DE ROLAGEM GLOBAL */
+        html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
         
         body.modal-open{touch-action:none}
         input,select,textarea{user-select:auto;-webkit-user-select:auto}
@@ -30,52 +46,57 @@
         #splash-screen.hidden{opacity:0;pointer-events:none}
         .splash-emoji{font-size:70px;margin-bottom:15px;display:block}
         .splash-title{font-size:26px;font-weight:900;margin-bottom:5px;letter-spacing:1px}
-        .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px}
+        .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px; color: var(--primaria);}
         
         #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--primaria);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:5vh;color:#fff;transition:opacity .5s ease}
         .header{background:var(--primaria);color:#fff;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
         .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:14px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
         .modern-select option{color:#333;background:#fff}
         
-        /* Modais */
-        .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
-        .modal{background:#fff;padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.2); color: #333 !important;}
-        .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:#333 !important;border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-        .modal p, .modal label, .modal div:not(.modal-actions):not(.trilha-tab):not(.concurso-badge):not(.custom-select-option):not(.tarefas-grid):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell) { color: #333 !important; }
+        /* Modais Modernizados com CSS Variables */
+        .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
+        .modal{background:var(--bg-modal);padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: var(--text-modal); border: 1px solid var(--border-input);}
+        .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:var(--primaria);border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+        
+        .modal p, .modal label, .modal legend, .modal div:not(.modal-actions):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell):not(.dash-box):not(.dash-box-title):not(.dash-box-val):not(.hab-nivel) { color: var(--text-modal); }
+        
         .form-group{margin-bottom:15px;position:relative}
         .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
-        .form-group input:not([type=checkbox]),.form-group select{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:16px; color: #333 !important; background: #fff !important;}
-        .form-group input[type=color]{padding:0;border:1px solid #ccc;height:44px;width:100%;border-radius:8px;cursor:pointer}
-        .modal-select{height:38px;border-radius:8px!important;border:1px solid #ccc!important;background:#fff!important;color:#333!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
+        .form-group input:not([type=color]):not([type=checkbox]), .form-group select { width:100%;padding:10px;border:1px solid var(--border-input);border-radius:5px;box-sizing:border-box;font-size:16px; color: var(--text-input); background: var(--bg-input); }
+        .form-group input:disabled, .form-group select:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.05); }
+        .form-group input[type=color]{padding:0;border:1px solid var(--border-input);height:44px;width:100%;border-radius:8px;cursor:pointer; background: var(--bg-input);}
+        .modal-select{height:38px;border-radius:8px!important;border:1px solid var(--border-input)!important;background:var(--bg-input)!important;color:var(--text-input)!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
+        
         .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
-        .btn-cancel{background:#e0e0e0;color:#333 !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid #ccc;flex:1}
-        .btn-action{background:var(--primaria);color:#ffffff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1}
-        .btn-danger{background:#d32f2f;color:#ffffff !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
-        .btn-outline{background:var(--secundaria);color:var(--primaria) !important;border:2px solid var(--primaria) !important;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
+        .btn-cancel{background:var(--bg-input);color:var(--text-input);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--border-input);flex:1; transition: 0.2s;}
+        .btn-cancel:hover { filter: brightness(0.9); }
+        .btn-action{background:var(--primaria);color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1; transition: 0.2s;}
+        .btn-danger{background:#d32f2f;color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
+        .btn-outline{background:transparent;color:var(--primaria);border:2px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
-        .btn-outline span.texto-btn { color: #333 !important; font-size: 15px; font-weight: bold; }
+        .btn-outline span.texto-btn { color: var(--text-modal); font-size: 15px; font-weight: bold; }
 
-        .custom-select-box { border: 1px solid #ccc; border-radius: 5px; background: #fff; padding: 10px; cursor: pointer; font-size: 14px; min-height: 20px; color: #333; display:flex; align-items:center; justify-content:space-between; }
-        .custom-select-options { display: none; position: absolute; width: 100%; background: #fff; border: 1px solid #ccc; border-radius: 0 0 5px 5px; max-height: 150px; overflow-y: auto; z-index: 99; top: 100%; margin-top:-1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .custom-select-option { padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.1s; }
-        .custom-select-option:hover { background: #f9f9f9; }
+        .custom-select-box { border: 1px solid var(--border-input); border-radius: 5px; background: var(--bg-input); padding: 10px; cursor: pointer; font-size: 14px; min-height: 20px; color: var(--text-input); display:flex; align-items:center; justify-content:space-between; }
+        .custom-select-options { display: none; position: absolute; width: 100%; background: var(--bg-modal); border: 1px solid var(--border-input); border-radius: 0 0 5px 5px; max-height: 150px; overflow-y: auto; z-index: 99; top: 100%; margin-top:-1px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .custom-select-option { padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border-input); cursor: pointer; transition: 0.1s; color: var(--text-modal);}
+        .custom-select-option:hover { background: var(--bg-hover); }
         .custom-select-option input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
 
-        /* Layout de Cabeçalho Trilhas Numa Linha Só */
+        /* Layout de Cabeçalho Trilhas */
         .trilhas-top-bar { display: flex; align-items: center; justify-content: space-between; gap: 15px; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; flex-wrap: wrap;}
         .trilhas-left { display: flex; align-items: center; gap: 10px; flex: none; }
         .trilhas-center { flex: 1; display: flex; justify-content: center; min-width: 300px; }
         .trilhas-right { display: flex; align-items: center; gap: 10px; flex: none; }
         
-        .concurso-badge { font-weight: 900; font-size: 22px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.5); white-space: nowrap;}
-        .sel-trilha-header { background: rgba(255,255,255,0.7); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
+        .concurso-badge { font-weight: 900; font-size: 22px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.3); white-space: nowrap;}
+        .sel-trilha-header { background: var(--bg-item); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         
-        .dash-prazo-bar { font-size: 14px; color: #333; display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
-        body[data-theme="transparente"] .dash-prazo-bar { color: #eee; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        /* Prazo Bar Ampliada (Pedido 5) */
+        .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         
-        /* NOVA TABELA DE TAREFAS - SCROLL ISOLADO */
+        /* Tabela de Tarefas */
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
         .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -84,10 +105,9 @@
         .tarefa-row:last-child { border-bottom: none; }
         .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
         
-        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 14px; color: #555; background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 15px; padding-bottom: 15px; backdrop-filter: blur(10px);}
+        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 14px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 15px; padding-bottom: 15px; backdrop-filter: blur(10px);}
         
-        body[data-theme="transparente"] .tarefa-row, body[data-theme="escuro"] .tarefa-row { color: #eee; }
-        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { color: #fff; background: rgba(0,0,0,0.8); border-bottom-color: #888;}
+        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -101,10 +121,10 @@
         .row-concluida { background: rgba(100, 221, 23, 0.05); }
         .row-pulada { opacity: 0.65; background: rgba(211, 47, 47, 0.03); }
         
-        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-input)}
         .gerenciar-info{flex:1;font-size:14px}
-        .gerenciar-actions button{background:#eee;border:none;cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px; font-weight:bold;}
-        .switch-container{display:flex;justify-content:space-between;align-items:center;background:#f9f9f9;padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid #eee}
+        .gerenciar-actions button{background:var(--bg-input); border:1px solid var(--border-input); color:var(--text-modal); cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px; font-weight:bold;}
+        .switch-container{display:flex;justify-content:space-between;align-items:center;background:var(--bg-input);padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border-input)}
         .switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
         .switch input{opacity:0;width:0;height:0}
         .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:34px}
@@ -117,14 +137,13 @@
         .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 4px 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px);}
         .crono-layout { display: flex; justify-content: center; align-items: center; gap: 15px; }
         .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; align-items: stretch;}
-        .crono-btn-vert { background: rgba(0,0,0,0.05); color: #555; border: 1px solid transparent; padding: 6px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.2s; text-align:center;}
+        .crono-btn-vert { background: rgba(0,0,0,0.05); color: var(--text-color); border: 1px solid transparent; padding: 6px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.2s; text-align:center;}
         .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         
         .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; position:relative;}
         .crono-display-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center;}
-        .crono-display { font-size: 50px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--primaria); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1; z-index: 2;}
-        .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 11px; font-weight: bold; color: #888; text-align: left; line-height: 1.3; width: max-content; display:none; border-left: 2px solid #ccc; padding-left: 8px;}
-        body[data-theme="transparente"] .pomo-status-side { color: #ccc; border-left-color: #666;}
+        .crono-display { font-size: 50px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--title-color); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1; z-index: 2;}
+        .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 11px; font-weight: bold; color: var(--text-color); text-align: left; line-height: 1.3; width: max-content; display:none; border-left: 2px solid var(--text-color); padding-left: 8px;}
         
         .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 2px;}
         .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif;}
@@ -134,40 +153,42 @@
         .crono-play { width: 50px; height: 50px;}
         .crono-stop { width: 50px; height: 50px;} 
         .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .crono-edit { font-size: 14px; background: #fff3e0; border: 1px solid #ffe0b2; padding: 4px; border-radius: 6px; width: 100%; margin-top: 2px; color: #e65100; font-weight: bold;}
+        
+        /* Botão Editar Lápis (Pedido 2) */
+        .crono-edit { font-size: 16px; background: var(--secundaria); border: 2px solid var(--primaria); width: 32px; height: 32px; border-radius: 50%; margin: 2px auto 0 auto; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         
         /* Volume Vertical */
         .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: -5px; }
-        .crono-mute { color: #555; font-size: 20px;}
+        .crono-mute { color: var(--text-color); font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
         /* Barra de Meta Nova (Corredor) */
         .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
-        .meta-text { font-size: 10px; color: #555; font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
-        .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.1); border-radius: 6px; overflow: visible; position: relative; }
+        .meta-text { font-size: 10px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
+        .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
+        body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
         .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; }
         .meta-runner { position: absolute; right: -12px; top: -11px; font-size: 20px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
-        .fieldset-config { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+        .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         
         /* Dashboard de Trilha */
         .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
-        .dash-box { background: var(--secundaria); padding: 10px; border-radius: 8px; text-align: center; flex: 1; border: 1px solid rgba(0,0,0,0.05);}
-        .dash-box-title { font-size: 13px; font-weight: bold; color: #555; text-transform: uppercase; margin-bottom: 4px; }
+        .dash-box { background: var(--bg-input); padding: 10px; border-radius: 8px; text-align: center; flex: 1; border: 1px solid var(--border-input);}
+        .dash-box-title { font-size: 13px; font-weight: bold; color: var(--text-modal); text-transform: uppercase; margin-bottom: 4px; }
         .dash-box-val { font-size: 22px; font-weight: 900; color: var(--primaria); }
-        body[data-theme="transparente"] .dash-box-title { color: #eee; }
         
-        .btn-sub-gerenciar { background:var(--secundaria); color:var(--primaria) !important; border:1px solid var(--primaria); padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:bold; font-size:12px; flex:1; }
+        .btn-sub-gerenciar { background:transparent; color:var(--primaria) !important; border:1px solid var(--primaria); padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:bold; font-size:12px; flex:1; }
         
         /* SUPER PAINEL DE PRODUTIVIDADE */
         .prod-layout { display: flex; gap: 20px; align-items: stretch; margin-top: 15px; flex-wrap: wrap; }
         .prod-col-left { flex: 0 0 250px; display: flex; flex-direction: column; gap: 15px; }
         .prod-col-right { flex: 1; min-width: 400px; display: flex; flex-direction: column; gap: 15px;}
         
-        .prod-dash-card { border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: white !important;}
+        .prod-dash-card { border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white !important;}
         .prod-dash-card::after { content: ''; position: absolute; right: -15px; bottom: -15px; font-size: 60px; opacity: 0.2; }
         .prod-dash-title { font-size: 14px; font-weight: bold; z-index: 1; color: white !important;}
         .prod-dash-val { font-size: 32px; font-weight: 900; margin-top: 10px; z-index: 1; color: white !important;}
@@ -177,7 +198,7 @@
         .c-orange { background: linear-gradient(135deg, #ffa726, #f57c00); } .c-orange::after { content: '🎯'; }
         .c-yellow { background: linear-gradient(135deg, #ffca28, #fbc02d); } .c-yellow::after { content: '⏳'; }
 
-        .prod-table-container { background: #333; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .prod-table-container { background: #333; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.4); border: 1px solid #444;}
         .prod-table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid #444; color: #eee !important; cursor: pointer; transition: 0.2s;}
         .prod-table-row:hover:not(.prod-table-header) { background: #444; }
         .prod-table-header { font-weight: bold; background: #222; font-size: 13px; color: #bbb !important; cursor: default; }
@@ -185,11 +206,19 @@
         .prod-table-cell.center { justify-content: center; text-align: center; }
         .prod-table-row.total { background: #111; font-weight: bold; }
         
-        .prod-details-row { display: none; background: #f9f9f9; border-bottom: 1px solid #ddd; padding: 20px; grid-column: 1 / -1; }
+        .prod-details-row { display: none; background: #2a2a2a; border-bottom: 1px solid #444; padding: 20px; grid-column: 1 / -1; color: #eee;}
         
         /* Treemap e Abas */
-        .btn-tree { background: transparent; border: none; font-size: 15px; font-weight: bold; color: #888; cursor: pointer; padding: 10px 15px; transition: 0.2s; border-bottom: 3px solid transparent; outline: none;}
-        .btn-tree.active { color: var(--primaria); border-bottom: 3px solid var(--primaria); }
+        .btn-tree { background: transparent; border: none; font-size: 15px; font-weight: bold; color: var(--text-modal); opacity: 0.6; cursor: pointer; padding: 10px 15px; transition: 0.2s; border-bottom: 3px solid transparent; outline: none;}
+        .btn-tree.active { color: var(--primaria); opacity: 1; border-bottom: 3px solid var(--primaria); }
+
+        /* Habilidades (Pedido 6) */
+        .hab-row { display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
+        .hab-nivel { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);}
+        .hab-bar-bg { background: rgba(0,0,0,0.1); border-radius: 10px; height: 18px; width: 100%; position: relative; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);}
+        body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
+        .hab-bar-fill { background: #4fc3f7; height: 100%; position: absolute; left: 0; top: 0; transition: width 0.5s ease;}
+        .hab-bar-text { position: absolute; left: 8px; top: 1px; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 2;}
     </style>
 </head>
 <body>
@@ -198,7 +227,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.4</div>
+    <div class="splash-version">v1.1.5</div>
 </div>
 
 <div id="login-screen">
@@ -225,6 +254,7 @@
                 <div id="indicadorConexao" class="status-conexao" title="Sincronização" style="display:none;">🌐</div>
                 <button onclick="abrirHistorico()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Diário de Estudos">📅</button>
                 <button onclick="abrirProdutividade()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Produtividade">📊</button>
+                <button onclick="abrirHabilidades()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Habilidades">🎓</button>
                 <button id="btnConfigGear" onclick="abrirLoginAdmin()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;">⚙️</button>
             </div>
         </div>
@@ -235,7 +265,7 @@
                     <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
                     <button class="crono-btn-vert" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
                     <button class="crono-btn-vert" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
-                    <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️ Edit</button>
+                    <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo">✏️</button>
                 </div>
                 
                 <div class="crono-display-box">
@@ -283,7 +313,7 @@
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
         <h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3>
-        <p style="font-size: 14px; color:#555;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado (seu diário de estudos continuará intacto).</p>
+        <p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado (seu diário de estudos continuará intacto).</p>
         <div class="modal-actions" style="justify-content: center; gap: 15px;">
             <button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button>
             <button class="btn-danger" onclick="confirmarDesmarcar()" style="margin:0; width:auto; padding: 10px 20px;">Sim, desmarcar</button>
@@ -295,7 +325,7 @@
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 50px; margin-bottom: 10px;">⏭️</div>
         <h3 style="margin-top:0; color:var(--primaria);">Pular Tarefa?</h3>
-        <p style="font-size: 15px; color:#555;">Deseja realmente pular esta tarefa? Ela será marcada como pulada sem contabilizar tempo ou questões.</p>
+        <p style="font-size: 15px;">Deseja realmente pular esta tarefa? Ela será marcada como pulada sem contabilizar tempo ou questões.</p>
         <div class="modal-actions" style="justify-content: center; gap: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalConfirmarPular')">Cancelar</button>
             <button class="btn-action" onclick="confirmarPularTarefa()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Pular</button>
@@ -307,7 +337,7 @@
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 50px; margin-bottom: 10px;">↩️</div>
         <h3 style="margin-top:0; color:var(--primaria);">Desfazer Pulo?</h3>
-        <p style="font-size: 15px; color:#555;">Esta tarefa voltará a ficar PENDENTE e pronta para ser estudada.</p>
+        <p style="font-size: 15px;">Esta tarefa voltará a ficar PENDENTE e pronta para ser estudada.</p>
         <div class="modal-actions" style="justify-content: center; gap: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalConfirmarDesfazerPulo')">Cancelar</button>
             <button class="btn-action" onclick="confirmarDesfazerPulo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Desfazer</button>
@@ -319,7 +349,7 @@
     <div class="modal" style="max-width: 400px; text-align:center;">
         <div style="font-size: 50px; margin-bottom: 10px;">🗑️</div>
         <h3 style="margin-top:0; color:#d32f2f;">Excluir Tarefa?</h3>
-        <p style="font-size: 15px; color:#555;">Esta ação apagará a tarefa permanentemente. O seu diário de estudos continuará intacto.</p>
+        <p style="font-size: 15px;">Esta ação apagará a tarefa permanentemente. O seu diário de estudos continuará intacto.</p>
         <div class="modal-actions" style="justify-content: center; gap: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalConfirmarExcluirTarefa')">Cancelar</button>
             <button class="btn-danger" onclick="confirmarExcluirTarefaDefinitivo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Excluir</button>
@@ -329,15 +359,15 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: #666; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.4</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.5</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         <button class="btn-outline" onclick="abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
         
         <div id="painelSecreto" style="display:none;">
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
             <button class="btn-outline" onclick="abrirGerenciar('estudantes')"><span class="emoji-icon">👥</span> <span class="texto-btn">Usuários</span></button>
             <button class="btn-danger" onclick="abrirZonaRisco()">⚠️ Avançado / Nuvem</button>
         </div>
@@ -355,7 +385,7 @@
             <input type="text" id="configUrlAppScript">
             <button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button>
         </div>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 15px 0;">
         <div style="display: flex; gap: 10px; flex-direction: column;">
             <button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button>
             <button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (Local ➡️ Nuvem)</button>
@@ -378,9 +408,10 @@
                 <option value="verde">🟢 Verde</option>
                 <option value="vermelho">🔴 Vermelho</option>
                 <option value="rosa">🌸 Rosa</option>
-                <option value="escuro">⚫ Escuro</option>
                 <option value="roxo">💜 Roxo</option>
+                <option value="escuro">⚫ Escuro</option>
                 <option value="transparente">🧊 Transparente (Glass)</option>
+                <option value="medieval">🛡️ Medieval</option>
             </select>
         </div>
         <div class="form-group">
@@ -405,7 +436,7 @@
                     <span style="font-weight:bold;font-size:12px;">Exibir Meta</span>
                     <label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label>
                 </div>
-                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid #eee; padding:5px 10px; border-radius:8px; background:#f9f9f9; box-sizing:border-box;">
+                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;">
                     <label style="font-size:12px; margin:0; flex:1;">Meta (h):</label>
                     <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;">
                 </div>
@@ -491,7 +522,7 @@
     <div class="modal">
         <div class="modal-title">Vincular Tempo</div>
         <p style="font-size: 14px;">Selecione a Tarefa (não concluída) para registrar este tempo:</p>
-        <div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid #eee; border-radius: 8px;"></div>
+        <div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 8px;"></div>
         <div class="modal-actions" style="margin-top: 15px;">
             <button class="btn-cancel" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button>
         </div>
@@ -504,11 +535,11 @@
         <div style="display:flex; gap:10px; margin-bottom: 15px; align-items:flex-end;">
             <div style="flex:1;">
                 <label style="font-size:12px; font-weight:bold;">Nome da Atividade:</label>
-                <input type="text" id="novoTipoInput" placeholder="Ex: Questões" style="padding:8px; border:1px solid #ccc; border-radius:4px; width:100%; box-sizing:border-box;">
+                <input type="text" id="novoTipoInput" placeholder="Ex: Questões" style="padding:8px; border:1px solid var(--border-input); border-radius:4px; width:100%; box-sizing:border-box;">
             </div>
             <div style="flex:none;">
                 <label style="font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Tem Desempenho?</label>
-                <div style="background:#eee; padding:7px; border-radius:4px; text-align:center;"><input type="checkbox" id="novoTipoDesempenho" style="transform: scale(1.3);"></div>
+                <div style="background:var(--bg-input); padding:7px; border-radius:4px; text-align:center; border: 1px solid var(--border-input);"><input type="checkbox" id="novoTipoDesempenho" style="transform: scale(1.3);"></div>
             </div>
             <button class="btn-action" style="flex:none; padding: 0 15px; height:37px;" onclick="adicionarTipo()">+ Add</button>
         </div>
@@ -546,7 +577,7 @@
             <label class="switch"><input type="checkbox" id="concAtivo"><span class="slider"></span></label>
         </div>
         
-        <div class="switch-container" style="background:#fff3e0; border:1px solid #ffb74d;">
+        <div class="switch-container" style="border:1px solid #ffb74d;">
             <span style="font-weight:bold;font-size:14px; color:#ef6c00;">⏸️ Pausar Concurso (Viagem/Férias)</span>
             <label class="switch"><input type="checkbox" id="concPausado"><span class="slider"></span></label>
         </div>
@@ -556,7 +587,7 @@
             <div class="form-group" style="flex:1"><label>Texto:</label><input type="color" id="concCorTexto" value="#ffffff"></div>
         </div>
         
-        <div id="divExcluirConcurso" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+        <div id="divExcluirConcurso" style="display:none; margin-top:20px; border-top:1px solid var(--border-input); padding-top:15px;">
             <button class="btn-danger" onclick="excluirConcursoConfirm()">🗑️ Excluir Concurso Definitivamente</button>
         </div>
 
@@ -622,8 +653,8 @@
         <div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div>
         <input type="hidden" id="tarefaIdOriginal">
         
-        <div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50; background:#e8f5e9;">
-            <span style="font-weight:900;font-size:14px; color:#2e7d32;">✅ Tarefa Concluída</span>
+        <div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;">
+            <span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span>
             <label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label>
         </div>
 
@@ -646,7 +677,7 @@
         <div class="form-group">
             <label>Aula(s):</label>
             <div style="position:relative;">
-                <div class="custom-select-box" onclick="toggleDropdownAulas()">
+                <div class="custom-select-box" id="tarAulasOptionsBox" onclick="toggleDropdownAulas()">
                     <span id="tarAulasDisplay">Selecione...</span>
                     <span>▼</span>
                 </div>
@@ -664,14 +695,17 @@
             <select id="tarTipo" class="modal-select"></select>
         </div>
         
-        <div id="divEdicaoConcluida" style="display:none; background:#f0f7ff; border:1px solid #1E90FF; padding:10px; border-radius:8px; margin-bottom:15px;">
+        <div id="divEdicaoConcluida" style="display:none; background:var(--bg-input); border:1px solid #1E90FF; padding:10px; border-radius:8px; margin-bottom:15px;">
             <h4 style="margin:0 0 10px 0; font-size:13px; color:#1E90FF;">Dados do Registro</h4>
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex; gap:10px; flex-wrap: wrap;">
                 <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Qtd. Questões</label>
                     <input type="number" id="tarQtdQuestoes" value="0" oninput="ajustarTravaAcertos()">
                 </div>
                 <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Acertos</label>
                     <input type="number" id="tarQtdAcertos" value="0" oninput="ajustarTravaAcertos()">
+                </div>
+                <div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Tempo (min)</label>
+                    <input type="number" id="tarTempoMinutos" value="0" min="0">
                 </div>
             </div>
             <div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs"></div>
@@ -711,9 +745,9 @@
         <input type="hidden" id="regIdTarefa">
         <div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div>
         
-        <div class="form-group" id="containerTempoCapturado" style="display:none; background: #e8f5e9; border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
-            <label style="color: #2e7d32; font-size:13px;">⏱️ Tempo Estudado (Descontado do Timer):</label>
-            <div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #1b5e20;">00:00:00</div>
+        <div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+            <label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado (Descontado do Timer):</label>
+            <div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div>
             <input type="hidden" id="regDuracaoTimer" value="0">
         </div>
         
@@ -722,7 +756,7 @@
             <select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select>
         </div>
         
-        <div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: #f5f5f5; padding: 10px; border-radius: 8px;">
+        <div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);">
             <div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label>
                 <input type="number" id="qtdQuestoes" value="0" oninput="ajustarTravaAcertosReg()">
             </div>
@@ -747,7 +781,7 @@
     <div class="modal" style="max-height: 90vh; overflow-y: auto;">
         <div class="modal-title">
             <div>📅 Diário de Estudos</div>
-            <button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:#999; cursor:pointer; padding:0; line-height: 1;">&times;</button>
+            <button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button>
         </div>
         <div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div>
     </div>
@@ -778,8 +812,8 @@
             </div>
         </div>
         
-        <div style="margin-top: 25px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-            <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+        <div style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+            <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px;">
                  <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button>
                  <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button>
             </div>
@@ -794,6 +828,27 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modalHabilidades">
+    <div class="modal" style="max-width: 800px; width: 95%;">
+        <div class="modal-title">🎓 Habilidades por Disciplina</div>
+        <div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify;">
+            <strong>Como funciona:</strong> Aulas concluídas valem até 80%. O percentual de acertos nas questões vale até 20%. A cada 1.000 questões acertadas na disciplina, você ganha um bônus de 1%. O limite exibido é de 100% (Grande Mestre).
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);">
+            <div>ID</div>
+            <div>Título</div>
+            <div style="text-align: center;">Nível</div>
+            <div>Percentual</div>
+        </div>
+        <div id="listaHabilidades" style="display:flex; flex-direction:column;"></div>
+        
+        <div class="modal-actions" style="margin-top: 20px;">
+            <button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
 <script>
@@ -803,8 +858,6 @@ window.addEventListener('unhandledrejection', function(event) { console.error('R
 let db = carregarBanco(), operadorAnteriorSelect = null, isSyncing = false, toastTimeout, sortableTipos = null;
 let trilhaAtivaNome = null;
 let chartsDetalhe = {}; 
-
-// Variáveis do Treemap
 let prodEstatisticasCache = {};
 let currentTreeMode = 'tempo';
 let treemapChart = null;
@@ -827,9 +880,10 @@ const paletasDeCores = {
     verde: {primaria:'#2e7d32', secundaria:'#e8f5e9', fundo:'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     vermelho: {primaria:'#c62828', secundaria:'#ffebee', fundo:'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     rosa: {primaria:'#d81b60', secundaria:'#fce4ec', fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
-    escuro: {primaria:'#4fc3f7', secundaria:'#424242', fundo:'linear-gradient(135deg, #434343 0%, #000000 100%)', bgApp:'rgba(30,30,30,0.8)', bgItem:'rgba(40,40,40,0.9)', bgHeader:'rgba(20,20,20,0.95)'},
     roxo: {primaria:'#673ab7', secundaria:'#ede7f6', fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
-    transparente: {primaria:'#2c3e50', secundaria:'rgba(255,255,255,0.3)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.15)', bgItem:'rgba(255,255,255,0.25)', bgHeader:'rgba(20, 35, 45, 0.98)'}
+    escuro: {primaria:'#4fc3f7', secundaria:'#424242', fundo:'linear-gradient(135deg, #434343 0%, #000000 100%)', bgApp:'rgba(30,30,30,0.8)', bgItem:'rgba(40,40,40,0.9)', bgHeader:'rgba(20,20,20,0.95)'},
+    transparente: {primaria:'#4fc3f7', secundaria:'rgba(255,255,255,0.1)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.05)', bgItem:'rgba(255,255,255,0.1)', bgHeader:'rgba(20, 35, 45, 0.98)'},
+    medieval: {primaria:'#8B0000', secundaria:'#F5DEB3', fundo:'linear-gradient(135deg, #3e2723 0%, #1a110d 100%)', bgApp:'rgba(245, 222, 179, 0.95)', bgItem:'rgba(255, 248, 220, 0.9)', bgHeader:'rgba(222, 184, 135, 0.98)'}
 };
 
 function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
@@ -922,18 +976,39 @@ function aplicarTemaCores(){
     let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul'); let c=paletasDeCores[t]||paletasDeCores.azul;
     temaAtivo = t;
     document.body.setAttribute('data-theme', t);
+    
     document.documentElement.style.setProperty('--primaria',c.primaria); document.documentElement.style.setProperty('--secundaria',c.secundaria);
     document.documentElement.style.setProperty('--fundo',c.fundo); document.documentElement.style.setProperty('--bg-app',c.bgApp);
     document.documentElement.style.setProperty('--bg-item',c.bgItem); document.documentElement.style.setProperty('--bg-header',c.bgHeader);
     
     if(t === 'transparente' || t === 'escuro') {
-        document.body.style.color = '#fff'; document.getElementById('display-timer').style.color = '#fff'; document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.2)');
-        document.documentElement.style.setProperty('--title-color', '#ffffff');
-        document.documentElement.style.setProperty('--text-color', '#dddddd');
+        document.body.style.color = '#eee'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
+        document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.15)');
+        document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
+        document.documentElement.style.setProperty('--text-color', '#eee');
+    } else if (t === 'medieval') {
+        document.body.style.color = '#3e2723'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
+        document.documentElement.style.setProperty('--glass-border', 'rgba(139,0,0,0.2)');
+        document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
+        document.documentElement.style.setProperty('--text-color', '#3e2723');
+        document.documentElement.style.setProperty('--bg-modal', '#FFF8DC');
+        document.documentElement.style.setProperty('--text-modal', '#3e2723');
+        document.documentElement.style.setProperty('--border-input', '#8B0000');
+        document.documentElement.style.setProperty('--bg-input', '#F5DEB3');
+        document.documentElement.style.setProperty('--text-input', '#3e2723');
+        document.documentElement.style.setProperty('--bg-hover', '#DEB887');
     } else {
-        document.body.style.color = ''; document.getElementById('display-timer').style.color = 'var(--primaria)'; document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
+        document.body.style.color = '#333'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
+        document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
         document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
         document.documentElement.style.setProperty('--text-color', '#333333');
+        
+        document.documentElement.style.setProperty('--bg-modal', '#ffffff');
+        document.documentElement.style.setProperty('--text-modal', '#333333');
+        document.documentElement.style.setProperty('--border-input', '#cccccc');
+        document.documentElement.style.setProperty('--bg-input', '#ffffff');
+        document.documentElement.style.setProperty('--text-input', '#333333');
+        document.documentElement.style.setProperty('--bg-hover', '#f9f9f9');
     }
 }
 
@@ -965,6 +1040,8 @@ function carregarMusicas(event) {
     mostrarToast(`${files.length} músicas prontas!`); 
     
     if(isRunningTimer) tocarMusicaTimer();
+    
+    event.target.value = ''; // Limpa o input para permitir selecionar a mesma música sem bugar (click 2x resolvido)
 }
 
 function limparMusica() {
@@ -993,7 +1070,7 @@ function toggleMuteTimer() {
     isMutedTimer = !isMutedTimer; 
     playerAudio.volume = isMutedTimer ? 0 : volumeSalvoTimer;
     audioRestart.volume = isMutedTimer ? 0 : volumeSalvoTimer;
-    document.getElementById('btn-mute-timer').style.color = isMutedTimer ? '#d32f2f' : '#555';
+    document.getElementById('btn-mute-timer').style.color = isMutedTimer ? '#d32f2f' : 'var(--text-color)';
     document.getElementById('volume-slider-timer').value = isMutedTimer ? 0 : volumeSalvoTimer * 100;
 }
 
@@ -1228,7 +1305,7 @@ function renderizarCabecalhoTrilhas() {
     selHtml += `</select>`;
 
     let msgPrazo = "";
-    let colorPrazo = "#333";
+    let colorPrazo = "var(--text-color)";
     let dataInicioFormatada = "--/--/----";
     let datePrevistaFormatada = "--/--/----";
 
@@ -1265,13 +1342,13 @@ function renderizarCabecalhoTrilhas() {
                     let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     if(diffDays > 0) { msgPrazo = `Concluída com ${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
                     else if(diffDays < 0) { msgPrazo = `Concluída com ${Math.abs(diffDays)} dias de antecipação!`; colorPrazo = "#2e7d32"; }
-                    else { msgPrazo = `Concluída exatamente no prazo!`; colorPrazo = "#1565C0"; }
+                    else { msgPrazo = `Concluída exatamente no prazo!`; colorPrazo = "var(--primaria)"; }
                 } else { msgPrazo = "Concluída"; colorPrazo = "#2e7d32"; }
             } else {
                 let diffTime = hj - datePrevista;
                 let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 if(diffDays > 0) { msgPrazo = `${diffDays} dias de atraso`; colorPrazo = "#d32f2f"; }
-                else if(diffDays < 0) { msgPrazo = `${Math.abs(diffDays)} dias restantes`; colorPrazo = "#333"; }
+                else if(diffDays < 0) { msgPrazo = `${Math.abs(diffDays)} dias restantes`; colorPrazo = "var(--text-color)"; }
                 else { msgPrazo = `Termina Hoje!`; colorPrazo = "#f57f17"; }
             }
         }
@@ -1453,6 +1530,17 @@ document.getElementById('tarConcluida').addEventListener('change', function(e) {
 function confirmarDesmarcar() {
     document.getElementById('tarConcluida').checked = false;
     document.getElementById('tarQtdQuestoes').value = 0; document.getElementById('tarQtdAcertos').value = 0; document.getElementById('tarObs').value = "";
+    document.getElementById('tarTempoMinutos').value = 0;
+    
+    // Libera os campos novamente
+    document.getElementById('tarNumero').disabled = false;
+    document.getElementById('tarTrilhaSelect').disabled = false;
+    document.getElementById('tarDisciplina').disabled = false;
+    document.getElementById('tarTipo').disabled = false;
+    document.getElementById('tarTituloPersonalizado').disabled = false;
+    document.getElementById('tarAulasOptionsBox').style.pointerEvents = 'auto';
+    document.getElementById('tarAulasOptionsBox').style.opacity = '1';
+
     document.getElementById('divEdicaoConcluida').style.display = 'none'; fecharModal('modalConfirmarDesmarcar');
 }
 
@@ -1565,7 +1653,7 @@ function abrirGerenciarTiposAtividade(){ fecharModal('modalListagem'); fecharMod
 function renderizarTiposCfg(){
     let l = document.getElementById('listaTiposCfg'); l.innerHTML = '';
     db.configs.tiposAtividade.forEach(t => { 
-        l.innerHTML += `<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:#e0e0e0;padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:#333;">
+        l.innerHTML += `<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:var(--bg-hover);padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:var(--text-modal); border: 1px solid var(--border-input);">
             <span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> 
             <span style="flex:1;">${t.nome}</span> 
             <label style="font-size:11px; display:flex; align-items:center; gap:4px; cursor:pointer;">
@@ -1669,7 +1757,7 @@ function abrirGerenciar(t, context){
                     <div><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div>
                     <div class="gerenciar-actions" style="display:flex; align-items:center;">
                         ${c.pausado ? '<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>' : ''}
-                        <small style="color:#666; margin-right:5px; font-weight:bold">${c.ativo ? '🟢 Ativo' : '⚪ Inativo'}</small>
+                        <small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo ? '🟢 Ativo' : '⚪ Inativo'}</small>
                         <button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button>
                         <button onclick="abrirFormConcurso(${i})">✏️</button>
                     </div>
@@ -1901,8 +1989,16 @@ function abrirFormTarefa(id, numSugerido = 1){
     let divEdicao = document.getElementById('divEdicaoConcluida');
     
     document.getElementById('tarAulasOptions').style.display = 'none'; // garante fechado
-    
     document.getElementById('btnExcluirTarefa').style.display = (id >= 0) ? 'block' : 'none';
+
+    // Desbloqueio Padrão (será modificado se estiver concluída)
+    document.getElementById('tarNumero').disabled = false;
+    document.getElementById('tarTrilhaSelect').disabled = false;
+    document.getElementById('tarDisciplina').disabled = false;
+    document.getElementById('tarTipo').disabled = false;
+    document.getElementById('tarTituloPersonalizado').disabled = false;
+    document.getElementById('tarAulasOptionsBox').style.pointerEvents = 'auto';
+    document.getElementById('tarAulasOptionsBox').style.opacity = '1';
 
     if(id >= 0){ 
         const t = db.tarefas.find(x => x.id === id); 
@@ -1931,6 +2027,20 @@ function abrirFormTarefa(id, numSugerido = 1){
         selT.value = t.tipoAtividade;
         
         let btnPular = document.getElementById('btnPularTarefa');
+        
+        // Regra de Bloqueio (Pedido 4)
+        let isConc = t.concluida && !t.pulada;
+        if(isConc) {
+            document.getElementById('tarNumero').disabled = true;
+            document.getElementById('tarTrilhaSelect').disabled = true;
+            document.getElementById('tarDisciplina').disabled = true;
+            document.getElementById('tarTipo').disabled = true;
+            document.getElementById('tarTituloPersonalizado').disabled = true;
+            document.getElementById('tarAulasOptionsBox').style.pointerEvents = 'none';
+            document.getElementById('tarAulasOptionsBox').style.opacity = '0.6';
+        }
+        
+        document.getElementById('tarTempoMinutos').value = isConc ? Math.round(t.tempoRegistrado / 60) : 0;
         
         if(t.pulada) {
             contStatus.style.display = 'none';
@@ -2055,6 +2165,15 @@ function salvarTarefa(isPulo = false){
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
         
+        // Preserva os dados antigos bloqueados se a tarefa já estiver concluída
+        if(old.concluida && !old.pulada) {
+            obj.titulo = old.titulo;
+            obj.trilha = old.trilha;
+            obj.disciplina = old.disciplina;
+            obj.aulas = old.aulas;
+            obj.tipoAtividade = old.tipoAtividade;
+        }
+        
         if(isPulo) {
             obj.concluida = true;
             obj.pulada = true;
@@ -2070,6 +2189,7 @@ function salvarTarefa(isPulo = false){
             obj.questoes = parseInt(document.getElementById('tarQtdQuestoes').value) || 0;
             obj.acertos = parseInt(document.getElementById('tarQtdAcertos').value) || 0;
             obj.obs = document.getElementById('tarObs').value;
+            obj.tempoRegistrado = (parseInt(document.getElementById('tarTempoMinutos').value) || 0) * 60;
             obj.dataConclusao = old.dataConclusao || getDataHoraAtual().split(' ')[0];
         }
 
@@ -2090,7 +2210,7 @@ function abrirSelecionadorDeTarefaParaRegistro() {
     let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida);
     
     filtradas.forEach(t => {
-        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid #eee; cursor:pointer; color:#333; background: #fafafa; margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
+        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
     });
     
     if(filtradas.length === 0) l.innerHTML = `<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;
@@ -2169,19 +2289,19 @@ function salvarRegistroEstudo(){
 
 function abrirHistorico(){
     const l = document.getElementById('listaHistorico'); l.innerHTML = '';
-    if(db.historico.length === 0){ l.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">Nenhum registro.</div>';
+    if(db.historico.length === 0){ l.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-modal);">Nenhum registro.</div>';
     } else {
         [...db.historico].reverse().forEach(h => {
-            let tempoBadge = h.duracaoRegistrada ? `<span style="background:var(--secundaria); color:var(--primaria); padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>` : '';
+            let tempoBadge = h.duracaoRegistrada ? `<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>` : '';
             l.innerHTML += `
-            <div style="background:#fcfcfc; border:1px solid #eee; border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:#333; position:relative;">
+            <div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <strong style="color:var(--primaria); font-size:16px;">${h.tarefa || h.disciplina} ${tempoBadge}</strong>
                     <button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button>
                 </div>
                 <div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>
-                ${h.observacao ? `<div style="font-size:13px; color:#555;"><em>Obs: ${h.observacao}</em></div>` : ''}
-                <div style="font-size:11px; color:#999; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'}  | ${h.data.split(' ')[0]}</div>
+                ${h.observacao ? `<div style="font-size:13px; opacity:0.8;"><em>Obs: ${h.observacao}</em></div>` : ''}
+                <div style="font-size:11px; opacity:0.6; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'}  | ${h.data.split(' ')[0]}</div>
             </div>`;
         });
     }
@@ -2299,9 +2419,9 @@ function renderizarConteudoProdutividade() {
         rawItemsByDisc[d].reverse().forEach(reg => {
             let rPct = reg.questoes > 0 ? Math.round((reg.acertos/reg.questoes)*100) : 0;
             let pts = reg.questoes > 0 ? `🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)` : '';
-            htmlHist += `<div style="padding: 6px 0; border-bottom: 1px dashed #ccc; display: flex; justify-content: space-between; font-size:13px;">
-                <span style="flex:1; color:#333;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa || reg.tipoAtividade}</span>
-                <span style="text-align:right; color:#333;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span>
+            htmlHist += `<div style="padding: 6px 0; border-bottom: 1px dashed var(--border-input); display: flex; justify-content: space-between; font-size:13px;">
+                <span style="flex:1;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa || reg.tipoAtividade}</span>
+                <span style="text-align:right;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span>
             </div>`;
         });
 
@@ -2462,6 +2582,76 @@ function toggleDetailsRow(idClean, discNome) {
             document.getElementById('chartDisc_' + idClean).style.display = 'none';
         }
     }
+}
+
+// ================= HABILIDADES (Pedido 6) =================
+function abrirHabilidades() {
+    let conc = getConcursoAtivoNome();
+    if(!conc) return alert("Nenhum concurso ativo para calcular habilidades.");
+    
+    let opAtual = document.getElementById('seletorOperador').value;
+    let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc);
+    let tarefasOp = db.tarefas.filter(t => t.concurso === conc && t.concluida && !t.pulada);
+    
+    let discs = db.disciplinas.filter(d => d.concurso === conc);
+    let html = '';
+    
+    discs.forEach((d, index) => {
+        let dNome = d.nome;
+        let totalAulas = d.aulas || 0;
+        
+        // Peso das Aulas (80%)
+        let aulasSet = new Set();
+        tarefasOp.filter(t => t.disciplina === dNome).forEach(t => {
+            if(t.aulas) { t.aulas.split(', ').forEach(a => aulasSet.add(a)); }
+        });
+        let unqAulas = aulasSet.size;
+        let pctAulas = totalAulas > 0 ? (unqAulas / totalAulas) * 80 : 0;
+        if(totalAulas === 0 && unqAulas > 0) pctAulas = 80; // Caso excepcional sem aulas cadastradas
+        
+        // Peso do Desempenho (20%) + Bônus
+        let acertos = 0; let questoes = 0;
+        histOp.filter(h => h.disciplina === dNome).forEach(h => {
+            acertos += (h.acertos || 0);
+            questoes += (h.questoes || 0);
+        });
+        
+        let pctDesemp = questoes > 0 ? (acertos / questoes) * 20 : 0;
+        let bonus = Math.floor(acertos / 1000);
+        
+        let totalRaw = pctAulas + pctDesemp + bonus;
+        let totalPct = Math.min(100, Math.max(0, totalRaw)); // Trava em 100% no visual
+        let displayPct = totalPct.toFixed(1).replace('.0', '') + '%';
+        
+        // Definição dos Níveis e Cores
+        let nivel = "Neófito"; let corBg = "#eeeeee"; let corTxt = "#333333";
+        if(totalPct < 40) { nivel = "Neófito"; corBg = "#eeeeee"; corTxt = "#555555"; }
+        else if(totalPct < 50) { nivel = "Noviço"; corBg = "#fff9c4"; corTxt = "#f57f17"; }
+        else if(totalPct < 60) { nivel = "Aprendiz"; corBg = "#dcedc8"; corTxt = "#33691e"; }
+        else if(totalPct < 70) { nivel = "Amador"; corBg = "#b3e5fc"; corTxt = "#01579b"; }
+        else if(totalPct < 80) { nivel = "Profissional"; corBg = "#c5cae9"; corTxt = "#1a237e"; }
+        else if(totalPct < 90) { nivel = "Perito"; corBg = "#ffe0b2"; corTxt = "#e65100"; }
+        else if(totalPct < 100) { nivel = "Mestre"; corBg = "#ffccbc"; corTxt = "#bf360c"; }
+        else { nivel = "Gr. Mestre"; corBg = "#ffd54f"; corTxt = "#b45f06"; }
+        
+        let idFormat = String(index + 1).padStart(4, '0');
+        
+        html += `
+        <div class="hab-row">
+            <div>${idFormat}</div>
+            <div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div>
+            <div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div>
+            <div class="hab-bar-bg">
+                <div class="hab-bar-fill" style="width: ${totalPct}%;"></div>
+                <div class="hab-bar-text">${displayPct}</div>
+            </div>
+        </div>`;
+    });
+    
+    if(html === '') html = '<div style="padding: 20px; text-align: center; color: var(--text-modal);">Nenhuma disciplina vinculada ao concurso atual.</div>';
+    
+    document.getElementById('listaHabilidades').innerHTML = html;
+    abrirModal('modalHabilidades');
 }
 
 async function pushParaNuvemSilencioso() {
