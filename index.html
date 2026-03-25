@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.5</title>
+    <title>Alô RFB v1.1.6</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -21,9 +21,10 @@
         }
 
         body[data-theme="escuro"] {
-            --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(40,40,40,0.9); --bg-header: rgba(20,20,20,0.95);
-            --text-color: #eee; --title-color: #4fc3f7; --glass-border: rgba(255,255,255,0.1);
-            --bg-modal: #222222; --text-modal: #eeeeee; --border-input: #444444; --bg-input: #333333; --text-input: #eeeeee; --bg-hover: #333333;
+            --primaria: #b0bec5; --secundaria: #333333; --fundo: linear-gradient(135deg, #121212 0%, #000000 100%);
+            --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(45,45,45,0.9); --bg-header: rgba(20,20,20,0.95);
+            --text-color: #eeeeee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.1);
+            --bg-modal: #222222; --text-modal: #eeeeee; --border-input: #555555; --bg-input: #333333; --text-input: #eeeeee; --bg-hover: #444444;
         }
 
         body[data-theme="transparente"] {
@@ -32,11 +33,21 @@
             --bg-modal: rgba(20, 35, 45, 0.98); --text-modal: #eeeeee; --border-input: rgba(255,255,255,0.2); --bg-input: rgba(0,0,0,0.4); --text-input: #eeeeee; --bg-hover: rgba(255,255,255,0.1);
         }
 
+        body[data-theme="medieval"] {
+            --primaria: #5c3a21; --secundaria: #e6d2b5; --fundo: radial-gradient(circle at center, #5c4033 0%, #27140c 100%);
+            --bg-app: rgba(230, 210, 180, 0.92); --bg-item: rgba(245, 230, 205, 0.95); --bg-header: rgba(180, 140, 100, 0.98);
+            --text-color: #3e2723; --title-color: #5c3a21; --glass-border: rgba(92, 58, 33, 0.3);
+            --bg-modal: #fdf5e6; --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: #faebd7; --text-input: #3e2723; --bg-hover: #e6d2b5;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
+        }
+        body[data-theme="medieval"] .app-container { background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 4px); }
+        body[data-theme="medieval"] .modal { box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(139, 90, 43, 0.1); border: 2px solid #8b5a2b; }
+
         /* BLOQUEIO DE ROLAGEM GLOBAL */
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
         
         body.modal-open{touch-action:none}
-        input,select,textarea{user-select:auto;-webkit-user-select:auto}
+        input,select,textarea{user-select:auto;-webkit-user-select:auto; font-family: inherit;}
         
         .app-container{width:100%;max-width:1400px;background:var(--bg-app);height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
         
@@ -53,12 +64,12 @@
         .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:14px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
         .modern-select option{color:#333;background:#fff}
         
-        /* Modais Modernizados com CSS Variables */
+        /* Modais */
         .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
         .modal{background:var(--bg-modal);padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: var(--text-modal); border: 1px solid var(--border-input);}
         .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:var(--primaria);border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
         
-        .modal p, .modal label, .modal legend, .modal div:not(.modal-actions):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell):not(.dash-box):not(.dash-box-title):not(.dash-box-val):not(.hab-nivel) { color: var(--text-modal); }
+        .modal p, .modal label, .modal legend, .modal div:not(.modal-actions):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell):not(.dash-box):not(.dash-box-title):not(.dash-box-val):not(.hab-nivel):not(.ritmo-square) { color: var(--text-modal); }
         
         .form-group{margin-bottom:15px;position:relative}
         .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
@@ -71,6 +82,7 @@
         .btn-cancel{background:var(--bg-input);color:var(--text-input);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--border-input);flex:1; transition: 0.2s;}
         .btn-cancel:hover { filter: brightness(0.9); }
         .btn-action{background:var(--primaria);color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1; transition: 0.2s;}
+        body[data-theme="escuro"] .btn-action { color: #111; }
         .btn-danger{background:#d32f2f;color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
         .btn-outline{background:transparent;color:var(--primaria);border:2px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
         .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
@@ -89,11 +101,12 @@
         .trilhas-right { display: flex; align-items: center; gap: 10px; flex: none; }
         
         .concurso-badge { font-weight: 900; font-size: 22px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.3); white-space: nowrap;}
+        body[data-theme="escuro"] .concurso-badge { text-shadow: 1px 1px 0 rgba(0,0,0,0.8); }
         .sel-trilha-header { background: var(--bg-item); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
+        body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
         .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         
-        /* Prazo Bar Ampliada (Pedido 5) */
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         
         /* Tabela de Tarefas */
@@ -108,6 +121,7 @@
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 14px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 15px; padding-bottom: 15px; backdrop-filter: blur(10px);}
         
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
+        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; }
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -139,6 +153,7 @@
         .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; align-items: stretch;}
         .crono-btn-vert { background: rgba(0,0,0,0.05); color: var(--text-color); border: 1px solid transparent; padding: 6px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.2s; text-align:center;}
         .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        body[data-theme="escuro"] .crono-btn-vert.active { color: #111; }
         
         .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; position:relative;}
         .crono-display-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center;}
@@ -153,8 +168,6 @@
         .crono-play { width: 50px; height: 50px;}
         .crono-stop { width: 50px; height: 50px;} 
         .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        
-        /* Botão Editar Lápis (Pedido 2) */
         .crono-edit { font-size: 16px; background: var(--secundaria); border: 2px solid var(--primaria); width: 32px; height: 32px; border-radius: 50%; margin: 2px auto 0 auto; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
@@ -164,7 +177,7 @@
         .crono-mute { color: var(--text-color); font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
-        /* Barra de Meta Nova (Corredor) */
+        /* Barra de Meta */
         .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
         .meta-text { font-size: 10px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
         .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
@@ -208,17 +221,31 @@
         
         .prod-details-row { display: none; background: #2a2a2a; border-bottom: 1px solid #444; padding: 20px; grid-column: 1 / -1; color: #eee;}
         
-        /* Treemap e Abas */
         .btn-tree { background: transparent; border: none; font-size: 15px; font-weight: bold; color: var(--text-modal); opacity: 0.6; cursor: pointer; padding: 10px 15px; transition: 0.2s; border-bottom: 3px solid transparent; outline: none;}
         .btn-tree.active { color: var(--primaria); opacity: 1; border-bottom: 3px solid var(--primaria); }
 
-        /* Habilidades (Pedido 6) */
+        /* Habilidades */
         .hab-row { display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
         .hab-nivel { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);}
         .hab-bar-bg { background: rgba(0,0,0,0.1); border-radius: 10px; height: 18px; width: 100%; position: relative; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);}
         body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
         .hab-bar-fill { background: #4fc3f7; height: 100%; position: absolute; left: 0; top: 0; transition: width 0.5s ease;}
         .hab-bar-text { position: absolute; left: 8px; top: 1px; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 2;}
+
+        /* Ritmo de Estudo */
+        .ritmo-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); }
+        .ritmo-tab { padding: 8px 15px; cursor: pointer; font-weight: bold; opacity: 0.6; transition: 0.2s; }
+        .ritmo-tab:hover { opacity: 0.8; }
+        .ritmo-tab.active { opacity: 1; border-bottom: 3px solid var(--primaria); margin-bottom: -2px; }
+        
+        .ritmo-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; font-size: 12px; font-weight: bold; color: var(--text-modal);}
+        .ritmo-legend-item { display: flex; align-items: center; gap: 6px; }
+        .ritmo-legend-color { width: 14px; height: 14px; border-radius: 3px; }
+        
+        .ritmo-grid { display: flex; flex-wrap: wrap; gap: 4px; padding: 15px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; min-height: 200px; align-content: flex-start;}
+        .ritmo-square { width: 40px; height: 40px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2);}
+        .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        
     </style>
 </head>
 <body>
@@ -227,7 +254,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.5</div>
+    <div class="splash-version">v1.1.6</div>
 </div>
 
 <div id="login-screen">
@@ -253,8 +280,9 @@
             <div style="flex: 1.5; display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
                 <div id="indicadorConexao" class="status-conexao" title="Sincronização" style="display:none;">🌐</div>
                 <button onclick="abrirHistorico()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Diário de Estudos">📅</button>
+                <button onclick="abrirRitmoEstudo()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Ritmo de Estudo">⌛</button>
                 <button onclick="abrirProdutividade()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Produtividade">📊</button>
-                <button onclick="abrirHabilidades()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Habilidades">🎓</button>
+                <button onclick="abrirHabilidades()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Habilidades">📜</button>
                 <button id="btnConfigGear" onclick="abrirLoginAdmin()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;">⚙️</button>
             </div>
         </div>
@@ -301,12 +329,10 @@
         </div>
 
         <div class="trilhas-top-bar" id="trilhas-bar-container"></div>
-        
         <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
     </div>
     
-    <div id="listaTarefas">
-        </div>
+    <div id="listaTarefas"></div>
 </div>
 
 <div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;">
@@ -359,7 +385,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.5</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.6</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
@@ -787,6 +813,31 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="modalRitmo">
+    <div class="modal" style="max-width: 900px; width: 95%;">
+        <div class="modal-title">⌛ Ritmo de Estudo</div>
+        
+        <div class="ritmo-tabs">
+            <div class="ritmo-tab active" id="tabRitmoDesemp" onclick="switchRitmoTab('desemp')">Desempenho por trilha</div>
+            <div class="ritmo-tab" id="tabRitmoTempo" onclick="switchRitmoTab('tempo')">Atrasos e adiamentos</div>
+        </div>
+        
+        <div id="ritmoDesempContent">
+            <div class="ritmo-legend" id="ritmoDesempLegend"></div>
+            <div class="ritmo-grid" id="ritmoDesempGrid"></div>
+        </div>
+        
+        <div id="ritmoTempoContent" style="display: none;">
+            <div class="ritmo-legend" id="ritmoTempoLegend"></div>
+            <div class="ritmo-grid" id="ritmoTempoGrid"></div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 20px;">
+            <button class="btn-cancel" onclick="fecharModal('modalRitmo')">Fechar</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalProdutividade">
     <div class="modal" style="max-width: 1300px; width: 95%; max-height: 95vh; overflow-y: auto;">
         <div class="modal-title">📊 Produtividade Geral</div>
@@ -831,8 +882,8 @@
 <div class="modal-overlay" id="modalHabilidades">
     <div class="modal" style="max-width: 800px; width: 95%;">
         <div class="modal-title">🎓 Habilidades por Disciplina</div>
-        <div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify;">
-            <strong>Como funciona:</strong> Aulas concluídas valem até 80%. O percentual de acertos nas questões vale até 20%. A cada 1.000 questões acertadas na disciplina, você ganha um bônus de 1%. O limite exibido é de 100% (Grande Mestre).
+        <div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;">
+            <strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota (Ex: 3 de 10 aulas = 30% concluído -> 24% na nota final). O percentual de acertos nas questões vale até 20%. A cada 1.000 questões corretas na disciplina, você ganha um bônus de 1%. O limite é 100% (Grande Mestre).
         </div>
         
         <div style="display: grid; grid-template-columns: 35px 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);">
@@ -841,7 +892,7 @@
             <div style="text-align: center;">Nível</div>
             <div>Percentual</div>
         </div>
-        <div id="listaHabilidades" style="display:flex; flex-direction:column;"></div>
+        <div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div>
         
         <div class="modal-actions" style="margin-top: 20px;">
             <button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button>
@@ -881,9 +932,9 @@ const paletasDeCores = {
     vermelho: {primaria:'#c62828', secundaria:'#ffebee', fundo:'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     rosa: {primaria:'#d81b60', secundaria:'#fce4ec', fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     roxo: {primaria:'#673ab7', secundaria:'#ede7f6', fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
-    escuro: {primaria:'#4fc3f7', secundaria:'#424242', fundo:'linear-gradient(135deg, #434343 0%, #000000 100%)', bgApp:'rgba(30,30,30,0.8)', bgItem:'rgba(40,40,40,0.9)', bgHeader:'rgba(20,20,20,0.95)'},
+    escuro: {primaria:'#e0e0e0', secundaria:'#333333', fundo:'linear-gradient(135deg, #212121 0%, #000000 100%)', bgApp:'rgba(30,30,30,0.8)', bgItem:'rgba(40,40,40,0.9)', bgHeader:'rgba(20,20,20,0.95)'},
     transparente: {primaria:'#4fc3f7', secundaria:'rgba(255,255,255,0.1)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.05)', bgItem:'rgba(255,255,255,0.1)', bgHeader:'rgba(20, 35, 45, 0.98)'},
-    medieval: {primaria:'#8B0000', secundaria:'#F5DEB3', fundo:'linear-gradient(135deg, #3e2723 0%, #1a110d 100%)', bgApp:'rgba(245, 222, 179, 0.95)', bgItem:'rgba(255, 248, 220, 0.9)', bgHeader:'rgba(222, 184, 135, 0.98)'}
+    medieval: {primaria:'#8b4513', secundaria:'#e6d2b5', fundo:'radial-gradient(circle at center, #5c4033 0%, #27140c 100%)', bgApp:'rgba(244, 233, 216, 0.95)', bgItem:'rgba(250, 240, 230, 0.95)', bgHeader:'rgba(210, 180, 140, 0.98)'}
 };
 
 function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
@@ -910,7 +961,7 @@ function carregarBanco(){
             tema: "azul", exibirMeta: true, ocultarPctMeta: false, ocultarTempoMeta: false, metaDiariaHrs: 4, tocarRestart: true,
             atalhos: { play: ['Space'], reset: ['Delete'], mute: ['Period'], volUp: ['Equal'], volDown: ['Minus'] },
             pomodoro: { estudo: 25, curta: 5, longa: 15, ciclos: 4 }, regressivo: { estudo: 60 },
-            ultimaModificacaoLocal: 0, mestreAtivo: false
+            ultimaModificacaoLocal: 0, mestreAtivo: false, estadoTimer: null
         },
         historico: []
     };
@@ -956,6 +1007,7 @@ function carregarBanco(){
             if(l.configs.ocultarTempoMeta === undefined) l.configs.ocultarTempoMeta = false;
             if(l.configs.tocarRestart === undefined) l.configs.tocarRestart = true;
             if(!l.configs.tiposAtividade) l.configs.tiposAtividade = d.configs.tiposAtividade;
+            if(l.configs.estadoTimer === undefined) l.configs.estadoTimer = null;
             
             if(l.configs.tiposAtividade.length > 0 && typeof l.configs.tiposAtividade[0] === 'string') {
                 l.configs.tiposAtividade = l.configs.tiposAtividade.map(t => {
@@ -981,22 +1033,21 @@ function aplicarTemaCores(){
     document.documentElement.style.setProperty('--fundo',c.fundo); document.documentElement.style.setProperty('--bg-app',c.bgApp);
     document.documentElement.style.setProperty('--bg-item',c.bgItem); document.documentElement.style.setProperty('--bg-header',c.bgHeader);
     
+    // Limpar estilos injetados via JS antes de reaplicar
+    document.body.style.fontFamily = ''; document.body.style.color = ''; document.getElementById('display-timer').style.color = '';
+    
     if(t === 'transparente' || t === 'escuro') {
+        if(t==='escuro'){ document.documentElement.style.setProperty('--primaria', '#e0e0e0'); } // Neutro sem azul
         document.body.style.color = '#eee'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
         document.documentElement.style.setProperty('--glass-border', 'rgba(255,255,255,0.15)');
         document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
         document.documentElement.style.setProperty('--text-color', '#eee');
     } else if (t === 'medieval') {
-        document.body.style.color = '#3e2723'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
-        document.documentElement.style.setProperty('--glass-border', 'rgba(139,0,0,0.2)');
+        document.body.style.fontFamily = '"Palatino Linotype", "Book Antiqua", Palatino, serif';
+        document.getElementById('display-timer').style.color = 'var(--primaria)'; 
+        document.documentElement.style.setProperty('--glass-border', 'rgba(139, 90, 43, 0.3)');
         document.documentElement.style.setProperty('--title-color', 'var(--primaria)');
         document.documentElement.style.setProperty('--text-color', '#3e2723');
-        document.documentElement.style.setProperty('--bg-modal', '#FFF8DC');
-        document.documentElement.style.setProperty('--text-modal', '#3e2723');
-        document.documentElement.style.setProperty('--border-input', '#8B0000');
-        document.documentElement.style.setProperty('--bg-input', '#F5DEB3');
-        document.documentElement.style.setProperty('--text-input', '#3e2723');
-        document.documentElement.style.setProperty('--bg-hover', '#DEB887');
     } else {
         document.body.style.color = '#333'; document.getElementById('display-timer').style.color = 'var(--primaria)'; 
         document.documentElement.style.setProperty('--glass-border', 'rgba(0,0,0,0.1)');
@@ -1040,8 +1091,7 @@ function carregarMusicas(event) {
     mostrarToast(`${files.length} músicas prontas!`); 
     
     if(isRunningTimer) tocarMusicaTimer();
-    
-    event.target.value = ''; // Limpa o input para permitir selecionar a mesma música sem bugar (click 2x resolvido)
+    event.target.value = '';
 }
 
 function limparMusica() {
@@ -1128,6 +1178,10 @@ function startPauseTimer() {
             audioRestart.volume = isMutedTimer ? 0 : volumeSalvoTimer; 
             audioRestart.play().catch(()=>{});
         }
+        
+        // Sincronização ao pausar (Pedido 7)
+        db.configs.estadoTimer = { tempo: tempoTimer, target: targetTimer, modo: modoTimer, fase: pomoFase, ciclo: pomoCicloAtual };
+        salvarModificacaoBasica();
     }
 }
 
@@ -1143,6 +1197,7 @@ function zeroTimerConfirm() {
         tempoTimer = 0; atualizarDisplayTimer();
         atualizarBarraMeta();
         audioRestart.pause(); audioRestart.currentTime = 0;
+        db.configs.estadoTimer = null; salvarModificacaoBasica();
     }
 }
 
@@ -1177,7 +1232,10 @@ function confirmarEdicaoTempo() {
     let s = parseInt(document.getElementById('editSegs').value) || 0;
     let totalSegs = (h*3600) + (m*60) + s;
     if(modoTimer === 'progressive') tempoTimer = totalSegs; else { tempoTimer = Math.max(0, targetTimer - totalSegs); }
-    atualizarDisplayTimer(); fecharModal('modalEditarTempo');
+    atualizarDisplayTimer(); 
+    db.configs.estadoTimer = { tempo: tempoTimer, target: targetTimer, modo: modoTimer, fase: pomoFase, ciclo: pomoCicloAtual };
+    salvarModificacaoBasica();
+    fecharModal('modalEditarTempo');
 }
 
 function atualizarBarraMeta() {
@@ -1512,6 +1570,19 @@ function iniciar(){
         const l = document.getElementById('login-screen');
         if (opAtual && db.operadores.find(o => o.nome === opAtual)) { l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual; }
         setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
+        
+        // Carrega estado do cronômetro da nuvem/local (Pedido 7)
+        if(db.configs.estadoTimer && db.configs.estadoTimer.tempo > 0) {
+            tempoTimer = db.configs.estadoTimer.tempo;
+            targetTimer = db.configs.estadoTimer.target;
+            modoTimer = db.configs.estadoTimer.modo;
+            pomoFase = db.configs.estadoTimer.fase;
+            pomoCicloAtual = db.configs.estadoTimer.ciclo;
+            
+            document.getElementById('btn-prog').classList.remove('active'); document.getElementById('btn-reg').classList.remove('active'); document.getElementById('btn-pomo').classList.remove('active');
+            document.getElementById(modoTimer === 'progressive' ? 'btn-prog' : modoTimer === 'regressive' ? 'btn-reg' : 'btn-pomo').classList.add('active');
+            atualizarStatusModo();
+        }
         
         renderizarCabecalhoTrilhas();
         setInterval(sincronizarComNuvemSilencioso, 20000);
@@ -2040,7 +2111,7 @@ function abrirFormTarefa(id, numSugerido = 1){
             document.getElementById('tarAulasOptionsBox').style.opacity = '0.6';
         }
         
-        document.getElementById('tarTempoMinutos').value = isConc ? Math.round(t.tempoRegistrado / 60) : 0;
+        document.getElementById('tarTempoMinutos').value = isConc ? Math.round((t.tempoRegistrado || 0) / 60) : 0;
         
         if(t.pulada) {
             contStatus.style.display = 'none';
@@ -2284,6 +2355,10 @@ function salvarRegistroEstudo(){
     if(duracaoCronometro > 0) { clearInterval(intervalTimer); isRunningTimer = false; tempoTimer = 0; atualizarDisplayTimer(); document.getElementById('btn-play-timer').innerHTML = '<span style="font-size:50px;">▶️</span>'; document.getElementById('btn-play-timer').classList.remove('is-paused'); }
     
     document.getElementById('qtdQuestoes').value = 0; document.getElementById('qtdAcertos').value = 0;
+    
+    // Limpar estado do timer ativo da nuvem
+    db.configs.estadoTimer = null;
+    
     salvarModificacaoBasica(); fecharModal('modalRegistrarEstudo'); renderizarCabecalhoTrilhas(); 
 }
 
@@ -2332,6 +2407,130 @@ function excluirHistorico(id) {
         alert("Senha incorreta!");
     }
 }
+
+// ================= RITMO DE ESTUDO (Pedido 8) =================
+function switchRitmoTab(tab) {
+    document.getElementById('tabRitmoDesemp').classList.remove('active');
+    document.getElementById('tabRitmoTempo').classList.remove('active');
+    document.getElementById('ritmoDesempContent').style.display = 'none';
+    document.getElementById('ritmoTempoContent').style.display = 'none';
+    
+    if(tab === 'desemp') {
+        document.getElementById('tabRitmoDesemp').classList.add('active');
+        document.getElementById('ritmoDesempContent').style.display = 'block';
+    } else {
+        document.getElementById('tabRitmoTempo').classList.add('active');
+        document.getElementById('ritmoTempoContent').style.display = 'block';
+    }
+}
+
+function abrirRitmoEstudo() {
+    let conc = getConcursoAtivoNome();
+    if(!conc) return alert("Nenhum concurso ativo para gerar Ritmo de Estudo.");
+    
+    // Legendas
+    const legDesemp = [
+        { c: '#2e7d32', t: '> 90% a 100%' }, { c: '#4caf50', t: '> 87% a 90%' },
+        { c: '#8bc34a', t: '> 84% a 87%' }, { c: '#cddc39', t: '> 80% a 84%' },
+        { c: '#ffeb3b', t: '> 76% a 80%' }, { c: '#ffc107', t: '> 70% a 76%' },
+        { c: '#ff9800', t: '> 60% a 70%' }, { c: '#f44336', t: 'Até 60%' }
+    ];
+    let htmlLegD = '';
+    legDesemp.forEach(l => htmlLegD += `<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);
+    document.getElementById('ritmoDesempLegend').innerHTML = htmlLegD;
+    
+    const legTempo = [
+        { c: '#2e7d32', t: 'Antecipação' }, { c: '#8bc34a', t: 'Em dia' },
+        { c: '#ffeb3b', t: 'Adiamento' }, { c: '#f44336', t: 'Atraso' },
+        { c: '#555555', t: 'S/ Prazo' }
+    ];
+    let htmlLegT = '';
+    legTempo.forEach(l => htmlLegT += `<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);
+    document.getElementById('ritmoTempoLegend').innerHTML = htmlLegT;
+
+    // Calcular dados por trilha
+    let opAtual = document.getElementById('seletorOperador').value;
+    let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc);
+    let tarefasOp = db.tarefas.filter(t => t.concurso === conc);
+    let trilhasDoConcurso = db.trilhas.filter(t => t.concurso === conc).sort((a,b) => a.id - b.id);
+    
+    let htmlGridDesemp = '';
+    let htmlGridTempo = '';
+    let hoje = new Date(); hoje.setHours(0,0,0,0);
+    
+    trilhasDoConcurso.forEach((tr, index) => {
+        let tNome = tr.nome;
+        let numVisual = index + 1;
+        
+        // --- Cálculo Desempenho ---
+        let acertos = 0; let questoes = 0;
+        histOp.filter(h => h.trilha === tNome).forEach(h => { acertos += (h.acertos||0); questoes += (h.questoes||0); });
+        
+        let pct = questoes > 0 ? (acertos / questoes) * 100 : null;
+        let corD = '#555555'; // Sem dados
+        if(pct !== null) {
+            if(pct >= 90) corD = '#2e7d32';
+            else if(pct >= 87) corD = '#4caf50';
+            else if(pct >= 84) corD = '#8bc34a';
+            else if(pct >= 80) corD = '#cddc39';
+            else if(pct >= 76) corD = '#ffeb3b';
+            else if(pct >= 70) corD = '#ffc107';
+            else if(pct >= 60) corD = '#ff9800';
+            else corD = '#f44336';
+        }
+        
+        let descD = pct !== null ? `${tNome}: ${pct.toFixed(1)}% (${acertos}/${questoes})` : `${tNome}: Sem questões`;
+        let textColorD = (pct >= 76 && pct < 84) || (pct === null) ? '#000' : '#fff';
+        
+        htmlGridDesemp += `<div class="ritmo-square" style="background-color: ${corD}; color: ${textColorD};" title="${descD}">${numVisual}</div>`;
+        
+        // --- Cálculo Tempo ---
+        let tarDaTrilha = tarefasOp.filter(x => x.trilha === tNome);
+        let corT = '#555555'; // S/ Prazo
+        let descT = `${tNome}: Sem dados de prazo`;
+        
+        if(tr.dataInicio && tr.duracaoDias && tarDaTrilha.length > 0) {
+            let dataInicio = new Date(tr.dataInicio + "T00:00:00");
+            let dataPrevista = new Date(dataInicio.getTime() + (tr.duracaoDias * 24 * 60 * 60 * 1000));
+            
+            let todasConcluidas = tarDaTrilha.every(x => x.concluida === true);
+            let diasDiff = 0;
+            
+            if(todasConcluidas) {
+                // Pega data da última tarefa registrada dessa trilha no historico
+                let histDesta = histOp.filter(h => h.trilha === tNome);
+                let ultimaDataStr = histDesta.length > 0 ? histDesta[histDesta.length-1].data.split(' ')[0] : null;
+                if(ultimaDataStr) {
+                    let p = ultimaDataStr.split('/');
+                    let dataEfetiva = new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
+                    diasDiff = Math.ceil((dataEfetiva - dataPrevista) / (1000 * 60 * 60 * 24));
+                }
+            } else {
+                diasDiff = Math.ceil((hoje - dataPrevista) / (1000 * 60 * 60 * 24));
+            }
+            
+            if(diasDiff < 0) { corT = '#2e7d32'; descT = `${tNome}: ${todasConcluidas ? 'Concluída' : 'Em andamento'} com ${Math.abs(diasDiff)} dia(s) de Antecipação`; }
+            else if(diasDiff === 0) { corT = '#8bc34a'; descT = `${tNome}: ${todasConcluidas ? 'Concluída' : 'Em andamento'} exatamente no prazo!`; }
+            else if(diasDiff > 0 && diasDiff <= 3) { corT = '#ffeb3b'; descT = `${tNome}: ${todasConcluidas ? 'Concluída' : 'Atrasada'} com ${diasDiff} dia(s) (Adiamento leve)`; }
+            else { corT = '#f44336'; descT = `${tNome}: ${todasConcluidas ? 'Concluída' : 'Atrasada'} com ${diasDiff} dia(s) de Atraso crítico`; }
+        }
+        
+        let textColorT = corT === '#ffeb3b' ? '#000' : '#fff';
+        htmlGridTempo += `<div class="ritmo-square" style="background-color: ${corT}; color: ${textColorT};" title="${descT}">${numVisual}</div>`;
+    });
+    
+    if(trilhasDoConcurso.length === 0) {
+        htmlGridDesemp = '<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';
+        htmlGridTempo = '<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';
+    }
+    
+    document.getElementById('ritmoDesempGrid').innerHTML = htmlGridDesemp;
+    document.getElementById('ritmoTempoGrid').innerHTML = htmlGridTempo;
+    
+    switchRitmoTab('desemp'); // Sempre abre na primeira aba
+    abrirModal('modalRitmo');
+}
+
 
 // ================= PRODUTIVIDADE AVANÇADA E TREEMAP =================
 function abrirProdutividade() {
@@ -2617,7 +2816,7 @@ function abrirHabilidades() {
         });
         
         let pctDesemp = questoes > 0 ? (acertos / questoes) * 20 : 0;
-        let bonus = Math.floor(acertos / 1000);
+        let bonus = Math.floor(acertos / 1000); // 1% a cada 1000 acertos
         
         let totalRaw = pctAulas + pctDesemp + bonus;
         let totalPct = Math.min(100, Math.max(0, totalRaw)); // Trava em 100% no visual
