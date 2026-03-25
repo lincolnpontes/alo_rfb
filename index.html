@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.7</title>
+    <title>Alô RFB v1.1.8</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -42,13 +42,24 @@
             --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: rgba(250,235,215,0.6); --text-input: #3e2723; --bg-hover: #e6d2b5;
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
         }
+        
+        body[data-theme="medieval"] .app-container { margin: 30px auto; height: calc(100vh - 60px); border-radius: 4px; box-shadow: 0 0 40px rgba(0,0,0,0.9); }
+        body[data-theme="medieval"] .app-container::before {
+            content: ''; position: absolute; top: -25px; left: -15px; right: -15px; height: 35px;
+            background: linear-gradient(to bottom, #d6ba8d 0%, #c2995f 30%, #8b5a2b 70%, #4a2f16 100%);
+            border-radius: 20px; border: 2px solid #3b2415; box-shadow: 0 10px 15px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.3); z-index: 999;
+        }
+        body[data-theme="medieval"] .app-container::after {
+            content: ''; position: absolute; bottom: -25px; left: -15px; right: -15px; height: 35px;
+            background: linear-gradient(to top, #d6ba8d 0%, #c2995f 30%, #8b5a2b 70%, #4a2f16 100%);
+            border-radius: 20px; border: 2px solid #3b2415; box-shadow: 0 -10px 15px rgba(0,0,0,0.6), inset 0 -2px 5px rgba(255,255,255,0.3); z-index: 999;
+        }
+        
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); 
-            border: 4px solid #8b5a2b; 
-            border-radius: 4px;
+            border: 4px solid #8b5a2b; border-radius: 4px;
         }
         body[data-theme="medieval"] .btn-action { background: #5c3a21; color: #fdf5e6; border-color: #3e2723; }
-        body[data-theme="medieval"] .app-container { box-shadow: 0 0 30px rgba(0,0,0,0.8); }
 
         /* BLOQUEIO DE ROLAGEM GLOBAL */
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
@@ -185,12 +196,12 @@
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
         
         /* Barra de Meta Editada (Tamanhos Aumentados) */
-        .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
-        .meta-text { font-size: 14px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
+        .meta-container { width: 100%; margin: 12px 0 0 0; text-align: left; }
+        .meta-text { font-size: 16px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
         .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
         body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
         .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; }
-        .meta-runner { position: absolute; right: -12px; top: -14px; font-size: 26px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .meta-runner { position: absolute; right: -16px; top: -16px; font-size: 30px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
 
         .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
@@ -261,7 +272,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.7</div>
+    <div class="splash-version">v1.1.8</div>
 </div>
 
 <div id="login-screen">
@@ -392,13 +403,18 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.7</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.8</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <button class="btn-outline" onclick="abrirConfigCronometroModal()"><span class="emoji-icon">⏱️</span> <span class="texto-btn">Configurações do Cronômetro</span></button>
         
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         <button class="btn-outline" onclick="abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
         
+        <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
+        <button class="btn-outline" onclick="exportarBackupTXT()"><span class="emoji-icon">💾</span> <span class="texto-btn">Fazer Backup (Exportar .txt)</span></button>
+        <button class="btn-outline" onclick="document.getElementById('fileImportBackup').click()"><span class="emoji-icon">📂</span> <span class="texto-btn">Restaurar Backup (Importar .txt)</span></button>
+        <input type="file" id="fileImportBackup" accept=".txt" style="display:none;" onchange="importarBackupTXT(event)">
+
         <div id="painelSecreto" style="display:none;">
             <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
             <button class="btn-outline" onclick="abrirGerenciar('estudantes')"><span class="emoji-icon">👥</span> <span class="texto-btn">Usuários</span></button>
@@ -536,13 +552,22 @@
 
 <div class="modal-overlay" id="modalEditarTempo">
     <div class="modal">
-        <div class="modal-title">✏️ Editar Tempo (Cronômetro)</div>
-        <div style="display:flex; gap:10px; justify-content: center; align-items:center;">
-            <div class="form-group"><label style="text-align:center;">Horas</label><input type="number" id="editHoras" value="0" min="0" style="text-align:center; font-size:24px;"></div>
-            <div style="font-size:30px; font-weight:bold; margin-bottom:15px;">:</div>
-            <div class="form-group"><label style="text-align:center;">Min</label><input type="number" id="editMins" value="0" min="0" max="59" style="text-align:center; font-size:24px;"></div>
-            <div style="font-size:30px; font-weight:bold; margin-bottom:15px;">:</div>
-            <div class="form-group"><label style="text-align:center;">Seg</label><input type="number" id="editSegs" value="0" min="0" max="59" style="text-align:center; font-size:24px;"></div>
+        <div class="modal-title">✏️ Editar Tempo</div>
+        <div style="display:flex; gap:10px; justify-content: center; align-items:flex-start;">
+            <div class="form-group">
+                <label style="text-align:center;">Horas</label>
+                <input type="number" id="editHoras" value="0" min="0" style="width: 80px; height: 60px; font-size: 32px; font-family: 'Verdana', sans-serif; font-weight: bold; text-align: center; border-radius: 10px; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-input);">
+            </div>
+            <div style="font-size:40px; font-weight:bold; margin-top:10px;">:</div>
+            <div class="form-group">
+                <label style="text-align:center;">Mins</label>
+                <input type="number" id="editMins" value="0" min="0" max="59" style="width: 80px; height: 60px; font-size: 32px; font-family: 'Verdana', sans-serif; font-weight: bold; text-align: center; border-radius: 10px; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-input);">
+            </div>
+            <div style="font-size:40px; font-weight:bold; margin-top:10px;">:</div>
+            <div class="form-group">
+                <label style="text-align:center;">Segs</label>
+                <input type="number" id="editSegs" value="0" min="0" max="59" style="width: 80px; height: 60px; font-size: 32px; font-family: 'Verdana', sans-serif; font-weight: bold; text-align: center; border-radius: 10px; border: 1px solid var(--border-input); background: var(--bg-input); color: var(--text-input);">
+            </div>
         </div>
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalEditarTempo')">Cancelar</button>
@@ -667,7 +692,7 @@
         <div style="display:flex; gap:10px;">
             <div class="form-group" style="flex:1;">
                 <label>Inicia na Aula:</label>
-                <input type="number" id="discAulaInicio" placeholder="Ex: 0" value="1">
+                <input type="number" id="discAulaInicio" placeholder="Ex: 0" value="0">
             </div>
             <div class="form-group" style="flex:1;">
                 <label>Qtd Aulas:</label>
@@ -941,19 +966,14 @@ const paletasDeCores = {
     roxo: {primaria:'#673ab7', secundaria:'#ede7f6', fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)', bgApp:'rgba(255,255,255,0.6)', bgItem:'rgba(255,255,255,0.7)', bgHeader:'rgba(255,255,255,0.8)'},
     escuro: {primaria:'#e0e0e0', secundaria:'#333333', fundo:'linear-gradient(135deg, #212121 0%, #000000 100%)', bgApp:'rgba(30,30,30,0.8)', bgItem:'rgba(40,40,40,0.9)', bgHeader:'rgba(20,20,20,0.95)'},
     transparente: {primaria:'#4fc3f7', secundaria:'rgba(255,255,255,0.1)', fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', bgApp:'rgba(255,255,255,0.05)', bgItem:'rgba(255,255,255,0.1)', bgHeader:'rgba(20, 35, 45, 0.98)'},
-    medieval: {primaria:'#8b4513', secundaria:'#e6d2b5', fundo:'radial-gradient(circle at center, #5c4033 0%, #27140c 100%)', bgApp:'rgba(244, 233, 216, 0.95)', bgItem:'rgba(250, 240, 230, 0.95)', bgHeader:'rgba(210, 180, 140, 0.98)'}
+    medieval: {primaria:'#8b4513', secundaria:'#e6d2b5', fundo:'radial-gradient(circle at center, #3b2415 0%, #170b06 100%)', bgApp:'rgba(244, 233, 216, 0.95)', bgItem:'rgba(250, 240, 230, 0.95)', bgHeader:'rgba(210, 180, 140, 0.98)'}
 };
-
-function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
-function getHojeYMD() { const hj=new Date(); return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`; }
-function formatarTempoTimer(segs) { let h = Math.floor(segs / 3600), m = Math.floor((segs % 3600) / 60), s = Math.floor(segs % 60); return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`; }
-function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
 
 function carregarBanco(){
     let d = {
         concursos: [{nome: "AFRFB", ativo: true, cor: "#1565C0", corTexto: "#ffffff", pausado: false}],
         trilhas: [{id: 1, nome: "Trilha 01", concurso: "AFRFB", dataInicio: getHojeYMD(), duracaoDias: 7}],
-        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulaInicio: 1, aulas: 10}],
+        disciplinas: [{id: 1, nome: "Direito Constitucional", concurso: "AFRFB", aulaInicio: 0, aulas: 10}],
         tarefas: [{id: 1, titulo: "Tarefa 01", concurso: "AFRFB", trilha: "Trilha 01", disciplina: "Direito Constitucional", aulas: "Aula 01", tipoAtividade: "Teoria", concluida: false, pulada: false}],
         operadores: [{nome: "Usuário", senha: "", ocultarEngrenagem: false}],
         configs: {
@@ -987,7 +1007,7 @@ function carregarBanco(){
             let ativo = l.concursos.find(c => c.ativo);
             let concPadrao = ativo ? ativo.nome : (l.concursos[0] ? l.concursos[0].nome : "Geral");
             l.concursos.forEach(c => { if(c.pausado === undefined) c.pausado = false; });
-            l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; if(disc.aulaInicio === undefined) disc.aulaInicio = 1; });
+            l.disciplinas.forEach(disc => { if(!disc.concurso) disc.concurso = concPadrao; if(disc.aulas === undefined) disc.aulas = 0; if(disc.aulaInicio === undefined) disc.aulaInicio = 0; });
             l.trilhas.forEach(tr => { if(!tr.dataInicio) tr.dataInicio = getHojeYMD(); if(!tr.duracaoDias) tr.duracaoDias = 7; });
             
             l.tarefas.forEach(tar => { 
@@ -995,6 +1015,7 @@ function carregarBanco(){
                 if(tar.acertos === undefined) tar.acertos = 0; 
                 if(tar.obs === undefined) tar.obs = ""; 
                 if(tar.pulada === undefined) tar.pulada = false;
+                if(!tar.disciplina) tar.disciplina = "";
                 
                 if(tar.tipoAtividade === "Pulada") {
                     tar.pulada = true;
@@ -1380,7 +1401,11 @@ function renderizarCabecalhoTrilhas() {
 
     if(tObj) {
         let tarefasTrilha = db.tarefas.filter(t => t.trilha === trilhaAtivaNome && t.concurso === concNome);
-        numDisc = new Set(tarefasTrilha.map(t => t.disciplina)).size;
+        
+        let validDisciplines = new Set();
+        tarefasTrilha.forEach(t => { if(t.disciplina) validDisciplines.add(t.disciplina); });
+        numDisc = validDisciplines.size;
+        
         numAtiv = tarefasTrilha.length;
         
         let histTrilha = db.historico.filter(h => h.trilha === trilhaAtivaNome && h.concurso === concNome);
@@ -1548,7 +1573,7 @@ function renderizarListaTarefas() {
         
         let despStr = "-";
         let configTipo = db.configs.tiposAtividade.find(x => x.nome === t.tipoAtividade);
-        if (configTipo && configTipo.comDesempenho && isConcluida && !isPulada) {
+        if (configTipo && configTipo.comDesempenho && isConcluida && !isPulada && t.disciplina) {
             let pct = t.questoes > 0 ? Math.round((t.acertos/t.questoes)*100) : 0;
             despStr = `${pct}% (${t.acertos}/${t.questoes})`;
         }
@@ -1557,7 +1582,7 @@ function renderizarListaTarefas() {
         <div class="tarefa-row ${rowClass}" onclick="abrirFormTarefa(${t.id})">
             <div class="tarefa-col" style="display:flex;"><div class="dot-status ${dotClass}"></div></div>
             <div class="tarefa-col bold">${numeroStr}</div>
-            <div class="tarefa-col bold" style="color:var(--primaria)">${t.disciplina}</div>
+            <div class="tarefa-col bold" style="color:var(--primaria)">${t.disciplina || '-'}</div>
             <div class="tarefa-col">${t.tipoAtividade}</div>
             <div class="tarefa-col">${aulaApresentacao}</div>
             <div class="tarefa-col" title="${tituloCustom}">${tituloCustom}</div>
@@ -1578,7 +1603,6 @@ function iniciar(){
         if (opAtual && db.operadores.find(o => o.nome === opAtual)) { l.style.display = 'none'; document.getElementById('seletorOperador').value = opAtual; operadorAnteriorSelect = opAtual; }
         setTimeout(()=>{ const s=document.getElementById('splash-screen'); if(s){ s.classList.add('hidden'); setTimeout(()=>s.style.display='none',500); } },1500);
         
-        // Carrega estado do cronômetro da nuvem/local
         if(db.configs.estadoTimer && db.configs.estadoTimer.tempo > 0) {
             tempoTimer = db.configs.estadoTimer.tempo;
             targetTimer = db.configs.estadoTimer.target;
@@ -1610,7 +1634,6 @@ function confirmarDesmarcar() {
     document.getElementById('tarQtdQuestoes').value = 0; document.getElementById('tarQtdAcertos').value = 0; document.getElementById('tarObs').value = "";
     document.getElementById('tarTempoMinutos').value = 0;
     
-    // Libera os campos novamente
     document.getElementById('tarNumero').disabled = false;
     document.getElementById('tarTrilhaSelect').disabled = false;
     document.getElementById('tarDisciplina').disabled = false;
@@ -1634,9 +1657,15 @@ function popularDropdownAulasCustom() {
     const dNome = document.getElementById('tarDisciplina').value;
     const cont = document.getElementById('tarAulasOptions'); cont.innerHTML = '';
     
+    if(!dNome || dNome === "") {
+        cont.innerHTML = `<div style="padding:10px; color:#999; font-size:12px;">Nenhuma aula cadastrada</div>`;
+        atualizarDisplayAulas();
+        return;
+    }
+    
     let discObj = db.disciplinas.find(d => d.concurso === conc && d.nome === dNome);
     if(discObj && discObj.aulas > 0) {
-        let aInit = discObj.aulaInicio !== undefined ? discObj.aulaInicio : 1;
+        let aInit = discObj.aulaInicio !== undefined ? discObj.aulaInicio : 0;
         for(let i=0; i<discObj.aulas; i++) {
             let n = aInit + i;
             let strAula = `Aula ${String(n).padStart(2,'0')}`;
@@ -1921,12 +1950,12 @@ function abrirFormDisciplina(id, concursoNome){
         const d = db.disciplinas.find(x => x.id === id); 
         document.getElementById('discIdOriginal').value = d.id; 
         document.getElementById('discNome').value = d.nome; 
-        document.getElementById('discAulaInicio').value = d.aulaInicio !== undefined ? d.aulaInicio : 1;
+        document.getElementById('discAulaInicio').value = d.aulaInicio !== undefined ? d.aulaInicio : 0;
         document.getElementById('discAulas').value = d.aulas || 0;
     } else { 
         document.getElementById('discIdOriginal').value = ''; 
         document.getElementById('discNome').value = ''; 
-        document.getElementById('discAulaInicio').value = 1;
+        document.getElementById('discAulaInicio').value = 0;
         document.getElementById('discAulas').value = '';
     }
     abrirModal('modalFormDisciplina');
@@ -2052,7 +2081,8 @@ function abrirFormTarefa(id, numSugerido = 1){
     
     document.getElementById('tarHeaderConcurso').innerText = conc;
     
-    const selD = document.getElementById('tarDisciplina'); selD.innerHTML = ''; 
+    const selD = document.getElementById('tarDisciplina'); 
+    selD.innerHTML = '<option value="">-- Nenhuma / Orientação --</option>'; 
     let discsDoConcurso = db.disciplinas.filter(d => d.concurso === conc);
     discsDoConcurso.forEach(x => selD.innerHTML += `<option value="${x.nome}">${x.nome}</option>`);
     
@@ -2069,7 +2099,7 @@ function abrirFormTarefa(id, numSugerido = 1){
     document.getElementById('tarAulasOptions').style.display = 'none'; // garante fechado
     document.getElementById('btnExcluirTarefa').style.display = (id >= 0) ? 'block' : 'none';
 
-    // Desbloqueio Padrão (será modificado se estiver concluída)
+    // Desbloqueio Padrão
     document.getElementById('tarNumero').disabled = false;
     document.getElementById('tarTrilhaSelect').disabled = false;
     document.getElementById('tarDisciplina').disabled = false;
@@ -2086,7 +2116,7 @@ function abrirFormTarefa(id, numSugerido = 1){
         document.getElementById('tarNumero').value = m ? parseInt(m[0]) : 1; 
         
         selTr.value = t.trilha;
-        selD.value = t.disciplina;
+        selD.value = t.disciplina || "";
         
         let splitTit = t.titulo.split(' - ');
         document.getElementById('tarTituloPersonalizado').value = splitTit.length > 1 ? splitTit.slice(1).join(' - ') : "";
@@ -2243,7 +2273,6 @@ function salvarTarefa(isPulo = false){
     if(idO !== "") {
         let old = db.tarefas.find(x => x.id === parseInt(idO));
         
-        // Preserva os dados antigos bloqueados se a tarefa já estiver concluída
         if(old.concluida && !old.pulada) {
             obj.titulo = old.titulo;
             obj.trilha = old.trilha;
@@ -2287,7 +2316,6 @@ function abrirSelecionadorDeTarefaParaRegistro() {
     let conc = getConcursoAtivoNome();
     let filtradas = db.tarefas.filter(t => t.concurso === conc && !t.concluida);
     
-    // ORDENAÇÃO NUMÉRICA DAS TAREFAS
     filtradas.sort((a, b) => {
         let numA = parseInt(a.titulo.match(/\d+/) ? a.titulo.match(/\d+/)[0] : 0);
         let numB = parseInt(b.titulo.match(/\d+/) ? b.titulo.match(/\d+/)[0] : 0);
@@ -2295,7 +2323,8 @@ function abrirSelecionadorDeTarefaParaRegistro() {
     });
     
     filtradas.forEach(t => {
-        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${t.disciplina} • ${t.trilha}</small></div>`;
+        let discNome = t.disciplina || "Geral / Orientação";
+        l.innerHTML += `<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${t.titulo}</strong><br><small>${discNome} • ${t.trilha}</small></div>`;
     });
     
     if(filtradas.length === 0) l.innerHTML = `<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;
@@ -2306,7 +2335,8 @@ function abrirSelecionadorDeTarefaParaRegistro() {
 function abrirRegistroEstudo(id){
     const t = db.tarefas.find(x => x.id === id); if(!t) return;
     document.getElementById('regNomeTarefa').innerText = t.titulo; 
-    document.getElementById('regSubTituloTarefa').innerText = t.disciplina + (t.aulas ? " - " + t.aulas : "");
+    let subT = (t.disciplina || "Geral") + (t.aulas ? " - " + t.aulas : "");
+    document.getElementById('regSubTituloTarefa').innerText = subT;
     document.getElementById('regIdTarefa').value = t.id; document.getElementById('regObs').value = '';
     
     const sel = document.getElementById('regTipoAtividade'); sel.innerHTML = '';
@@ -2347,7 +2377,7 @@ function salvarRegistroEstudo(){
         if(q > 0) { let pct = Math.round((a/q)*100); obs += ` [🎯 ${a}/${q} - ${pct}%]`; }
     }
     
-    let baseHist = { disciplina: t.disciplina, tarefa: t.titulo, concurso: t.concurso, trilha: t.trilha, tipoAtividade: tipo, operador: op, questoes: q, acertos: a };
+    let baseHist = { disciplina: t.disciplina || "", tarefa: t.titulo, concurso: t.concurso, trilha: t.trilha, tipoAtividade: tipo, operador: op, questoes: q, acertos: a };
     let infoTempo = duracaoCronometro > 0 ? ` (⏱️ ${Math.round(duracaoCronometro/60)} min)` : "";
     
     let dataFim = new Date(); let dataInicio = new Date(dataFim.getTime() - (duracaoCronometro * 1000));
@@ -2384,10 +2414,10 @@ function abrirHistorico(){
             l.innerHTML += `
             <div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong style="color:var(--primaria); font-size:16px;">${h.tarefa || h.disciplina} ${tempoBadge}</strong>
+                    <strong style="color:var(--primaria); font-size:16px;">${h.tarefa || h.disciplina || 'Geral'} ${tempoBadge}</strong>
                     <button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button>
                 </div>
-                <div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>
+                <div style="font-size:14px;"><strong>${h.disciplina || 'Geral'}</strong> | ${h.tipoAtividade}</div>
                 ${h.observacao ? `<div style="font-size:13px; opacity:0.8;"><em>Obs: ${h.observacao}</em></div>` : ''}
                 <div style="font-size:11px; opacity:0.6; margin-top:4px;">🎯 ${h.concurso || 'Desconhecido'} • ${h.trilha || 'Geral'}  | ${h.data.split(' ')[0]}</div>
             </div>`;
@@ -2421,7 +2451,7 @@ function excluirHistorico(id) {
     }
 }
 
-// ================= RITMO DE ESTUDO (Pedido 8) =================
+// ================= RITMO DE ESTUDO =================
 function switchRitmoTab(tab) {
     document.getElementById('tabRitmoDesemp').classList.remove('active');
     document.getElementById('tabRitmoTempo').classList.remove('active');
@@ -2461,7 +2491,6 @@ function abrirRitmoEstudo() {
     legTempo.forEach(l => htmlLegT += `<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);
     document.getElementById('ritmoTempoLegend').innerHTML = htmlLegT;
 
-    // Calcular dados por trilha
     let opAtual = document.getElementById('seletorOperador').value;
     let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc);
     let tarefasOp = db.tarefas.filter(t => t.concurso === conc);
@@ -2480,7 +2509,7 @@ function abrirRitmoEstudo() {
         histOp.filter(h => h.trilha === tNome).forEach(h => { acertos += (h.acertos||0); questoes += (h.questoes||0); });
         
         let pct = questoes > 0 ? (acertos / questoes) * 100 : null;
-        let corD = '#555555'; // Sem dados
+        let corD = '#555555'; 
         if(pct !== null) {
             if(pct >= 90) corD = '#2e7d32';
             else if(pct >= 87) corD = '#4caf50';
@@ -2510,7 +2539,6 @@ function abrirRitmoEstudo() {
             let diasDiff = 0;
             
             if(todasConcluidas) {
-                // Pega data da última tarefa registrada dessa trilha no historico
                 let histDesta = histOp.filter(h => h.trilha === tNome);
                 let ultimaDataStr = histDesta.length > 0 ? histDesta[histDesta.length-1].data.split(' ')[0] : null;
                 if(ultimaDataStr) {
@@ -2540,7 +2568,7 @@ function abrirRitmoEstudo() {
     document.getElementById('ritmoDesempGrid').innerHTML = htmlGridDesemp;
     document.getElementById('ritmoTempoGrid').innerHTML = htmlGridTempo;
     
-    switchRitmoTab('desemp'); // Sempre abre na primeira aba
+    switchRitmoTab('desemp');
     abrirModal('modalRitmo');
 }
 
@@ -2577,16 +2605,18 @@ function renderizarConteudoProdutividade() {
     let rawItemsByDisc = {};
 
     histOp.forEach(h => {
+        totalSegs += (h.duracaoRegistrada || 0);
+        totalQuest += (h.questoes || 0);
+        totalAcertos += (h.acertos || 0);
+        diasUnicos.add(h.data.split(' ')[0]);
+
+        if(!h.disciplina) return; // IGNORA TAREFAS SEM DISCIPLINA DAS ESTATISTICAS DE DESEMPENHO
+
         if(!estatisticas[h.disciplina]) { estatisticas[h.disciplina] = { tempo: 0, questoes: 0, acertos: 0 }; rawItemsByDisc[h.disciplina] = []; }
         estatisticas[h.disciplina].tempo += (h.duracaoRegistrada || 0);
         estatisticas[h.disciplina].questoes += (h.questoes || 0);
         estatisticas[h.disciplina].acertos += (h.acertos || 0);
         rawItemsByDisc[h.disciplina].push(h);
-        
-        totalSegs += (h.duracaoRegistrada || 0);
-        totalQuest += (h.questoes || 0);
-        totalAcertos += (h.acertos || 0);
-        diasUnicos.add(h.data.split(' ')[0]);
     });
 
     let despGeral = totalQuest > 0 ? ((totalAcertos/totalQuest)*100).toFixed(1) + "%" : "0%";
@@ -2658,7 +2688,7 @@ function renderizarConteudoProdutividade() {
             <div class="prod-table-cell center">${hFormGeral}</div>
         </div>`;
     } else {
-        tbody.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">Sem dados registrados.</div>';
+        tbody.innerHTML = '<div style="padding:20px; text-align:center; color:#999;">Sem dados registrados para as disciplinas.</div>';
     }
 
     Object.values(chartsDetalhe).forEach(c => c.destroy()); chartsDetalhe = {};
@@ -2802,8 +2832,8 @@ function abrirHabilidades() {
     if(!conc) return alert("Nenhum concurso ativo para calcular habilidades.");
     
     let opAtual = document.getElementById('seletorOperador').value;
-    let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc);
-    let tarefasOp = db.tarefas.filter(t => t.concurso === conc && t.concluida && !t.pulada);
+    let histOp = db.historico.filter(h => h.operador === opAtual && h.concurso === conc && h.disciplina);
+    let tarefasOp = db.tarefas.filter(t => t.concurso === conc && t.concluida && !t.pulada && t.disciplina);
     
     let discs = db.disciplinas.filter(d => d.concurso === conc);
     let html = '';
@@ -2812,7 +2842,6 @@ function abrirHabilidades() {
         let dNome = d.nome;
         let totalAulas = d.aulas || 0;
         
-        // Peso das Aulas (80%) Corrigido
         let aulasSet = new Set();
         tarefasOp.filter(t => t.disciplina === dNome).forEach(t => {
             if(t.aulas) { 
@@ -2825,7 +2854,6 @@ function abrirHabilidades() {
         let unqAulas = aulasSet.size;
         let pctAulas = totalAulas > 0 ? Math.min(80, (unqAulas / totalAulas) * 80) : 0;
         
-        // Peso do Desempenho (20%) + Bônus
         let acertos = 0; let questoes = 0;
         histOp.filter(h => h.disciplina === dNome).forEach(h => {
             acertos += (h.acertos || 0);
@@ -2833,13 +2861,12 @@ function abrirHabilidades() {
         });
         
         let pctDesemp = questoes > 0 ? (acertos / questoes) * 20 : 0;
-        let bonus = Math.floor(acertos / 1000); // 1% a cada 1000 acertos
+        let bonus = Math.floor(acertos / 1000); 
         
         let totalRaw = pctAulas + pctDesemp + bonus;
-        let totalPct = Math.min(100, Math.max(0, totalRaw)); // Trava em 100% no visual
+        let totalPct = Math.min(100, Math.max(0, totalRaw)); 
         let displayPct = totalPct.toFixed(1).replace('.0', '') + '%';
         
-        // Definição dos Níveis e Cores
         let nivel = "Neófito"; let corBg = "#eeeeee"; let corTxt = "#333333";
         if(totalPct < 40) { nivel = "Neófito"; corBg = "#eeeeee"; corTxt = "#555555"; }
         else if(totalPct < 50) { nivel = "Noviço"; corBg = "#fff9c4"; corTxt = "#f57f17"; }
@@ -2868,6 +2895,43 @@ function abrirHabilidades() {
     
     document.getElementById('listaHabilidades').innerHTML = html;
     abrirModal('modalHabilidades');
+}
+
+// ================= BACKUP E NUVEM =================
+function exportarBackupTXT() {
+    const dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    const dateStr = getHojeYMD();
+    downloadAnchorNode.setAttribute("download", "AloRFB_Backup_" + dateStr + ".txt");
+    document.body.appendChild(downloadAnchorNode); 
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+    mostrarToast("Backup exportado com sucesso!");
+    fecharModal('modalPainelUnificado');
+}
+
+function importarBackupTXT(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedDb = JSON.parse(e.target.result);
+            if(importedDb && importedDb.configs && importedDb.tarefas) {
+                if(confirm("ATENÇÃO: Isso vai apagar tudo que você tem agora e substituir pelo arquivo de backup. Tem certeza?")) {
+                    db = importedDb;
+                    db.configs.ultimaModificacaoLocal = Date.now();
+                    salvarBancoLocal();
+                    alert("Backup restaurado com sucesso! O sistema será recarregado.");
+                    location.reload();
+                }
+            } else { alert("Arquivo de backup inválido ou corrompido."); }
+        } catch(err) { alert("Erro ao ler o arquivo de backup."); }
+    };
+    reader.readAsText(file);
+    event.target.value = ''; 
+    fecharModal('modalPainelUnificado');
 }
 
 async function pushParaNuvemSilencioso() {
