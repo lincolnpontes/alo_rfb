@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
     <link rel="manifest" href="manifest.json">
-    <title>Alô RFB v1.1.7</title>
+    <title>Alô RFB v1.1.8</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -88,8 +88,8 @@
         
         .form-group{margin-bottom:15px;position:relative}
         .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
-        .form-group input:not([type=color]):not([type=checkbox]), .form-group select { width:100%;padding:10px;border:1px solid var(--border-input);border-radius:5px;box-sizing:border-box;font-size:16px; color: var(--text-input); background: var(--bg-input); }
-        .form-group input:disabled, .form-group select:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.05); }
+        .form-group input:not([type=color]):not([type=checkbox]), .form-group select, .form-group textarea { width:100%;padding:10px;border:1px solid var(--border-input);border-radius:5px;box-sizing:border-box;font-size:16px; color: var(--text-input); background: var(--bg-input); }
+        .form-group input:disabled, .form-group select:disabled, .form-group textarea:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.05); }
         .form-group input[type=color]{padding:0;border:1px solid var(--border-input);height:44px;width:100%;border-radius:8px;cursor:pointer; background: var(--bg-input);}
         .modal-select{height:38px;border-radius:8px!important;border:1px solid var(--border-input)!important;background:var(--bg-input)!important;color:var(--text-input)!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
         
@@ -124,12 +124,12 @@
         
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         
-        /* Tabela de Tarefas */
+        /* Tabela de Tarefas (Ajuste 10 Aplicado) */
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
         .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
-        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr 70px 3.5fr 80px 140px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
+        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.5fr 1fr minmax(70px, 1.5fr) 3.5fr 80px max-content; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
         .tarefa-row:last-child { border-bottom: none; }
         .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
         
@@ -183,7 +183,9 @@
         .crono-play { width: 50px; height: 50px;}
         .crono-stop { width: 50px; height: 50px;} 
         .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .crono-edit { font-size: 16px; background: var(--secundaria); border: 2px solid var(--primaria); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
+        
+        /* Ajuste 9 Aplicado */
+        .crono-edit { font-size: 20px; background: transparent; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         
@@ -269,7 +271,7 @@
 <div id="splash-screen">
     <div class="splash-emoji">🦅</div>
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.1.7</div>
+    <div class="splash-version">v1.1.8</div>
 </div>
 
 <div id="login-screen">
@@ -403,7 +405,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.7</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.1.8</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
@@ -561,6 +563,28 @@
         <div class="modal-actions">
             <button class="btn-cancel" onclick="fecharModal('modalEditarTempo')">Cancelar</button>
             <button class="btn-action" onclick="confirmarEdicaoTempo()">Salvar Tempo</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalImportacaoEmLote">
+    <div class="modal" style="max-width: 800px; width: 95%;">
+        <div class="modal-title">📥 Importar Tarefas em Lote</div>
+        <p style="font-size:13px;">Cole abaixo o texto gerado pela IA. Formato esperado de cada linha: <br><b>Disciplina;Aula;Título da Tarefa;Atividade</b></p>
+        <div class="form-group">
+            <textarea id="textoImportacao" rows="6" placeholder="Direito Constitucional;Aula 01;Poder Constituinte;Leitura PDF&#10;Direito Tributário;Aula 04;Suspensão do Crédito;Fazer 30 Questões" style="width:100%; padding:10px; border:1px solid var(--border-input); border-radius:5px; background:var(--bg-input); color:var(--text-input); font-family:monospace;"></textarea>
+        </div>
+        <button class="btn-action" style="width:100%; margin-bottom:15px; padding:15px; font-size:16px;" onclick="processarTextoImportacao()">⚙️ Processar Dados</button>
+
+        <div id="previewImportacao" style="display:none;">
+            <h4 style="margin: 0 0 10px 0; color:var(--primaria);">Revisar e Ajustar</h4>
+            <div style="max-height: 35vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 5px; padding: 10px; background:var(--bg-item);" id="tabelaPreviewImportacao">
+                </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+            <button class="btn-cancel" onclick="fecharModal('modalImportacaoEmLote')">Cancelar</button>
+            <button class="btn-action" id="btnSalvarImportacao" style="display:none;" onclick="salvarTarefasImportadas()">💾 Salvar Todas as Tarefas</button>
         </div>
     </div>
 </div>
@@ -1489,6 +1513,7 @@ function renderizarCabecalhoTrilhas() {
         </div>
         <div class="trilhas-right">
             <button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button>
+            <button class="btn-nova-tarefa" style="background: #1976D2;" onclick="abrirModalImportacao()">📥 Importar</button>
             <button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Tarefa</button>
         </div>
     `;
@@ -2055,7 +2080,7 @@ function salvarConcurso(){
         } else if (wasPausado && !isPausadoNow) {
             if(objToUpdate.dataPausa) {
                 let d1 = new Date(objToUpdate.dataPausa + "T00:00:00");
-                let d2 = new Date(getHojeYMD() + "T00:00:00");
+                let d2 = new Date(getHojeYMD + "T00:00:00");
                 let diffTime = d2 - d1;
                 let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 if(diffDays > 0) {
@@ -2356,6 +2381,101 @@ function salvarTarefa(isPulo = false){
         db.tarefas.push(obj); 
     }
     salvarModificacaoBasica(); fecharModal('modalFormTarefa'); renderizarListaTarefas(); renderizarDashboardTrilha();
+}
+
+// ================= LÓGICA DE IMPORTAÇÃO EM LOTE =================
+function abrirModalImportacao() {
+    let conc = getConcursoAtivoNome();
+    if(!conc) return alert("Sem concurso ativo!");
+    if(!trilhaAtivaNome) return alert("Crie ou selecione uma Trilha primeiro!");
+
+    document.getElementById('textoImportacao').value = "";
+    document.getElementById('previewImportacao').style.display = 'none';
+    document.getElementById('btnSalvarImportacao').style.display = 'none';
+    abrirModal('modalImportacaoEmLote');
+}
+
+function processarTextoImportacao() {
+    let txt = document.getElementById('textoImportacao').value.trim();
+    if(!txt) return alert("Cole o texto primeiro!");
+
+    let linhas = txt.split('\n');
+    let html = '';
+    linhas.forEach((linha, idx) => {
+        if(!linha.trim()) return;
+        let cols = linha.split(';');
+        let disc = cols[0] ? cols[0].trim() : "";
+        let aula = cols[1] ? cols[1].trim() : "";
+        let tit = cols[2] ? cols[2].trim() : "";
+        let ativ = cols[3] ? cols[3].trim() : "";
+
+        html += `
+        <div class="import-row" style="display:grid; grid-template-columns: 1fr 1fr 2fr 1fr; gap:5px; margin-bottom:5px; padding-bottom:5px; border-bottom:1px solid var(--border-input);">
+            <input type="text" class="imp-disc" value="${disc}" placeholder="Disciplina" style="width:100%; padding:4px; font-size:12px;">
+            <input type="text" class="imp-aula" value="${aula}" placeholder="Aula" style="width:100%; padding:4px; font-size:12px;">
+            <input type="text" class="imp-tit" value="${tit}" placeholder="Título da Tarefa" style="width:100%; padding:4px; font-size:12px;">
+            <input type="text" class="imp-ativ" value="${ativ}" placeholder="Atividade" style="width:100%; padding:4px; font-size:12px;">
+        </div>`;
+    });
+
+    document.getElementById('tabelaPreviewImportacao').innerHTML = html;
+    document.getElementById('previewImportacao').style.display = 'block';
+    document.getElementById('btnSalvarImportacao').style.display = 'block';
+}
+
+function salvarTarefasImportadas() {
+    let conc = getConcursoAtivoNome();
+    let rows = document.querySelectorAll('.import-row');
+    if(rows.length === 0) return;
+
+    let maxN = 0;
+    db.tarefas.filter(t => t.concurso === conc).forEach(t => {
+        let match = t.titulo.match(/\d+/);
+        if(match) { let n = parseInt(match[0]); if(n > maxN) maxN = n; }
+    });
+
+    let timestampBase = Date.now();
+
+    rows.forEach((row, index) => {
+        let disc = row.querySelector('.imp-disc').value.trim();
+        let aula = row.querySelector('.imp-aula').value.trim();
+        let titCustom = row.querySelector('.imp-tit').value.trim();
+        let ativ = row.querySelector('.imp-ativ').value.trim();
+
+        maxN++;
+        let numTarefa = maxN;
+        let titFull = "Tarefa " + String(numTarefa).padStart(2, '0');
+        if(titCustom !== "") titFull += " - " + titCustom;
+
+        // Garante que a atividade exista nas configurações, senão adiciona
+        if(ativ && !db.configs.tiposAtividade.find(x => x.nome.toLowerCase() === ativ.toLowerCase())) {
+            db.configs.tiposAtividade.push({nome: ativ, comDesempenho: /quest|teste/i.test(ativ)});
+        }
+        
+        // Se a disciplina digitada não existir, a gente a cria no banco silenciosamente (na aula 1)
+        if(disc && !db.disciplinas.find(d => d.concurso === conc && d.nome.toLowerCase() === disc.toLowerCase())) {
+            db.disciplinas.push({ id: Date.now() + Math.random(), nome: disc, concurso: conc, aulaInicio: 1, aulas: 15 });
+        }
+
+        db.tarefas.push({
+            id: timestampBase + index,
+            titulo: titFull,
+            concurso: conc,
+            trilha: trilhaAtivaNome,
+            disciplina: disc,
+            aulas: aula,
+            tipoAtividade: ativ,
+            concluida: false,
+            pulada: false,
+            questoes: 0, acertos: 0, obs: ""
+        });
+    });
+
+    salvarModificacaoBasica();
+    fecharModal('modalImportacaoEmLote');
+    renderizarListaTarefas();
+    renderizarDashboardTrilha();
+    mostrarToast("Tarefas importadas com sucesso!");
 }
 
 // ================= REGISTRO =================
