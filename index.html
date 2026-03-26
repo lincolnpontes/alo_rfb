@@ -206,9 +206,9 @@
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
         .ritmo-square[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 14px; white-space: nowrap; z-index: 9999; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: none; }
         
-        /* Ajuste do Tooltip do Ritmo de Estudo nas bordas */
-        .ritmo-square.tt-left[data-tooltip]:hover::after { left: 0; transform: translateX(-10%); }
-        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto; right: 0; transform: translateX(10%); }
+        /* Ajuste do Tooltip do Ritmo de Estudo nas bordas - Ajustado para evitar vazamento total à esquerda */
+        .ritmo-square.tt-left[data-tooltip]:hover::after { left: 0; transform: translateX(0); }
+        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto; right: 0; transform: translateX(0); }
         
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -235,10 +235,10 @@
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
-            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB -->
+            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO (MARGENS NEGATIVAS MAIORES) -->
             <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
-                    <img src="rfb.png" alt="RFB Logo" style="height: 55px; max-height: 55px; margin: -15px 5px -15px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
+                    <img src="rfb.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
                 </div>
                 <div style="position: relative; width: 100%; max-width: 180px;"><span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; z-index: 1;">👤</span><select id="seletorOperador" class="modern-select" style="padding-left: 28px !important; width: 100%;" onchange="verificarTrocaOperador(this)"></select></div>
             </div>
@@ -417,11 +417,116 @@ function verificarTrocaOperador(sel){if(sel.value==='sair'){localStorage.removeI
 function exportarBackup(){db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};let dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(JSON.stringify(db));let dl=document.createElement('a');dl.setAttribute("href",dataStr);dl.setAttribute("download","AloRFB_Backup_"+getHojeYMD()+".txt");document.body.appendChild(dl);dl.click();dl.remove();mostrarToast("Backup exportado com sucesso!");}
 function importarBackup(event){let file=event.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(e){try{let importedDb=JSON.parse(e.target.result);if(importedDb&&importedDb.concursos&&importedDb.configs){db=importedDb;salvarModificacaoBasica();alert("Backup importado com sucesso! O aplicativo será recarregado para aplicar.");location.reload();}else alert("Arquivo de backup inválido ou corrompido.");}catch(err){alert("Erro ao ler o arquivo de backup: "+err.message);}};reader.readAsText(file);event.target.value='';}
 function getConcursoAtivoNome(){let ativo=db.concursos.find(c=>c.ativo);if(ativo)return ativo.nome;if(db.concursos.length>0){db.concursos[0].ativo=true;return db.concursos[0].nome;}return null;}
-function renderizarCabecalhoTrilhas(){const cont=document.getElementById('trilhas-bar-container');cont.innerHTML='';let concNome=getConcursoAtivoNome();if(!concNome){cont.innerHTML='<span style="font-size:12px;color:#888;">Nenhum concurso ativo.</span>';renderizarListaTarefas();return;}let objConc=db.concursos.find(c=>c.nome===concNome)||{cor:'var(--primaria)'};let trilhasDeste=db.trilhas.filter(t=>t.concurso===concNome).sort((a,b)=>a.nome.localeCompare(b.nome));if(!trilhaAtivaNome||!trilhasDeste.find(t=>t.nome===trilhaAtivaNome))trilhaAtivaNome=trilhasDeste.length>0?trilhasDeste[0].nome:null;let selHtml=`<select class="sel-trilha-header" onchange="mudarTrilhaAtiva(this.value)">`;trilhasDeste.forEach(t=>{selHtml+=`<option value="${t.nome}" ${t.nome===trilhaAtivaNome?'selected':''}>${t.nome}</option>`;});selHtml+=`</select>`;let msgPrazo="",colorPrazo="var(--text-color)",dataInicioFormatada="--/--/----",datePrevistaFormatada="--/--/----",tObj=db.trilhas.find(t=>t.nome===trilhaAtivaNome&&t.concurso===concNome),numDisc=0,numAtiv=0;if(tObj){let tarefasTrilha=db.tarefas.filter(t=>t.trilha===trilhaAtivaNome&&t.concurso===concNome&&!t.isExtra);numDisc=new Set(tarefasTrilha.map(t=>t.disciplina).filter(d=>d&&d.toLowerCase()!=="extra")).size;numAtiv=tarefasTrilha.length;let histTrilha=db.historico.filter(h=>h.trilha===trilhaAtivaNome&&h.concurso===concNome);let todasConcluidas=tarefasTrilha.length>0&&tarefasTrilha.every(t=>t.concluida===true);if(!tObj.dataInicio){msgPrazo=`Não iniciada`;colorPrazo="var(--text-color)";}else{let dateInicio=new Date(tObj.dataInicio+"T00:00:00");let datePrevista=new Date(dateInicio.getTime()+(tObj.duracaoDias*24*60*60*1000));dataInicioFormatada=formataData(tObj.dataInicio);datePrevistaFormatada=formataData(datePrevista.toISOString().split('T')[0]);if(objConc.pausado){msgPrazo=`⏸️ CONCURSO PAUSADO`;colorPrazo="#ef6c00";}else{let hj=new Date();hj.setHours(0,0,0,0);if(todasConcluidas){let ultimaDataStr="";if(histTrilha.length>0){ultimaDataStr=histTrilha[histTrilha.length-1].data.split(' ')[0];let p=ultimaDataStr.split('/');let dataEfetiva=new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);let diffDays=Math.ceil((dataEfetiva-dataPrevista)/(1000*60*60*24));if(diffDays>0){msgPrazo=`Concluída com ${diffDays} dias de atraso`;colorPrazo="#d32f2f";}else if(diffDays<0){msgPrazo=`Concluída com ${Math.abs(diffDays)} dias de antecipação!`;colorPrazo="#2e7d32";}else{msgPrazo=`Concluída exatamente no prazo!`;colorPrazo="var(--primaria)";}}else{msgPrazo="Concluída";colorPrazo="#2e7d32";}}else{let diffDays=Math.ceil((hj-datePrevista)/(1000*60*60*24));if(diffDays>0){msgPrazo=`${diffDays} dias de atraso`;colorPrazo="#d32f2f";}else if(diffDays<0){msgPrazo=`${Math.abs(diffDays)} dias restantes`;colorPrazo="var(--text-color)";}else{msgPrazo=`Termina Hoje!`;colorPrazo="#f57f17";}}}}}cont.innerHTML=`<div class="trilhas-left"><span class="concurso-badge" style="color:${objConc.cor};">${concNome}</span>${selHtml}</div><div class="trilhas-center"><div class="dash-prazo-bar"><strong>Início:</strong> ${dataInicioFormatada} &nbsp;|&nbsp; <strong>Previsto:</strong> ${datePrevistaFormatada} &nbsp;|&nbsp;<strong>${numDisc} Disciplina(s) | ${numAtiv} Atividade(s)</strong> &nbsp;|&nbsp;<span style="color:${colorPrazo}; font-weight:bold;">${msgPrazo}</span></div></div><div class="trilhas-right"><button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button><button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Tarefa</button></div>`;renderizarDashboardTrilha();renderizarListaTarefas();}
+
+// MODIFICADO: APLICAÇÃO DA LÓGICA DE BORDA NA SELEÇÃO DA TRILHA NO CABEÇALHO
+function renderizarCabecalhoTrilhas(){
+    const cont=document.getElementById('trilhas-bar-container');cont.innerHTML='';
+    let concNome=getConcursoAtivoNome();
+    if(!concNome){cont.innerHTML='<span style="font-size:12px;color:#888;">Nenhum concurso ativo.</span>';renderizarListaTarefas();return;}
+    let objConc=db.concursos.find(c=>c.nome===concNome)||{cor:'var(--primaria)'};
+    let trilhasDeste=db.trilhas.filter(t=>t.concurso===concNome).sort((a,b)=>a.nome.localeCompare(b.nome));
+    if(!trilhaAtivaNome||!trilhasDeste.find(t=>t.nome===trilhaAtivaNome))trilhaAtivaNome=trilhasDeste.length>0?trilhasDeste[0].nome:null;
+    
+    let msgPrazo="",colorPrazo="var(--text-color)",dataInicioFormatada="--/--/----",datePrevistaFormatada="--/--/----",tObj=db.trilhas.find(t=>t.nome===trilhaAtivaNome&&t.concurso===concNome),numDisc=0,numAtiv=0;
+    if(tObj){
+        let tarefasTrilha=db.tarefas.filter(t=>t.trilha===trilhaAtivaNome&&t.concurso===concNome&&!t.isExtra);
+        numDisc=new Set(tarefasTrilha.map(t=>t.disciplina).filter(d=>d&&d.toLowerCase()!=="extra")).size;
+        numAtiv=tarefasTrilha.length;
+        let histTrilha=db.historico.filter(h=>h.trilha===trilhaAtivaNome&&h.concurso===concNome);
+        let todasConcluidas=tarefasTrilha.length>0&&tarefasTrilha.every(t=>t.concluida===true);
+        if(!tObj.dataInicio){msgPrazo=`Não iniciada`;colorPrazo="var(--text-color)";}
+        else{
+            let dateInicio=new Date(tObj.dataInicio+"T00:00:00");
+            let datePrevista=new Date(dateInicio.getTime()+(tObj.duracaoDias*24*60*60*1000));
+            dataInicioFormatada=formataData(tObj.dataInicio);
+            datePrevistaFormatada=formataData(datePrevista.toISOString().split('T')[0]);
+            if(objConc.pausado){msgPrazo=`⏸️ CONCURSO PAUSADO`;colorPrazo="#ef6c00";}
+            else{
+                let hj=new Date();hj.setHours(0,0,0,0);
+                if(todasConcluidas){
+                    let ultimaDataStr="";
+                    if(histTrilha.length>0){
+                        ultimaDataStr=histTrilha[histTrilha.length-1].data.split(' ')[0];
+                        let p=ultimaDataStr.split('/');
+                        let dataEfetiva=new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
+                        let diffDays=Math.ceil((dataEfetiva-datePrevista)/(1000*60*60*24));
+                        if(diffDays>0){msgPrazo=`Concluída com ${diffDays} dias de atraso`;colorPrazo="#d32f2f";}
+                        else if(diffDays<0){msgPrazo=`Concluída com ${Math.abs(diffDays)} dias de antecipação!`;colorPrazo="#2e7d32";}
+                        else{msgPrazo=`Concluída exatamente no prazo!`;colorPrazo="var(--primaria)";}
+                    }else{msgPrazo="Concluída";colorPrazo="#2e7d32";}
+                }else{
+                    let diffDays=Math.ceil((hj-datePrevista)/(1000*60*60*24));
+                    if(diffDays>0){msgPrazo=`${diffDays} dias de atraso`;colorPrazo="#d32f2f";}
+                    else if(diffDays<0){msgPrazo=`${Math.abs(diffDays)} dias restantes`;colorPrazo="var(--text-color)";}
+                    else{msgPrazo=`Termina Hoje!`;colorPrazo="#f57f17";}
+                }
+            }
+        }
+    }
+    
+    // Borda dinâmica com base no status da trilha (atrasada, adiantada, sem prazo...)
+    let selHtml=`<select class="sel-trilha-header" style="border-color: ${colorPrazo}; border-width: 2px;" onchange="mudarTrilhaAtiva(this.value)">`;
+    trilhasDeste.forEach(t=>{selHtml+=`<option value="${t.nome}" ${t.nome===trilhaAtivaNome?'selected':''}>${t.nome}</option>`;});
+    selHtml+=`</select>`;
+
+    cont.innerHTML=`<div class="trilhas-left"><span class="concurso-badge" style="color:${objConc.cor};">${concNome}</span>${selHtml}</div><div class="trilhas-center"><div class="dash-prazo-bar"><strong>Início:</strong> ${dataInicioFormatada} &nbsp;|&nbsp; <strong>Previsto:</strong> ${datePrevistaFormatada} &nbsp;|&nbsp;<strong>${numDisc} Disciplina(s) | ${numAtiv} Atividade(s)</strong> &nbsp;|&nbsp;<span style="color:${colorPrazo}; font-weight:bold;">${msgPrazo}</span></div></div><div class="trilhas-right"><button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button><button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Tarefa</button></div>`;
+    renderizarDashboardTrilha();
+    renderizarListaTarefas();
+}
+
 function mudarTrilhaAtiva(nome){trilhaAtivaNome=nome;renderizarCabecalhoTrilhas();}
-function renderizarDashboardTrilha(){const box=document.getElementById('dash-trilha-box');let conc=getConcursoAtivoNome();if(!conc||!trilhaAtivaNome){box.style.display='none';return;}let tObj=db.trilhas.find(t=>t.nome===trilhaAtivaNome&&t.concurso===conc);if(!tObj){box.style.display='none';return;}box.style.display='flex';let histTrilha=db.historico.filter(h=>h.trilha===trilhaAtivaNome&&h.concurso===conc);let totalSegs=0,qTot=0,acTot=0,diasUnicos=new Set();histTrilha.forEach(h=>{totalSegs+=(h.duracaoRegistrada||0);qTot+=(h.questoes||0);acTot+=(h.acertos||0);diasUnicos.add(h.data.split(' ')[0]);});let desempenho=qTot>0?((acTot/qTot)*100).toFixed(1)+"%":"--%";let hFormat=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m";let mediaFormat="--h --m";if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaFormat=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}let todasTar=db.tarefas.filter(t=>t.trilha===trilhaAtivaNome&&t.concurso===conc&&!t.isExtra);let concTar=todasTar.filter(t=>t.concluida);let pctProgresso=todasTar.length>0?Math.round((concTar.length/todasTar.length)*100):0;let strProgresso=`${concTar.length}/${todasTar.length} (${pctProgresso}%)`;box.innerHTML=`<div class="dash-box"><div class="dash-box-title">Progresso</div><div class="dash-box-val">${strProgresso}</div></div><div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho} <span style="font-size:12px; font-weight:normal; opacity:0.8;">(${acTot}/${qTot})</span></div></div><div class="dash-box"><div class="dash-box-title">Horas Estudadas</div><div class="dash-box-val">${hFormat}</div></div><div class="dash-box"><div class="dash-box-title">Média Diária</div><div class="dash-box-val">${mediaFormat}</div></div>`;}
+
+// MODIFICADO: CENTRALIZAÇÃO E DESTAQUE NO PROGRESSO DA DASH
+function renderizarDashboardTrilha(){
+    const box=document.getElementById('dash-trilha-box');let conc=getConcursoAtivoNome();
+    if(!conc||!trilhaAtivaNome){box.style.display='none';return;}
+    let tObj=db.trilhas.find(t=>t.nome===trilhaAtivaNome&&t.concurso===conc);
+    if(!tObj){box.style.display='none';return;}
+    box.style.display='flex';
+    let histTrilha=db.historico.filter(h=>h.trilha===trilhaAtivaNome&&h.concurso===conc);
+    let totalSegs=0,qTot=0,acTot=0,diasUnicos=new Set();
+    histTrilha.forEach(h=>{totalSegs+=(h.duracaoRegistrada||0);qTot+=(h.questoes||0);acTot+=(h.acertos||0);diasUnicos.add(h.data.split(' ')[0]);});
+    let desempenho=qTot>0?((acTot/qTot)*100).toFixed(1)+"%":"--%";
+    let hFormat=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m";
+    let mediaFormat="--h --m";
+    if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaFormat=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}
+    let todasTar=db.tarefas.filter(t=>t.trilha===trilhaAtivaNome&&t.concurso===conc&&!t.isExtra);
+    let concTar=todasTar.filter(t=>t.concluida);
+    let pctProgresso=todasTar.length>0?Math.round((concTar.length/todasTar.length)*100):0;
+    let strProgresso=`${concTar.length}/${todasTar.length} (${pctProgresso}%)`;
+    
+    // Caixa de progresso foi destacada no flex ratio, borda reforçada e leve background para centralizar a atenção
+    box.innerHTML=`<div class="dash-box" style="flex: 1.2; border: 2px solid var(--primaria); background: rgba(0,0,0,0.02);"><div class="dash-box-title">Progresso</div><div class="dash-box-val">${strProgresso}</div></div><div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho} <span style="font-size:12px; font-weight:normal; opacity:0.8;">(${acTot}/${qTot})</span></div></div><div class="dash-box"><div class="dash-box-title">Horas Estudadas</div><div class="dash-box-val">${hFormat}</div></div><div class="dash-box"><div class="dash-box-title">Média Diária</div><div class="dash-box-val">${mediaFormat}</div></div>`;
+}
+
 function criarTrilhaAutoModal(){let conc=getConcursoAtivoNome();if(!conc)return alert("Sem concurso ativo!");document.getElementById('edtTrilhaId').value='';document.getElementById('edtTrilhaConcurso').value=conc;let trilhasConc=db.trilhas.filter(tr=>tr.concurso===conc);let nums=trilhasConc.map(tr=>{let m=tr.nome.match(/\d+/);return m?parseInt(m[0]):0;});let nextNum=1;while(nums.includes(nextNum))nextNum++;document.getElementById('edtTrilhaNome').value="Trilha "+String(nextNum).padStart(2,'0');document.getElementById('edtTrilhaDataInicio').value="";document.getElementById('edtTrilhaDias').value=7;abrirModal('modalFormTrilha');}
-function renderizarListaTarefas(){const l=document.getElementById('listaTarefas');l.innerHTML='';let conc=getConcursoAtivoNome();if(!conc)return;let filtradas=db.tarefas.filter(t=>t.concurso===conc&&t.trilha===trilhaAtivaNome);if(filtradas.length===0){l.innerHTML=`<div style="text-align:center; padding: 20px; color: var(--text-color);">Nenhuma tarefa cadastrada.</div>`;return;}filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra) return 1; if(!a.isExtra&&b.isExtra) return -1; return numA-numB;});let html=`<div class="table-wrapper"><div class="table-scroll-container"><div class="tarefas-grid"><div class="tarefa-row tarefa-header"><div class="tarefa-col"></div><div class="tarefa-col">#</div><div class="tarefa-col">Disciplina</div><div class="tarefa-col">Atividade</div><div class="tarefa-col">Aula</div><div class="tarefa-col">Título da Tarefa</div><div class="tarefa-col center">Tempo</div><div class="tarefa-col">Desempenho</div></div>`;filtradas.forEach(t=>{const isConcluida=t.concluida===true,isPulada=t.pulada===true;let dotClass=isPulada?"dot-pulada":(isConcluida?"dot-concluida":""),rowClass=isPulada?"row-pulada":(isConcluida?"row-concluida":"");let splitTit=t.titulo.split(' - '),numeroStr=t.isExtra?'<span style="color:#f57f17; font-size:16px;">⭐</span>':(splitTit[0].replace(/\D/g,'')||'-'),tituloCustom=splitTit.length>1?splitTit.slice(1).join(' - '):t.titulo;if(t.isExtra)tituloCustom=t.titulo;let aulaApresentacao=t.aulas?t.aulas:"-",dispNome=t.disciplina?t.disciplina:"Extra";let tempoStr=(isConcluida&&!isPulada&&t.tempoRegistrado>0)?formatarHorasMinutos(t.tempoRegistrado):"-";let despStr="-";let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);if(configTipo&&configTipo.comDesempenho&&isConcluida&&!isPulada){let pct=t.questoes>0?Math.round((t.acertos/t.questoes)*100):0;despStr=`<span style="font-size: 12px; font-weight: bold;">${pct}%<br><span style="font-size:10px; opacity:0.8;">(${t.acertos}/${t.questoes})</span></span>`;}html+=`<div class="tarefa-row ${rowClass}" onclick="abrirFormTarefa(${t.id})"><div class="tarefa-col" style="display:flex;"><div class="dot-status ${dotClass}"></div></div><div class="tarefa-col bold">${numeroStr}</div><div class="tarefa-col bold" style="color:var(--primaria)">${dispNome}</div><div class="tarefa-col">${t.tipoAtividade}</div><div class="tarefa-col">${aulaApresentacao}</div><div class="tarefa-col" title="${tituloCustom}">${tituloCustom}</div><div class="tarefa-col center">${tempoStr}</div><div class="tarefa-col">${despStr}</div></div>`;});html+=`</div></div></div>`;l.innerHTML=html;}
+
+// MODIFICADO: INTEGRAÇÃO DA PORCENTAGEM COM QUESTÕES NA MESMA LINHA DA LISTAGEM
+function renderizarListaTarefas(){
+    const l=document.getElementById('listaTarefas');l.innerHTML='';let conc=getConcursoAtivoNome();if(!conc)return;
+    let filtradas=db.tarefas.filter(t=>t.concurso===conc&&t.trilha===trilhaAtivaNome);
+    if(filtradas.length===0){l.innerHTML=`<div style="text-align:center; padding: 20px; color: var(--text-color);">Nenhuma tarefa cadastrada.</div>`;return;}
+    filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra) return 1; if(!a.isExtra&&b.isExtra) return -1; return numA-numB;});
+    let html=`<div class="table-wrapper"><div class="table-scroll-container"><div class="tarefas-grid"><div class="tarefa-row tarefa-header"><div class="tarefa-col"></div><div class="tarefa-col">#</div><div class="tarefa-col">Disciplina</div><div class="tarefa-col">Atividade</div><div class="tarefa-col">Aula</div><div class="tarefa-col">Título da Tarefa</div><div class="tarefa-col center">Tempo</div><div class="tarefa-col">Desempenho</div></div>`;
+    filtradas.forEach(t=>{
+        const isConcluida=t.concluida===true,isPulada=t.pulada===true;
+        let dotClass=isPulada?"dot-pulada":(isConcluida?"dot-concluida":""),rowClass=isPulada?"row-pulada":(isConcluida?"row-concluida":"");
+        let splitTit=t.titulo.split(' - '),numeroStr=t.isExtra?'<span style="color:#f57f17; font-size:16px;">⭐</span>':(splitTit[0].replace(/\D/g,'')||'-'),tituloCustom=splitTit.length>1?splitTit.slice(1).join(' - '):t.titulo;
+        if(t.isExtra)tituloCustom=t.titulo;
+        let aulaApresentacao=t.aulas?t.aulas:"-",dispNome=t.disciplina?t.disciplina:"Extra";
+        let tempoStr=(isConcluida&&!isPulada&&t.tempoRegistrado>0)?formatarHorasMinutos(t.tempoRegistrado):"-";
+        let despStr="-";
+        let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);
+        if(configTipo&&configTipo.comDesempenho&&isConcluida&&!isPulada){
+            let pct=t.questoes>0?Math.round((t.acertos/t.questoes)*100):0;
+            // Modificado: Remoção da quebra de linha <br>
+            despStr=`<span style="font-size: 13px; font-weight: bold;">${pct}% <span style="font-size:11px; opacity:0.8; font-weight:normal;">(${t.acertos}/${t.questoes})</span></span>`;
+        }
+        html+=`<div class="tarefa-row ${rowClass}" onclick="abrirFormTarefa(${t.id})"><div class="tarefa-col" style="display:flex;"><div class="dot-status ${dotClass}"></div></div><div class="tarefa-col bold">${numeroStr}</div><div class="tarefa-col bold" style="color:var(--primaria)">${dispNome}</div><div class="tarefa-col">${t.tipoAtividade}</div><div class="tarefa-col">${aulaApresentacao}</div><div class="tarefa-col" title="${tituloCustom}">${tituloCustom}</div><div class="tarefa-col center">${tempoStr}</div><div class="tarefa-col">${despStr}</div></div>`;
+    });
+    html+=`</div></div></div>`;l.innerHTML=html;
+}
+
 function iniciar(){try{aplicarTemaCores();renderizarOperadores();prepararTelaLogin();let opAtual=localStorage.getItem('estudos_operadorAtual');const l=document.getElementById('login-screen');if(opAtual&&db.operadores.find(o=>o.nome===opAtual)){l.style.display='none';document.getElementById('seletorOperador').value=opAtual;operadorAnteriorSelect=opAtual;}setTimeout(()=>{const s=document.getElementById('splash-screen');if(s){s.classList.add('hidden');setTimeout(()=>s.style.display='none',500);}},1500);if(db.configs.estadoTimer&&db.configs.estadoTimer.tempo>0){tempoTimer=db.configs.estadoTimer.tempo;targetTimer=db.configs.estadoTimer.target;modoTimer=db.configs.estadoTimer.modo;pomoFase=db.configs.estadoTimer.fase;pomoCicloAtual=db.configs.estadoTimer.ciclo;document.getElementById('btn-prog').classList.remove('active');document.getElementById('btn-reg').classList.remove('active');document.getElementById('btn-pomo').classList.remove('active');document.getElementById(modoTimer==='progressive'?'btn-prog':modoTimer==='regressive'?'btn-reg':'btn-pomo').classList.add('active');atualizarStatusModo();}renderizarCabecalhoTrilhas();setInterval(sincronizarComNuvemSilencioso,20000);sincronizarComNuvemSilencioso();atualizarDisplayTimer();}catch(erro){alert("Falha: \n"+erro.message);}}
 function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}function fecharModal(id){document.getElementById(id).style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(m=>m.style.display==='flex'))document.body.classList.remove('modal-open')}
 document.getElementById('tarConcluida').addEventListener('change',function(e){if(!this.checked){this.checked=true;abrirModal('modalConfirmarDesmarcar');}});
@@ -494,13 +599,11 @@ function abrirZonaRisco(){fecharModal('modalPainelUnificado');document.getElemen
 async function salvarUrlESincronizar(e){const u=document.getElementById('configUrlAppScript').value.trim();db.configs.urlAppScript=u;salvarBancoLocal();if(!u)return alert("URL vazia!");const b=e.target;let t=b.innerText;b.innerText="Salvando...";b.disabled=true;await sincronizarComNuvemSilencioso();b.innerText=t;b.disabled=false;mostrarToast("URL Salva!");}
 async function sincronizarComNuvemSilencioso(){const i=document.getElementById('indicadorConexao');if(!navigator.onLine){i.innerText='🔴';return;}if(!db.configs.urlAppScript){i.style.display='none';return;}if(isSyncing)return;i.style.display='flex';isSyncing=true;i.innerText='🔄';try{let r=await fetch(db.configs.urlAppScript+'?t='+Date.now()),d=await r.json();if(d&&d.configs&&d.configs.ultimaModificacaoLocal>db.configs.ultimaModificacaoLocal){let urlSalva=db.configs.urlAppScript;db=d;db.configs.urlAppScript=urlSalva;salvarBancoLocal();aplicarTemaCores();renderizarCabecalhoTrilhas();}i.innerText='🟢';}catch(e){i.innerText='🔴';}isSyncing=false;}
 
-// --- NOVA FUNÇÃO DE RECARREGAMENTO FORÇADO ---
 function hardReloadApp() {
     if (!confirm("Deseja forçar a atualização do aplicativo? Isso limpará o cache de versão para buscar atualizações, mas seus dados e histórico estão a salvo.")) return;
     
     let promises = [];
 
-    // 1. Limpar Service Workers
     if ('serviceWorker' in navigator) {
         promises.push(
             navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -511,7 +614,6 @@ function hardReloadApp() {
         );
     }
 
-    // 2. Limpar Caches (Cache API - imagens, js, css da versão antiga)
     if ('caches' in window) {
         promises.push(
             caches.keys().then(function(names) {
@@ -522,7 +624,6 @@ function hardReloadApp() {
         );
     }
 
-    // Executa e força o reload ignorando o cache do navegador
     Promise.all(promises).then(() => {
         mostrarToast("Baixando atualização...");
         setTimeout(() => {
@@ -534,7 +635,6 @@ function hardReloadApp() {
     });
 }
 
-// Substituindo a antiga função atualizarApp (se ela for chamada pela Zona de Risco também)
 function atualizarApp(e) {
     hardReloadApp();
 }
