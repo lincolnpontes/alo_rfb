@@ -58,6 +58,11 @@
         #splash-screen.hidden{opacity:0;pointer-events:none}
         .splash-title{font-size:26px;font-weight:900;margin-bottom:5px;letter-spacing:1px}
         .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px; color: var(--primaria);}
+        
+        /* Botão Discreto de Limpeza (Splash e Login) */
+        .btn-limpar-cache-app { position: absolute; bottom: 20px; right: 20px; font-size: 13px; font-weight: bold; color: #555; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; z-index: 999999; backdrop-filter: blur(5px);}
+        .btn-limpar-cache-app:hover { background: rgba(0,0,0,0.1); }
+        
         #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--primaria);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:5vh;color:#fff;transition:opacity .5s ease}
         .header{background:var(--primaria);color:#fff;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
         .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:14px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
@@ -228,7 +233,15 @@
 <body>
 <div id="toast">Aviso!</div>
 <div id="global-tooltip"></div>
-<div id="splash-screen"><img src="rfb.png" alt="Logo" style="width: 140px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));"><div class="splash-title">Alô RFB</div><div class="splash-version">v1.0.12</div></div>
+
+<!-- Tela Inicial com botão de Forçar Atualização -->
+<div id="splash-screen">
+    <img src="rfb.png" alt="Logo" style="width: 140px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
+    <div class="splash-title">Alô RFB</div>
+    <div class="splash-version">v1.0.12</div>
+    <div class="btn-limpar-cache-app" onclick="if(confirm('Limpar cache e destravar o app?')){if('caches' in window)caches.keys().then(k=>k.forEach(c=>caches.delete(c)));setTimeout(()=>location.reload(true),300)}">🔄 Forçar Atualização</div>
+</div>
+
 <div id="login-screen">
     <div style="font-size: 70px; margin-bottom: 10px;">👤</div><h2 style="margin-top: 0; margin-bottom: 20px; font-size: 24px;">Identificação</h2>
     <select id="loginOperador" style="padding: 15px; font-size: 18px; width: 85%; max-width: 350px; border-radius: 8px; margin-bottom: 15px; border: none; outline: none; font-weight: bold; color: #333;" onchange="checarSenhaLoginInicial()"></select>
@@ -236,7 +249,9 @@
         <input type="password" id="loginSenha" inputmode="numeric" placeholder="Senha Numérica" style="padding: 15px; font-size: 20px; width: 85%; max-width: 350px; margin-bottom: 25px; border-radius: 8px; border: none; text-align: center; outline: none; font-weight: bold; color: #333;" onkeypress="if(event.key === 'Enter') fazerLoginInicial()">
     </div>
     <button id="btn-login-entrar" onclick="fazerLoginInicial()" style="padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; border: none; background: #4CAF50; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">ENTRAR</button>
+    <div class="btn-limpar-cache-app" style="color: #fff; border-color: rgba(255,255,255,0.3); background: rgba(0,0,0,0.2);" onclick="if(confirm('Limpar cache e destravar o app?')){if('caches' in window)caches.keys().then(k=>k.forEach(c=>caches.delete(c)));setTimeout(()=>location.reload(true),300)}">🔄 Forçar Atualização</div>
 </div>
+
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
