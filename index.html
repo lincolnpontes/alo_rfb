@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.13</title>
+    <title>Alô RFB v1.0.14</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -204,11 +204,6 @@
         .ritmo-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 15px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; min-height: 200px; align-content: flex-start;}
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        .ritmo-square[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 14px; white-space: nowrap; z-index: 9999; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: none; }
-        
-        /* Ajuste do Tooltip do Ritmo de Estudo nas bordas - Ajustado com important e zerando margins e transforms para garantir alinhamento lateral */
-        .ritmo-square.tt-left[data-tooltip]:hover::after { left: 0 !important; transform: none !important; margin-left: 0 !important; }
-        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto !important; right: 0 !important; transform: none !important; margin-right: 0 !important; }
         
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -219,7 +214,7 @@
 <div id="splash-screen">
     <img src="rfb.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.13</div>
+    <div class="splash-version">v1.0.14</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -286,7 +281,7 @@
 <!-- Painel Unificado -->
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.13</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.14</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -371,7 +366,7 @@
 <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px; flex-wrap: wrap;">
     <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button>
     <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button>
-    <button id="btnTreeDesempTrilha" class="btn-tree" onclick="setTreeMode('desemp_trilha')">Desempenho por trilha</button>
+    <button id="btnTreeDesempTrilha" class="btn-tree" onclick="setTreeMode('desemp_trilha')">Desempenho médio por trilha</button>
     <button id="btnTreeHorasTrilha" class="btn-tree" onclick="setTreeMode('horas_trilha')">Média de horas de estudo</button>
 </div>
 <div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;"><canvas id="chartTreemap"></canvas></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar Painel</button></div></div></div>
@@ -379,7 +374,7 @@
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
-    <script>
+<script>
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
@@ -540,7 +535,6 @@ function confirmarDesmarcar(){
         let id=parseInt(idStr);
         let t=db.tarefas.find(x=>x.id===id);
         if(t){
-            // Item 9 - Excluindo histórico correlato
             db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
             t.concluida=false;
             t.pulada=false;
@@ -742,7 +736,7 @@ function renderizarConteudoProdutividade(){
     
     prodEstatisticasCache=estatisticas;
     prodEstatisticasTrilhaCache=estatisticasTrilha;
-    setTreeMode('tempo');
+    setTreeMode(currentTreeMode || 'tempo'); // Keep current tab if re-rendered
 }
 
 function setTreeMode(mode){
@@ -788,7 +782,7 @@ function renderProdChart(){
                     plugins:{
                         legend:{display:false},
                         tooltip:{
-                            backgroundColor:'#111',
+                            backgroundColor:'rgba(17,17,17,0.95)',
                             titleColor:'#fff',
                             bodyColor:'#fff',
                             titleFont:{size:14,weight:'bold'},
@@ -813,9 +807,18 @@ function renderProdChart(){
         let dataVals = [];
         let tooltipsInfo = [];
         
-        for (let tr in prodEstatisticasTrilhaCache) {
+        // Sort trilhas by name/number
+        let sortedTrilhas = Object.keys(prodEstatisticasTrilhaCache).sort((a,b)=>{
+            let numA = parseInt(a.match(/\d+/)?.[0] || 0);
+            let numB = parseInt(b.match(/\d+/)?.[0] || 0);
+            return numA - numB;
+        });
+
+        for (let tr of sortedTrilhas) {
             let orig = prodEstatisticasTrilhaCache[tr];
-            labels.push(tr);
+            let nomeCurto = tr.replace('Trilha', 'M').trim(); // "Trilha 01" -> "M 01"
+            labels.push(nomeCurto);
+            
             if (currentTreeMode === 'desemp_trilha') {
                 let pct = orig.questoes > 0 ? ((orig.acertos / orig.questoes) * 100) : 0;
                 dataVals.push(pct.toFixed(1));
@@ -831,6 +834,9 @@ function renderProdChart(){
         if(labels.length === 0){ document.getElementById('chartTreemap').style.display='none'; return; }
         document.getElementById('chartTreemap').style.display='block';
         
+        let linhaCor = currentTreeMode === 'desemp_trilha' ? '#29b6f6' : '#fbc02d'; // Azul ou Amarelo das fotos
+        let fundoCor = currentTreeMode === 'desemp_trilha' ? 'rgba(41, 182, 246, 0.2)' : 'rgba(251, 192, 45, 0.2)';
+        
         treemapChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -838,12 +844,12 @@ function renderProdChart(){
                 datasets: [{
                     label: currentTreeMode === 'desemp_trilha' ? 'Desempenho' : 'Horas',
                     data: dataVals,
-                    borderColor: corTema,
-                    backgroundColor: corTema.replace(')', ', 0.3)').replace('rgb', 'rgba'),
+                    borderColor: linhaCor,
+                    backgroundColor: fundoCor,
                     fill: true,
                     tension: 0.4,
                     pointRadius: 4,
-                    pointBackgroundColor: corTema
+                    pointBackgroundColor: linhaCor
                 }]
             },
             options: {
@@ -851,7 +857,7 @@ function renderProdChart(){
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#111',
+                        backgroundColor: 'rgba(17,17,17,0.95)',
                         titleColor: '#fff',
                         bodyColor: '#fff',
                         titleFont: {size: 14, weight: 'bold'},
@@ -860,7 +866,7 @@ function renderProdChart(){
                         cornerRadius: 6,
                         displayColors: false,
                         callbacks: {
-                            title: (items) => items[0].label,
+                            title: (items) => sortedTrilhas[items[0].dataIndex], // Show full Trilha name on hover
                             label: (item) => {
                                 let val = parseFloat(item.raw);
                                 let info = tooltipsInfo[item.dataIndex];
@@ -874,7 +880,7 @@ function renderProdChart(){
                 },
                 scales: {
                     y: { 
-                        beginAtZero: true, 
+                        beginAtZero: true,
                         ticks: { 
                             color: Chart.defaults.color,
                             callback: function(value) {
@@ -919,7 +925,7 @@ function toggleDetailsRow(idClean,discNome){
                         plugins:{
                             legend:{display:false},
                             tooltip: {
-                                backgroundColor: '#111',
+                                backgroundColor: 'rgba(17,17,17,0.95)',
                                 titleColor: '#fff',
                                 bodyColor: '#fff',
                                 titleFont: {size: 14, weight: 'bold'},
@@ -928,7 +934,7 @@ function toggleDetailsRow(idClean,discNome){
                                 cornerRadius: 6,
                                 displayColors: false,
                                 callbacks: {
-                                    label: function(ctx) { return 'Desempenho: ' + ctx.raw + '%'; }
+                                    label: function(ctx) { return '📈 Desempenho: ' + ctx.raw + '%'; }
                                 }
                             }
                         },
