@@ -154,12 +154,16 @@
         .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: -5px; }
         .crono-mute { color: var(--text-color); font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
+        
+        /* Barra de Meta e Ícones (ITEM 11) */
         .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
         .meta-text { font-size: 14px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
         .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
         body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
-        .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; }
-        .meta-runner { position: absolute; right: -12px; top: -14px; font-size: 26px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; z-index: 1;}
+        .meta-runner { position: absolute; right: -18px; top: -20px; font-size: 34px; transform: scaleX(-1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2); z-index: 2;}
+        .meta-flag { position: absolute; right: -5px; top: -14px; font-size: 26px; z-index: 0; }
+        
         .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
@@ -208,20 +212,25 @@
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
         
-        /* ITEM 8 - Dashboard Resumo Tempo no Ritmo com COR ÚNICA */
+        /* Dashboard Resumo Tempo no Ritmo com COR ÚNICA e FONTE BOLD */
         .ritmo-summary-box { flex: 1; min-width: 100px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .ritmo-summary-title { font-size: 12px; font-weight: bold; color: var(--text-modal); margin-bottom: 5px; opacity: 0.8; }
         .ritmo-summary-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
 
-        /* ITEM 2 - O TOOLTIP GLOBAL DEVE SOBREPOR TUDO, SEM TRANSIÇÃO PARA NÃO PISCAR */
+        /* O TOOLTIP GLOBAL DEVE SOBREPOR TUDO, SEM TRANSIÇÃO PARA NÃO PISCAR */
         #globalTooltip {
             pointer-events: none !important;
             display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
-        /* ITEM 10 - Frase Motivacional Container */
+        /* ITEM 10 - Frase Motivacional (Ajustada para 60% do tamanho visual e fonte 900) */
         #frase-motivacional-container {
-            text-align: center; padding: 15px; font-style: italic; color: var(--text-modal); opacity: 0.8; font-weight: bold; background: var(--bg-item); border-top: 1px solid var(--glass-border); min-height: 50px; display: flex; align-items: center; justify-content: center;
+            text-align: center; font-style: italic; color: var(--text-color); opacity: 0.8; background: var(--bg-item); 
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; /* Sempre em negrito */
+            padding: 9px 15px; /* Reduzido de 15px para 9px (60%) */
+            min-height: 30px; /* Reduzido de 50px para 30px (60%) */
+            font-size: 14px; /* Mantida a fonte */
         }
 
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
@@ -278,7 +287,21 @@
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
                     <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
-                    <div class="meta-container" id="meta-container" style="display: none;"><div class="meta-text"><span id="meta-label">Meta: 0%</span><span id="meta-valores">0h00m / 4h</span></div><div class="meta-bar"><div class="meta-fill" id="meta-fill"><div class="meta-runner" id="meta-runner">🏃🏻</div></div></div></div>
+                    
+                    <!-- ITEM 11 - Barra da Meta com 🏎️ virado para a direita e 🏁 -->
+                    <div class="meta-container" id="meta-container" style="display: none;">
+                        <div class="meta-text">
+                            <span id="meta-label">Meta: 0%</span>
+                            <span id="meta-valores" style="margin-right: 25px;">0h00m / 4h</span>
+                        </div>
+                        <div class="meta-bar">
+                            <div class="meta-fill" id="meta-fill">
+                                <div class="meta-runner" id="meta-runner">🏎️</div>
+                            </div>
+                            <div class="meta-flag">🏁</div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="vol-vert-container">
                     <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
@@ -293,7 +316,7 @@
     </div>
     
     <div id="listaTarefas"></div>
-    <div id="frase-motivacional-container"></div>
+    <div id="frase-motivacional-container" style="display:none;"></div>
 
 </div>
 
@@ -309,7 +332,6 @@
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
-        <!-- Zerando os contextos de navegação ao abrir os menus base -->
         <button class="btn-outline" onclick="contextoRetornoListagem=null; contextoRetornoTipos=null; abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
         
         <div id="painelSecreto" style="display:none;">
@@ -327,7 +349,6 @@
     <div class="modal">
         <div class="modal-title">📱 Configurações do App</div>
         <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
-        <!-- ITEM 10: Adicionado Botão para Frases Motivacionais -->
         <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigFrases()"><span class="emoji-icon">💬</span> <span class="texto-btn">Frases Motivacionais</span></button>
         
         <div class="form-group" style="margin-top:15px;"><label>Tema de Cores:</label><select id="cfgTema"><option value="azul">🔵 Azul</option><option value="verde">🟢 Verde</option><option value="vermelho">🔴 Vermelho</option><option value="rosa">🌸 Rosa</option><option value="roxo">💜 Roxo</option><option value="escuro">⚫ Escuro</option><option value="transparente">🧊 Transparente (Glass)</option><option value="medieval">⚔️ Medieval (Pergaminho)</option></select></div><div class="form-group"><label>Senha Painel (Admin):</label><input type="password" id="cfgSenhaAdmin" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Deixe em branco p/ remover"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button><button class="btn-action" onclick="salvarConfigGerais()">💾 Salvar</button></div>
@@ -337,7 +358,6 @@
 <div class="modal-overlay" id="modalConfigCronometro"><div class="modal"><div class="modal-title">⏱️ Configurações</div><fieldset class="fieldset-config"><legend>Meta Diária</legend><div style="display:flex; gap:10px; align-items:stretch; margin-bottom: 10px;"><div class="switch-container" style="margin:0; padding:5px 10px; flex:1;"><span style="font-weight:bold;font-size:12px;">Exibir Meta</span><label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label></div><div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;"><label style="font-size:12px; margin:0; flex:1;">Meta (h):</label><input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;"></div></div><div style="display:flex; gap:10px; align-items:center;"><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span><label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label></div><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar %</span><label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label></div></div></fieldset><fieldset class="fieldset-config"><legend>Áudio e Geral</legend><div class="switch-container" style="padding:5px;"><span style="font-weight:bold;font-size:13px;">Tocar alarme ao Pausar</span><label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Link do Áudio MP3 (Alarme Restart):</label><input type="text" id="cfgAudioLink" placeholder="Deixe como está ou cole outro link"></div></fieldset><fieldset class="fieldset-config"><legend>Regressivo & Pomodoro</legend><div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Regressivo (min):</label><input type="number" id="cfgRegEstudo" value="60" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pomo Estudo (min):</label><input type="number" id="cfgPomoEstudo" value="25" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Curta (min):</label><input type="number" id="cfgPomoCurta" value="5" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Longa (min):</label><input type="number" id="cfgPomoLonga" value="15" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0; grid-column: span 2;"><label style="font-size:11px;">Ciclos p/ Longa:</label><input type="number" id="cfgPomoCiclos" value="4" style="padding: 6px;"></div></div></fieldset><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button><button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalAtalhos"><div class="modal"><div class="modal-title">⌨️ Teclas de Atalho</div><p style="font-size: 12px; margin-top:-10px;">Clique no campo e pressione a tecla. Pressione o botão vermelho para limpar.</p><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Play / Pause:</label><input type="text" id="keyPlay" readonly onkeydown="capturarAtalho(event, 'play')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('play')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Zerar / Parar:</label><input type="text" id="keyReset" readonly onkeydown="capturarAtalho(event, 'reset')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('reset')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Mudo:</label><input type="text" id="keyMute" readonly onkeydown="capturarAtalho(event, 'mute')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('mute')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume +:</label><input type="text" id="keyVolUp" readonly onkeydown="capturarAtalho(event, 'volUp')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volUp')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button><button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button></div></div></div>
 
-<!-- ITEM 10: Modal de Frases Motivacionais -->
 <div class="modal-overlay" id="modalFrases">
     <div class="modal" style="max-height: 90vh; display: flex; flex-direction: column;">
         <div class="modal-title">💬 Frases Motivacionais</div>
@@ -445,14 +465,24 @@
     <div style="display: flex; gap:10px; flex:1; justify-content:flex-end; align-items:stretch;">
         <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="margin:0; flex:1; font-size:14px; padding:0; border-radius:8px;">Cancelar</button>
         <button class="btn-importar" id="btnImportarEmTarefa" style="margin:0; flex:1; display:none; font-size:14px; border-radius:8px;" onclick="irParaImportacaoDaTarefa()">Importar</button>
-        <!-- ITEM 4: Vincular com fonte normal e borda estilo Cancelar. Pular mais escuro. -->
-        <button class="btn-importar" id="btnVincularTempoTarefa" style="margin:0; flex:1; display:none; font-size:14px; padding:0; border-radius:8px; background:var(--secundaria); border:1px solid var(--border-input); color:var(--primaria); font-weight:bold;" onclick="vincularTempoTarefaAtual()"><span style="font-size:22px; margin-right:4px;">⏱️</span> Vincular</button>
-        <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:1px solid var(--primaria); background:var(--primaria); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;"><span style="font-size:22px; margin-right:4px;">⏭️</span> Pular</button>
+        
+        <!-- Botão Vincular: Claro / Tom sobre tom -->
+        <button class="btn-importar" id="btnVincularTempoTarefa" style="margin:0; flex:1; display:none; font-size:14px; padding:0; border-radius:8px; background:var(--secundaria); border:1px solid var(--border-input); color:var(--primaria); font-weight:bold;" onclick="vincularTempoTarefaAtual()">
+            <span style="font-size:20px; margin-right:4px;">⏱️</span> Vincular
+        </button>
+        
+        <!-- Botão Pular: Escuro / Cor Primária -->
+        <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:1px solid var(--primaria); background:var(--primaria); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;">
+            <span style="font-size:20px; margin-right:4px;">⏭️</span> Pular
+        </button>
+        
         <button class="btn-action" onclick="salvarTarefa()" style="margin:0; flex:1.5; font-size:16px; padding:0; border-radius:8px;">Salvar</button>
     </div>
 </div></div></div>
 <div class="modal-overlay" id="modalFormOperador"><div class="modal"><div class="modal-title">Usuário</div><input type="hidden" id="opNomeOriginal"><div class="form-group"><label>Nome:</label><input type="text" id="opNome"></div><div class="form-group"><label>Senha (Vazio = sem senha):</label><input type="password" id="opSenha" inputmode="numeric"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormOperador');abrirGerenciar('estudantes')">Cancelar</button><button class="btn-action" onclick="salvarEstudante()">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalRegistrarEstudo"><div class="modal"><div class="modal-title" id="regNomeTarefa" style="font-size:18px; color:var(--primaria);">Tarefa</div><input type="hidden" id="regIdTarefa"><div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div><div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado:</label><div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div><input type="hidden" id="regDuracaoTimer" value="0"></div><div class="form-group"><label>Tipo Final de Atividade:</label><select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select></div><div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);"><div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label><input type="number" id="qtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label><input type="number" id="qtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div></div><div class="form-group"><label>Observação Extra:</label><input type="text" id="regObs" placeholder=""></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button><button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button></div></div></div>
+
+<!-- Modal Historico Expandido (ITEM 9) -->
 <div class="modal-overlay" id="modalHistorico"><div class="modal" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;"><div class="modal-title"><div>📅 Diário de Estudos</div><button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button></div><div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
 
 <div class="modal-overlay" id="modalRitmo"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title">⌛ Ritmo de Estudo</div>
@@ -501,6 +531,7 @@ document.addEventListener('mousemove', function(e) {
         tooltip.style.top = topPos + 'px';
         tooltip.style.left = leftPos + 'px';
     } else if(tooltip && !e.target.closest('canvas')) {
+        // Se não estiver em cima de um gráfico do ChartJS, esconde o balão global
         tooltip.style.display = 'none';
     }
 }, true);
@@ -547,7 +578,6 @@ function shiftDateByDays(dateStringYMD,daysToShift){if(!dateStringYMD)return get
 const paletasDeCores={azul:{primaria:'#1565C0',secundaria:'#E3F2FD',fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},verde:{primaria:'#2e7d32',secundaria:'#e8f5e9',fundo:'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},vermelho:{primaria:'#c62828',secundaria:'#ffebee',fundo:'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},rosa:{primaria:'#d81b60',secundaria:'#fce4ec',fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},roxo:{primaria:'#673ab7',secundaria:'#ede7f6',fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},escuro:{primaria:'#e0e0e0',secundaria:'#333333',fundo:'linear-gradient(135deg, #212121 0%, #000000 100%)',bgApp:'rgba(30,30,30,0.8)',bgItem:'rgba(40,40,40,0.9)',bgHeader:'rgba(20,20,20,0.95)'},transparente:{primaria:'#4fc3f7',secundaria:'rgba(255,255,255,0.1)',fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',bgApp:'rgba(255,255,255,0.05)',bgItem:'rgba(255,255,255,0.1)',bgHeader:'rgba(20, 35, 45, 0.98)'},medieval:{primaria:'#8b4513',secundaria:'#e6d2b5',fundo:'radial-gradient(circle at center, #5c4033 0%, #27140c 100%)',bgApp:'rgba(244, 233, 216, 0.95)',bgItem:'rgba(250, 240, 230, 0.95)',bgHeader:'rgba(210, 180, 140, 0.98)'}};
 function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
 function getHojeYMD(){const hj=new Date();return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`;}
-function formatarTempoTimer(segs){let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60),s=Math.floor(segs%60);return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}
 function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
 
 function carregarBanco(){
@@ -888,8 +918,10 @@ function abrirHistorico(){
     }else{
         [...db.historico].reverse().forEach(h=>{
             let tempoBadge=h.duracaoRegistrada?`<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>`:'';
+            
+            // ITEM 9 - Obs esquerda e Dados Direita (Flexbox)
             let obsHtml = h.observacao ? `<span style="font-style:italic; opacity:0.8; word-break: break-word; flex:1; text-align:left;">Obs: ${h.observacao}</span>` : `<span style="flex:1;"></span>`;
-            let detHtml = `<span style="opacity:0.6; font-size:11px; white-space:nowrap; text-align:right;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'} | ${h.data.split(' ')[0]}</span>`;
+            let detHtml = `<span style="opacity:0.6; font-size:11px; white-space:nowrap; text-align:right; padding-left: 10px;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'} | ${h.data.split(' ')[0]}</span>`;
             
             l.innerHTML+=`<div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -897,7 +929,7 @@ function abrirHistorico(){
                     <button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button>
                 </div>
                 <div style="font-size:14px; margin-bottom: 2px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>
-                <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:13px; gap: 15px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-top:4px;">
                     ${obsHtml}
                     ${detHtml}
                 </div>
@@ -916,7 +948,7 @@ function abrirRitmoEstudo(){
     let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc),trilhasDoConcurso=db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.id-b.id);
     let htmlGridDesemp='',htmlGridTempo='',hoje=new Date();hoje.setHours(0,0,0,0);
     
-    // DASHBOARD RESUMO TEMPO COM COR ÚNICA
+    // DASHBOARD RESUMO TEMPO COM COR ÚNICA (ITEM 8)
     let diaSemana=hoje.getDay();let inicioSemana=new Date(hoje);inicioSemana.setDate(hoje.getDate()-diaSemana);
     let inicioMes=new Date(hoje.getFullYear(),hoje.getMonth(),1);
     let inicioAno=new Date(hoje.getFullYear(),0,1);
@@ -932,7 +964,7 @@ function abrirRitmoEstudo(){
         if(dHist>=inicioAno) tAno+=dur;
         if(dHist>=trintaDiasAtras) t30Dias+=dur;
     });
-    document.getElementById('ritmoTempoSummary').innerHTML=`<div class="ritmo-summary-box"><div class="ritmo-summary-title">Hoje</div><div class="ritmo-summary-val">${formatarHorasMinutos(tHoje)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Esta Semana</div><div class="ritmo-summary-val">${formatarHorasMinutos(tSemana)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Últimos 30 Dias</div><div class="ritmo-summary-val">${formatarHorasMinutos(t30Dias)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Mês</div><div class="ritmo-summary-val">${formatarHorasMinutos(tMes)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Ano</div><div class="ritmo-summary-val">${formatarHorasMinutos(tAno)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Total Geral</div><div class="ritmo-summary-val">${formatarHorasMinutos(tTotal)}</div></div>`;
+    document.getElementById('ritmoTempoSummary').innerHTML=`<div class="ritmo-summary-box"><div class="ritmo-summary-title">Hoje</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tHoje)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Esta Semana</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tSemana)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Últimos 30 Dias</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(t30Dias)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Mês</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tMes)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Ano</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tAno)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Total Geral</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tTotal)}</div></div>`;
 
     trilhasDoConcurso.forEach((tr,index)=>{
         let tNome=tr.nome,matchNum=tNome.match(/\d+/),numVisual=matchNum?matchNum[0]:(index+1);
@@ -1016,7 +1048,7 @@ function renderizarConteudoProdutividade(){
     let despGeral=totalQuest>0?((totalAcertos/totalQuest)*100).toFixed(1)+"%":"0%",hFormGeral=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m",mediaGeral="0h 00m";
     if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaGeral=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}
     
-    // REORDENADO: Desempenho, Questões, Horas, Média Diária
+    // ITEM 7 - Ordem Invertida (Desempenho -> Questões -> Horas -> Média)
     document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
     
     let tbody=document.getElementById('prodTableBody');tbody.innerHTML='';
