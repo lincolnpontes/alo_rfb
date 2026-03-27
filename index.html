@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.0</title>
+    <title>Alô RFB v1</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -205,7 +205,9 @@
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
         
-        /* Tooltip original removido em favor do flutuante no JS */
+        /* Ajuste do Tooltip do Ritmo de Estudo nas bordas - Ajustado com important e zerando margins e transforms para garantir alinhamento lateral */
+        .ritmo-square.tt-left[data-tooltip]:hover::after { left: 0 !important; transform: none !important; margin-left: 0 !important; }
+        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto !important; right: 0 !important; transform: none !important; margin-right: 0 !important; }
         
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -218,9 +220,9 @@
 
 <div id="toast">Aviso!</div>
 <div id="splash-screen">
-    <img src="rfb.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
+    <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.0</div>
+    <div class="splash-version">v1</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -236,10 +238,9 @@
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
-            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO (MARGENS NEGATIVAS MAIORES) -->
             <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
-                    <img src="rfb.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
+                    <img src="icon.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
                 </div>
                 <div style="position: relative; width: 100%; max-width: 180px;"><span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; z-index: 1;">👤</span><select id="seletorOperador" class="modern-select" style="padding-left: 28px !important; width: 100%;" onchange="verificarTrocaOperador(this)"></select></div>
             </div>
@@ -287,7 +288,7 @@
 <!-- Painel Unificado -->
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.0</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -367,7 +368,6 @@
 
 <div class="form-group"><label>Título da Tarefa:</label><textarea id="tarTituloPersonalizado" rows="2" style="resize:vertical;" placeholder="Ex: Direitos Políticos e Partidos..."></textarea></div>
 
-<!-- TAREFA EXTRA INCORPORADA AQUI -->
 <div style="display:flex; gap:10px; margin-bottom: 15px;">
     <div class="form-group" style="flex:1; margin-bottom:0;">
         <label>Atividade (Tipo):</label>
@@ -382,7 +382,16 @@
     </div>
 </div>
 
-<div id="divEdicaoConcluida" style="display:none; background:var(--bg-input); border:1px solid #1E90FF; padding:10px; border-radius:8px; margin-bottom:15px;"><h4 style="margin:0 0 10px 0; font-size:13px; color:#1E90FF;">Dados do Registro</h4><div style="display:flex; gap:10px; flex-wrap: wrap;"><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Qtd. Questões</label><input type="number" id="tarQtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertos()"></div><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Acertos</label><input type="number" id="tarQtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertos()"></div><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Tempo (min)</label><input type="number" id="tarTempoMinutos" value="0" min="0" onfocus="this.select()"></div></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs" placeholder=""></div></div><div style="display:flex; justify-content:space-between; margin-top:20px; align-items:stretch; gap:10px; height: 45px;"><button class="btn-danger" id="btnExcluirTarefa" onclick="abrirModal('modalConfirmarExcluirTarefa')" style="margin:0; width:45px; flex:none; padding:0; font-size: 20px; border-radius:8px;" title="Excluir Tarefa">🗑️</button><div style="display: flex; gap:10px; flex:1; justify-content:flex-end; align-items:stretch;"><button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="margin:0; flex:1; font-size:14px; padding:0; border-radius:8px;">Cancelar</button><button class="btn-importar" id="btnImportarEmTarefa" style="margin:0; flex:1; display:none; font-size:14px; border-radius:8px;" onclick="irParaImportacaoDaTarefa()">Importar</button><button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:2px solid var(--primaria); background:transparent; justify-content:center; border-radius:8px;">⏭️ Pular</button><button class="btn-action" onclick="salvarTarefa()" style="margin:0; flex:1.5; font-size:16px; padding:0; border-radius:8px;">Salvar</button></div></div></div></div>
+<div id="divEdicaoConcluida" style="display:none; background:var(--bg-input); border:1px solid #1E90FF; padding:10px; border-radius:8px; margin-bottom:15px;"><h4 style="margin:0 0 10px 0; font-size:13px; color:#1E90FF;">Dados do Registro</h4><div style="display:flex; gap:10px; flex-wrap: wrap;"><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Qtd. Questões</label><input type="number" id="tarQtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertos()"></div><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Acertos</label><input type="number" id="tarQtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertos()"></div><div class="form-group" style="flex:1; margin-bottom:5px;"><label style="font-size:12px;">Tempo (min)</label><input type="number" id="tarTempoMinutos" value="0" min="0" onfocus="this.select()"></div></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Observação</label><input type="text" id="tarObs" placeholder=""></div></div><div style="display:flex; justify-content:space-between; margin-top:20px; align-items:stretch; gap:10px; height: 45px;">
+    <button class="btn-danger" id="btnExcluirTarefa" onclick="abrirModal('modalConfirmarExcluirTarefa')" style="margin:0; width:45px; flex:none; padding:0; font-size: 20px; border-radius:8px;" title="Excluir Tarefa">🗑️</button>
+    <div style="display: flex; gap:10px; flex:1; justify-content:flex-end; align-items:stretch;">
+        <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="margin:0; flex:1; font-size:14px; padding:0; border-radius:8px;">Cancelar</button>
+        <button class="btn-importar" id="btnImportarEmTarefa" style="margin:0; flex:1; display:none; font-size:14px; border-radius:8px;" onclick="irParaImportacaoDaTarefa()">Importar</button>
+        <button class="btn-importar" id="btnVincularTempoTarefa" style="margin:0; flex:1; display:none; font-size:14px; border-radius:8px; background:#4CAF50; border-color:#388E3C; color:white;" onclick="vincularTempoTarefaAtual()">⏱️ Vincular</button>
+        <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:2px solid var(--primaria); background:transparent; justify-content:center; border-radius:8px;">⏭️ Pular</button>
+        <button class="btn-action" onclick="salvarTarefa()" style="margin:0; flex:1.5; font-size:16px; padding:0; border-radius:8px;">Salvar</button>
+    </div>
+</div></div></div>
 <div class="modal-overlay" id="modalFormOperador"><div class="modal"><div class="modal-title">Usuário</div><input type="hidden" id="opNomeOriginal"><div class="form-group"><label>Nome:</label><input type="text" id="opNome"></div><div class="form-group"><label>Senha (Vazio = sem senha):</label><input type="password" id="opSenha" inputmode="numeric"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormOperador');abrirGerenciar('estudantes')">Cancelar</button><button class="btn-action" onclick="salvarEstudante()">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalRegistrarEstudo"><div class="modal"><div class="modal-title" id="regNomeTarefa" style="font-size:18px; color:var(--primaria);">Tarefa</div><input type="hidden" id="regIdTarefa"><div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div><div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado:</label><div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div><input type="hidden" id="regDuracaoTimer" value="0"></div><div class="form-group"><label>Tipo Final de Atividade:</label><select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select></div><div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);"><div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label><input type="number" id="qtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label><input type="number" id="qtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div></div><div class="form-group"><label>Observação Extra:</label><input type="text" id="regObs" placeholder=""></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button><button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button></div></div></div>
 <div class="modal-overlay" id="modalHistorico"><div class="modal" style="max-height: 90vh; overflow-y: auto;"><div class="modal-title"><div>📅 Diário de Estudos</div><button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button></div><div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
@@ -409,9 +418,9 @@
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
 
-// ================= TOOLTIP GLOBAL INTELIGENTE (Ritmo de Estudo) =================
+// ================= TOOLTIP GLOBAL INTELIGENTE =================
 document.addEventListener('mousemove', function(e) {
-    let el = e.target.closest('[data-tooltip]');
+    let el = e.target.closest('.ritmo-square[data-tooltip]');
     let tooltip = document.getElementById('globalTooltip');
     if(el && tooltip){
         tooltip.innerHTML = el.getAttribute('data-tooltip').replace(/\n/g, '<br>');
@@ -420,7 +429,6 @@ document.addEventListener('mousemove', function(e) {
         let topPos = e.clientY + 15;
         let leftPos = e.clientX + 15;
         
-        // Proteção contra a borda direita e inferior
         if(leftPos + tooltipRect.width > window.innerWidth - 10) {
             leftPos = e.clientX - tooltipRect.width - 15;
         }
@@ -434,7 +442,38 @@ document.addEventListener('mousemove', function(e) {
         tooltip.style.display = 'none';
     }
 }, true);
-// =========================================================================
+
+// FUNÇÃO PARA SUBSTITUIR OS TOOLTIPS DO CHART.JS PARA FICAREM IGUAIS AO GLOBAL
+const externalChartTooltipHandler = function(context) {
+    let tooltipEl = document.getElementById('globalTooltip');
+    let tooltipModel = context.tooltip;
+    if (tooltipModel.opacity === 0) {
+        tooltipEl.style.display = 'none';
+        return;
+    }
+    if (tooltipModel.body) {
+        let titleLines = tooltipModel.title || [];
+        let bodyLines = tooltipModel.body.map(b => b.lines);
+        let html = '';
+        titleLines.forEach(t => html += '<div style="margin-bottom:6px; color: var(--secundaria); font-size: 15px;">' + t + '</div>');
+        bodyLines.forEach(b => {
+            b.forEach(line => html += '<div>' + line + '</div>');
+        });
+        tooltipEl.innerHTML = html;
+    }
+    let position = context.chart.canvas.getBoundingClientRect();
+    tooltipEl.style.display = 'block';
+    let tooltipRect = tooltipEl.getBoundingClientRect();
+    let leftPos = position.left + window.scrollX + tooltipModel.caretX + 15;
+    let topPos = position.top + window.scrollY + tooltipModel.caretY + 15;
+    
+    if(leftPos + tooltipRect.width > window.innerWidth - 10) leftPos = position.left + window.scrollX + tooltipModel.caretX - tooltipRect.width - 15;
+    if(topPos + tooltipRect.height > window.innerHeight - 10) topPos = position.top + window.scrollY + tooltipModel.caretY - tooltipRect.height - 15;
+    
+    tooltipEl.style.left = leftPos + 'px';
+    tooltipEl.style.top = topPos + 'px';
+};
+// ==============================================================
 
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
 let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
@@ -594,7 +633,7 @@ function confirmarDesmarcar(){
         let id=parseInt(idStr);
         let t=db.tarefas.find(x=>x.id===id);
         if(t){
-            // Item 9: Exclui registros relacionados na tabela historico
+            // Item 9 - Excluindo histórico correlato
             db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
             t.concluida=false;
             t.pulada=false;
@@ -656,7 +695,16 @@ function excluirConcursoConfirm(){let conc=document.getElementById('concNomeOrig
 function abrirFormOperador(i){fecharModal('modalListagem');if(i>=0){const o=db.operadores[i];document.getElementById('opNomeOriginal').value=o.nome;document.getElementById('opNome').value=o.nome;document.getElementById('opSenha').value=o.senha;}else{document.getElementById('opNomeOriginal').value='';document.getElementById('opNome').value='';document.getElementById('opSenha').value='';}abrirModal('modalFormOperador');}
 function salvarEstudante(){const oOrig=document.getElementById('opNomeOriginal').value,n=document.getElementById('opNome').value.trim();if(!n)return alert("Preencha o nome!");let novo={nome:n,senha:document.getElementById('opSenha').value};if(oOrig!==""){if(oOrig!==n){db.historico.forEach(h=>{if(h.operador===oOrig)h.operador=n;});if(localStorage.getItem('estudos_operadorAtual')===oOrig)localStorage.setItem('estudos_operadorAtual',n);}db.operadores[db.operadores.findIndex(x=>x.nome===oOrig)]=novo;}else db.operadores.push(novo);salvarModificacaoBasica();fecharModal('modalFormOperador');abrirGerenciar('estudantes');renderizarOperadores();renderizarCabecalhoTrilhas();}
 function criarTarefaAutoModal(){let conc=getConcursoAtivoNome();if(!conc)return alert("Sem concurso ativo!");if(!trilhaAtivaNome)return alert("Crie ou selecione uma Trilha primeiro!");let maxN=0;db.tarefas.filter(t=>t.concurso===conc&&!t.isExtra).forEach(t=>{let match=t.titulo.match(/\d+/);if(match){let n=parseInt(match[0]);if(n>maxN)maxN=n;}});abrirFormTarefa(-1,maxN+1);}
-function abrirFormTarefa(id,numSugerido=1){if(document.getElementById('modalListagem').style.display==='flex')fecharModal('modalListagem');const conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo!");document.getElementById('tarHeaderConcurso').innerText=conc;const selD=document.getElementById('tarDisciplina');selD.innerHTML='<option value="">-- Nenhuma / Extra --</option>';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selD.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);const selTr=document.getElementById('tarTrilhaSelect');selTr.innerHTML='';db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selTr.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);selTr.value=trilhaAtivaNome;const selT=document.getElementById('tarTipo');selT.innerHTML='';db.configs.tiposAtividade.forEach(x=>selT.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);let contStatus=document.getElementById('containerStatusConcluida'),divEdicao=document.getElementById('divEdicaoConcluida');document.getElementById('tarAulasOptions').style.display='none';document.getElementById('btnExcluirTarefa').style.display=(id>=0)?'block':'none';document.getElementById('tarExtra').checked=false;document.getElementById('tarNumero').disabled=false;document.getElementById('tarTrilhaSelect').disabled=false;document.getElementById('tarDisciplina').disabled=false;document.getElementById('tarTipo').disabled=false;document.getElementById('tarTituloPersonalizado').disabled=false;document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';document.getElementById('tarAulasOptionsBox').style.opacity='1';if(id>=0){const t=db.tarefas.find(x=>x.id===id);document.getElementById('tarefaIdOriginal').value=t.id;let m=t.titulo.match(/\d+/);document.getElementById('tarNumero').value=m?parseInt(m[0]):1;if(t.isExtra){document.getElementById('tarExtra').checked=true;document.getElementById('tarNumero').disabled=true;document.getElementById('tarNumero').value='';document.getElementById('tarTituloPersonalizado').value=t.titulo;}else{let splitTit=t.titulo.split(' - ');document.getElementById('tarTituloPersonalizado').value=splitTit.length>1?splitTit.slice(1).join(' - '):"";}selTr.value=t.trilha;selD.value=t.disciplina||"";popularDropdownAulasCustom();let selectedAulas=t.aulas?t.aulas.split(', '):[];document.querySelectorAll('#tarAulasOptions input[type="checkbox"]').forEach(cb=>{if(selectedAulas.includes(cb.value))cb.checked=true;});atualizarDisplayAulas();if(!db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade))selT.innerHTML+=`<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;selT.value=t.tipoAtividade;let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnImportar.style.display='none';let isConc=t.concluida&&!t.pulada;if(isConc){document.getElementById('tarNumero').disabled=true;document.getElementById('tarTrilhaSelect').disabled=true;document.getElementById('tarDisciplina').disabled=true;document.getElementById('tarTipo').disabled=true;document.getElementById('tarTituloPersonalizado').disabled=true;document.getElementById('tarExtra').disabled=true;document.getElementById('tarAulasOptionsBox').style.pointerEvents='none';document.getElementById('tarAulasOptionsBox').style.opacity='0.6';}else{document.getElementById('tarExtra').disabled=false;}document.getElementById('tarTempoMinutos').value=isConc?Math.round((t.tempoRegistrado||0)/60):0;if(t.pulada){contStatus.style.display='none';document.getElementById('tarConcluida').checked=false;divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="↩️ Desfazer Pulo";btnPular.onclick=()=>abrirModal('modalConfirmarDesfazerPulo');}else if(t.concluida){contStatus.style.display='flex';document.getElementById('tarConcluida').checked=true;divEdicao.style.display='block';let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);if(configTipo&&configTipo.comDesempenho){document.getElementById('tarQtdQuestoes').parentElement.style.display='block';document.getElementById('tarQtdAcertos').parentElement.style.display='block';document.getElementById('tarQtdQuestoes').value=t.questoes||0;document.getElementById('tarQtdAcertos').value=t.acertos||0;}else{document.getElementById('tarQtdQuestoes').parentElement.style.display='none';document.getElementById('tarQtdAcertos').parentElement.style.display='none';}document.getElementById('tarObs').value=t.obs||"";btnPular.style.display='none';}else{contStatus.style.display='none';divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="⏭️ Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}else{document.getElementById('tarefaIdOriginal').value='';document.getElementById('tarNumero').value=numSugerido;document.getElementById('tarTituloPersonalizado').value='';document.getElementById('tarExtra').disabled=false;contStatus.style.display='none';divEdicao.style.display='none';let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnPular.style.display='none';btnImportar.style.display='flex';popularDropdownAulasCustom();}abrirModal('modalFormTarefa');}
+
+function vincularTempoTarefaAtual() {
+    let idO = document.getElementById('tarefaIdOriginal').value;
+    if(!idO) return alert("Salve a tarefa primeiro!");
+    if(isRunningTimer) startPauseTimer(); // Pausa o cronômetro
+    fecharModal('modalFormTarefa');
+    abrirRegistroEstudo(parseInt(idO));
+}
+
+function abrirFormTarefa(id,numSugerido=1){if(document.getElementById('modalListagem').style.display==='flex')fecharModal('modalListagem');const conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo!");document.getElementById('tarHeaderConcurso').innerText=conc;const selD=document.getElementById('tarDisciplina');selD.innerHTML='<option value="">-- Nenhuma / Extra --</option>';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selD.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);const selTr=document.getElementById('tarTrilhaSelect');selTr.innerHTML='';db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selTr.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);selTr.value=trilhaAtivaNome;const selT=document.getElementById('tarTipo');selT.innerHTML='';db.configs.tiposAtividade.forEach(x=>selT.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);let contStatus=document.getElementById('containerStatusConcluida'),divEdicao=document.getElementById('divEdicaoConcluida');document.getElementById('tarAulasOptions').style.display='none';document.getElementById('btnExcluirTarefa').style.display=(id>=0)?'block':'none';document.getElementById('tarExtra').checked=false;document.getElementById('tarNumero').disabled=false;document.getElementById('tarTrilhaSelect').disabled=false;document.getElementById('tarDisciplina').disabled=false;document.getElementById('tarTipo').disabled=false;document.getElementById('tarTituloPersonalizado').disabled=false;document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';document.getElementById('tarAulasOptionsBox').style.opacity='1';let btnVincular=document.getElementById('btnVincularTempoTarefa');if(id>=0){const t=db.tarefas.find(x=>x.id===id);document.getElementById('tarefaIdOriginal').value=t.id;let m=t.titulo.match(/\d+/);document.getElementById('tarNumero').value=m?parseInt(m[0]):1;if(t.isExtra){document.getElementById('tarExtra').checked=true;document.getElementById('tarNumero').disabled=true;document.getElementById('tarNumero').value='';document.getElementById('tarTituloPersonalizado').value=t.titulo;}else{let splitTit=t.titulo.split(' - ');document.getElementById('tarTituloPersonalizado').value=splitTit.length>1?splitTit.slice(1).join(' - '):"";}selTr.value=t.trilha;selD.value=t.disciplina||"";popularDropdownAulasCustom();let selectedAulas=t.aulas?t.aulas.split(', '):[];document.querySelectorAll('#tarAulasOptions input[type="checkbox"]').forEach(cb=>{if(selectedAulas.includes(cb.value))cb.checked=true;});atualizarDisplayAulas();if(!db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade))selT.innerHTML+=`<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;selT.value=t.tipoAtividade;let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnImportar.style.display='none';let isConc=t.concluida&&!t.pulada;if(isConc){document.getElementById('tarNumero').disabled=true;document.getElementById('tarTrilhaSelect').disabled=true;document.getElementById('tarDisciplina').disabled=true;document.getElementById('tarTipo').disabled=true;document.getElementById('tarTituloPersonalizado').disabled=true;document.getElementById('tarExtra').disabled=true;document.getElementById('tarAulasOptionsBox').style.pointerEvents='none';document.getElementById('tarAulasOptionsBox').style.opacity='0.6';}else{document.getElementById('tarExtra').disabled=false;}document.getElementById('tarTempoMinutos').value=isConc?Math.round((t.tempoRegistrado||0)/60):0;if(!isConc&&!t.pulada&&tempoTimer>0){btnVincular.style.display='flex';}else{btnVincular.style.display='none';}if(t.pulada){contStatus.style.display='none';document.getElementById('tarConcluida').checked=false;divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="↩️ Desfazer Pulo";btnPular.onclick=()=>abrirModal('modalConfirmarDesfazerPulo');}else if(t.concluida){contStatus.style.display='flex';document.getElementById('tarConcluida').checked=true;divEdicao.style.display='block';let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);if(configTipo&&configTipo.comDesempenho){document.getElementById('tarQtdQuestoes').parentElement.style.display='block';document.getElementById('tarQtdAcertos').parentElement.style.display='block';document.getElementById('tarQtdQuestoes').value=t.questoes||0;document.getElementById('tarQtdAcertos').value=t.acertos||0;}else{document.getElementById('tarQtdQuestoes').parentElement.style.display='none';document.getElementById('tarQtdAcertos').parentElement.style.display='none';}document.getElementById('tarObs').value=t.obs||"";btnPular.style.display='none';}else{contStatus.style.display='none';divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="⏭️ Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}else{document.getElementById('tarefaIdOriginal').value='';document.getElementById('tarNumero').value=numSugerido;document.getElementById('tarTituloPersonalizado').value='';document.getElementById('tarExtra').disabled=false;contStatus.style.display='none';divEdicao.style.display='none';let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnVincular.style.display='none';btnPular.style.display='none';btnImportar.style.display='flex';popularDropdownAulasCustom();}abrirModal('modalFormTarefa');}
 function irParaImportacaoDaTarefa(){fecharModal('modalFormTarefa');contextoRetornoImportacao = 'tarefa';abrirModalImportacao();}
 function ajustarTravaAcertos(){let q=parseInt(document.getElementById('tarQtdQuestoes').value)||0,a=parseInt(document.getElementById('tarQtdAcertos').value)||0;if(a>q)document.getElementById('tarQtdAcertos').value=q;}
 function ajustarTravaAcertosReg(){let q=parseInt(document.getElementById('qtdQuestoes').value)||0,a=parseInt(document.getElementById('qtdAcertos').value)||0;if(a>q)document.getElementById('qtdAcertos').value=q;}
@@ -671,10 +719,18 @@ function irParaGerenciarDeImportacao(tipo){fecharModal('modalImportacaoEmLote');
 function processarTextoImportacao(){let txt=document.getElementById('textoImportacao').value.trim();if(!txt)return alert("Cole o texto primeiro!");let linhas=txt.split('\n');let html='';let conc=getConcursoAtivoNome();let tarefasAtuais=db.tarefas.filter(t=>t.concurso===conc&&t.trilha===trilhaAtivaNome&&!t.isExtra);let numsExistentes=tarefasAtuais.map(t=>{let m=t.titulo.match(/\d+/);return m?parseInt(m[0],10):-1;});let numsPuxados=[];linhas.forEach((linha)=>{if(!linha.trim())return;let cols=linha.split(';');let num=cols[0]?cols[0].trim():"";let disc=cols[1]?cols[1].trim():"";let aula=cols[2]?cols[2].trim():"";let tit=cols[3]?cols[3].trim():"";let ativ=cols[4]?cols[4].trim():"";let classNum="",classDisc="",classAula="",classAtiv="";let nInt=num?parseInt(num.replace(/\D/g,''),10):NaN;if(isNaN(nInt)||numsExistentes.includes(nInt)||numsPuxados.includes(nInt)){classNum="error-import";}else{numsPuxados.push(nInt);}let objDisc=db.disciplinas.find(d=>d.concurso===conc&&d.nome.toLowerCase()===disc.toLowerCase());if(disc&&!objDisc)classDisc="error-import";if(ativ){let ativs=ativ.split(',').map(a=>a.trim());ativs.forEach(a=>{if(!db.configs.tiposAtividade.find(x=>x.nome.toLowerCase()===a.toLowerCase()))classAtiv="error-import";});}if(aula&&objDisc){let aInit=objDisc.aulaInicio!==undefined?objDisc.aulaInicio:1;let aMax=aInit+(objDisc.aulas||0)-1;let nums=aula.match(/\d+/g);if(nums){nums.forEach(n=>{let val=parseInt(n,10);if(val<aInit||val>aMax)classAula="error-import";});}else classAula="error-import";}else if(aula&&!objDisc){classAula="error-import";}html+=`<div class="import-row" style="display:grid; grid-template-columns: 60px 1.5fr 1fr 2fr 1.5fr; gap:5px; margin-bottom:5px; padding-bottom:5px; border-bottom:1px solid var(--border-input);"><input type="text" class="imp-num ${classNum}" value="${num}" placeholder="Nº" style="width:100%; padding:4px; font-size:12px; text-align:center;" oninput="this.classList.remove('error-import'); checarErrosImportacao();"><input type="text" class="imp-disc ${classDisc}" value="${disc}" placeholder="Disciplina" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();"><input type="text" class="imp-aula ${classAula}" value="${aula}" placeholder="Aula" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();"><input type="text" class="imp-tit" value="${tit}" placeholder="Título da Tarefa" style="width:100%; padding:4px; font-size:12px;"><input type="text" class="imp-ativ ${classAtiv}" value="${ativ}" placeholder="Atividade" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();"></div>`;});document.getElementById('tabelaPreviewImportacao').innerHTML=html;document.getElementById('previewImportacao').style.display='block';checarErrosImportacao();}
 function checarErrosImportacao(){let temErro=document.querySelectorAll('#tabelaPreviewImportacao .error-import').length>0;document.getElementById('btnSalvarImportacao').style.display=temErro?'none':'block';document.getElementById('msgErroImportacao').style.display=temErro?'block':'none';}
 function salvarTarefasImportadas(){let conc=getConcursoAtivoNome(),rows=document.querySelectorAll('.import-row');if(rows.length===0)return;let timestampBase=Date.now();rows.forEach((row,index)=>{let numStr=row.querySelector('.imp-num').value.trim();let disc=row.querySelector('.imp-disc').value.trim();let aula=row.querySelector('.imp-aula').value.trim();let titCustom=row.querySelector('.imp-tit').value.trim();let ativ=row.querySelector('.imp-ativ').value.trim();let numFormatado=numStr.replace(/\D/g,'');let numVisual=numFormatado?String(numFormatado).padStart(2,'0'):String(index+1).padStart(2,'0');let titFull="Tarefa "+numVisual;if(titCustom!=="")titFull+=" - "+titCustom;db.tarefas.push({id:timestampBase+index,titulo:titFull,concurso:conc,trilha:trilhaAtivaNome,disciplina:disc,aulas:aula,tipoAtividade:ativ,concluida:false,pulada:false,questoes:0,acertos:0,obs:"",isExtra:false});});salvarModificacaoBasica();fecharModal('modalImportacaoEmLote');renderizarListaTarefas();renderizarDashboardTrilha();mostrarToast("Tarefas importadas com sucesso!");}
-function abrirSelecionadorDeTarefaParaRegistro(){let l=document.getElementById('listaTarefasParaRegistro');l.innerHTML='';let btnZerar=`<button onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;let conc=getConcursoAtivoNome();let filtradas=db.tarefas.filter(t=>t.concurso===conc&&!t.concluida);filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra)return 1;if(!a.isExtra&&b.isExtra)return -1;return numA-numB;});filtradas.forEach(t=>{let discNome=t.disciplina||"Extra";let tIco=t.isExtra?"⭐":"📚";l.innerHTML+=`<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${tIco} ${t.titulo}</strong><br><small>${discNome} • ${t.trilha}</small></div>`;});if(filtradas.length===0)l.innerHTML=`<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;l.innerHTML+=btnZerar;abrirModal('modalSelecionarTarefaRegistro');}
+function abrirSelecionadorDeTarefaParaRegistro(){let l=document.getElementById('listaTarefasParaRegistro');l.innerHTML='';let btnZerar=`<button onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;let conc=getConcursoAtivoNome();let filtradas=db.tarefas.filter(t=>t.concurso===conc&&!t.concluida);filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra)return 1;if(!a.isExtra&&b.isExtra)return -1;return numA-numB;});filtradas.forEach(t=>{
+    let discNome=t.disciplina||"Extra";
+    let tIco=t.isExtra?"⭐":"📚";
+    let tipoBadge=t.tipoAtividade?` • ${t.tipoAtividade}`:'';
+    l.innerHTML+=`<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${tIco} ${t.titulo}</strong><br><small>${discNome}${tipoBadge} • ${t.trilha}</small></div>`;
+});if(filtradas.length===0)l.innerHTML=`<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;l.innerHTML+=btnZerar;abrirModal('modalSelecionarTarefaRegistro');}
 function abrirRegistroEstudo(id){const t=db.tarefas.find(x=>x.id===id);if(!t)return;document.getElementById('regNomeTarefa').innerText=t.titulo;let discNome=t.disciplina||"Extra";document.getElementById('regSubTituloTarefa').innerText=discNome+(t.aulas?" - "+t.aulas:"");document.getElementById('regIdTarefa').value=t.id;document.getElementById('regObs').value='';const sel=document.getElementById('regTipoAtividade');sel.innerHTML='';db.configs.tiposAtividade.forEach(x=>sel.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);sel.value=t.tipoAtividade;let segs=tempoTimer;if(segs>0){document.getElementById('containerTempoCapturado').style.display='block';document.getElementById('displayTempoCapturado').innerText=formatarTempoTimer(segs);document.getElementById('regDuracaoTimer').value=segs;}else{document.getElementById('containerTempoCapturado').style.display='none';document.getElementById('regDuracaoTimer').value=0;}checarTipoAtividade();abrirModal('modalRegistrarEstudo');}
 function checarTipoAtividade(){let nomeT=document.getElementById('regTipoAtividade').value,obj=db.configs.tiposAtividade.find(x=>x.nome===nomeT);document.getElementById('divQuestoes').style.display=(obj&&obj.comDesempenho)?'flex':'none';}
-function salvarRegistroEstudo(){const idTar=parseInt(document.getElementById('regIdTarefa').value),t=db.tarefas.find(x=>x.id===idTar),tipo=document.getElementById('regTipoAtividade').value,op=document.getElementById('seletorOperador').value;let obs=document.getElementById('regObs').value.trim();const duracaoCronometro=parseInt(document.getElementById('regDuracaoTimer').value)||0;let q=0,a=0;let objConfig=db.configs.tiposAtividade.find(x=>x.nome===tipo);if(objConfig&&objConfig.comDesempenho){q=parseInt(document.getElementById('qtdQuestoes').value)||0;a=parseInt(document.getElementById('qtdAcertos').value)||0;if(q>0){let pct=Math.round((a/q)*100);obs+=` [🎯 ${a}/${q} - ${pct}%]`;}}let baseHist={disciplina:(t.disciplina||"Extra"),tarefa:t.titulo,concurso:t.concurso,trilha:t.trilha,tipoAtividade:tipo,operador:op,questoes:q,acertos:a};let infoTempo=duracaoCronometro>0?` (⏱️ ${Math.round(duracaoCronometro/60)} min)`:"";let dataFim=new Date(),dataInicio=new Date(dataFim.getTime()-(duracaoCronometro*1000));if(duracaoCronometro>0&&dataInicio.getDate()!==dataFim.getDate()){let dataMeiaNoite=new Date(dataFim.getFullYear(),dataFim.getMonth(),dataFim.getDate(),0,0,0);let segsDia1=Math.floor((dataMeiaNoite.getTime()-dataInicio.getTime())/1000);let segsDia2=duracaoCronometro-segsDia1;let dForm1=`${String(dataInicio.getDate()).padStart(2,'0')}/${String(dataInicio.getMonth()+1).padStart(2,'0')}/${dataInicio.getFullYear()} 23:59`;db.historico.push({id:Date.now()-1,...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia1/60)}m - Ant)`,duracaoRegistrada:segsDia1,data:dForm1});db.historico.push({id:Date.now(),...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia2/60)}m - Hj)`,duracaoRegistrada:segsDia2,data:getDataHoraAtual()});}else db.historico.push({id:Date.now(),...baseHist,observacao:obs+infoTempo,duracaoRegistrada:duracaoCronometro,data:getDataHoraAtual()});t.concluida=true;t.pulada=false;t.tempoRegistrado=duracaoCronometro;t.questoes=q;t.acertos=a;t.obs=document.getElementById('regObs').value.trim();t.dataConclusao=getDataHoraAtual().split(' ')[0];mostrarToast("✅ Tarefa Concluída e Registrada!");if(duracaoCronometro>0){clearInterval(intervalTimer);isRunningTimer=false;tempoTimer=0;atualizarDisplayTimer();document.getElementById('btn-play-timer').innerHTML='<span style="font-size:50px;">▶️</span>';document.getElementById('btn-play-timer').classList.remove('is-paused');}document.getElementById('qtdQuestoes').value=0;document.getElementById('qtdAcertos').value=0;db.configs.estadoTimer=null;salvarModificacaoBasica();fecharModal('modalRegistrarEstudo');renderizarCabecalhoTrilhas();}
+function salvarRegistroEstudo(){const idTar=parseInt(document.getElementById('regIdTarefa').value),t=db.tarefas.find(x=>x.id===idTar),tipo=document.getElementById('regTipoAtividade').value,op=document.getElementById('seletorOperador').value;let obs=document.getElementById('regObs').value.trim();const duracaoCronometro=parseInt(document.getElementById('regDuracaoTimer').value)||0;let q=0,a=0;let objConfig=db.configs.tiposAtividade.find(x=>x.nome===tipo);if(objConfig&&objConfig.comDesempenho){q=parseInt(document.getElementById('qtdQuestoes').value)||0;a=parseInt(document.getElementById('qtdAcertos').value)||0;if(q>0){let pct=Math.round((a/q)*100);obs+=` [🎯 ${a}/${q} - ${pct}%]`;}}
+let baseHist={disciplina:(t.disciplina||"Extra"),tarefa:t.titulo,concurso:t.concurso,trilha:t.trilha,tipoAtividade:tipo,operador:op,questoes:q,acertos:a};
+db.historico = db.historico.filter(h => !(h.concurso===t.concurso && h.trilha===t.trilha && h.tarefa===t.titulo));
+let infoTempo=duracaoCronometro>0?` (⏱️ ${Math.round(duracaoCronometro/60)} min)`:"";let dataFim=new Date(),dataInicio=new Date(dataFim.getTime()-(duracaoCronometro*1000));if(duracaoCronometro>0&&dataInicio.getDate()!==dataFim.getDate()){let dataMeiaNoite=new Date(dataFim.getFullYear(),dataFim.getMonth(),dataFim.getDate(),0,0,0);let segsDia1=Math.floor((dataMeiaNoite.getTime()-dataInicio.getTime())/1000);let segsDia2=duracaoCronometro-segsDia1;let dForm1=`${String(dataInicio.getDate()).padStart(2,'0')}/${String(dataInicio.getMonth()+1).padStart(2,'0')}/${dataInicio.getFullYear()} 23:59`;db.historico.push({id:Date.now()-1,...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia1/60)}m - Ant)`,duracaoRegistrada:segsDia1,data:dForm1});db.historico.push({id:Date.now(),...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia2/60)}m - Hj)`,duracaoRegistrada:segsDia2,data:getDataHoraAtual()});}else db.historico.push({id:Date.now(),...baseHist,observacao:obs+infoTempo,duracaoRegistrada:duracaoCronometro,data:getDataHoraAtual()});t.concluida=true;t.pulada=false;t.tempoRegistrado=duracaoCronometro;t.questoes=q;t.acertos=a;t.obs=document.getElementById('regObs').value.trim();t.dataConclusao=getDataHoraAtual().split(' ')[0];mostrarToast("✅ Tarefa Concluída e Registrada!");if(duracaoCronometro>0){clearInterval(intervalTimer);isRunningTimer=false;tempoTimer=0;atualizarDisplayTimer();document.getElementById('btn-play-timer').innerHTML='<span style="font-size:50px;">▶️</span>';document.getElementById('btn-play-timer').classList.remove('is-paused');}document.getElementById('qtdQuestoes').value=0;document.getElementById('qtdAcertos').value=0;db.configs.estadoTimer=null;salvarModificacaoBasica();fecharModal('modalRegistrarEstudo');renderizarCabecalhoTrilhas();}
 function abrirHistorico(){const l=document.getElementById('listaHistorico');l.innerHTML='';if(db.historico.length===0){l.innerHTML='<div style="text-align:center; padding:20px; color:var(--text-modal);">Nenhum registro.</div>';}else{[...db.historico].reverse().forEach(h=>{let tempoBadge=h.duracaoRegistrada?`<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>`:'';l.innerHTML+=`<div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;"><div style="display:flex; justify-content:space-between; align-items:center;"><strong style="color:var(--primaria); font-size:16px;">${h.tarefa||h.disciplina} ${tempoBadge}</strong><button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button></div><div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>${h.observacao?`<div style="font-size:13px; opacity:0.8;"><em>Obs: ${h.observacao}</em></div>`:''}<div style="font-size:11px; opacity:0.6; margin-top:4px;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'}  | ${h.data.split(' ')[0]}</div></div>`;});}abrirModal('modalHistorico');}
 function excluirHistorico(id){let pwd=prompt("Digite a senha do painel para excluir este registro:");if(pwd===(db.configs.senhaAdmin||"1999")){let hInfo=db.historico.find(x=>x.id===id);db.historico=db.historico.filter(h=>h.id!==id);if(hInfo&&hInfo.tarefa){let taskObj=db.tarefas.find(t=>t.concurso===hInfo.concurso&&t.trilha===hInfo.trilha&&t.titulo===hInfo.tarefa);if(taskObj){let restam=db.historico.filter(x=>x.concurso===hInfo.concurso&&x.trilha===hInfo.trilha&&x.tarefa===hInfo.tarefa);if(restam.length===0){taskObj.concluida=false;taskObj.pulada=false;taskObj.tempoRegistrado=0;taskObj.questoes=0;taskObj.acertos=0;taskObj.obs="";delete taskObj.dataConclusao;}}}salvarModificacaoBasica();abrirHistorico();renderizarCabecalhoTrilhas();mostrarToast("Registro excluído.");}else alert("Senha incorreta!");}
 function switchRitmoTab(tab){document.getElementById('tabRitmoDesemp').classList.remove('active');document.getElementById('tabRitmoTempo').classList.remove('active');document.getElementById('ritmoDesempContent').style.display='none';document.getElementById('ritmoTempoContent').style.display='none';if(tab==='desemp'){document.getElementById('tabRitmoDesemp').classList.add('active');document.getElementById('ritmoDesempContent').style.display='block';}else{document.getElementById('tabRitmoTempo').classList.add('active');document.getElementById('ritmoTempoContent').style.display='block';}}
@@ -834,21 +890,17 @@ function renderProdChart(){
                     plugins:{
                         legend:{display:false},
                         tooltip:{
-                            backgroundColor:'rgba(17,17,17,0.95)',
-                            titleColor:'#fff',
-                            bodyColor:'#fff',
-                            titleFont:{size:14,weight:'bold'},
-                            bodyFont:{size:14},
-                            padding:12,
-                            cornerRadius:6,
-                            displayColors:false,
+                            enabled: false,
+                            external: externalChartTooltipHandler,
                             callbacks:{
                                 title:(items)=>{
                                     try { return items[0].raw._data.name; } catch(e) { return ''; }
                                 },
                                 label:(item)=>{
                                     try {
-                                        let orig=item.raw._data.orig;
+                                        let n = item.raw._data.name;
+                                        let orig = prodEstatisticasCache[n];
+                                        if(!orig) return [];
                                         return [`⏱️ Tempo: ${formatarHorasMinutos(orig.tempo)}`,`🎯 Questões: ${orig.questoes}`];
                                     } catch(e) { return ''; }
                                 }
@@ -913,14 +965,8 @@ function renderProdChart(){
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(17,17,17,0.95)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        titleFont: {size: 14, weight: 'bold'},
-                        bodyFont: {size: 14},
-                        padding: 12,
-                        cornerRadius: 6,
-                        displayColors: false,
+                        enabled: false,
+                        external: externalChartTooltipHandler,
                         callbacks: {
                             title: (items) => sortedTrilhas[items[0].dataIndex], 
                             label: (item) => {
@@ -981,14 +1027,8 @@ function toggleDetailsRow(idClean,discNome){
                         plugins:{
                             legend:{display:false},
                             tooltip: {
-                                backgroundColor: 'rgba(17,17,17,0.95)',
-                                titleColor: '#fff',
-                                bodyColor: '#fff',
-                                titleFont: {size: 14, weight: 'bold'},
-                                bodyFont: {size: 14},
-                                padding: 12,
-                                cornerRadius: 6,
-                                displayColors: false,
+                                enabled: false,
+                                external: externalChartTooltipHandler,
                                 callbacks: {
                                     label: function(ctx) { return '📈 Desempenho: ' + ctx.raw + '%'; }
                                 }
@@ -1065,4 +1105,4 @@ if ('serviceWorker' in navigator) {
 iniciar();
 </script>
 </body>
-</html> 
+</html>
