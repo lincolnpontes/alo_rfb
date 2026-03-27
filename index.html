@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.16</title>
+    <title>Alô RFB v1.0.0</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -205,6 +205,8 @@
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
         
+        /* Tooltip original removido em favor do flutuante no JS */
+        
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -218,7 +220,7 @@
 <div id="splash-screen">
     <img src="rfb.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.15</div>
+    <div class="splash-version">v1.0.0</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -234,7 +236,7 @@
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
-            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO -->
+            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO (MARGENS NEGATIVAS MAIORES) -->
             <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
                     <img src="rfb.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
@@ -285,7 +287,7 @@
 <!-- Painel Unificado -->
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.15</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.0</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -341,9 +343,11 @@
 <div class="modal-overlay" id="modalFormTrilha"><div class="modal"><div class="modal-title">Configurar Trilha</div><input type="hidden" id="edtTrilhaId"><input type="hidden" id="edtTrilhaConcurso"><div class="form-group"><label>Nome da Trilha:</label><input type="text" id="edtTrilhaNome"></div><div class="form-group"><label>Data de Início (Vazio = Não iniciada):</label><input type="date" id="edtTrilhaDataInicio"></div><div class="form-group"><label>Duração Prevista (em dias):</label><input type="number" id="edtTrilhaDias" min="1" placeholder="Ex: 7"></div><div class="modal-actions" style="flex-wrap: wrap; gap: 10px;"><button class="btn-cancel" onclick="fecharModal('modalFormTrilha'); if(document.getElementById('listagemContextoAtivo').value === 'trilhas') abrirGerenciar('trilhas', document.getElementById('edtTrilhaConcurso').value)">Cancelar</button><button class="btn-importar" onclick="salvarEdicaoTrilha(true)">Importar</button><button class="btn-action" onclick="salvarEdicaoTrilha(false)">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalFormDisciplina"><div class="modal"><div class="modal-title">Disciplina</div><input type="hidden" id="discIdOriginal"><input type="hidden" id="discConcursoPai"><div class="form-group"><label>Nome da Disciplina:</label><input type="text" id="discNome" placeholder="Ex: Direito Constitucional"></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Inicia na Aula:</label><input type="number" id="discAulaInicio" placeholder="Ex: 0" value="0"></div><div class="form-group" style="flex:1;"><label>Qtd Aulas:</label><input type="number" id="discAulas" placeholder="Ex: 15" min="0"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormDisciplina'); if(contextoRetornoListagem === 'importacao') abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value); else abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button><button class="btn-action" onclick="salvarDisciplina()">Salvar</button></div></div></div>
 
-<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal"><div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Tarefa Nº:</label><input type="number" id="tarNumero" placeholder="Ex: 1" min="1"></div><div class="form-group" style="flex:2;"><label>Trilha:</label><select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select></div></div>
+<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal"><div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;">
+    <div class="form-group" style="flex:1;"><label>Tarefa Nº:</label><input type="number" id="tarNumero" placeholder="Ex: 1" min="1" style="height:38px; padding:0 12px; box-sizing:border-box;"></div>
+    <div class="form-group" style="flex:2;"><label>Trilha:</label><select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select></div>
+</div>
 
-<!-- MODIFICADO: Ajuste no alinhamento visual de Disciplina/Aulas -->
 <div style="display:flex; gap:10px;">
     <div class="form-group" style="flex:1;">
         <label>Disciplina:</label>
@@ -363,7 +367,7 @@
 
 <div class="form-group"><label>Título da Tarefa:</label><textarea id="tarTituloPersonalizado" rows="2" style="resize:vertical;" placeholder="Ex: Direitos Políticos e Partidos..."></textarea></div>
 
-<!-- MODIFICADO: Ajuste na simetria de Tipo/Tarefa Extra -->
+<!-- TAREFA EXTRA INCORPORADA AQUI -->
 <div style="display:flex; gap:10px; margin-bottom: 15px;">
     <div class="form-group" style="flex:1; margin-bottom:0;">
         <label>Atividade (Tipo):</label>
@@ -401,13 +405,13 @@
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
-    <script>
+<script>
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
 
-// ================= TOOLTIP GLOBAL INTELIGENTE (ITEM 7) =================
+// ================= TOOLTIP GLOBAL INTELIGENTE (Ritmo de Estudo) =================
 document.addEventListener('mousemove', function(e) {
-    let el = e.target.closest('.ritmo-square[data-tooltip]');
+    let el = e.target.closest('[data-tooltip]');
     let tooltip = document.getElementById('globalTooltip');
     if(el && tooltip){
         tooltip.innerHTML = el.getAttribute('data-tooltip').replace(/\n/g, '<br>');
@@ -416,11 +420,10 @@ document.addEventListener('mousemove', function(e) {
         let topPos = e.clientY + 15;
         let leftPos = e.clientX + 15;
         
-        // Se bater na direita da tela, inverte pra esquerda
+        // Proteção contra a borda direita e inferior
         if(leftPos + tooltipRect.width > window.innerWidth - 10) {
             leftPos = e.clientX - tooltipRect.width - 15;
         }
-        // Se bater embaixo da tela, joga pra cima
         if(topPos + tooltipRect.height > window.innerHeight - 10) {
             topPos = e.clientY - tooltipRect.height - 15;
         }
@@ -591,6 +594,7 @@ function confirmarDesmarcar(){
         let id=parseInt(idStr);
         let t=db.tarefas.find(x=>x.id===id);
         if(t){
+            // Item 9: Exclui registros relacionados na tabela historico
             db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
             t.concluida=false;
             t.pulada=false;
@@ -1061,4 +1065,4 @@ if ('serviceWorker' in navigator) {
 iniciar();
 </script>
 </body>
-</html>
+</html> 
