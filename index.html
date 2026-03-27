@@ -175,7 +175,7 @@
         .prod-dash-title { font-size: 14px; font-weight: bold; z-index: 1; color: white !important;}
         .prod-dash-val { font-size: 32px; font-weight: 900; margin-top: 10px; z-index: 1; color: white !important;}
         
-        /* Modificado para manter as cores, mas inverteu as funções (questões em verde, horas em laranja) */
+        /* CORES DO ITEM 7: Azul(Desempenho), Verde(Questões), Laranja(Horas), Amarelo(Média) */
         .c-blue { background: linear-gradient(135deg, #29b6f6, #0288d1); } .c-blue::after { content: '⭐'; }
         .c-green { background: linear-gradient(135deg, #66bb6a, #388e3c); } .c-green::after { content: '🎯'; }
         .c-orange { background: linear-gradient(135deg, #ffa726, #f57c00); } .c-orange::after { content: '⏱️'; }
@@ -208,17 +208,22 @@
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
         
-        /* Dashboard Resumo Tempo no Ritmo */
+        /* ITEM 8 - Dashboard Resumo Tempo no Ritmo com COR ÚNICA */
         .ritmo-summary-box { flex: 1; min-width: 100px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .ritmo-summary-title { font-size: 12px; font-weight: bold; color: var(--text-modal); margin-bottom: 5px; opacity: 0.8; }
         .ritmo-summary-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
 
-        /* O TOOLTIP GLOBAL DEVE SOBREPOR TUDO, SEM TRANSIÇÃO PARA NÃO PISCAR */
+        /* ITEM 2 - O TOOLTIP GLOBAL DEVE SOBREPOR TUDO, SEM TRANSIÇÃO PARA NÃO PISCAR */
         #globalTooltip {
             pointer-events: none !important;
             display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
+        /* ITEM 10 - Frase Motivacional Container */
+        #frase-motivacional-container {
+            text-align: center; padding: 15px; font-style: italic; color: var(--text-modal); opacity: 0.8; font-weight: bold; background: var(--bg-item); border-top: 1px solid var(--glass-border); min-height: 50px; display: flex; align-items: center; justify-content: center;
+        }
+
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -286,7 +291,10 @@
         <div class="trilhas-top-bar" id="trilhas-bar-container"></div>
         <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
     </div>
+    
     <div id="listaTarefas"></div>
+    <div id="frase-motivacional-container"></div>
+
 </div>
 
 <div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 40px; margin-bottom: 10px;">⚠️</div><h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3><p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado e o registro no Diário de Estudos será <b>EXCLUÍDO</b>.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button><button class="btn-danger" onclick="confirmarDesmarcar()" style="margin:0; width:auto; padding: 10px 20px;">Sim, desmarcar</button></div></div></div>
@@ -314,9 +322,50 @@
 </div>
 
 <div class="modal-overlay" id="modalZonaRisco"><div class="modal"><div class="modal-title" style="color:#d32f2f;">Zona de Risco</div><div class="form-group"><label>URL Apps Script:</label><input type="text" id="configUrlAppScript"><button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button></div><hr style="border: 0; border-top: 1px solid var(--border-input); margin: 15px 0;"><div style="display: flex; gap: 10px; flex-direction: column;"><button class="btn-action" style="margin:0; width:100%; background:#4CAF50; padding:15px;" onclick="exportarBackup()">💾 Exportar Backup (TXT)</button><button class="btn-action" style="margin:0; width:100%; background:#1976D2; padding:15px;" onclick="document.getElementById('importBackupFile').click()">📂 Importar Backup (TXT)</button><input type="file" id="importBackupFile" accept=".txt" style="display:none;" onchange="importarBackup(event)"><button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px; margin-top:10px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button><button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (Local ➡️ Nuvem)</button><button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ Local)</button></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalZonaRisco'); abrirPainelUnificadoComNivel(true);">Voltar</button></div></div></div>
-<div class="modal-overlay" id="modalConfigGerais"><div class="modal"><div class="modal-title">📱 Configurações do App</div><button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button><div class="form-group" style="margin-top:15px;"><label>Tema de Cores:</label><select id="cfgTema"><option value="azul">🔵 Azul</option><option value="verde">🟢 Verde</option><option value="vermelho">🔴 Vermelho</option><option value="rosa">🌸 Rosa</option><option value="roxo">💜 Roxo</option><option value="escuro">⚫ Escuro</option><option value="transparente">🧊 Transparente (Glass)</option><option value="medieval">⚔️ Medieval (Pergaminho)</option></select></div><div class="form-group"><label>Senha Painel (Admin):</label><input type="password" id="cfgSenhaAdmin" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Deixe em branco p/ remover"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button><button class="btn-action" onclick="salvarConfigGerais()">💾 Salvar</button></div></div></div>
+
+<div class="modal-overlay" id="modalConfigGerais">
+    <div class="modal">
+        <div class="modal-title">📱 Configurações do App</div>
+        <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
+        <!-- ITEM 10: Adicionado Botão para Frases Motivacionais -->
+        <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigFrases()"><span class="emoji-icon">💬</span> <span class="texto-btn">Frases Motivacionais</span></button>
+        
+        <div class="form-group" style="margin-top:15px;"><label>Tema de Cores:</label><select id="cfgTema"><option value="azul">🔵 Azul</option><option value="verde">🟢 Verde</option><option value="vermelho">🔴 Vermelho</option><option value="rosa">🌸 Rosa</option><option value="roxo">💜 Roxo</option><option value="escuro">⚫ Escuro</option><option value="transparente">🧊 Transparente (Glass)</option><option value="medieval">⚔️ Medieval (Pergaminho)</option></select></div><div class="form-group"><label>Senha Painel (Admin):</label><input type="password" id="cfgSenhaAdmin" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Deixe em branco p/ remover"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button><button class="btn-action" onclick="salvarConfigGerais()">💾 Salvar</button></div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalConfigCronometro"><div class="modal"><div class="modal-title">⏱️ Configurações</div><fieldset class="fieldset-config"><legend>Meta Diária</legend><div style="display:flex; gap:10px; align-items:stretch; margin-bottom: 10px;"><div class="switch-container" style="margin:0; padding:5px 10px; flex:1;"><span style="font-weight:bold;font-size:12px;">Exibir Meta</span><label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label></div><div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;"><label style="font-size:12px; margin:0; flex:1;">Meta (h):</label><input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;"></div></div><div style="display:flex; gap:10px; align-items:center;"><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span><label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label></div><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar %</span><label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label></div></div></fieldset><fieldset class="fieldset-config"><legend>Áudio e Geral</legend><div class="switch-container" style="padding:5px;"><span style="font-weight:bold;font-size:13px;">Tocar alarme ao Pausar</span><label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Link do Áudio MP3 (Alarme Restart):</label><input type="text" id="cfgAudioLink" placeholder="Deixe como está ou cole outro link"></div></fieldset><fieldset class="fieldset-config"><legend>Regressivo & Pomodoro</legend><div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Regressivo (min):</label><input type="number" id="cfgRegEstudo" value="60" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pomo Estudo (min):</label><input type="number" id="cfgPomoEstudo" value="25" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Curta (min):</label><input type="number" id="cfgPomoCurta" value="5" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Longa (min):</label><input type="number" id="cfgPomoLonga" value="15" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0; grid-column: span 2;"><label style="font-size:11px;">Ciclos p/ Longa:</label><input type="number" id="cfgPomoCiclos" value="4" style="padding: 6px;"></div></div></fieldset><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button><button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalAtalhos"><div class="modal"><div class="modal-title">⌨️ Teclas de Atalho</div><p style="font-size: 12px; margin-top:-10px;">Clique no campo e pressione a tecla. Pressione o botão vermelho para limpar.</p><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Play / Pause:</label><input type="text" id="keyPlay" readonly onkeydown="capturarAtalho(event, 'play')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('play')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Zerar / Parar:</label><input type="text" id="keyReset" readonly onkeydown="capturarAtalho(event, 'reset')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('reset')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Mudo:</label><input type="text" id="keyMute" readonly onkeydown="capturarAtalho(event, 'mute')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('mute')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume +:</label><input type="text" id="keyVolUp" readonly onkeydown="capturarAtalho(event, 'volUp')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volUp')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button><button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button></div></div></div>
+
+<!-- ITEM 10: Modal de Frases Motivacionais -->
+<div class="modal-overlay" id="modalFrases">
+    <div class="modal" style="max-height: 90vh; display: flex; flex-direction: column;">
+        <div class="modal-title">💬 Frases Motivacionais</div>
+        
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
+            <div class="switch-container" style="margin:0; flex:1; padding:0 12px; height:38px; border-radius:8px; justify-content:space-between; border: 1px solid var(--border-input); box-sizing:border-box;">
+                <span style="font-weight:bold;font-size:12px; color: var(--text-modal);">Trocar Automático</span>
+                <label class="switch" style="margin:0;"><input type="checkbox" id="cfgFraseAuto"><span class="slider"></span></label>
+            </div>
+            <div class="form-group" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); height:38px; padding:0 12px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;">
+                <label style="font-size:12px; margin:0; flex:1;">Tempo (min):</label>
+                <input type="number" id="cfgFraseTempo" min="1" style="padding: 4px; width: 60px; flex:none; border:none; background:transparent; text-align:right; color:var(--text-input); font-weight:bold; outline:none;">
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-bottom: 15px; align-items: stretch;">
+            <input type="text" id="novaFraseInput" placeholder="Digite uma nova frase motivacional..." style="flex:1; padding:8px 12px; border:1px solid var(--border-input); border-radius:8px; box-sizing:border-box; font-size:14px; background:var(--bg-input); color:var(--text-input);">
+            <button class="btn-action" style="margin:0; padding: 0 15px; border-radius:8px; height:auto;" onclick="adicionarFrase()">+ Add</button>
+        </div>
+
+        <div id="listaFrasesCfg" style="display:flex; flex-direction:column; gap:8px; overflow-y: auto; flex: 1; min-height: 150px; padding-right: 5px;"></div>
+
+        <div class="modal-actions" style="margin-top: 15px;">
+            <button class="btn-cancel" onclick="fecharModal('modalFrases'); abrirConfigGeraisModal();">Voltar</button>
+            <button class="btn-action" onclick="salvarConfigFrases()">💾 Salvar</button>
+        </div>
+    </div>
+</div>
 
 <!-- EDIÇÃO DO TEMPO COM FORMATAÇÃO -->
 <div class="modal-overlay" id="modalEditarTempo">
@@ -377,7 +426,6 @@
 
 <div class="form-group"><label>Título da Tarefa:</label><textarea id="tarTituloPersonalizado" rows="2" style="resize:vertical;" placeholder="Ex: Direitos Políticos e Partidos..."></textarea></div>
 
-<!-- TAREFA EXTRA INCORPORADA AQUI -->
 <div style="display:flex; gap:10px; margin-bottom: 15px;">
     <div class="form-group" style="flex:1; margin-bottom:0;">
         <label>Atividade (Tipo):</label>
@@ -397,14 +445,14 @@
     <div style="display: flex; gap:10px; flex:1; justify-content:flex-end; align-items:stretch;">
         <button class="btn-cancel" onclick="fecharModal('modalFormTarefa')" style="margin:0; flex:1; font-size:14px; padding:0; border-radius:8px;">Cancelar</button>
         <button class="btn-importar" id="btnImportarEmTarefa" style="margin:0; flex:1; display:none; font-size:14px; border-radius:8px;" onclick="irParaImportacaoDaTarefa()">Importar</button>
-        <button class="btn-importar" id="btnVincularTempoTarefa" style="margin:0; flex:1; display:none; font-size:14px; padding:0; border-radius:8px; background:transparent; border:1px solid var(--primaria); color:var(--primaria); font-weight:700;" onclick="vincularTempoTarefaAtual()"><span style="font-size:18px; margin-right:4px;">⏱️</span> Vincular</button>
-        <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:1px solid var(--primaria); background:var(--secundaria); color:var(--primaria); display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:700;"><span style="font-size:18px; margin-right:4px;">⏭️</span> Pular</button>
+        <!-- ITEM 4: Vincular com fonte normal e borda estilo Cancelar. Pular mais escuro. -->
+        <button class="btn-importar" id="btnVincularTempoTarefa" style="margin:0; flex:1; display:none; font-size:14px; padding:0; border-radius:8px; background:var(--secundaria); border:1px solid var(--border-input); color:var(--primaria); font-weight:bold;" onclick="vincularTempoTarefaAtual()"><span style="font-size:22px; margin-right:4px;">⏱️</span> Vincular</button>
+        <button class="btn-outline" id="btnPularTarefa" style="margin:0; flex:1; font-size:14px; padding:0; border:1px solid var(--primaria); background:var(--primaria); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;"><span style="font-size:22px; margin-right:4px;">⏭️</span> Pular</button>
         <button class="btn-action" onclick="salvarTarefa()" style="margin:0; flex:1.5; font-size:16px; padding:0; border-radius:8px;">Salvar</button>
     </div>
 </div></div></div>
 <div class="modal-overlay" id="modalFormOperador"><div class="modal"><div class="modal-title">Usuário</div><input type="hidden" id="opNomeOriginal"><div class="form-group"><label>Nome:</label><input type="text" id="opNome"></div><div class="form-group"><label>Senha (Vazio = sem senha):</label><input type="password" id="opSenha" inputmode="numeric"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormOperador');abrirGerenciar('estudantes')">Cancelar</button><button class="btn-action" onclick="salvarEstudante()">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalRegistrarEstudo"><div class="modal"><div class="modal-title" id="regNomeTarefa" style="font-size:18px; color:var(--primaria);">Tarefa</div><input type="hidden" id="regIdTarefa"><div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div><div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado:</label><div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div><input type="hidden" id="regDuracaoTimer" value="0"></div><div class="form-group"><label>Tipo Final de Atividade:</label><select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select></div><div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);"><div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label><input type="number" id="qtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label><input type="number" id="qtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div></div><div class="form-group"><label>Observação Extra:</label><input type="text" id="regObs" placeholder=""></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button><button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button></div></div></div>
-
 <div class="modal-overlay" id="modalHistorico"><div class="modal" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;"><div class="modal-title"><div>📅 Diário de Estudos</div><button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button></div><div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
 
 <div class="modal-overlay" id="modalRitmo"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title">⌛ Ritmo de Estudo</div>
@@ -453,7 +501,6 @@ document.addEventListener('mousemove', function(e) {
         tooltip.style.top = topPos + 'px';
         tooltip.style.left = leftPos + 'px';
     } else if(tooltip && !e.target.closest('canvas')) {
-        // Se não estiver em cima de um gráfico do ChartJS, esconde o balão global
         tooltip.style.display = 'none';
     }
 }, true);
@@ -492,10 +539,7 @@ const externalChartTooltipHandler = function(context) {
 
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
 let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
-
-let contextoRetornoImportacao = null;
-let contextoRetornoListagem = null;
-let contextoRetornoTipos = null;
+let contextoRetornoImportacao = null, contextoRetornoListagem = null, contextoRetornoTipos = null;
 
 function formatarHorasMinutos(segs){if(!segs||segs===0)return "0h 0m";let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60);return h+"h "+m.toString().padStart(2,'0')+"m";}
 function formataData(dataStrYMD){if(!dataStrYMD)return '--/--/----';let p=dataStrYMD.split('-');if(p.length!==3)return dataStrYMD;return `${p[2]}/${p[1]}/${p[0]}`;}
@@ -505,10 +549,44 @@ function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).p
 function getHojeYMD(){const hj=new Date();return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`;}
 function formatarTempoTimer(segs){let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60),s=Math.floor(segs%60);return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}
 function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
-function carregarBanco(){let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:""}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,ocultarPctMeta:false,ocultarTempoMeta:false,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null},historico:[]};try{let txt=localStorage.getItem('estudos_db');if(txt){let l=JSON.parse(txt);if(!Array.isArray(l.operadores))l.operadores=d.operadores;if(!Array.isArray(l.concursos))l.concursos=d.concursos;if(!Array.isArray(l.trilhas))l.trilhas=d.trilhas;if(!Array.isArray(l.disciplinas))l.disciplinas=d.disciplinas;if(!Array.isArray(l.tarefas))l.tarefas=d.tarefas;if(!Array.isArray(l.historico))l.historico=d.historico;let ativo=l.concursos.find(c=>c.ativo);let concPadrao=ativo?ativo.nome:(l.concursos[0]?l.concursos[0].nome:"Extra");l.concursos.forEach(c=>{if(c.pausado===undefined)c.pausado=false;});l.disciplinas.forEach(disc=>{if(!disc.concurso)disc.concurso=concPadrao;if(disc.aulas===undefined)disc.aulas=0;if(disc.aulaInicio===undefined)disc.aulaInicio=1;});l.trilhas.forEach(tr=>{if(!tr.dataInicio)tr.dataInicio="";if(!tr.duracaoDias)tr.duracaoDias=7;});l.tarefas.forEach(tar=>{if(tar.questoes===undefined)tar.questoes=0;if(tar.acertos===undefined)tar.acertos=0;if(tar.obs===undefined)tar.obs="";if(tar.pulada===undefined)tar.pulada=false;if(tar.isExtra===undefined)tar.isExtra=false;if(tar.tipoAtividade==="Pulada"){tar.pulada=true;tar.concluida=true;tar.tipoAtividade="Teoria";}});if(!l.configs||typeof l.configs!=='object')l.configs=d.configs;if(!l.configs.audioLink)l.configs.audioLink="https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3";if(!l.configs.atalhos)l.configs.atalhos=d.configs.atalhos;else{for(let k in d.configs.atalhos){if(!l.configs.atalhos[k])l.configs.atalhos[k]=d.configs.atalhos[k];else if(typeof l.configs.atalhos[k]==='string')l.configs.atalhos[k]=[l.configs.atalhos[k]];}}if(!l.configs.pomodoro)l.configs.pomodoro=d.configs.pomodoro;if(!l.configs.regressivo)l.configs.regressivo=d.configs.regressivo;if(l.configs.exibirMeta===undefined)l.configs.exibirMeta=true;if(l.configs.ocultarPctMeta===undefined)l.configs.ocultarPctMeta=false;if(l.configs.ocultarTempoMeta===undefined)l.configs.ocultarTempoMeta=false;if(l.configs.tocarRestart===undefined)l.configs.tocarRestart=true;if(!l.configs.tiposAtividade)l.configs.tiposAtividade=d.configs.tiposAtividade;if(l.configs.estadoTimer===undefined)l.configs.estadoTimer=null;if(l.configs.tiposAtividade.length>0&&typeof l.configs.tiposAtividade[0]==='string'){l.configs.tiposAtividade=l.configs.tiposAtividade.map(t=>{return{nome:t,comDesempenho:/quest|teste/i.test(t)};});}return l;}}catch(e){return d;}return d;}
+
+function carregarBanco(){
+    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:""}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,ocultarPctMeta:false,ocultarTempoMeta:false,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a posse é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
+    try{
+        let txt=localStorage.getItem('estudos_db');
+        if(txt){
+            let l=JSON.parse(txt);
+            if(!Array.isArray(l.operadores))l.operadores=d.operadores;
+            if(!Array.isArray(l.concursos))l.concursos=d.concursos;
+            if(!Array.isArray(l.trilhas))l.trilhas=d.trilhas;
+            if(!Array.isArray(l.disciplinas))l.disciplinas=d.disciplinas;
+            if(!Array.isArray(l.tarefas))l.tarefas=d.tarefas;
+            if(!Array.isArray(l.historico))l.historico=d.historico;
+            let ativo=l.concursos.find(c=>c.ativo);
+            let concPadrao=ativo?ativo.nome:(l.concursos[0]?l.concursos[0].nome:"Extra");
+            l.concursos.forEach(c=>{if(c.pausado===undefined)c.pausado=false;});
+            l.disciplinas.forEach(disc=>{if(!disc.concurso)disc.concurso=concPadrao;if(disc.aulas===undefined)disc.aulas=0;if(disc.aulaInicio===undefined)disc.aulaInicio=1;});
+            l.trilhas.forEach(tr=>{if(!tr.dataInicio)tr.dataInicio="";if(!tr.duracaoDias)tr.duracaoDias=7;});
+            l.tarefas.forEach(tar=>{if(tar.questoes===undefined)tar.questoes=0;if(tar.acertos===undefined)tar.acertos=0;if(tar.obs===undefined)tar.obs="";if(tar.pulada===undefined)tar.pulada=false;if(tar.isExtra===undefined)tar.isExtra=false;if(tar.tipoAtividade==="Pulada"){tar.pulada=true;tar.concluida=true;tar.tipoAtividade="Teoria";}});
+            if(!l.configs||typeof l.configs!=='object')l.configs=d.configs;
+            if(!l.configs.audioLink)l.configs.audioLink="https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3";
+            if(!l.configs.atalhos)l.configs.atalhos=d.configs.atalhos;else{for(let k in d.configs.atalhos){if(!l.configs.atalhos[k])l.configs.atalhos[k]=d.configs.atalhos[k];else if(typeof l.configs.atalhos[k]==='string')l.configs.atalhos[k]=[l.configs.atalhos[k]];}}
+            if(!l.configs.pomodoro)l.configs.pomodoro=d.configs.pomodoro;if(!l.configs.regressivo)l.configs.regressivo=d.configs.regressivo;
+            if(l.configs.exibirMeta===undefined)l.configs.exibirMeta=true;if(l.configs.ocultarPctMeta===undefined)l.configs.ocultarPctMeta=false;if(l.configs.ocultarTempoMeta===undefined)l.configs.ocultarTempoMeta=false;if(l.configs.tocarRestart===undefined)l.configs.tocarRestart=true;if(!l.configs.tiposAtividade)l.configs.tiposAtividade=d.configs.tiposAtividade;if(l.configs.estadoTimer===undefined)l.configs.estadoTimer=null;
+            if(l.configs.tiposAtividade.length>0&&typeof l.configs.tiposAtividade[0]==='string'){l.configs.tiposAtividade=l.configs.tiposAtividade.map(t=>{return{nome:t,comDesempenho:/quest|teste/i.test(t)};});}
+            if(!l.configs.frases) l.configs.frases = d.configs.frases;
+            if(l.configs.fraseAuto === undefined) l.configs.fraseAuto = d.configs.fraseAuto;
+            if(!l.configs.fraseTempo) l.configs.fraseTempo = d.configs.fraseTempo;
+            return l;
+        }
+    }catch(e){return d;}return d;
+}
+
 function salvarBancoLocal(){localStorage.setItem('estudos_db',JSON.stringify(db));}
+
 let temaAtivo='azul';
 function aplicarTemaCores(){let opAtual=localStorage.getItem('estudos_operadorAtual');let opObj=db.operadores.find(o=>o.nome===opAtual);let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul');let c=paletasDeCores[t]||paletasDeCores.azul;temaAtivo=t;document.body.setAttribute('data-theme',t);document.documentElement.style.setProperty('--primaria',c.primaria);document.documentElement.style.setProperty('--secundaria',c.secundaria);document.documentElement.style.setProperty('--fundo',c.fundo);document.documentElement.style.setProperty('--bg-app',c.bgApp);document.documentElement.style.setProperty('--bg-item',c.bgItem);document.documentElement.style.setProperty('--bg-header',c.bgHeader);document.body.style.fontFamily='';document.body.style.color='';document.getElementById('display-timer').style.color='';if(t==='transparente'||t==='escuro'){if(t==='escuro'){document.documentElement.style.setProperty('--primaria','#e0e0e0');}document.body.style.color='#eee';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(255,255,255,0.15)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#eee');}else if(t==='medieval'){document.body.style.fontFamily='"Palatino Linotype", "Book Antiqua", Palatino, serif';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(139, 90, 43, 0.3)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#3e2723');}else{document.body.style.color='#333';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(0,0,0,0.1)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#333333');document.documentElement.style.setProperty('--bg-modal','#ffffff');document.documentElement.style.setProperty('--text-modal','#333333');document.documentElement.style.setProperty('--border-input','#cccccc');document.documentElement.style.setProperty('--bg-input','#ffffff');document.documentElement.style.setProperty('--text-input','#333333');document.documentElement.style.setProperty('--bg-hover','#f9f9f9');}}
+
 let modoTimer='progressive',isRunningTimer=false,intervalTimer,tempoTimer=0,targetTimer=25*60,pomoFase='estudo',pomoCicloAtual=0,playerAudio=new Audio(),playlist=[],musicaIndex=0,isMutedTimer=false,volumeSalvoTimer=1.0,audioRestart=new Audio();audioRestart.loop=true;
 function initAudioRestart(){if(db.configs.audioLink&&db.configs.audioLink.trim()!=="")audioRestart.src=db.configs.audioLink.trim();}initAudioRestart();
 playerAudio.onended=()=>{if(playlist.length>0&&isRunningTimer){musicaIndex=(musicaIndex+1)%playlist.length;tocarMusicaTimer();}};
@@ -517,7 +595,34 @@ function limparMusica(){playlist.forEach(u=>URL.revokeObjectURL(u));playlist=[];
 function tocarMusicaTimer(){if(playlist.length===0)return;playerAudio.src=playlist[musicaIndex];playerAudio.load();playerAudio.play().catch(()=>{});}
 function ajustarVolumeTimer(val){let v=val/100;volumeSalvoTimer=v;if(isMutedTimer&&v>0)toggleMuteTimer();playerAudio.volume=isMutedTimer?0:v;audioRestart.volume=isMutedTimer?0:v;document.getElementById('volume-slider-timer').value=val;}
 function toggleMuteTimer(){isMutedTimer=!isMutedTimer;playerAudio.volume=isMutedTimer?0:volumeSalvoTimer;audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;document.getElementById('btn-mute-timer').innerText=isMutedTimer?'🔇':'🔊';document.getElementById('volume-slider-timer').value=isMutedTimer?0:volumeSalvoTimer*100;}
-function atualizarDisplayTimer(){let dSegs=tempoTimer;if(modoTimer!=='progressive'){dSegs=Math.max(0,targetTimer-tempoTimer);if(dSegs===0&&isRunningTimer){startPauseTimer();mostrarToast("Tempo esgotado!");if(modoTimer==='pomodoro')avancarFasePomodoro();}}document.getElementById('display-timer').innerText=formatarTempoTimer(dSegs);atualizarBarraMeta();}
+
+// SISTEMA DE FRASES MOTIVACIONAIS
+function exibirFraseAleatoria() {
+    let container = document.getElementById('frase-motivacional-container');
+    if(db.configs.frases && db.configs.frases.length > 0) {
+        let index = Math.floor(Math.random() * db.configs.frases.length);
+        container.innerHTML = `"${db.configs.frases[index]}"`;
+        container.style.display = 'flex';
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+function atualizarDisplayTimer(){
+    let dSegs=tempoTimer;
+    if(modoTimer!=='progressive'){
+        dSegs=Math.max(0,targetTimer-tempoTimer);
+        if(dSegs===0&&isRunningTimer){startPauseTimer();mostrarToast("Tempo esgotado!");if(modoTimer==='pomodoro')avancarFasePomodoro();}
+    }
+    document.getElementById('display-timer').innerText=formatarTempoTimer(dSegs);
+    atualizarBarraMeta();
+    
+    // Trocar frase motivacional no tempo exato estipulado (apenas se estiver rolando)
+    if(isRunningTimer && db.configs.fraseAuto && tempoTimer > 0 && (tempoTimer % (db.configs.fraseTempo * 60) === 0)) {
+        exibirFraseAleatoria();
+    }
+}
+
 function avancarFasePomodoro(){if(pomoFase==='estudo'){pomoCicloAtual++;if(pomoCicloAtual%db.configs.pomodoro.ciclos===0){pomoFase='longa';targetTimer=db.configs.pomodoro.longa*60;}else{pomoFase='curta';targetTimer=db.configs.pomodoro.curta*60;}}else{pomoFase='estudo';targetTimer=db.configs.pomodoro.estudo*60;}tempoTimer=0;atualizarStatusModo();atualizarDisplayTimer();}
 function atualizarStatusModo(){const s=document.getElementById('pomo-status-side');if(modoTimer==='pomodoro'){s.style.display='block';let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'Pausa Curta':'Pausa Longa');s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}`;}else if(modoTimer==='regressive'){s.style.display='block';s.innerHTML=`Tempo Inicial:<br>${db.configs.regressivo.estudo} min`;}else{s.style.display='none';}}
 function startPauseTimer(){isRunningTimer=!isRunningTimer;let btnPlay=document.getElementById('btn-play-timer');if(isRunningTimer){audioRestart.pause();audioRestart.currentTime=0;btnPlay.innerHTML='<span style="font-size:50px;">⏸️</span>';btnPlay.classList.add('is-paused');if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);}else{clearInterval(intervalTimer);playerAudio.pause();btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';btnPlay.classList.remove('is-paused');if(tempoTimer>0&&db.configs.tocarRestart){audioRestart.currentTime=0;audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;audioRestart.play().catch(()=>{});}db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};salvarModificacaoBasica();}}
@@ -528,13 +633,50 @@ function setModoTimer(novoModo){modoTimer=novoModo;document.getElementById('btn-
 function abrirEdicaoTempo(){if(isRunningTimer)startPauseTimer();let dSegs=modoTimer==='progressive'?tempoTimer:Math.max(0,targetTimer-tempoTimer);document.getElementById('editHoras').value=String(Math.floor(dSegs/3600)).padStart(2,'0');document.getElementById('editMins').value=String(Math.floor((dSegs%3600)/60)).padStart(2,'0');document.getElementById('editSegs').value=String(Math.floor(dSegs%60)).padStart(2,'0');abrirModal('modalEditarTempo');setTimeout(()=>{let el=document.getElementById('editHoras');el.focus();el.select();},50);}
 function confirmarEdicaoTempo(){let h=parseInt(document.getElementById('editHoras').value, 10)||0,m=parseInt(document.getElementById('editMins').value, 10)||0,s=parseInt(document.getElementById('editSegs').value, 10)||0,totalSegs=(h*3600)+(m*60)+s;if(modoTimer==='progressive')tempoTimer=totalSegs;else tempoTimer=Math.max(0,targetTimer-totalSegs);atualizarDisplayTimer();db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};salvarModificacaoBasica();fecharModal('modalEditarTempo');}
 function atualizarBarraMeta(){if(!db.configs.exibirMeta||db.configs.metaDiariaHrs===0){document.getElementById('meta-container').style.display='none';return;}document.getElementById('meta-container').style.display='block';const metaSegs=db.configs.metaDiariaHrs*3600;let estudadoHoje=0;let hojeStr=getDataHoraAtual().split(' ')[0];db.historico.forEach(h=>{if(h.duracaoRegistrada&&h.data.startsWith(hojeStr))estudadoHoje+=h.duracaoRegistrada;});let atual=estudadoHoje;if(modoTimer==='progressive'||(modoTimer==='pomodoro'&&pomoFase==='estudo')||modoTimer==='regressive')atual+=tempoTimer;let pct=Math.min(100,(atual/metaSegs)*100);document.getElementById('meta-fill').style.width=pct+'%';document.getElementById('meta-label').innerText=db.configs.ocultarPctMeta?`Meta Diária`:`Meta: ${Math.round(pct)}%`;if(db.configs.ocultarTempoMeta)document.getElementById('meta-valores').style.display='none';else{document.getElementById('meta-valores').style.display='inline';let hFormat=Math.floor(atual/3600),mFormat=Math.floor((atual%3600)/60).toString().padStart(2,'0');document.getElementById('meta-valores').innerText=`${hFormat}h${mFormat}m / ${db.configs.metaDiariaHrs}h`;}}
+
 const dictTeclas={'Space':'Espaço','Delete':'Deletar','Period':'Ponto(.)','Equal':'Igual(=)','Minus':'Menos(-)','Escape':'Esc','NumpadAdd':'Num +','NumpadSubtract':'Num -','Enter':'Enter'};
 function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr){if(!arr||arr.length===0)return "Nenhum";return arr.map(t=>trTecla(t)).join(' ou ');}
 document.addEventListener('keydown',function(event){if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;let k=event.code;let a=db.configs.atalhos;if(a.play.includes(k)){event.preventDefault();startPauseTimer();}else if(a.reset.includes(k)){event.preventDefault();resetTimer();}else if(a.mute.includes(k)){event.preventDefault();toggleMuteTimer();}else if(a.volUp.includes(k)){event.preventDefault();ajustarVolumeTimer(Math.min(100,(volumeSalvoTimer*100)+2));}else if(a.volDown.includes(k)){event.preventDefault();ajustarVolumeTimer(Math.max(0,(volumeSalvoTimer*100)-2));}});
 let atalhosTemp={};function abrirConfigAtalhos(){fecharModal('modalConfigGerais');atalhosTemp=JSON.parse(JSON.stringify(db.configs.atalhos));atualizarInputsAtalhos();abrirModal('modalAtalhos');}function atualizarInputsAtalhos(){document.getElementById('keyPlay').value=renderizarTextoAtalho(atalhosTemp.play);document.getElementById('keyReset').value=renderizarTextoAtalho(atalhosTemp.reset);document.getElementById('keyMute').value=renderizarTextoAtalho(atalhosTemp.mute);document.getElementById('keyVolUp').value=renderizarTextoAtalho(atalhosTemp.volUp);document.getElementById('keyVolDown').value=renderizarTextoAtalho(atalhosTemp.volDown);}function capturarAtalho(e,field){e.preventDefault();if(!atalhosTemp[field].includes(e.code))atalhosTemp[field].push(e.code);atualizarInputsAtalhos();}function limparUmAtalho(field){atalhosTemp[field]=[];atualizarInputsAtalhos();}function salvarAtalhos(){db.configs.atalhos=JSON.parse(JSON.stringify(atalhosTemp));salvarModificacaoBasica();mostrarToast("Atalhos salvos!");fecharModal('modalAtalhos');abrirConfigGeraisModal();}
+
+function abrirConfigFrases(){
+    document.getElementById('cfgFraseAuto').checked = db.configs.fraseAuto !== false;
+    document.getElementById('cfgFraseTempo').value = db.configs.fraseTempo || 30;
+    renderizarFrasesCfg();
+    abrirModal('modalFrases');
+}
+
+function renderizarFrasesCfg(){
+    let l = document.getElementById('listaFrasesCfg');
+    l.innerHTML = '';
+    db.configs.frases.forEach((f, i) => {
+        l.innerHTML += `<div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-hover); border-radius:8px; margin-bottom:8px; border:1px solid var(--border-input); font-size:13px; color:var(--text-modal); align-items:center;">
+            <span style="flex:1;">${f}</span>
+            <button onclick="removerFrase(${i})" style="color:#d32f2f; background:none; border:none; font-weight:bold; cursor:pointer; font-size:16px;">X</button>
+        </div>`;
+    });
+}
+
+function adicionarFrase(){
+    let v = document.getElementById('novaFraseInput').value.trim();
+    if(v){ db.configs.frases.push(v); document.getElementById('novaFraseInput').value=''; renderizarFrasesCfg(); salvarModificacaoBasica(); }
+}
+
+function removerFrase(i){
+    db.configs.frases.splice(i, 1); renderizarFrasesCfg(); salvarModificacaoBasica();
+}
+
+function salvarConfigFrases(){
+    db.configs.fraseAuto = document.getElementById('cfgFraseAuto').checked;
+    db.configs.fraseTempo = parseInt(document.getElementById('cfgFraseTempo').value) || 30;
+    salvarModificacaoBasica();
+    fecharModal('modalFrases');
+    abrirConfigGeraisModal();
+}
+
 function prepararTelaLogin(){const s=document.getElementById('loginOperador');s.innerHTML='<option value="">Selecione...</option>';db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`});const u=localStorage.getItem('estudos_operadorAtual');if(u&&db.operadores.find(o=>o.nome===u))s.value=u;checarSenhaLoginInicial();}
 function checarSenhaLoginInicial(){const n=document.getElementById('loginOperador').value,o=db.operadores.find(x=>x.nome===n),c=document.getElementById('loginSenhaContainer');if(o&&o.senha!==""){c.style.display="flex";setTimeout(()=>document.getElementById('loginSenha').focus(),10);}else c.style.display="none";}
-function fazerLoginInicial(){const n=document.getElementById('loginOperador').value;if(!n)return alert("Selecione um perfil!");const o=db.operadores.find(x=>x.nome===n);if(o&&o.senha!==""){const s=document.getElementById('loginSenha').value;if(s!==o.senha){alert("Senha Incorreta!");document.getElementById('loginSenha').value='';return;}}localStorage.setItem('estudos_operadorAtual',n);document.getElementById('seletorOperador').value=n;operadorAnteriorSelect=n;audioRestart.play().then(()=>audioRestart.pause()).catch(()=>{});aplicarTemaCores();const l=document.getElementById('login-screen');l.style.opacity='0';setTimeout(()=>l.style.display='none',500);renderizarCabecalhoTrilhas();}
+function fazerLoginInicial(){const n=document.getElementById('loginOperador').value;if(!n)return alert("Selecione um perfil!");const o=db.operadores.find(x=>x.nome===n);if(o&&o.senha!==""){const s=document.getElementById('loginSenha').value;if(s!==o.senha){alert("Senha Incorreta!");document.getElementById('loginSenha').value='';return;}}localStorage.setItem('estudos_operadorAtual',n);document.getElementById('seletorOperador').value=n;operadorAnteriorSelect=n;audioRestart.play().then(()=>audioRestart.pause()).catch(()=>{});aplicarTemaCores();const l=document.getElementById('login-screen');l.style.opacity='0';setTimeout(()=>l.style.display='none',500);renderizarCabecalhoTrilhas();exibirFraseAleatoria();}
 function verificarTrocaOperador(sel){if(sel.value==='sair'){localStorage.removeItem('estudos_operadorAtual');location.reload();}else{localStorage.setItem('estudos_operadorAtual',sel.value);operadorAnteriorSelect=sel.value;aplicarTemaCores();renderizarCabecalhoTrilhas();}}
 function exportarBackup(){db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};let dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(JSON.stringify(db));let dl=document.createElement('a');dl.setAttribute("href",dataStr);dl.setAttribute("download","AloRFB_Backup_"+getHojeYMD()+".txt");document.body.appendChild(dl);dl.click();dl.remove();mostrarToast("Backup exportado com sucesso!");}
 function importarBackup(event){let file=event.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(e){try{let importedDb=JSON.parse(e.target.result);if(importedDb&&importedDb.concursos&&importedDb.configs){db=importedDb;salvarModificacaoBasica();alert("Backup importado com sucesso! O aplicativo será recarregado para aplicar.");location.reload();}else alert("Arquivo de backup inválido ou corrompido.");}catch(err){alert("Erro ao ler o arquivo de backup: "+err.message);}};reader.readAsText(file);event.target.value='';}
@@ -638,7 +780,7 @@ function renderizarListaTarefas(){
     });
     html+=`</div></div></div>`;l.innerHTML=html;
 }
-function iniciar(){try{aplicarTemaCores();renderizarOperadores();prepararTelaLogin();let opAtual=localStorage.getItem('estudos_operadorAtual');const l=document.getElementById('login-screen');if(opAtual&&db.operadores.find(o=>o.nome===opAtual)){l.style.display='none';document.getElementById('seletorOperador').value=opAtual;operadorAnteriorSelect=opAtual;}setTimeout(()=>{const s=document.getElementById('splash-screen');if(s){s.classList.add('hidden');setTimeout(()=>s.style.display='none',500);}},1500);if(db.configs.estadoTimer&&db.configs.estadoTimer.tempo>0){tempoTimer=db.configs.estadoTimer.tempo;targetTimer=db.configs.estadoTimer.target;modoTimer=db.configs.estadoTimer.modo;pomoFase=db.configs.estadoTimer.fase;pomoCicloAtual=db.configs.estadoTimer.ciclo;document.getElementById('btn-prog').classList.remove('active');document.getElementById('btn-reg').classList.remove('active');document.getElementById('btn-pomo').classList.remove('active');document.getElementById(modoTimer==='progressive'?'btn-prog':modoTimer==='regressive'?'btn-reg':'btn-pomo').classList.add('active');atualizarStatusModo();}renderizarCabecalhoTrilhas();setInterval(sincronizarComNuvemSilencioso,20000);sincronizarComNuvemSilencioso();atualizarDisplayTimer();}catch(erro){alert("Falha: \n"+erro.message);}}
+function iniciar(){try{aplicarTemaCores();renderizarOperadores();prepararTelaLogin();let opAtual=localStorage.getItem('estudos_operadorAtual');const l=document.getElementById('login-screen');if(opAtual&&db.operadores.find(o=>o.nome===opAtual)){l.style.display='none';document.getElementById('seletorOperador').value=opAtual;operadorAnteriorSelect=opAtual;}setTimeout(()=>{const s=document.getElementById('splash-screen');if(s){s.classList.add('hidden');setTimeout(()=>s.style.display='none',500);}},1500);if(db.configs.estadoTimer&&db.configs.estadoTimer.tempo>0){tempoTimer=db.configs.estadoTimer.tempo;targetTimer=db.configs.estadoTimer.target;modoTimer=db.configs.estadoTimer.modo;pomoFase=db.configs.estadoTimer.fase;pomoCicloAtual=db.configs.estadoTimer.ciclo;document.getElementById('btn-prog').classList.remove('active');document.getElementById('btn-reg').classList.remove('active');document.getElementById('btn-pomo').classList.remove('active');document.getElementById(modoTimer==='progressive'?'btn-prog':modoTimer==='regressive'?'btn-reg':'btn-pomo').classList.add('active');atualizarStatusModo();}renderizarCabecalhoTrilhas();setInterval(sincronizarComNuvemSilencioso,20000);sincronizarComNuvemSilencioso();atualizarDisplayTimer();exibirFraseAleatoria();}catch(erro){alert("Falha: \n"+erro.message);}}
 function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}function fecharModal(id){document.getElementById(id).style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(m=>m.style.display==='flex'))document.body.classList.remove('modal-open')}
 document.getElementById('tarConcluida').addEventListener('change',function(e){if(!this.checked){this.checked=true;abrirModal('modalConfirmarDesmarcar');}});
 
@@ -738,7 +880,33 @@ function abrirSelecionadorDeTarefaParaRegistro(){let l=document.getElementById('
 function abrirRegistroEstudo(id){const t=db.tarefas.find(x=>x.id===id);if(!t)return;document.getElementById('regNomeTarefa').innerText=t.titulo;let discNome=t.disciplina||"Extra";let tipoAtiv=t.tipoAtividade?` • ${t.tipoAtividade}`:"";document.getElementById('regSubTituloTarefa').innerText=discNome+tipoAtiv+(t.aulas?" - "+t.aulas:"");document.getElementById('regIdTarefa').value=t.id;document.getElementById('regObs').value='';const sel=document.getElementById('regTipoAtividade');sel.innerHTML='';db.configs.tiposAtividade.forEach(x=>sel.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);sel.value=t.tipoAtividade;let segs=tempoTimer;if(segs>0){document.getElementById('containerTempoCapturado').style.display='block';document.getElementById('displayTempoCapturado').innerText=formatarTempoTimer(segs);document.getElementById('regDuracaoTimer').value=segs;}else{document.getElementById('containerTempoCapturado').style.display='none';document.getElementById('regDuracaoTimer').value=0;}checarTipoAtividade();abrirModal('modalRegistrarEstudo');}
 function checarTipoAtividade(){let nomeT=document.getElementById('regTipoAtividade').value,obj=db.configs.tiposAtividade.find(x=>x.nome===nomeT);document.getElementById('divQuestoes').style.display=(obj&&obj.comDesempenho)?'flex':'none';}
 function salvarRegistroEstudo(){const idTar=parseInt(document.getElementById('regIdTarefa').value),t=db.tarefas.find(x=>x.id===idTar),tipo=document.getElementById('regTipoAtividade').value,op=document.getElementById('seletorOperador').value;let obs=document.getElementById('regObs').value.trim();const duracaoCronometro=parseInt(document.getElementById('regDuracaoTimer').value)||0;let q=0,a=0;let objConfig=db.configs.tiposAtividade.find(x=>x.nome===tipo);if(objConfig&&objConfig.comDesempenho){q=parseInt(document.getElementById('qtdQuestoes').value)||0;a=parseInt(document.getElementById('qtdAcertos').value)||0;if(q>0){let pct=Math.round((a/q)*100);obs+=` [🎯 ${a}/${q} - ${pct}%]`;}}let baseHist={disciplina:(t.disciplina||"Extra"),tarefa:t.titulo,concurso:t.concurso,trilha:t.trilha,tipoAtividade:tipo,operador:op,questoes:q,acertos:a};db.historico = db.historico.filter(h => !(h.concurso===t.concurso && h.trilha===t.trilha && h.tarefa===t.titulo));let infoTempo=duracaoCronometro>0?` (⏱️ ${Math.round(duracaoCronometro/60)} min)`:"";let dataFim=new Date(),dataInicio=new Date(dataFim.getTime()-(duracaoCronometro*1000));if(duracaoCronometro>0&&dataInicio.getDate()!==dataFim.getDate()){let dataMeiaNoite=new Date(dataFim.getFullYear(),dataFim.getMonth(),dataFim.getDate(),0,0,0);let segsDia1=Math.floor((dataMeiaNoite.getTime()-dataInicio.getTime())/1000);let segsDia2=duracaoCronometro-segsDia1;let dForm1=`${String(dataInicio.getDate()).padStart(2,'0')}/${String(dataInicio.getMonth()+1).padStart(2,'0')}/${dataInicio.getFullYear()} 23:59`;db.historico.push({id:Date.now()-1,...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia1/60)}m - Ant)`,duracaoRegistrada:segsDia1,data:dForm1});db.historico.push({id:Date.now(),...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia2/60)}m - Hj)`,duracaoRegistrada:segsDia2,data:getDataHoraAtual()});}else db.historico.push({id:Date.now(),...baseHist,observacao:obs+infoTempo,duracaoRegistrada:duracaoCronometro,data:getDataHoraAtual()});t.concluida=true;t.pulada=false;t.tempoRegistrado=duracaoCronometro;t.questoes=q;t.acertos=a;t.obs=document.getElementById('regObs').value.trim();t.dataConclusao=getDataHoraAtual().split(' ')[0];mostrarToast("✅ Tarefa Concluída e Registrada!");if(duracaoCronometro>0){clearInterval(intervalTimer);isRunningTimer=false;tempoTimer=0;atualizarDisplayTimer();document.getElementById('btn-play-timer').innerHTML='<span style="font-size:50px;">▶️</span>';document.getElementById('btn-play-timer').classList.remove('is-paused');}document.getElementById('qtdQuestoes').value=0;document.getElementById('qtdAcertos').value=0;db.configs.estadoTimer=null;salvarModificacaoBasica();fecharModal('modalRegistrarEstudo');renderizarCabecalhoTrilhas();}
-function abrirHistorico(){const l=document.getElementById('listaHistorico');l.innerHTML='';if(db.historico.length===0){l.innerHTML='<div style="text-align:center; padding:20px; color:var(--text-modal);">Nenhum registro.</div>';}else{[...db.historico].reverse().forEach(h=>{let tempoBadge=h.duracaoRegistrada?`<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>`:'';l.innerHTML+=`<div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;"><div style="display:flex; justify-content:space-between; align-items:center;"><strong style="color:var(--primaria); font-size:16px;">${h.tarefa||h.disciplina} ${tempoBadge}</strong><button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button></div><div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div><div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:4px;">${h.observacao?`<div style="flex:1; font-size:13px; opacity:0.8;"><em>Obs: ${h.observacao}</em></div>`:'<div style="flex:1;"></div>'}<div style="font-size:11px; opacity:0.6; text-align:right; white-space:nowrap; margin-left:10px;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'}  | ${h.data.split(' ')[0]}</div></div></div>`;});}abrirModal('modalHistorico');}
+
+function abrirHistorico(){
+    const l=document.getElementById('listaHistorico');l.innerHTML='';
+    if(db.historico.length===0){
+        l.innerHTML='<div style="text-align:center; padding:20px; color:var(--text-modal);">Nenhum registro.</div>';
+    }else{
+        [...db.historico].reverse().forEach(h=>{
+            let tempoBadge=h.duracaoRegistrada?`<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>`:'';
+            let obsHtml = h.observacao ? `<span style="font-style:italic; opacity:0.8; word-break: break-word; flex:1; text-align:left;">Obs: ${h.observacao}</span>` : `<span style="flex:1;"></span>`;
+            let detHtml = `<span style="opacity:0.6; font-size:11px; white-space:nowrap; text-align:right;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'} | ${h.data.split(' ')[0]}</span>`;
+            
+            l.innerHTML+=`<div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong style="color:var(--primaria); font-size:16px; display:flex; align-items:center; gap:8px;">${h.tarefa||h.disciplina} ${tempoBadge}</strong>
+                    <button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button>
+                </div>
+                <div style="font-size:14px; margin-bottom: 2px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; font-size:13px; gap: 15px;">
+                    ${obsHtml}
+                    ${detHtml}
+                </div>
+            </div>`;
+        });
+    }
+    abrirModal('modalHistorico');
+}
+
 function excluirHistorico(id){let pwd=prompt("Digite a senha do painel para excluir este registro:");if(pwd===(db.configs.senhaAdmin||"1999")){let hInfo=db.historico.find(x=>x.id===id);db.historico=db.historico.filter(h=>h.id!==id);if(hInfo&&hInfo.tarefa){let taskObj=db.tarefas.find(t=>t.concurso===hInfo.concurso&&t.trilha===hInfo.trilha&&t.titulo===hInfo.tarefa);if(taskObj){let restam=db.historico.filter(x=>x.concurso===hInfo.concurso&&x.trilha===hInfo.trilha&&x.tarefa===hInfo.tarefa);if(restam.length===0){taskObj.concluida=false;taskObj.pulada=false;taskObj.tempoRegistrado=0;taskObj.questoes=0;taskObj.acertos=0;taskObj.obs="";delete taskObj.dataConclusao;}}}salvarModificacaoBasica();abrirHistorico();renderizarCabecalhoTrilhas();mostrarToast("Registro excluído.");}else alert("Senha incorreta!");}
 function switchRitmoTab(tab){document.getElementById('tabRitmoDesemp').classList.remove('active');document.getElementById('tabRitmoTempo').classList.remove('active');document.getElementById('ritmoDesempContent').style.display='none';document.getElementById('ritmoTempoContent').style.display='none';if(tab==='desemp'){document.getElementById('tabRitmoDesemp').classList.add('active');document.getElementById('ritmoDesempContent').style.display='block';}else{document.getElementById('tabRitmoTempo').classList.add('active');document.getElementById('ritmoTempoContent').style.display='block';}}
 function abrirRitmoEstudo(){
@@ -748,7 +916,7 @@ function abrirRitmoEstudo(){
     let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc),trilhasDoConcurso=db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.id-b.id);
     let htmlGridDesemp='',htmlGridTempo='',hoje=new Date();hoje.setHours(0,0,0,0);
     
-    // DASHBOARD RESUMO TEMPO
+    // DASHBOARD RESUMO TEMPO COM COR ÚNICA
     let diaSemana=hoje.getDay();let inicioSemana=new Date(hoje);inicioSemana.setDate(hoje.getDate()-diaSemana);
     let inicioMes=new Date(hoje.getFullYear(),hoje.getMonth(),1);
     let inicioAno=new Date(hoje.getFullYear(),0,1);
@@ -764,7 +932,7 @@ function abrirRitmoEstudo(){
         if(dHist>=inicioAno) tAno+=dur;
         if(dHist>=trintaDiasAtras) t30Dias+=dur;
     });
-    document.getElementById('ritmoTempoSummary').innerHTML=`<div class="ritmo-summary-box"><div class="ritmo-summary-title">Hoje</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tHoje)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Esta Semana</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tSemana)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Últimos 30 Dias</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(t30Dias)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Mês</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tMes)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Ano</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tAno)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Total Geral</div><div class="ritmo-summary-val" style="color:var(--primaria); font-weight:900;">${formatarHorasMinutos(tTotal)}</div></div>`;
+    document.getElementById('ritmoTempoSummary').innerHTML=`<div class="ritmo-summary-box"><div class="ritmo-summary-title">Hoje</div><div class="ritmo-summary-val">${formatarHorasMinutos(tHoje)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Esta Semana</div><div class="ritmo-summary-val">${formatarHorasMinutos(tSemana)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Últimos 30 Dias</div><div class="ritmo-summary-val">${formatarHorasMinutos(t30Dias)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Mês</div><div class="ritmo-summary-val">${formatarHorasMinutos(tMes)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Este Ano</div><div class="ritmo-summary-val">${formatarHorasMinutos(tAno)}</div></div><div class="ritmo-summary-box"><div class="ritmo-summary-title">Total Geral</div><div class="ritmo-summary-val">${formatarHorasMinutos(tTotal)}</div></div>`;
 
     trilhasDoConcurso.forEach((tr,index)=>{
         let tNome=tr.nome,matchNum=tNome.match(/\d+/),numVisual=matchNum?matchNum[0]:(index+1);
@@ -847,7 +1015,9 @@ function renderizarConteudoProdutividade(){
     
     let despGeral=totalQuest>0?((totalAcertos/totalQuest)*100).toFixed(1)+"%":"0%",hFormGeral=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m",mediaGeral="0h 00m";
     if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaGeral=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}
-    document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
+    
+    // REORDENADO: Desempenho, Questões, Horas, Média Diária
+    document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
     
     let tbody=document.getElementById('prodTableBody');tbody.innerHTML='';
     for(let d in estatisticas){
