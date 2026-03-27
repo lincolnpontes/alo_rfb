@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.14</title>
+    <title>Alô RFB v1.0.15</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -210,11 +210,15 @@
     </style>
 </head>
 <body>
+
+<!-- TOOLTIP GLOBAL PARA SUBSTITUIR O CSS QUE QUEBRAVA NA BORDA -->
+<div id="globalTooltip" style="display:none; position:fixed; background:rgba(17,17,17,0.95); color:#fff; padding:8px 12px; border-radius:6px; font-size:14px; font-weight:bold; white-space:nowrap; z-index:999999; box-shadow:0 4px 10px rgba(0,0,0,0.5); pointer-events:none; transition: top 0.1s, left 0.1s;"></div>
+
 <div id="toast">Aviso!</div>
 <div id="splash-screen">
     <img src="rfb.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.14</div>
+    <div class="splash-version">v1.0.15</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -230,7 +234,6 @@
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
-            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO (MARGENS NEGATIVAS MAIORES) -->
             <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
                     <img src="rfb.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
@@ -281,7 +284,7 @@
 <!-- Painel Unificado -->
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.14</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.15</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -377,6 +380,31 @@
 <script>
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
+
+// ================= TOOLTIP GLOBAL =================
+document.addEventListener('mousemove', function(e) {
+    let el = e.target.closest('[data-tooltip]');
+    let tooltip = document.getElementById('globalTooltip');
+    if(el && tooltip){
+        tooltip.innerHTML = el.getAttribute('data-tooltip').replace(/\n/g, '<br>');
+        tooltip.style.display = 'block';
+        let tooltipRect = tooltip.getBoundingClientRect();
+        let topPos = e.clientY + 15;
+        let leftPos = e.clientX + 15;
+        if(leftPos + tooltipRect.width > window.innerWidth - 10) {
+            leftPos = e.clientX - tooltipRect.width - 15;
+        }
+        if(topPos + tooltipRect.height > window.innerHeight - 10) {
+            topPos = e.clientY - tooltipRect.height - 15;
+        }
+        tooltip.style.top = topPos + 'px';
+        tooltip.style.left = leftPos + 'px';
+    } else if(tooltip) {
+        tooltip.style.display = 'none';
+    }
+}, true);
+// ==================================================
+
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
 let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
 
@@ -535,6 +563,7 @@ function confirmarDesmarcar(){
         let id=parseInt(idStr);
         let t=db.tarefas.find(x=>x.id===id);
         if(t){
+            // Item 9 - Excluindo histórico correlato
             db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
             t.concluida=false;
             t.pulada=false;
@@ -652,16 +681,6 @@ function abrirRitmoEstudo(){
     if(trilhasDoConcurso.length===0){htmlGridDesemp='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';htmlGridTempo='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';}
     document.getElementById('ritmoDesempGrid').innerHTML=htmlGridDesemp;
     document.getElementById('ritmoTempoGrid').innerHTML=htmlGridTempo;
-    
-    document.querySelectorAll('.ritmo-square').forEach(sq=>{
-        sq.addEventListener('mouseenter',function(){
-            let r=this.getBoundingClientRect();
-            if(r.left<150)this.classList.add('tt-left');
-            else if(window.innerWidth-r.right<150)this.classList.add('tt-right');
-        });
-        sq.addEventListener('mouseleave',function(){this.classList.remove('tt-left','tt-right');});
-    });
-    
     switchRitmoTab('desemp');abrirModal('modalRitmo');
 }
 
@@ -736,7 +755,7 @@ function renderizarConteudoProdutividade(){
     
     prodEstatisticasCache=estatisticas;
     prodEstatisticasTrilhaCache=estatisticasTrilha;
-    setTreeMode(currentTreeMode || 'tempo'); // Keep current tab if re-rendered
+    setTreeMode(currentTreeMode || 'tempo'); 
 }
 
 function setTreeMode(mode){
@@ -807,7 +826,6 @@ function renderProdChart(){
         let dataVals = [];
         let tooltipsInfo = [];
         
-        // Sort trilhas by name/number
         let sortedTrilhas = Object.keys(prodEstatisticasTrilhaCache).sort((a,b)=>{
             let numA = parseInt(a.match(/\d+/)?.[0] || 0);
             let numB = parseInt(b.match(/\d+/)?.[0] || 0);
@@ -816,7 +834,7 @@ function renderProdChart(){
 
         for (let tr of sortedTrilhas) {
             let orig = prodEstatisticasTrilhaCache[tr];
-            let nomeCurto = tr.replace('Trilha', 'M').trim(); // "Trilha 01" -> "M 01"
+            let nomeCurto = tr.replace('Trilha', 'M').trim(); 
             labels.push(nomeCurto);
             
             if (currentTreeMode === 'desemp_trilha') {
@@ -834,7 +852,7 @@ function renderProdChart(){
         if(labels.length === 0){ document.getElementById('chartTreemap').style.display='none'; return; }
         document.getElementById('chartTreemap').style.display='block';
         
-        let linhaCor = currentTreeMode === 'desemp_trilha' ? '#29b6f6' : '#fbc02d'; // Azul ou Amarelo das fotos
+        let linhaCor = currentTreeMode === 'desemp_trilha' ? '#29b6f6' : '#fbc02d'; 
         let fundoCor = currentTreeMode === 'desemp_trilha' ? 'rgba(41, 182, 246, 0.2)' : 'rgba(251, 192, 45, 0.2)';
         
         treemapChart = new Chart(ctx, {
@@ -866,14 +884,14 @@ function renderProdChart(){
                         cornerRadius: 6,
                         displayColors: false,
                         callbacks: {
-                            title: (items) => sortedTrilhas[items[0].dataIndex], // Show full Trilha name on hover
+                            title: (items) => sortedTrilhas[items[0].dataIndex], 
                             label: (item) => {
                                 let val = parseFloat(item.raw);
                                 let info = tooltipsInfo[item.dataIndex];
                                 if (currentTreeMode === 'desemp_trilha') return [`📈 Desempenho: ${val}%`, info];
                                 let h = Math.floor(val);
                                 let m = Math.round((val - h) * 60).toString().padStart(2, '0');
-                                return [`⏳ Média: ${h}h${m}m`, info];
+                                return [`⏳ Média: ${h.toString().padStart(2,'0')}h${m}m`, info];
                             }
                         }
                     }
