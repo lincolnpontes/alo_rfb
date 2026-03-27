@@ -207,8 +207,8 @@
         .ritmo-square[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 14px; white-space: nowrap; z-index: 9999; margin-bottom: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: none; }
         
         /* Ajuste do Tooltip do Ritmo de Estudo nas bordas - Ajustado para evitar vazamento total à esquerda e direita de forma segura */
-        .ritmo-square.tt-left[data-tooltip]:hover::after { left: -5px; transform: none; }
-        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto; right: -5px; transform: none; }
+        .ritmo-square.tt-left[data-tooltip]:hover::after { left: 0; transform: none; margin-left: 0; }
+        .ritmo-square.tt-right[data-tooltip]:hover::after { left: auto; right: 0; transform: none; margin-right: 0; }
         
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -278,7 +278,7 @@
     <div id="listaTarefas"></div>
 </div>
 
-<div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 40px; margin-bottom: 10px;">⚠️</div><h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3><p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado (seu diário de estudos continuará intacto).</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button><button class="btn-danger" onclick="confirmarDesmarcar()" style="margin:0; width:auto; padding: 10px 20px;">Sim, desmarcar</button></div></div></div>
+<div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 40px; margin-bottom: 10px;">⚠️</div><h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3><p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado e o registro no Diário de Estudos será <b>EXCLUÍDO</b>.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button><button class="btn-danger" onclick="confirmarDesmarcar()" style="margin:0; width:auto; padding: 10px 20px;">Sim, desmarcar</button></div></div></div>
 <div class="modal-overlay" id="modalConfirmarPular" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 50px; margin-bottom: 10px;">⏭️</div><h3 style="margin-top:0; color:var(--primaria);">Pular Tarefa?</h3><p style="font-size: 15px;">Deseja realmente pular esta tarefa? Ela será marcada como pulada sem contabilizar tempo ou questões.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="fecharModal('modalConfirmarPular')">Cancelar</button><button class="btn-action" onclick="confirmarPularTarefa()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Pular</button></div></div></div>
 <div class="modal-overlay" id="modalConfirmarDesfazerPulo" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 50px; margin-bottom: 10px;">↩️</div><h3 style="margin-top:0; color:var(--primaria);">Desfazer Pulo?</h3><p style="font-size: 15px;">Esta tarefa voltará a ficar PENDENTE e pronta para ser estudada.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="fecharModal('modalConfirmarDesfazerPulo')">Cancelar</button><button class="btn-action" onclick="confirmarDesfazerPulo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Desfazer</button></div></div></div>
 <div class="modal-overlay" id="modalConfirmarExcluirTarefa" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 50px; margin-bottom: 10px;">🗑️</div><h3 style="margin-top:0; color:#d32f2f;">Excluir Tarefa?</h3><p style="font-size: 15px;">Esta ação apagará a tarefa permanentemente. O seu diário de estudos continuará intacto.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="fecharModal('modalConfirmarExcluirTarefa')">Cancelar</button><button class="btn-danger" onclick="confirmarExcluirTarefaDefinitivo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Excluir</button></div></div></div>
@@ -361,7 +361,21 @@
 <div class="modal-overlay" id="modalRegistrarEstudo"><div class="modal"><div class="modal-title" id="regNomeTarefa" style="font-size:18px; color:var(--primaria);">Tarefa</div><input type="hidden" id="regIdTarefa"><div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div><div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado:</label><div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div><input type="hidden" id="regDuracaoTimer" value="0"></div><div class="form-group"><label>Tipo Final de Atividade:</label><select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select></div><div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);"><div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label><input type="number" id="qtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label><input type="number" id="qtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div></div><div class="form-group"><label>Observação Extra:</label><input type="text" id="regObs" placeholder=""></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button><button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button></div></div></div>
 <div class="modal-overlay" id="modalHistorico"><div class="modal" style="max-height: 90vh; overflow-y: auto;"><div class="modal-title"><div>📅 Diário de Estudos</div><button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button></div><div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
 <div class="modal-overlay" id="modalRitmo"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title">⌛ Ritmo de Estudo</div><div class="ritmo-tabs"><div class="ritmo-tab active" id="tabRitmoDesemp" onclick="switchRitmoTab('desemp')">Desempenho por trilha</div><div class="ritmo-tab" id="tabRitmoTempo" onclick="switchRitmoTab('tempo')">Atrasos e adiamentos</div></div><div id="ritmoDesempContent"><div class="ritmo-legend" id="ritmoDesempLegend"></div><div class="ritmo-grid" id="ritmoDesempGrid"></div></div><div id="ritmoTempoContent" style="display: none;"><div class="ritmo-legend" id="ritmoTempoLegend"></div><div class="ritmo-grid" id="ritmoTempoGrid"></div></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalRitmo')">Fechar</button></div></div></div>
-<div class="modal-overlay" id="modalProdutividade"><div class="modal" style="max-width: 1300px; width: 95%; max-height: 95vh; overflow-y: auto;"><div class="modal-title">📊 Produtividade Geral</div><div class="form-group" style="max-width:300px;"><label>Filtrar por Trilha:</label><select id="filtroProdTrilha" class="modal-select" onchange="renderizarConteudoProdutividade()"></select></div><div class="prod-layout"><div class="prod-col-left" id="prodDashCards"></div><div class="prod-col-right"><div class="prod-table-container"><div class="prod-table-row prod-table-header"><div class="prod-table-cell">Disciplina</div><div class="prod-table-cell center">Acertos</div><div class="prod-table-cell center">Questões</div><div class="prod-table-cell center">% Acertos</div><div class="prod-table-cell center">Tempo</div></div><div id="prodTableBody"></div></div></div></div><div style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);"><div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px;"><button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button><button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button></div><div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;"><canvas id="chartTreemap"></canvas></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar Painel</button></div></div></div>
+
+<div class="modal-overlay" id="modalProdutividade"><div class="modal" style="max-width: 1300px; width: 95%; max-height: 95vh; overflow-y: auto;"><div class="modal-title">📊 Produtividade Geral</div>
+<div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom: 15px;">
+    <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Trilha:</label><select id="filtroProdTrilha" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
+    <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Disciplina:</label><select id="filtroProdDisciplina" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
+</div>
+<div class="prod-layout"><div class="prod-col-left" id="prodDashCards"></div><div class="prod-col-right"><div class="prod-table-container"><div class="prod-table-row prod-table-header"><div class="prod-table-cell">Disciplina</div><div class="prod-table-cell center">Acertos</div><div class="prod-table-cell center">Questões</div><div class="prod-table-cell center">% Acertos</div><div class="prod-table-cell center">Tempo</div></div><div id="prodTableBody"></div></div></div></div><div style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+<div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px; flex-wrap: wrap;">
+    <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto (Disc)</button>
+    <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões (Disc)</button>
+    <button id="btnTreeDesempTrilha" class="btn-tree" onclick="setTreeMode('desemp_trilha')">Desempenho Médio (Trilha)</button>
+    <button id="btnTreeHorasTrilha" class="btn-tree" onclick="setTreeMode('horas_trilha')">Média de Horas (Trilha)</button>
+</div>
+<div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;"><canvas id="chartTreemap"></canvas></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar Painel</button></div></div></div>
+
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
@@ -369,7 +383,7 @@
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
-let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},currentTreeMode='tempo',treemapChart=null;
+let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
 
 let contextoRetornoImportacao = null;
 let contextoRetornoListagem = null;
@@ -518,7 +532,42 @@ function renderizarListaTarefas(){
 function iniciar(){try{aplicarTemaCores();renderizarOperadores();prepararTelaLogin();let opAtual=localStorage.getItem('estudos_operadorAtual');const l=document.getElementById('login-screen');if(opAtual&&db.operadores.find(o=>o.nome===opAtual)){l.style.display='none';document.getElementById('seletorOperador').value=opAtual;operadorAnteriorSelect=opAtual;}setTimeout(()=>{const s=document.getElementById('splash-screen');if(s){s.classList.add('hidden');setTimeout(()=>s.style.display='none',500);}},1500);if(db.configs.estadoTimer&&db.configs.estadoTimer.tempo>0){tempoTimer=db.configs.estadoTimer.tempo;targetTimer=db.configs.estadoTimer.target;modoTimer=db.configs.estadoTimer.modo;pomoFase=db.configs.estadoTimer.fase;pomoCicloAtual=db.configs.estadoTimer.ciclo;document.getElementById('btn-prog').classList.remove('active');document.getElementById('btn-reg').classList.remove('active');document.getElementById('btn-pomo').classList.remove('active');document.getElementById(modoTimer==='progressive'?'btn-prog':modoTimer==='regressive'?'btn-reg':'btn-pomo').classList.add('active');atualizarStatusModo();}renderizarCabecalhoTrilhas();setInterval(sincronizarComNuvemSilencioso,20000);sincronizarComNuvemSilencioso();atualizarDisplayTimer();}catch(erro){alert("Falha: \n"+erro.message);}}
 function abrirModal(id){document.getElementById(id).style.display='flex';document.body.classList.add('modal-open')}function fecharModal(id){document.getElementById(id).style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(m=>m.style.display==='flex'))document.body.classList.remove('modal-open')}
 document.getElementById('tarConcluida').addEventListener('change',function(e){if(!this.checked){this.checked=true;abrirModal('modalConfirmarDesmarcar');}});
-function confirmarDesmarcar(){document.getElementById('tarConcluida').checked=false;document.getElementById('tarQtdQuestoes').value=0;document.getElementById('tarQtdAcertos').value=0;document.getElementById('tarObs').value="";document.getElementById('tarTempoMinutos').value=0;document.getElementById('tarNumero').disabled=document.getElementById('tarExtra').checked;document.getElementById('tarTrilhaSelect').disabled=false;document.getElementById('tarDisciplina').disabled=false;document.getElementById('tarTipo').disabled=false;document.getElementById('tarTituloPersonalizado').disabled=false;document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';document.getElementById('tarAulasOptionsBox').style.opacity='1';document.getElementById('divEdicaoConcluida').style.display='none';fecharModal('modalConfirmarDesmarcar');}
+
+function confirmarDesmarcar(){
+    const idStr=document.getElementById('tarefaIdOriginal').value;
+    if(idStr!==""){
+        let id=parseInt(idStr);
+        let t=db.tarefas.find(x=>x.id===id);
+        if(t){
+            db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
+            t.concluida=false;
+            t.pulada=false;
+            t.tempoRegistrado=0;
+            t.questoes=0;
+            t.acertos=0;
+            t.obs="";
+            delete t.dataConclusao;
+            salvarModificacaoBasica();
+            renderizarListaTarefas();
+            renderizarDashboardTrilha();
+        }
+    }
+    document.getElementById('tarConcluida').checked=false;
+    document.getElementById('tarQtdQuestoes').value=0;
+    document.getElementById('tarQtdAcertos').value=0;
+    document.getElementById('tarObs').value="";
+    document.getElementById('tarTempoMinutos').value=0;
+    document.getElementById('tarNumero').disabled=document.getElementById('tarExtra').checked;
+    document.getElementById('tarTrilhaSelect').disabled=false;
+    document.getElementById('tarDisciplina').disabled=false;
+    document.getElementById('tarTipo').disabled=false;
+    document.getElementById('tarTituloPersonalizado').disabled=false;
+    document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';
+    document.getElementById('tarAulasOptionsBox').style.opacity='1';
+    document.getElementById('divEdicaoConcluida').style.display='none';
+    fecharModal('modalConfirmarDesmarcar');
+}
+
 function cancelarDesmarcar(){fecharModal('modalConfirmarDesmarcar');}
 function toggleDropdownAulas(){let opt=document.getElementById('tarAulasOptions');opt.style.display=opt.style.display==='block'?'none':'block';}
 function popularDropdownAulasCustom(){const conc=getConcursoAtivoNome(),dNome=document.getElementById('tarDisciplina').value,cont=document.getElementById('tarAulasOptions');cont.innerHTML='';if(dNome===""){cont.innerHTML=`<div style="padding:10px; color:#999; font-size:12px;">Sem disciplina vinculada</div>`;atualizarDisplayAulas();return;}let discObj=db.disciplinas.find(d=>d.concurso===conc&&d.nome===dNome);if(discObj&&discObj.aulas>0){let aInit=discObj.aulaInicio!==undefined?discObj.aulaInicio:1;for(let i=0;i<discObj.aulas;i++){let n=aInit+i,strAula=`Aula ${String(n).padStart(2,'0')}`;cont.innerHTML+=`<div class="custom-select-option" onclick="clickCheckboxAulas(event, this)"><input type="checkbox" value="${strAula}" onchange="atualizarDisplayAulas()"> <span>${strAula}</span></div>`;}}else{cont.innerHTML=`<div style="padding:10px; color:#999; font-size:12px;">Nenhuma aula cadastrada</div>`;}atualizarDisplayAulas();}
@@ -573,12 +622,299 @@ function salvarRegistroEstudo(){const idTar=parseInt(document.getElementById('re
 function abrirHistorico(){const l=document.getElementById('listaHistorico');l.innerHTML='';if(db.historico.length===0){l.innerHTML='<div style="text-align:center; padding:20px; color:var(--text-modal);">Nenhum registro.</div>';}else{[...db.historico].reverse().forEach(h=>{let tempoBadge=h.duracaoRegistrada?`<span style="background:var(--primaria); color:white; padding: 2px 6px; border-radius:10px; font-weight:bold; font-size:11px;">⏱️ ${Math.round(h.duracaoRegistrada/60)}m</span>`:'';l.innerHTML+=`<div style="background:var(--bg-input); border:1px solid var(--border-input); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:4px; color:var(--text-modal); position:relative;"><div style="display:flex; justify-content:space-between; align-items:center;"><strong style="color:var(--primaria); font-size:16px;">${h.tarefa||h.disciplina} ${tempoBadge}</strong><button onclick="excluirHistorico(${h.id})" style="background:none; border:none; color:#d32f2f; cursor:pointer; font-size:16px;">🗑️</button></div><div style="font-size:14px;"><strong>${h.disciplina}</strong> | ${h.tipoAtividade}</div>${h.observacao?`<div style="font-size:13px; opacity:0.8;"><em>Obs: ${h.observacao}</em></div>`:''}<div style="font-size:11px; opacity:0.6; margin-top:4px;">🎯 ${h.concurso||'Desconhecido'} • ${h.trilha||'Extra'}  | ${h.data.split(' ')[0]}</div></div>`;});}abrirModal('modalHistorico');}
 function excluirHistorico(id){let pwd=prompt("Digite a senha do painel para excluir este registro:");if(pwd===(db.configs.senhaAdmin||"1999")){let hInfo=db.historico.find(x=>x.id===id);db.historico=db.historico.filter(h=>h.id!==id);if(hInfo&&hInfo.tarefa){let taskObj=db.tarefas.find(t=>t.concurso===hInfo.concurso&&t.trilha===hInfo.trilha&&t.titulo===hInfo.tarefa);if(taskObj){let restam=db.historico.filter(x=>x.concurso===hInfo.concurso&&x.trilha===hInfo.trilha&&x.tarefa===hInfo.tarefa);if(restam.length===0){taskObj.concluida=false;taskObj.pulada=false;taskObj.tempoRegistrado=0;taskObj.questoes=0;taskObj.acertos=0;taskObj.obs="";delete taskObj.dataConclusao;}}}salvarModificacaoBasica();abrirHistorico();renderizarCabecalhoTrilhas();mostrarToast("Registro excluído.");}else alert("Senha incorreta!");}
 function switchRitmoTab(tab){document.getElementById('tabRitmoDesemp').classList.remove('active');document.getElementById('tabRitmoTempo').classList.remove('active');document.getElementById('ritmoDesempContent').style.display='none';document.getElementById('ritmoTempoContent').style.display='none';if(tab==='desemp'){document.getElementById('tabRitmoDesemp').classList.add('active');document.getElementById('ritmoDesempContent').style.display='block';}else{document.getElementById('tabRitmoTempo').classList.add('active');document.getElementById('ritmoTempoContent').style.display='block';}}
-function abrirRitmoEstudo(){let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");const legDesemp=[{c:'#2e7d32',t:'> 90% a 100%'},{c:'#4caf50',t:'> 87% a 90%'},{c:'#8bc34a',t:'> 84% a 87%'},{c:'#cddc39',t:'> 80% a 84%'},{c:'#ffeb3b',t:'> 76% a 80%'},{c:'#ffc107',t:'> 70% a 76%'},{c:'#ff9800',t:'> 60% a 70%'},{c:'#f44336',t:'Até 60%'}];let htmlLegD='';legDesemp.forEach(l=>htmlLegD+=`<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);document.getElementById('ritmoDesempLegend').innerHTML=htmlLegD;const legTempo=[{c:'#2e7d32',t:'Antecipação'},{c:'#8bc34a',t:'Em dia'},{c:'#ffeb3b',t:'Adiamento'},{c:'#f44336',t:'Atraso'},{c:'#555555',t:'S/ Prazo'}];let htmlLegT='';legTempo.forEach(l=>htmlLegT+=`<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);document.getElementById('ritmoTempoLegend').innerHTML=htmlLegT;let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc),trilhasDoConcurso=db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.id-b.id);let htmlGridDesemp='',htmlGridTempo='',hoje=new Date();hoje.setHours(0,0,0,0);trilhasDoConcurso.forEach((tr,index)=>{let tNome=tr.nome,matchNum=tNome.match(/\d+/),numVisual=matchNum?matchNum[0]:(index+1);let acertos=0,questoes=0;histOp.filter(h=>h.trilha===tNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});let pct=questoes>0?(acertos/questoes)*100:null,corD='#555555';if(pct!==null){if(pct>=90)corD='#2e7d32';else if(pct>=87)corD='#4caf50';else if(pct>=84)corD='#8bc34a';else if(pct>=80)corD='#cddc39';else if(pct>=76)corD='#ffeb3b';else if(pct>=70)corD='#ffc107';else if(pct>=60)corD='#ff9800';else corD='#f44336';}let descD=pct!==null?`${tNome}: ${pct.toFixed(1)}% (${acertos}/${questoes})`:`${tNome}: Sem questões`;let textColorD=(pct>=76&&pct<84)||(pct===null)?'#000':'#fff';htmlGridDesemp+=`<div class="ritmo-square" style="background-color: ${corD}; color: ${textColorD};" data-tooltip="${descD}">${numVisual}</div>`;let tarDaTrilha=tarefasOp.filter(x=>x.trilha===tNome&&!x.isExtra),corT='#555555',descT=`${tNome}: Sem dados`;if(tr.dataInicio&&tr.duracaoDias&&tarDaTrilha.length>0){let dataInicio=new Date(tr.dataInicio+"T00:00:00"),dataPrevista=new Date(dataInicio.getTime()+(tr.duracaoDias*24*60*60*1000)),todasConcluidas=tarDaTrilha.every(x=>x.concluida===true),diasDiff=0;if(todasConcluidas){let histDesta=histOp.filter(h=>h.trilha===tNome),ultimaDataStr=histDesta.length>0?histDesta[histDesta.length-1].data.split(' ')[0]:null;if(ultimaDataStr){let p=ultimaDataStr.split('/'),dataEfetiva=new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);diasDiff=Math.ceil((dataEfetiva-dataPrevista)/(1000*60*60*24));}}else{diasDiff=Math.ceil((hoje-dataPrevista)/(1000*60*60*24));}if(diasDiff<0){corT='#2e7d32';descT=`${tNome}: ${todasConcluidas?'Concluída':'Em andamento'} c/ ${Math.abs(diasDiff)} dia(s) de Antecipação`;}else if(diasDiff===0){corT='#8bc34a';descT=`${tNome}: ${todasConcluidas?'Concluída':'Em andamento'} exatamente no prazo!`;}else if(diasDiff>0&&diasDiff<=3){corT='#ffeb3b';descT=`${tNome}: ${todasConcluidas?'Concluída':'Atrasada'} c/ ${diasDiff} dia(s) (Adiamento leve)`;}else{corT='#f44336';descT=`${tNome}: ${todasConcluidas?'Concluída':'Atrasada'} c/ ${diasDiff} dia(s) de Atraso`;}}let textColorT=corT==='#ffeb3b'?'#000':'#fff';htmlGridTempo+=`<div class="ritmo-square" style="background-color: ${corT}; color: ${textColorT};" data-tooltip="${descT}">${numVisual}</div>`;});if(trilhasDoConcurso.length===0){htmlGridDesemp='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';htmlGridTempo='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';}document.getElementById('ritmoDesempGrid').innerHTML=htmlGridDesemp;document.getElementById('ritmoTempoGrid').innerHTML=htmlGridTempo;document.querySelectorAll('.ritmo-square').forEach(sq=>{sq.addEventListener('mouseenter',function(){let r=this.getBoundingClientRect();if(r.left<100)this.classList.add('tt-left');else if(window.innerWidth-r.right<100)this.classList.add('tt-right');});sq.addEventListener('mouseleave',function(){this.classList.remove('tt-left','tt-right');});});switchRitmoTab('desemp');abrirModal('modalRitmo');}
-function abrirProdutividade(){let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual),trilhasUnicas=[...new Set(histOp.map(h=>h.trilha).filter(x=>x))].sort((a,b)=>a.localeCompare(b));const selFiltro=document.getElementById('filtroProdTrilha');selFiltro.innerHTML='<option value="TODAS">📚 Todas as Trilhas</option>';trilhasUnicas.forEach(tr=>selFiltro.innerHTML+=`<option value="${tr}">${tr}</option>`);if(trilhaAtivaNome&&trilhasUnicas.includes(trilhaAtivaNome))selFiltro.value=trilhaAtivaNome;renderizarConteudoProdutividade();abrirModal('modalProdutividade');}
-function renderizarConteudoProdutividade(){let opAtual=document.getElementById('seletorOperador').value,filtroT=document.getElementById('filtroProdTrilha').value,histOp=db.historico.filter(h=>h.operador===opAtual);if(filtroT!=="TODAS")histOp=histOp.filter(h=>h.trilha===filtroT);let estatisticas={},totalSegs=0,totalQuest=0,totalAcertos=0,diasUnicos=new Set(),rawItemsByDisc={};histOp.forEach(h=>{if(!estatisticas[h.disciplina]){estatisticas[h.disciplina]={tempo:0,questoes:0,acertos:0};rawItemsByDisc[h.disciplina]=[];}estatisticas[h.disciplina].tempo+=(h.duracaoRegistrada||0);estatisticas[h.disciplina].questoes+=(h.questoes||0);estatisticas[h.disciplina].acertos+=(h.acertos||0);rawItemsByDisc[h.disciplina].push(h);totalSegs+=(h.duracaoRegistrada||0);totalQuest+=(h.questoes||0);totalAcertos+=(h.acertos||0);diasUnicos.add(h.data.split(' ')[0]);});let despGeral=totalQuest>0?((totalAcertos/totalQuest)*100).toFixed(1)+"%":"0%",hFormGeral=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m",mediaGeral="0h 00m";if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaGeral=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;let tbody=document.getElementById('prodTableBody');tbody.innerHTML='';for(let d in estatisticas){let e=estatisticas[d],pct=e.questoes>0?((e.acertos/e.questoes)*100).toFixed(1)+"%":"-",hForm=Math.floor(e.tempo/3600)+"h "+Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')+"m",idClean=d.replace(/[^a-zA-Z0-9]/g,''),htmlHist=`<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico e Histórico</div><div style="background:#ffffff; padding:10px; border-radius:8px; margin-bottom:15px;"><canvas id="chartDisc_${idClean}" style="max-height: 200px;"></canvas></div>`;rawItemsByDisc[d].reverse().forEach(reg=>{let rPct=reg.questoes>0?Math.round((reg.acertos/reg.questoes)*100):0,pts=reg.questoes>0?`🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)`:'';htmlHist+=`<div style="padding: 6px 0; border-bottom: 1px dashed var(--border-input); display: flex; justify-content: space-between; font-size:13px;"><span style="flex:1;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa||reg.tipoAtividade}</span><span style="text-align:right;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span></div>`;});tbody.innerHTML+=`<div class="prod-table-row" onclick="toggleDetailsRow('${idClean}', '${d}')"><div class="prod-table-cell" style="font-weight:bold;">${d}</div><div class="prod-table-cell center">${e.acertos}</div><div class="prod-table-cell center">${e.questoes}</div><div class="prod-table-cell center">${pct}</div><div class="prod-table-cell center">${hForm}</div></div><div class="prod-details-row" id="detalhe_${idClean}">${htmlHist}</div>`;}if(Object.keys(estatisticas).length>0){tbody.innerHTML+=`<div class="prod-table-row total"><div class="prod-table-cell">TOTAL</div><div class="prod-table-cell center">${totalAcertos}</div><div class="prod-table-cell center">${totalQuest}</div><div class="prod-table-cell center">${despGeral}</div><div class="prod-table-cell center">${hFormGeral}</div></div>`;}else{tbody.innerHTML='<div style="padding:20px; text-align:center; color:#999;">Sem dados.</div>';}Object.values(chartsDetalhe).forEach(c=>c.destroy());chartsDetalhe={};Chart.defaults.color=getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim()||'#555';Chart.defaults.font.family='Arial, sans-serif';prodEstatisticasCache=estatisticas;setTreeMode('tempo');}
-function setTreeMode(mode){currentTreeMode=mode;document.getElementById('btnTreeTempo').classList.toggle('active',mode==='tempo');document.getElementById('btnTreeQuest').classList.toggle('active',mode==='questoes');renderTreemap();}
-function renderTreemap(){if(treemapChart)treemapChart.destroy();let dataArr=[];for(let d in prodEstatisticasCache){let orig=prodEstatisticasCache[d],val=currentTreeMode==='tempo'?(orig.tempo/3600):orig.questoes;if(val>0)dataArr.push({name:d,value:val,orig:orig});}if(dataArr.length===0){document.getElementById('chartTreemap').style.display='none';return;}else{document.getElementById('chartTreemap').style.display='block';}const ctx=document.getElementById('chartTreemap').getContext('2d');try{let corTema=getComputedStyle(document.documentElement).getPropertyValue('--primaria').trim()||'#1565C0';treemapChart=new Chart(ctx,{type:'treemap',data:{datasets:[{tree:dataArr,key:'value',groups:['name'],spacing:2,borderWidth:0,backgroundColor:corTema,labels:{display:true,align:'center',position:'middle',color:'#ffffff',font:{size:14,weight:'bold'},formatter:(ctx)=>{let label=ctx.raw._data.name,pct=((ctx.raw.v/ctx.dataset.tree.reduce((a,b)=>a+b.value,0))*100).toFixed(1);return [label,pct+'%'];}}}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(17,17,17,0.95)',titleColor:'#fff',bodyColor:'#fff',titleFont:{size:14,weight:'bold'},bodyFont:{size:14},padding:12,cornerRadius:6,displayColors:false,callbacks:{title:(items)=>items[0].raw._data.name,label:(item)=>{let orig=item.raw._data.orig;return [`⏱️ Tempo: ${formatarHorasMinutos(orig.tempo)}`,`🎯 Questões: ${orig.questoes}`];}}}}}});}catch(e){console.error(e);}}
-function toggleDetailsRow(idClean,discNome){let div=document.getElementById('detalhe_'+idClean);if(div.style.display==='block'){div.style.display='none';return;}div.style.display='block';if(!chartsDetalhe[idClean]){let opAtual=document.getElementById('seletorOperador').value,filtroT=document.getElementById('filtroProdTrilha').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.disciplina===discNome);if(filtroT!=="TODAS")histOp=histOp.filter(h=>h.trilha===filtroT);let despPorDia={};histOp.forEach(h=>{if(h.questoes>0){let d=h.data.split(' ')[0];if(!despPorDia[d])despPorDia[d]={q:0,a:0};despPorDia[d].q+=h.questoes;despPorDia[d].a+=h.acertos;}});let labelsDisc=[],dataDisc=[],datasOrdenadas=Object.keys(despPorDia).sort((a,b)=>{let pA=a.split('/'),pB=b.split('/');return new Date(`${pA[2]}-${pA[1]}-${pA[0]}`)-new Date(`${pB[2]}-${pB[1]}-${pB[0]}`);});datasOrdenadas.forEach(d=>{labelsDisc.push(d);dataDisc.push(Math.round((despPorDia[d].a/despPorDia[d].q)*100));});if(labelsDisc.length>0){try{let ctx=document.getElementById('chartDisc_'+idClean).getContext('2d');chartsDetalhe[idClean]=new Chart(ctx,{type:'line',data:{labels:labelsDisc,datasets:[{label:'Desempenho (%)',data:dataDisc,borderColor:'#2e7d32',backgroundColor:'rgba(46, 125, 50, 0.2)',fill:true,tension:0.3,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:Chart.defaults.color}},y:{beginAtZero:true,max:100,ticks:{color:Chart.defaults.color}}}}});}catch(e){}}else{document.getElementById('chartDisc_'+idClean).parentElement.style.display='none';}}}
+function abrirRitmoEstudo(){
+    let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");
+    const legDesemp=[{c:'#2e7d32',t:'> 90% a 100%'},{c:'#4caf50',t:'> 87% a 90%'},{c:'#8bc34a',t:'> 84% a 87%'},{c:'#cddc39',t:'> 80% a 84%'},{c:'#ffeb3b',t:'> 76% a 80%'},{c:'#ffc107',t:'> 70% a 76%'},{c:'#ff9800',t:'> 60% a 70%'},{c:'#f44336',t:'Até 60%'}];let htmlLegD='';legDesemp.forEach(l=>htmlLegD+=`<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);document.getElementById('ritmoDesempLegend').innerHTML=htmlLegD;
+    const legTempo=[{c:'#2e7d32',t:'Antecipação'},{c:'#8bc34a',t:'Em dia'},{c:'#ffeb3b',t:'Adiamento'},{c:'#f44336',t:'Atraso'},{c:'#555555',t:'S/ Prazo'}];let htmlLegT='';legTempo.forEach(l=>htmlLegT+=`<div class="ritmo-legend-item"><div class="ritmo-legend-color" style="background:${l.c};"></div>${l.t}</div>`);document.getElementById('ritmoTempoLegend').innerHTML=htmlLegT;
+    let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc),trilhasDoConcurso=db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.id-b.id);
+    let htmlGridDesemp='',htmlGridTempo='',hoje=new Date();hoje.setHours(0,0,0,0);
+    trilhasDoConcurso.forEach((tr,index)=>{
+        let tNome=tr.nome,matchNum=tNome.match(/\d+/),numVisual=matchNum?matchNum[0]:(index+1);
+        let acertos=0,questoes=0;histOp.filter(h=>h.trilha===tNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});
+        let pct=questoes>0?(acertos/questoes)*100:null,corD='#555555';
+        if(pct!==null){if(pct>=90)corD='#2e7d32';else if(pct>=87)corD='#4caf50';else if(pct>=84)corD='#8bc34a';else if(pct>=80)corD='#cddc39';else if(pct>=76)corD='#ffeb3b';else if(pct>=70)corD='#ffc107';else if(pct>=60)corD='#ff9800';else corD='#f44336';}
+        let descD=pct!==null?`${tNome}: ${pct.toFixed(1)}% (${acertos}/${questoes})`:`${tNome}: Sem questões`;let textColorD=(pct>=76&&pct<84)||(pct===null)?'#000':'#fff';
+        htmlGridDesemp+=`<div class="ritmo-square" style="background-color: ${corD}; color: ${textColorD};" data-tooltip="${descD}">${numVisual}</div>`;
+        let tarDaTrilha=tarefasOp.filter(x=>x.trilha===tNome&&!x.isExtra),corT='#555555',descT=`${tNome}: Sem dados`;
+        if(tr.dataInicio&&tr.duracaoDias&&tarDaTrilha.length>0){
+            let dataInicio=new Date(tr.dataInicio+"T00:00:00"),dataPrevista=new Date(dataInicio.getTime()+(tr.duracaoDias*24*60*60*1000)),todasConcluidas=tarDaTrilha.every(x=>x.concluida===true),diasDiff=0;
+            if(todasConcluidas){
+                let histDesta=histOp.filter(h=>h.trilha===tNome),ultimaDataStr=histDesta.length>0?histDesta[histDesta.length-1].data.split(' ')[0]:null;
+                if(ultimaDataStr){
+                    let p=ultimaDataStr.split('/'),dataEfetiva=new Date(`${p[2]}-${p[1]}-${p[0]}T00:00:00`);
+                    diasDiff=Math.ceil((dataEfetiva-dataPrevista)/(1000*60*60*24));
+                }
+            }else{diasDiff=Math.ceil((hoje-dataPrevista)/(1000*60*60*24));}
+            if(diasDiff<0){corT='#2e7d32';descT=`${tNome}: ${todasConcluidas?'Concluída':'Em andamento'} c/ ${Math.abs(diasDiff)} dia(s) de Antecipação`;}
+            else if(diasDiff===0){corT='#8bc34a';descT=`${tNome}: ${todasConcluidas?'Concluída':'Em andamento'} exatamente no prazo!`;}
+            else if(diasDiff>0&&diasDiff<=3){corT='#ffeb3b';descT=`${tNome}: ${todasConcluidas?'Concluída':'Atrasada'} c/ ${diasDiff} dia(s) (Adiamento leve)`;}
+            else{corT='#f44336';descT=`${tNome}: ${todasConcluidas?'Concluída':'Atrasada'} c/ ${diasDiff} dia(s) de Atraso`;}
+        }
+        let textColorT=corT==='#ffeb3b'?'#000':'#fff';
+        htmlGridTempo+=`<div class="ritmo-square" style="background-color: ${corT}; color: ${textColorT};" data-tooltip="${descT}">${numVisual}</div>`;
+    });
+    if(trilhasDoConcurso.length===0){htmlGridDesemp='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';htmlGridTempo='<div style="color:var(--text-modal); width:100%; text-align:center;">Nenhuma trilha encontrada.</div>';}
+    document.getElementById('ritmoDesempGrid').innerHTML=htmlGridDesemp;
+    document.getElementById('ritmoTempoGrid').innerHTML=htmlGridTempo;
+    
+    document.querySelectorAll('.ritmo-square').forEach(sq=>{
+        sq.addEventListener('mouseenter',function(){
+            let r=this.getBoundingClientRect();
+            if(r.left<150)this.classList.add('tt-left');
+            else if(window.innerWidth-r.right<150)this.classList.add('tt-right');
+        });
+        sq.addEventListener('mouseleave',function(){this.classList.remove('tt-left','tt-right');});
+    });
+    
+    switchRitmoTab('desemp');abrirModal('modalRitmo');
+}
+
+function abrirProdutividade(){
+    let opAtual=document.getElementById('seletorOperador').value;
+    let histOp=db.historico.filter(h=>h.operador===opAtual);
+    
+    let trilhasUnicas=[...new Set(histOp.map(h=>h.trilha).filter(x=>x))].sort((a,b)=>a.localeCompare(b));
+    const selFiltroTrilha=document.getElementById('filtroProdTrilha');
+    selFiltroTrilha.innerHTML='<option value="TODAS">📚 Todas as Trilhas</option>';
+    trilhasUnicas.forEach(tr=>selFiltroTrilha.innerHTML+=`<option value="${tr}">${tr}</option>`);
+    if(trilhaAtivaNome&&trilhasUnicas.includes(trilhaAtivaNome))selFiltroTrilha.value=trilhaAtivaNome;
+    
+    let discUnicas=[...new Set(histOp.map(h=>h.disciplina).filter(x=>x))].sort((a,b)=>a.localeCompare(b));
+    const selFiltroDisc=document.getElementById('filtroProdDisciplina');
+    selFiltroDisc.innerHTML='<option value="TODAS">📚 Todas as Disciplinas</option>';
+    discUnicas.forEach(d=>selFiltroDisc.innerHTML+=`<option value="${d}">${d}</option>`);
+    
+    renderizarConteudoProdutividade();
+    abrirModal('modalProdutividade');
+}
+
+function renderizarConteudoProdutividade(){
+    let opAtual=document.getElementById('seletorOperador').value;
+    let filtroT=document.getElementById('filtroProdTrilha').value;
+    let filtroD=document.getElementById('filtroProdDisciplina').value;
+    let histOp=db.historico.filter(h=>h.operador===opAtual);
+    if(filtroT!=="TODAS")histOp=histOp.filter(h=>h.trilha===filtroT);
+    if(filtroD!=="TODAS")histOp=histOp.filter(h=>h.disciplina===filtroD);
+    
+    let estatisticas={}, estatisticasTrilha={}, totalSegs=0, totalQuest=0, totalAcertos=0, diasUnicos=new Set(), rawItemsByDisc={};
+    
+    histOp.forEach(h=>{
+        if(!estatisticas[h.disciplina]){estatisticas[h.disciplina]={tempo:0,questoes:0,acertos:0};rawItemsByDisc[h.disciplina]=[];}
+        estatisticas[h.disciplina].tempo+=(h.duracaoRegistrada||0);
+        estatisticas[h.disciplina].questoes+=(h.questoes||0);
+        estatisticas[h.disciplina].acertos+=(h.acertos||0);
+        rawItemsByDisc[h.disciplina].push(h);
+        
+        if(!estatisticasTrilha[h.trilha]){estatisticasTrilha[h.trilha]={tempo:0,questoes:0,acertos:0, diasUnicos: new Set()};}
+        estatisticasTrilha[h.trilha].tempo+=(h.duracaoRegistrada||0);
+        estatisticasTrilha[h.trilha].questoes+=(h.questoes||0);
+        estatisticasTrilha[h.trilha].acertos+=(h.acertos||0);
+        estatisticasTrilha[h.trilha].diasUnicos.add(h.data.split(' ')[0]);
+
+        totalSegs+=(h.duracaoRegistrada||0);
+        totalQuest+=(h.questoes||0);
+        totalAcertos+=(h.acertos||0);
+        diasUnicos.add(h.data.split(' ')[0]);
+    });
+    
+    let despGeral=totalQuest>0?((totalAcertos/totalQuest)*100).toFixed(1)+"%":"0%",hFormGeral=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m",mediaGeral="0h 00m";
+    if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaGeral=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}
+    document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
+    
+    let tbody=document.getElementById('prodTableBody');tbody.innerHTML='';
+    for(let d in estatisticas){
+        let e=estatisticas[d],pct=e.questoes>0?((e.acertos/e.questoes)*100).toFixed(1)+"%":"-",hForm=Math.floor(e.tempo/3600)+"h "+Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')+"m",idClean=d.replace(/[^a-zA-Z0-9]/g,''),htmlHist=`<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico e Histórico</div><div style="background:#ffffff; padding:10px; border-radius:8px; margin-bottom:15px;"><canvas id="chartDisc_${idClean}" style="max-height: 200px;"></canvas></div>`;
+        rawItemsByDisc[d].reverse().forEach(reg=>{
+            let rPct=reg.questoes>0?Math.round((reg.acertos/reg.questoes)*100):0,pts=reg.questoes>0?`🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)`:'';
+            htmlHist+=`<div style="padding: 6px 0; border-bottom: 1px dashed var(--border-input); display: flex; justify-content: space-between; font-size:13px;"><span style="flex:1;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa||reg.tipoAtividade}</span><span style="text-align:right;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span></div>`;
+        });
+        tbody.innerHTML+=`<div class="prod-table-row" onclick="toggleDetailsRow('${idClean}', '${d}')"><div class="prod-table-cell" style="font-weight:bold;">${d}</div><div class="prod-table-cell center">${e.acertos}</div><div class="prod-table-cell center">${e.questoes}</div><div class="prod-table-cell center">${pct}</div><div class="prod-table-cell center">${hForm}</div></div><div class="prod-details-row" id="detalhe_${idClean}">${htmlHist}</div>`;
+    }
+    if(Object.keys(estatisticas).length>0){tbody.innerHTML+=`<div class="prod-table-row total"><div class="prod-table-cell">TOTAL</div><div class="prod-table-cell center">${totalAcertos}</div><div class="prod-table-cell center">${totalQuest}</div><div class="prod-table-cell center">${despGeral}</div><div class="prod-table-cell center">${hFormGeral}</div></div>`;}
+    else{tbody.innerHTML='<div style="padding:20px; text-align:center; color:#999;">Sem dados.</div>';}
+    
+    Object.values(chartsDetalhe).forEach(c=>c.destroy());
+    chartsDetalhe={};
+    Chart.defaults.color=getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim()||'#555';
+    Chart.defaults.font.family='Arial, sans-serif';
+    
+    prodEstatisticasCache=estatisticas;
+    prodEstatisticasTrilhaCache=estatisticasTrilha;
+    setTreeMode('tempo');
+}
+
+function setTreeMode(mode){
+    currentTreeMode=mode;
+    document.getElementById('btnTreeTempo').classList.toggle('active',mode==='tempo');
+    document.getElementById('btnTreeQuest').classList.toggle('active',mode==='questoes');
+    document.getElementById('btnTreeDesempTrilha').classList.toggle('active',mode==='desemp_trilha');
+    document.getElementById('btnTreeHorasTrilha').classList.toggle('active',mode==='horas_trilha');
+    renderProdChart();
+}
+
+function renderProdChart(){
+    if(treemapChart) treemapChart.destroy();
+    const ctx = document.getElementById('chartTreemap').getContext('2d');
+    let corTema = getComputedStyle(document.documentElement).getPropertyValue('--primaria').trim() || '#1565C0';
+    
+    if (currentTreeMode === 'tempo' || currentTreeMode === 'questoes') {
+        let dataArr=[];
+        for(let d in prodEstatisticasCache){
+            let orig=prodEstatisticasCache[d],val=currentTreeMode==='tempo'?(orig.tempo/3600):orig.questoes;
+            if(val>0)dataArr.push({name:d,value:val,orig:orig});
+        }
+        if(dataArr.length===0){document.getElementById('chartTreemap').style.display='none';return;}
+        else{document.getElementById('chartTreemap').style.display='block';}
+        
+        try{
+            treemapChart=new Chart(ctx,{
+                type:'treemap',
+                data:{
+                    datasets:[{
+                        tree:dataArr,key:'value',groups:['name'],spacing:2,borderWidth:0,backgroundColor:corTema,
+                        labels:{
+                            display:true,align:'center',position:'middle',color:'#ffffff',font:{size:14,weight:'bold'},
+                            formatter:(ctx)=>{
+                                let label=ctx.raw._data.name,pct=((ctx.raw.v/ctx.dataset.tree.reduce((a,b)=>a+b.value,0))*100).toFixed(1);
+                                return [label,pct+'%'];
+                            }
+                        }
+                    }]
+                },
+                options:{
+                    maintainAspectRatio:false,
+                    plugins:{
+                        legend:{display:false},
+                        tooltip:{
+                            backgroundColor:'rgba(17,17,17,0.95)',
+                            titleColor:'#fff',
+                            bodyColor:'#fff',
+                            titleFont:{size:14,weight:'bold'},
+                            bodyFont:{size:14},
+                            padding:12,
+                            cornerRadius:6,
+                            displayColors:false,
+                            callbacks:{
+                                title:(items)=>items[0].raw._data.name,
+                                label:(item)=>{
+                                    let orig=item.raw._data.orig;
+                                    return [`⏱️ Tempo: ${formatarHorasMinutos(orig.tempo)}`,`🎯 Questões: ${orig.questoes}`];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }catch(e){console.error(e);}
+    } else {
+        let labels = [];
+        let dataVals = [];
+        let tooltipsInfo = [];
+        
+        for (let tr in prodEstatisticasTrilhaCache) {
+            let orig = prodEstatisticasTrilhaCache[tr];
+            labels.push(tr);
+            if (currentTreeMode === 'desemp_trilha') {
+                let pct = orig.questoes > 0 ? ((orig.acertos / orig.questoes) * 100) : 0;
+                dataVals.push(pct.toFixed(1));
+                tooltipsInfo.push(`🎯 ${orig.acertos}/${orig.questoes} acertos`);
+            } else if (currentTreeMode === 'horas_trilha') {
+                let dias = orig.diasUnicos.size || 1;
+                let mediaSegs = orig.tempo / dias;
+                dataVals.push((mediaSegs / 3600).toFixed(2));
+                tooltipsInfo.push(`⏱️ ${formatarHorasMinutos(mediaSegs)} / dia`);
+            }
+        }
+        
+        if(labels.length === 0){ document.getElementById('chartTreemap').style.display='none'; return; }
+        document.getElementById('chartTreemap').style.display='block';
+        
+        treemapChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{ data: dataVals, backgroundColor: corTema, borderRadius: 4 }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(17,17,17,0.95)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        titleFont: {size: 14, weight: 'bold'},
+                        bodyFont: {size: 14},
+                        padding: 12,
+                        cornerRadius: 6,
+                        displayColors: false,
+                        callbacks: {
+                            title: (items) => items[0].label,
+                            label: (item) => {
+                                let val = item.formattedValue;
+                                let info = tooltipsInfo[item.dataIndex];
+                                if (currentTreeMode === 'desemp_trilha') return [`📈 Desempenho: ${val}%`, info];
+                                return [`⏳ Média: ${val} horas`, info];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: Chart.defaults.color } },
+                    x: { ticks: { color: Chart.defaults.color } }
+                }
+            }
+        });
+    }
+}
+
+function toggleDetailsRow(idClean,discNome){
+    let div=document.getElementById('detalhe_'+idClean);
+    if(div.style.display==='block'){div.style.display='none';return;}
+    div.style.display='block';
+    if(!chartsDetalhe[idClean]){
+        let opAtual=document.getElementById('seletorOperador').value;
+        let filtroT=document.getElementById('filtroProdTrilha').value;
+        let filtroD=document.getElementById('filtroProdDisciplina').value;
+        let histOp=db.historico.filter(h=>h.operador===opAtual&&h.disciplina===discNome);
+        if(filtroT!=="TODAS")histOp=histOp.filter(h=>h.trilha===filtroT);
+        if(filtroD!=="TODAS")histOp=histOp.filter(h=>h.disciplina===filtroD);
+        
+        let despPorDia={};
+        histOp.forEach(h=>{if(h.questoes>0){let d=h.data.split(' ')[0];if(!despPorDia[d])despPorDia[d]={q:0,a:0};despPorDia[d].q+=h.questoes;despPorDia[d].a+=h.acertos;}});
+        let labelsDisc=[],dataDisc=[],datasOrdenadas=Object.keys(despPorDia).sort((a,b)=>{let pA=a.split('/'),pB=b.split('/');return new Date(`${pA[2]}-${pA[1]}-${pA[0]}`)-new Date(`${pB[2]}-${pB[1]}-${pB[0]}`);});
+        datasOrdenadas.forEach(d=>{labelsDisc.push(d);dataDisc.push(Math.round((despPorDia[d].a/despPorDia[d].q)*100));});
+        if(labelsDisc.length>0){
+            try{
+                let ctx=document.getElementById('chartDisc_'+idClean).getContext('2d');
+                chartsDetalhe[idClean]=new Chart(ctx,{
+                    type:'line',
+                    data:{labels:labelsDisc,datasets:[{label:'Desempenho (%)',data:dataDisc,borderColor:'#2e7d32',backgroundColor:'rgba(46, 125, 50, 0.2)',fill:true,tension:0.3,pointRadius:5}]},
+                    options:{
+                        responsive:true,maintainAspectRatio:false,
+                        plugins:{
+                            legend:{display:false},
+                            tooltip: {
+                                backgroundColor: 'rgba(17,17,17,0.95)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                                titleFont: {size: 14, weight: 'bold'},
+                                bodyFont: {size: 14},
+                                padding: 12,
+                                cornerRadius: 6,
+                                displayColors: false,
+                                callbacks: {
+                                    label: function(ctx) { return 'Desempenho: ' + ctx.raw + '%'; }
+                                }
+                            }
+                        },
+                        scales:{x:{ticks:{color:Chart.defaults.color}},y:{beginAtZero:true,max:100,ticks:{color:Chart.defaults.color}}}
+                    }
+                });
+            }catch(e){}
+        }else{document.getElementById('chartDisc_'+idClean).parentElement.style.display='none';}
+    }
+}
 function abrirHabilidades(){let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc&&t.concluida&&!t.pulada&&!t.isExtra),discs=db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)),html='';discs.forEach((d,index)=>{let dNome=d.nome,totalAulas=d.aulas||0,aulasSet=new Set();tarefasOp.filter(t=>t.disciplina===dNome).forEach(t=>{if(t.aulas){t.aulas.split(',').forEach(a=>{let aClean=a.trim();if(aClean)aulasSet.add(aClean);});}});let unqAulas=aulasSet.size,pctAulas=totalAulas>0?Math.min(80,(unqAulas/totalAulas)*80):0,acertos=0,questoes=0;histOp.filter(h=>h.disciplina===dNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});let pctDesemp=questoes>0?(acertos/questoes)*20:0,bonus=Math.floor(acertos/1000),totalRaw=pctAulas+pctDesemp+bonus,totalPct=Math.min(100,Math.max(0,totalRaw)),displayPct=totalPct.toFixed(1).replace('.0','')+'%',nivel="Neófito",corBg="#eeeeee",corTxt="#333333";if(totalPct<40){nivel="Neófito";corBg="#eeeeee";corTxt="#555555";}else if(totalPct<50){nivel="Noviço";corBg="#fff9c4";corTxt="#f57f17";}else if(totalPct<60){nivel="Aprendiz";corBg="#dcedc8";corTxt="#33691e";}else if(totalPct<70){nivel="Amador";corBg="#b3e5fc";corTxt="#01579b";}else if(totalPct<80){nivel="Profissional";corBg="#c5cae9";corTxt="#1a237e";}else if(totalPct<90){nivel="Perito";corBg="#ffe0b2";corTxt="#e65100";}else if(totalPct<100){nivel="Mestre";corBg="#ffccbc";corTxt="#bf360c";}else{nivel="Gr. Mestre";corBg="#ffd54f";corTxt="#b45f06";}html+=`<div class="hab-row"><div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div><div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div><div class="hab-bar-bg"><div class="hab-bar-fill" style="width: ${totalPct}%;"></div><div class="hab-bar-text">${displayPct}</div></div></div>`;});if(html==='')html='<div style="padding: 20px; text-align: center; color: var(--text-modal);">Nenhuma disciplina.</div>';document.getElementById('listaHabilidades').innerHTML=html;abrirModal('modalHabilidades');}
 async function pushParaNuvemSilencioso(){if(!navigator.onLine||!db.configs.urlAppScript)return;try{await fetch(db.configs.urlAppScript,{method:'POST',body:JSON.stringify({action:'salvar_banco_completo',dados:db})});}catch(e){}}
 function salvarModificacaoBasica(){db.configs.ultimaModificacaoLocal=Date.now();salvarBancoLocal();pushParaNuvemSilencioso();}
