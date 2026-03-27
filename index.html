@@ -12,7 +12,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.15</title>
+    <title>Alô RFB v1.0.16</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -234,6 +234,7 @@
 <div class="app-container">
     <div id="sticky-header">
         <div class="header">
+            <!-- Usuário com a Logo da RFB encostada no nome Alô RFB - TAMANHO DA IMAGEM ATUALIZADO -->
             <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
                     <img src="rfb.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
@@ -340,17 +341,40 @@
 <div class="modal-overlay" id="modalFormTrilha"><div class="modal"><div class="modal-title">Configurar Trilha</div><input type="hidden" id="edtTrilhaId"><input type="hidden" id="edtTrilhaConcurso"><div class="form-group"><label>Nome da Trilha:</label><input type="text" id="edtTrilhaNome"></div><div class="form-group"><label>Data de Início (Vazio = Não iniciada):</label><input type="date" id="edtTrilhaDataInicio"></div><div class="form-group"><label>Duração Prevista (em dias):</label><input type="number" id="edtTrilhaDias" min="1" placeholder="Ex: 7"></div><div class="modal-actions" style="flex-wrap: wrap; gap: 10px;"><button class="btn-cancel" onclick="fecharModal('modalFormTrilha'); if(document.getElementById('listagemContextoAtivo').value === 'trilhas') abrirGerenciar('trilhas', document.getElementById('edtTrilhaConcurso').value)">Cancelar</button><button class="btn-importar" onclick="salvarEdicaoTrilha(true)">Importar</button><button class="btn-action" onclick="salvarEdicaoTrilha(false)">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalFormDisciplina"><div class="modal"><div class="modal-title">Disciplina</div><input type="hidden" id="discIdOriginal"><input type="hidden" id="discConcursoPai"><div class="form-group"><label>Nome da Disciplina:</label><input type="text" id="discNome" placeholder="Ex: Direito Constitucional"></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Inicia na Aula:</label><input type="number" id="discAulaInicio" placeholder="Ex: 0" value="0"></div><div class="form-group" style="flex:1;"><label>Qtd Aulas:</label><input type="number" id="discAulas" placeholder="Ex: 15" min="0"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormDisciplina'); if(contextoRetornoListagem === 'importacao') abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value); else abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button><button class="btn-action" onclick="salvarDisciplina()">Salvar</button></div></div></div>
 
-<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal"><div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Tarefa Nº:</label><input type="number" id="tarNumero" placeholder="Ex: 1" min="1"></div><div class="form-group" style="flex:2;"><label>Trilha:</label><select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select></div></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Disciplina:</label><select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulasCustom()"></select></div><div class="form-group" style="flex:1;"><label>Aula(s):</label><div style="position:relative;"><div class="custom-select-box" id="tarAulasOptionsBox" onclick="toggleDropdownAulas()"><span id="tarAulasDisplay">Selecione...</span><span>▼</span></div><div class="custom-select-options" id="tarAulasOptions"></div></div></div></div><div class="form-group"><label>Título da Tarefa:</label><textarea id="tarTituloPersonalizado" rows="2" style="resize:vertical;" placeholder="Ex: Direitos Políticos e Partidos..."></textarea></div>
+<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal"><div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Tarefa Nº:</label><input type="number" id="tarNumero" placeholder="Ex: 1" min="1"></div><div class="form-group" style="flex:2;"><label>Trilha:</label><select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select></div></div>
 
-<!-- TAREFA EXTRA INCORPORADA AQUI -->
-<div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
-    <div class="form-group" style="flex:2; margin-bottom:0;">
+<!-- MODIFICADO: Ajuste no alinhamento visual de Disciplina/Aulas -->
+<div style="display:flex; gap:10px;">
+    <div class="form-group" style="flex:1;">
+        <label>Disciplina:</label>
+        <select id="tarDisciplina" class="modal-select" onchange="popularDropdownAulasCustom()"></select>
+    </div>
+    <div class="form-group" style="flex:1;">
+        <label>Aula(s):</label>
+        <div style="position:relative;">
+            <div class="custom-select-box" id="tarAulasOptionsBox" onclick="toggleDropdownAulas()" style="height:38px; border-radius:8px; padding:0 12px; box-sizing:border-box; display:flex; align-items:center;">
+                <span id="tarAulasDisplay" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85%;">Selecione...</span>
+                <span>▼</span>
+            </div>
+            <div class="custom-select-options" id="tarAulasOptions"></div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group"><label>Título da Tarefa:</label><textarea id="tarTituloPersonalizado" rows="2" style="resize:vertical;" placeholder="Ex: Direitos Políticos e Partidos..."></textarea></div>
+
+<!-- MODIFICADO: Ajuste na simetria de Tipo/Tarefa Extra -->
+<div style="display:flex; gap:10px; margin-bottom: 15px;">
+    <div class="form-group" style="flex:1; margin-bottom:0;">
         <label>Atividade (Tipo):</label>
         <select id="tarTipo" class="modal-select" style="margin-bottom:0;"></select>
     </div>
-    <div class="switch-container" style="flex:1; margin-bottom:0; padding:5px 10px; height:38px; justify-content:space-between; border: 1px solid var(--border-input);">
-        <span style="font-weight:bold;font-size:12px;">Tarefa Extra</span>
-        <label class="switch"><input type="checkbox" id="tarExtra" onchange="document.getElementById('tarNumero').disabled = this.checked"><span class="slider"></span></label>
+    <div class="form-group" style="flex:1; margin-bottom:0;">
+        <label>Classificação:</label>
+        <div class="switch-container" style="margin:0; padding:0 12px; height:38px; border-radius:8px; justify-content:space-between; border: 1px solid var(--border-input); box-sizing:border-box;">
+            <span style="font-weight:bold;font-size:14px; color: var(--text-modal);">Tarefa Extra</span>
+            <label class="switch" style="margin:0;"><input type="checkbox" id="tarExtra" onchange="document.getElementById('tarNumero').disabled = this.checked"><span class="slider"></span></label>
+        </div>
     </div>
 </div>
 
@@ -377,13 +401,13 @@
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
-<script>
+    <script>
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
 
-// ================= TOOLTIP GLOBAL =================
+// ================= TOOLTIP GLOBAL INTELIGENTE (ITEM 7) =================
 document.addEventListener('mousemove', function(e) {
-    let el = e.target.closest('[data-tooltip]');
+    let el = e.target.closest('.ritmo-square[data-tooltip]');
     let tooltip = document.getElementById('globalTooltip');
     if(el && tooltip){
         tooltip.innerHTML = el.getAttribute('data-tooltip').replace(/\n/g, '<br>');
@@ -391,19 +415,23 @@ document.addEventListener('mousemove', function(e) {
         let tooltipRect = tooltip.getBoundingClientRect();
         let topPos = e.clientY + 15;
         let leftPos = e.clientX + 15;
+        
+        // Se bater na direita da tela, inverte pra esquerda
         if(leftPos + tooltipRect.width > window.innerWidth - 10) {
             leftPos = e.clientX - tooltipRect.width - 15;
         }
+        // Se bater embaixo da tela, joga pra cima
         if(topPos + tooltipRect.height > window.innerHeight - 10) {
             topPos = e.clientY - tooltipRect.height - 15;
         }
+        
         tooltip.style.top = topPos + 'px';
         tooltip.style.left = leftPos + 'px';
     } else if(tooltip) {
         tooltip.style.display = 'none';
     }
 }, true);
-// ==================================================
+// =========================================================================
 
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
 let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
@@ -563,7 +591,6 @@ function confirmarDesmarcar(){
         let id=parseInt(idStr);
         let t=db.tarefas.find(x=>x.id===id);
         if(t){
-            // Item 9 - Excluindo histórico correlato
             db.historico=db.historico.filter(h=>!(h.concurso===t.concurso&&h.trilha===t.trilha&&h.tarefa===t.titulo));
             t.concluida=false;
             t.pulada=false;
@@ -790,8 +817,10 @@ function renderProdChart(){
                         labels:{
                             display:true,align:'center',position:'middle',color:'#ffffff',font:{size:14,weight:'bold'},
                             formatter:(ctx)=>{
-                                let label=ctx.raw._data.name,pct=((ctx.raw.v/ctx.dataset.tree.reduce((a,b)=>a+b.value,0))*100).toFixed(1);
-                                return [label,pct+'%'];
+                                try {
+                                    let label=ctx.raw._data.name,pct=((ctx.raw.v/ctx.dataset.tree.reduce((a,b)=>a+b.value,0))*100).toFixed(1);
+                                    return [label,pct+'%'];
+                                } catch(e) { return ''; }
                             }
                         }
                     }]
@@ -810,10 +839,14 @@ function renderProdChart(){
                             cornerRadius:6,
                             displayColors:false,
                             callbacks:{
-                                title:(items)=>items[0].raw._data.name,
+                                title:(items)=>{
+                                    try { return items[0].raw._data.name; } catch(e) { return ''; }
+                                },
                                 label:(item)=>{
-                                    let orig=item.raw._data.orig;
-                                    return [`⏱️ Tempo: ${formatarHorasMinutos(orig.tempo)}`,`🎯 Questões: ${orig.questoes}`];
+                                    try {
+                                        let orig=item.raw._data.orig;
+                                        return [`⏱️ Tempo: ${formatarHorasMinutos(orig.tempo)}`,`🎯 Questões: ${orig.questoes}`];
+                                    } catch(e) { return ''; }
                                 }
                             }
                         }
@@ -852,9 +885,9 @@ function renderProdChart(){
         if(labels.length === 0){ document.getElementById('chartTreemap').style.display='none'; return; }
         document.getElementById('chartTreemap').style.display='block';
         
-        let linhaCor = currentTreeMode === 'desemp_trilha' ? '#29b6f6' : '#fbc02d'; 
-        let fundoCor = currentTreeMode === 'desemp_trilha' ? 'rgba(41, 182, 246, 0.2)' : 'rgba(251, 192, 45, 0.2)';
-        
+        let linhaCor = '#fbc02d'; 
+        if (currentTreeMode === 'desemp_trilha') linhaCor = '#29b6f6'; 
+
         treemapChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -863,10 +896,11 @@ function renderProdChart(){
                     label: currentTreeMode === 'desemp_trilha' ? 'Desempenho' : 'Horas',
                     data: dataVals,
                     borderColor: linhaCor,
-                    backgroundColor: fundoCor,
+                    backgroundColor: linhaCor.replace(')', ', 0.3)').replace('rgb', 'rgba'),
                     fill: true,
                     tension: 0.4,
-                    pointRadius: 4,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
                     pointBackgroundColor: linhaCor
                 }]
             },
@@ -888,7 +922,7 @@ function renderProdChart(){
                             label: (item) => {
                                 let val = parseFloat(item.raw);
                                 let info = tooltipsInfo[item.dataIndex];
-                                if (currentTreeMode === 'desemp_trilha') return [`📈 Desempenho: ${val}%`, info];
+                                if (currentTreeMode === 'desemp_trilha') return [`📈 Desempenho: ${val.toFixed(1)}%`, info];
                                 let h = Math.floor(val);
                                 let m = Math.round((val - h) * 60).toString().padStart(2, '0');
                                 return [`⏳ Média: ${h.toString().padStart(2,'0')}h${m}m`, info];
