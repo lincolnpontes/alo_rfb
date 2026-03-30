@@ -6,6 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1565C0">
+    <!-- Trava de segurança extra para evitar cache agressivo no carregamento inicial -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -52,9 +53,11 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); border: 4px solid #8b5a2b; border-radius: 4px;
         }
         body[data-theme="medieval"] .btn-action { background: #5c3a21; color: #fdf5e6; border-color: #3e2723; }
+        
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
         body.modal-open{touch-action:none}
         input,select,textarea{user-select:auto;-webkit-user-select:auto; font-family: inherit;}
+        
         .app-container{width:100%;max-width:1400px;background:var(--bg-app);height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
         #sticky-header{flex: none; z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
         #splash-screen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primaria);transition:opacity .5s ease;background-color:#ffffff !important}
@@ -63,7 +66,7 @@
         .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px; color: var(--primaria);}
         #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--primaria);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:5vh;color:#fff;transition:opacity .5s ease}
         .header{background:var(--primaria);color:#fff;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-        .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:16px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
+        .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:14px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
         .modern-select option{color:#333;background:#fff}
         .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
         .modal{background:var(--bg-modal);padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: var(--text-modal); border: 1px solid var(--border-input);}
@@ -76,7 +79,7 @@
         .form-group input[type=color]{padding:0;border:1px solid var(--border-input);height:44px;width:100%;border-radius:8px;cursor:pointer; background: var(--bg-input);}
         .modal-select{height:38px;border-radius:8px!important;border:1px solid var(--border-input)!important;background:var(--bg-input)!important;color:var(--text-input)!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
         .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
-        .btn-cancel{background:var(--bg-input);color:var(--text-input);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--border-input);flex:1; transition: 0.2s; display:flex; align-items:center; justify-content:center;}
+        .btn-cancel{background:var(--bg-input);color:var(--text-input);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--border-input);flex:1; transition: 0.2s;}
         .btn-cancel:hover { filter: brightness(0.9); }
         .btn-action{background:var(--primaria);color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1; transition: 0.2s;}
         .btn-importar { background: var(--secundaria); color: var(--primaria); padding: 10px; border-radius: 5px; cursor: pointer; font-weight: 900; border: 2px solid var(--primaria); flex: 1; transition: 0.2s; display: flex; justify-content: center; align-items: center;}
@@ -110,9 +113,12 @@
         .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.2fr 1fr 120px 3fr 100px 100px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
         .tarefa-row:last-child { border-bottom: none; }
         .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
+        
+        /* ITEM 13 - Cabeçalho: Fonte restaurada para 16px, padding bem enxuto na altura */
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
         body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; }
+        
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
         .tarefa-col.center { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -133,35 +139,38 @@
         input:checked+.slider{background-color:var(--primaria)}
         input:checked+.slider:before{transform:translateX(20px)}
         #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
-        .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 10px 15px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px); transition: all 0.3s ease;}
-        .crono-layout { display: flex; justify-content: center; align-items: center; gap: 20px; }
-        .crono-modos-vert { display: flex; flex-direction: column; gap: 8px; align-items: stretch;}
-        .crono-btn-vert { background: rgba(0,0,0,0.05); color: var(--text-color); border: 1px solid transparent; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-align:center;}
+        .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 4px 12px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px); transition: all 0.3s ease;}
+        .crono-layout { display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .crono-modos-vert { display: flex; flex-direction: column; gap: 6px; align-items: stretch;}
+        .crono-btn-vert { background: rgba(0,0,0,0.05); color: var(--text-color); border: 1px solid transparent; padding: 6px 8px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.2s; text-align:center;}
         .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
         body[data-theme="escuro"] .crono-btn-vert.active { color: #111; }
-        .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1.5; position:relative;}
+        .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1; position:relative;}
         .crono-display-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center;}
         .crono-display { font-size: 70px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--title-color); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1; z-index: 2;}
-        .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 13px; font-weight: bold; color: var(--text-color); text-align: left; line-height: 1.4; width: max-content; display:none; padding-left: 10px; border-left: 2px solid var(--text-color);}
-        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 5px;}
+        .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 13px; font-weight: bold; color: var(--text-color); text-align: left; line-height: 1.3; width: max-content; display:none; border-left: 2px solid var(--text-color); padding-left: 8px;}
+        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 2px;}
         .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif;}
         .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
-        .crono-play, .crono-stop { width: 55px; height: 55px;}
-        .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .crono-play, .crono-stop { width: 50px; height: 50px;}
+        .crono-music { font-size: 20px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 5px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
-        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-left: -5px; }
         .crono-mute { color: var(--text-color); font-size: 20px;}
-        input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 55px; accent-color: var(--primaria); cursor: pointer; }
-        .meta-container { width: 100%; margin: 15px 0 5px 0; text-align: left; display: flex; flex-direction: column; gap: 5px; max-width: 85%;}
-        .meta-bar { width: 100%; height: 14px; background: rgba(0,0,0,0.15); border-radius: 6px; position: relative;}
+        input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 50px; accent-color: var(--primaria); cursor: pointer; }
+        
+        /* Barra de Meta e Ícones (ITEM 11) - Emoji de Meta gigante e montado NA BARRA */
+        .meta-container { width: 100%; margin: 8px 0 0 0; text-align: left; }
+        .meta-text { font-size: 14px; color: var(--text-color); font-weight: bold; display: flex; justify-content: space-between; margin-bottom: 5px;}
+        .meta-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.15); border-radius: 6px; overflow: visible; position: relative; }
         body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
         .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; z-index: 1;}
-        .meta-runner { position: absolute; right: -15px; font-size: 32px; z-index: 2; transition: all 0.2s ease; line-height: 1;}
-        .meta-flag { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 26px; z-index: 0; line-height: 1; transition: all 0.2s ease;}
-        .meta-text { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; color: var(--text-color); margin-top: 2px; padding: 0 5px;}
-        #meta-valores { margin-right: 25px; }
+        .meta-runner { position: absolute; right: -25px; top: 50%; font-size: 46px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); z-index: 2; line-height: 0; transition: transform 0.2s;}
+        .meta-flag { position: absolute; right: -5px; bottom: -2px; font-size: 26px; z-index: 0; line-height: 1;}
+        #meta-valores { margin-right: 35px; }
+        
         .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
         .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
         .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
@@ -176,10 +185,12 @@
         .prod-dash-card::after { content: ''; position: absolute; right: -15px; bottom: -15px; font-size: 60px; opacity: 0.2; }
         .prod-dash-title { font-size: 14px; font-weight: bold; z-index: 1; color: white !important;}
         .prod-dash-val { font-size: 32px; font-weight: 900; margin-top: 10px; z-index: 1; color: white !important;}
+        
         .c-blue { background: linear-gradient(135deg, #29b6f6, #0288d1); } .c-blue::after { content: '⭐'; }
         .c-green { background: linear-gradient(135deg, #66bb6a, #388e3c); } .c-green::after { content: '🎯'; }
         .c-orange { background: linear-gradient(135deg, #ffa726, #f57c00); } .c-orange::after { content: '⏱️'; }
         .c-yellow { background: linear-gradient(135deg, #ffca28, #fbc02d); } .c-yellow::after { content: '⏳'; }
+        
         .prod-table-container { background: var(--bg-item); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid var(--border-input);}
         .prod-table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--border-input); color: var(--text-color) !important; cursor: pointer; transition: 0.2s;}
         .prod-table-row:hover:not(.prod-table-header) { background: var(--bg-hover); }
@@ -206,47 +217,39 @@
         .ritmo-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 15px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; min-height: 200px; align-content: flex-start;}
         .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
         .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        
         .ritmo-summary-box { flex: 1; min-width: 100px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .ritmo-summary-title { font-size: 12px; font-weight: bold; color: var(--text-modal); margin-bottom: 5px; opacity: 0.8; }
         .ritmo-summary-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
+
         #globalTooltip {
             pointer-events: none !important;
             display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
+        
+        /* ITEM 10 - Frase Motivacional (Fonte 18px, muito negrito, espaço comprimido) */
         #frase-motivacional-container {
             text-align: center; font-style: italic; color: var(--text-color); opacity: 0.8; background: var(--bg-item); 
             display: flex; align-items: center; justify-content: center;
             font-weight: 900; 
-            padding: 15px 20px; 
-            min-height: 50px; 
-            font-size: 24px;
+            padding: 4px 10px; 
+            min-height: 24px; 
+            line-height: 1.1;
+            font-size: 18px;
             border-top: 1px solid var(--glass-border);
             box-sizing: border-box;
             transition: all 0.3s ease;
-            margin-top: auto; 
         }
+
+        /* ITEM 5 (Sugestão Foco) */
         body.focus-mode #sticky-header .header,
         body.focus-mode .trilhas-top-bar,
         body.focus-mode #dash-trilha-box,
         body.focus-mode #listaTarefas { display: none !important; }
-        body.focus-mode { background: #121212 !important; } 
-        body.focus-mode .app-container { background: transparent !important; box-shadow: none; justify-content: center; align-items: center; }
-        body.focus-mode #sticky-header { border: none; background: transparent !important; box-shadow: none; width: 100%; display: flex; justify-content: center; align-items: center;}
-        body.focus-mode .crono-container { border: none; box-shadow: none; background: transparent; transform: scale(1.3); padding: 40px; display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 800px; margin-top: -10vh;}
-        body.focus-mode .crono-layout { flex-direction: column; gap: 30px; align-items: center; width: 100%; }
-        body.focus-mode .crono-modos-vert { flex-direction: row; justify-content: center; gap: 20px;}
-        body.focus-mode .vol-vert-container { flex-direction: row; justify-content: center; gap: 30px; margin-top: 10px;}
-        body.focus-mode input[type=range][orient=vertical] { appearance: auto; -webkit-appearance: auto; width: 120px; height: 8px; }
-        body.focus-mode .crono-display { color: #ffffff !important; text-shadow: 0 0 20px rgba(255,255,255,0.2); font-size: 85px;}
-        body.focus-mode .crono-btn-vert { background: rgba(255,255,255,0.1); color: #fff; font-size: 14px; padding: 10px 15px;}
-        body.focus-mode .crono-btn-vert.active { background: var(--primaria); }
-        body.focus-mode .crono-btn-icon { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); color: #fff; font-size: 32px;}
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 75px; height: 75px; font-size: 70px !important;}
-        body.focus-mode .crono-play span, body.focus-mode .crono-stop span { font-size: 70px !important; }
-        body.focus-mode .pomo-status-side { color: #aaa; left: auto; position: relative; margin-top: 20px; text-align: center; border-left: none; font-size: 16px;}
-        body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 20px;}
-        body.focus-mode .meta-text { color: #aaa; font-size: 16px;}
-        body.focus-mode #frase-motivacional-container { position: fixed; bottom: 5%; left: 0; width: 100%; border: none; background: transparent; font-size: 40px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
+        body.focus-mode .app-container { justify-content: center; align-items: center; }
+        body.focus-mode .crono-container { border: none; box-shadow: none; background: transparent; transform: scale(1.3); margin-top: -10vh;}
+        body.focus-mode #frase-motivacional-container { position: absolute; bottom: 50px; left: 0; width: 100%; border: none; background: transparent; font-size: 24px; opacity: 1; }
+
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -254,6 +257,7 @@
 <body>
 
 <div id="globalTooltip"></div>
+
 <div id="toast">Aviso!</div>
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
@@ -278,17 +282,14 @@
                 <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
                     <img src="icon.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px; width: 100%; max-width: 300px;">
-                    <div style="position: relative; flex: 1;">
-                        <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none; z-index: 1;">👤</span>
-                        <select id="seletorOperador" class="modern-select" style="padding-left: 32px !important; font-size: 16px; height: 38px; width: 100%;" onchange="verificarTrocaOperador(this)"></select>
-                    </div>
-                    <div id="streak-container" style="font-size: 28px; cursor: help; display: flex; align-items: center; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));" title="Ofensiva de Estudos" onclick="mostrarToast('Sua ofensiva de dias consecutivos!')">
-                        🔥<span id="streak-count" style="font-size:18px; font-weight:900; margin-left:4px; color:#ffb300; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);">0</span>
-                    </div>
-                </div>
+                <div style="position: relative; width: 100%; max-width: 180px;"><span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; z-index: 1;">👤</span><select id="seletorOperador" class="modern-select" style="padding-left: 28px !important; width: 100%;" onchange="verificarTrocaOperador(this)"></select></div>
             </div>
             <div style="flex: 1.5; display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
+                <!-- ITEM 2: Sistema de Foguinho / Ofensiva de Estudos -->
+                <div id="streak-container" style="font-size: 22px; cursor: help; display:flex; align-items:center; margin-right:10px; title="Ofensiva de Estudos" onclick="mostrarToast('Sua ofensiva de dias seguidos estudando!')">
+                    🔥 <span id="streak-count" style="font-size:16px; font-weight:bold; margin-left:4px;">0</span>
+                </div>
+
                 <div id="indicadorConexao" class="status-conexao" title="Sincronização" style="display:none;">🌐</div>
                 <button onclick="abrirHistorico()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Diário de Estudos">📅</button>
                 <button onclick="abrirRitmoEstudo()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Ritmo de Estudo">⌛</button>
@@ -306,24 +307,28 @@
                     <div style="display:flex; justify-content:center; gap:8px;">
                         <button class="crono-btn-icon crono-edit" onclick="abrirConfigCronometroModal()" title="Configurações" style="margin: 0;">⏱️</button>
                         <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo" style="margin: 0;">✏️</button>
-                        <button class="crono-btn-icon crono-edit" onclick="toggleFocusMode()" title="Modo Foco (Atalho: Enter)" style="margin: 0;">👁️</button>
+                        <!-- ITEM 5: Botão do Modo Foco -->
+                        <button class="crono-btn-icon crono-edit" onclick="toggleFocusMode()" title="Modo Foco" style="margin: 0;">👁️</button>
                     </div>
                 </div>
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
                     <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
+                    
+                    <!-- ITEM 3 & 11 - Meta Diária renomeada e Carrinho/Bandeira formatados -->
                     <div class="meta-container" id="meta-container" style="display: none;">
-                        <div class="meta-bar">
-                            <div class="meta-fill" id="meta-fill">
-                                <div class="meta-runner" id="meta-runner">🏎️</div>
-                            </div>
-                            <div class="meta-flag" id="meta-flag">🏁</div>
-                        </div>
                         <div class="meta-text">
                             <span id="meta-label">Meta Diária: 0%</span>
                             <span id="meta-valores">0h00m / 4h</span>
                         </div>
+                        <div class="meta-bar">
+                            <div class="meta-fill" id="meta-fill">
+                                <div class="meta-runner" id="meta-runner">🏎️</div>
+                            </div>
+                            <div class="meta-flag">🏁</div>
+                        </div>
                     </div>
+
                 </div>
                 <div class="vol-vert-container">
                     <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
@@ -336,8 +341,10 @@
         <div class="trilhas-top-bar" id="trilhas-bar-container"></div>
         <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
     </div>
+    
     <div id="listaTarefas"></div>
     <div id="frase-motivacional-container" style="display:none;"></div>
+
 </div>
 
 <div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 40px; margin-bottom: 10px;">⚠️</div><h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3><p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado e o registro no Diário de Estudos será <b>EXCLUÍDO</b>.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button><button class="btn-danger" onclick="confirmarDesmarcar()" style="margin:0; width:auto; padding: 10px 20px;">Sim, desmarcar</button></div></div></div>
@@ -345,12 +352,15 @@
 <div class="modal-overlay" id="modalConfirmarDesfazerPulo" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 50px; margin-bottom: 10px;">↩️</div><h3 style="margin-top:0; color:var(--primaria);">Desfazer Pulo?</h3><p style="font-size: 15px;">Esta tarefa voltará a ficar PENDENTE e pronta para ser estudada.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="fecharModal('modalConfirmarDesfazerPulo')">Cancelar</button><button class="btn-action" onclick="confirmarDesfazerPulo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Desfazer</button></div></div></div>
 <div class="modal-overlay" id="modalConfirmarExcluirTarefa" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 50px; margin-bottom: 10px;">🗑️</div><h3 style="margin-top:0; color:#d32f2f;">Excluir Tarefa?</h3><p style="font-size: 15px;">Esta ação apagará a tarefa permanentemente. O seu diário de estudos continuará intacto.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="fecharModal('modalConfirmarExcluirTarefa')">Cancelar</button><button class="btn-danger" onclick="confirmarExcluirTarefaDefinitivo()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Excluir</button></div></div></div>
 
+<!-- Painel Unificado -->
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
         <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
+        
         <button class="btn-outline" onclick="contextoRetornoListagem=null; contextoRetornoTipos=null; abrirGerenciar('concursos')"><span class="emoji-icon">🎯</span> <span class="texto-btn">Gerenciar Concursos</span></button>
+        
         <div id="painelSecreto" style="display:none;">
             <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
             <button class="btn-outline" onclick="contextoRetornoListagem=null; contextoRetornoTipos=null; abrirGerenciar('estudantes')"><span class="emoji-icon">👥</span> <span class="texto-btn">Usuários</span></button>
@@ -360,6 +370,7 @@
     </div>
 </div>
 
+<!-- Modal Links Concurso Duplo (ITEM 5) -->
 <div class="modal-overlay" id="modalLinksConcurso">
     <div class="modal" style="max-width: 400px; text-align:center;">
         <h3 style="margin-top:0; color:var(--primaria);">Acessar Concurso</h3>
@@ -371,18 +382,6 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="modalConfirmarArquivar">
-    <div class="modal" style="max-width: 400px; text-align:center;">
-        <div style="font-size: 50px; margin-bottom: 10px;">📦</div>
-        <h3 style="margin-top:0; color:#d32f2f;">Arquivar Concurso?</h3>
-        <p style="font-size: 15px;">Deseja realmente arquivar este concurso? Ele sumirá da sua tela inicial, mas todo o progresso será salvo para quando você quiser desarquivá-lo.</p>
-        <div class="modal-actions" style="justify-content: center; gap: 15px;">
-            <button class="btn-cancel" onclick="document.getElementById('concArquivado').checked = false; fecharModal('modalConfirmarArquivar')">Cancelar</button>
-            <button class="btn-danger" onclick="confirmarArquivarConcurso()" style="margin:0; width:auto; padding: 10px 20px;">Sim, Arquivar</button>
-        </div>
-    </div>
-</div>
-
 <div class="modal-overlay" id="modalZonaRisco"><div class="modal"><div class="modal-title" style="color:#d32f2f;">Zona de Risco</div><div class="form-group"><label>URL Apps Script:</label><input type="text" id="configUrlAppScript"><button class="btn-action" style="margin-top:10px; width:100%; background:#4CAF50;" onclick="salvarUrlESincronizar(event)">💾 Salvar URL</button></div><hr style="border: 0; border-top: 1px solid var(--border-input); margin: 15px 0;"><div style="display: flex; gap: 10px; flex-direction: column;"><button class="btn-action" style="margin:0; width:100%; background:#4CAF50; padding:15px;" onclick="exportarBackup()">💾 Exportar Backup (TXT)</button><button class="btn-action" style="margin:0; width:100%; background:#1976D2; padding:15px;" onclick="document.getElementById('importBackupFile').click()">📂 Importar Backup (TXT)</button><input type="file" id="importBackupFile" accept=".txt" style="display:none;" onchange="importarBackup(event)"><button class="btn-action" style="margin:0; width:100%; background:#f57f17; padding:15px; margin-top:10px;" onclick="atualizarApp(event)">🔄 Atualizar App (Limpar Cache)</button><button class="btn-action" style="margin:0; width:100%; background:#1565C0; padding:15px;" onclick="forcarEnvioNuvem(event)">☁️ Enviar Tudo (Local ➡️ Nuvem)</button><button class="btn-action" style="margin:0; width:100%; background:#d32f2f; padding:15px;" onclick="forcarDownloadNuvem(event)">☁️ Puxar Tudo (Nuvem ➡️ Local)</button></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalZonaRisco'); abrirPainelUnificadoComNivel(true);">Voltar</button></div></div></div>
 
 <div class="modal-overlay" id="modalConfigGerais">
@@ -390,19 +389,18 @@
         <div class="modal-title">📱 Configurações do App</div>
         <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigAtalhos()"><span class="emoji-icon">⌨️</span> <span class="texto-btn">Teclas de Atalho</span></button>
         <button class="btn-outline" onclick="fecharModal('modalConfigGerais'); abrirConfigFrases()"><span class="emoji-icon">💬</span> <span class="texto-btn">Frases Motivacionais</span></button>
+        
         <div class="form-group" style="margin-top:15px;"><label>Tema de Cores:</label><select id="cfgTema"><option value="azul">🔵 Azul</option><option value="verde">🟢 Verde</option><option value="vermelho">🔴 Vermelho</option><option value="rosa">🌸 Rosa</option><option value="roxo">💜 Roxo</option><option value="escuro">⚫ Escuro</option><option value="transparente">🧊 Transparente (Glass)</option><option value="medieval">⚔️ Medieval (Pergaminho)</option></select></div><div class="form-group"><label>Senha Painel (Admin):</label><input type="password" id="cfgSenhaAdmin" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Deixe em branco p/ remover"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);">Voltar</button><button class="btn-action" onclick="salvarConfigGerais()">💾 Salvar</button></div>
     </div>
 </div>
 
 <div class="modal-overlay" id="modalConfigCronometro"><div class="modal"><div class="modal-title">⏱️ Configurações</div><fieldset class="fieldset-config"><legend>Meta Diária</legend><div style="display:flex; gap:10px; align-items:stretch; margin-bottom: 10px;"><div class="switch-container" style="margin:0; padding:5px 10px; flex:1;"><span style="font-weight:bold;font-size:12px;">Exibir Meta Diária</span><label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label></div><div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;"><label style="font-size:12px; margin:0; flex:1;">Meta (h):</label><input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;"></div></div><div style="display:flex; gap:10px; align-items:center;"><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span><label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label></div><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar %</span><label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label></div></div></fieldset><fieldset class="fieldset-config"><legend>Áudio e Geral</legend><div class="switch-container" style="padding:5px;"><span style="font-weight:bold;font-size:13px;">Tocar alarme ao Pausar</span><label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Link do Áudio MP3 (Alarme Restart):</label><input type="text" id="cfgAudioLink" placeholder="Deixe como está ou cole outro link"></div></fieldset><fieldset class="fieldset-config"><legend>Regressivo & Pomodoro</legend><div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Regressivo (min):</label><input type="number" id="cfgRegEstudo" value="60" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pomo Estudo (min):</label><input type="number" id="cfgPomoEstudo" value="25" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Curta (min):</label><input type="number" id="cfgPomoCurta" value="5" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Longa (min):</label><input type="number" id="cfgPomoLonga" value="15" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0; grid-column: span 2;"><label style="font-size:11px;">Ciclos p/ Longa:</label><input type="number" id="cfgPomoCiclos" value="4" style="padding: 6px;"></div></div></fieldset><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button><button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button></div></div></div>
-
-<div class="modal-overlay" id="modalAtalhos"><div class="modal"><div class="modal-title">⌨️ Teclas de Atalho</div><p style="font-size: 12px; margin-top:-10px;">Clique no campo e pressione a tecla. Pressione o botão vermelho para limpar.</p><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Play / Pause:</label><input type="text" id="keyPlay" readonly onkeydown="capturarAtalho(event, 'play')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('play')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Zerar / Parar:</label><input type="text" id="keyReset" readonly onkeydown="capturarAtalho(event, 'reset')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('reset')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Mudo:</label><input type="text" id="keyMute" readonly onkeydown="capturarAtalho(event, 'mute')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('mute')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume +:</label><input type="text" id="keyVolUp" readonly onkeydown="capturarAtalho(event, 'volUp')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volUp')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div>
-<div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Entrar no Modo Foco:</label><input type="text" id="keyFocus" readonly onkeydown="capturarAtalho(event, 'focus')" style="cursor:pointer;" placeholder="Padrão: Enter"></div><button onclick="limparUmAtalho('focus')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div>
-<div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button><button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button></div></div></div>
+<div class="modal-overlay" id="modalAtalhos"><div class="modal"><div class="modal-title">⌨️ Teclas de Atalho</div><p style="font-size: 12px; margin-top:-10px;">Clique no campo e pressione a tecla. Pressione o botão vermelho para limpar.</p><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Play / Pause:</label><input type="text" id="keyPlay" readonly onkeydown="capturarAtalho(event, 'play')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('play')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Zerar / Parar:</label><input type="text" id="keyReset" readonly onkeydown="capturarAtalho(event, 'reset')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('reset')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Mudo:</label><input type="text" id="keyMute" readonly onkeydown="capturarAtalho(event, 'mute')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('mute')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume +:</label><input type="text" id="keyVolUp" readonly onkeydown="capturarAtalho(event, 'volUp')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volUp')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button><button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button></div></div></div>
 
 <div class="modal-overlay" id="modalFrases">
     <div class="modal" style="max-height: 90vh; display: flex; flex-direction: column;">
         <div class="modal-title">💬 Frases Motivacionais</div>
+        
         <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
             <div class="switch-container" style="margin:0; flex:1; padding:0 12px; height:38px; border-radius:8px; justify-content:space-between; border: 1px solid var(--border-input); box-sizing:border-box;">
                 <span style="font-weight:bold;font-size:12px; color: var(--text-modal);">Trocar Automático</span>
@@ -413,11 +411,14 @@
                 <input type="number" id="cfgFraseTempo" min="1" style="padding: 4px; width: 60px; flex:none; border:none; background:transparent; text-align:right; color:var(--text-input); font-weight:bold; outline:none;">
             </div>
         </div>
+
         <div style="display:flex; gap:10px; margin-bottom: 15px; align-items: stretch;">
             <input type="text" id="novaFraseInput" placeholder="Digite uma nova frase motivacional..." style="flex:1; padding:8px 12px; border:1px solid var(--border-input); border-radius:8px; box-sizing:border-box; font-size:14px; background:var(--bg-input); color:var(--text-input);">
             <button class="btn-action" style="margin:0; padding: 0 15px; border-radius:8px; height:auto;" onclick="adicionarFrase()">+ Add</button>
         </div>
+
         <div id="listaFrasesCfg" style="display:flex; flex-direction:column; gap:8px; overflow-y: auto; flex: 1; min-height: 150px; padding-right: 5px;"></div>
+
         <div class="modal-actions" style="margin-top: 15px;">
             <button class="btn-cancel" onclick="fecharModal('modalFrases'); abrirConfigGeraisModal();">Voltar</button>
             <button class="btn-action" onclick="salvarConfigFrases()">💾 Salvar</button>
@@ -425,6 +426,7 @@
     </div>
 </div>
 
+<!-- EDIÇÃO DO TEMPO COM FORMATAÇÃO -->
 <div class="modal-overlay" id="modalEditarTempo">
     <div class="modal">
         <div class="modal-title">✏️ Editar Tempo</div>
@@ -454,8 +456,9 @@
 <div class="modal-overlay" id="modalImportacaoEmLote"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title" style="display:flex; justify-content:space-between; align-items:center; gap: 10px; flex-wrap: wrap;"><span>📥 Importar em Lote</span><div style="display:flex; gap:10px;"><button class="btn-sub-gerenciar" onclick="irParaGerenciarDeImportacao('disciplinas')">📚 Editar Disciplinas</button><button class="btn-sub-gerenciar" onclick="irParaGerenciarDeImportacao('atividades')">📝 Editar Atividades</button></div></div><div style="background:var(--bg-hover); padding:10px 15px; border-radius:8px; margin-bottom:15px; border:1px solid var(--border-input); font-size:13px; color: var(--text-modal);"><p style="margin-top:0;"><strong>Dica:</strong> Tire <b>print</b> (captura de tela) das suas metas/tarefas e envie para sua IA preferida junto com o prompt perfeito abaixo:</p><button class="btn-action" onclick="copiarPromptImportacao()" style="width:100%; background:#f57f17; font-size:14px; padding:10px; display:flex; justify-content:center; align-items:center; gap: 8px;">📋 Copiar Prompt Perfeito</button></div><p style="font-size:12px; margin-bottom: 5px;">Cole aqui a resposta da IA (Formato: <i>Tarefa; Disciplina; Aula; Título da Tarefa; Atividade</i>)</p><div class="form-group"><textarea id="textoImportacao" rows="5" placeholder="01; Direito Constitucional; Aula 01; Poder Constituinte; Teoria&#10;02; Direito Tributário; Aula 04; Suspensão do Crédito; Questões" style="width:100%; padding:10px; border:1px solid var(--border-input); border-radius:5px; background:var(--bg-input); color:var(--text-input); font-family:monospace;"></textarea></div><button class="btn-action" style="width:100%; margin-bottom:15px; padding:12px; font-size:16px;" onclick="processarTextoImportacao()">⚙️ Processar Dados</button><div id="previewImportacao" style="display:none;"><h4 style="margin: 0 0 10px 0; color:var(--primaria);">Revisar e Ajustar <span style="font-size: 11px; color:#d32f2f; font-weight:normal;">(Itens em vermelho não existem nas configurações)</span></h4><div style="display:grid; grid-template-columns: 60px 1.5fr 1fr 2fr 1.5fr; gap:5px; margin-bottom:5px; font-weight:bold; font-size:12px; color:var(--primaria); text-align:center; padding-right: 15px;"><div>Nº</div><div>Disciplina</div><div>Aula</div><div>Título</div><div>Atividade</div></div><div style="max-height: 40vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 5px; padding: 10px; background:var(--bg-item);" id="tabelaPreviewImportacao"></div><div id="msgErroImportacao" style="display:none; color:#d32f2f; font-size:13px; font-weight:bold; margin-top:10px; text-align:center; background: rgba(211, 47, 47, 0.1); padding: 8px; border-radius: 5px;">Corrija os campos em vermelho (conflitos de número, disciplina, aula ou atividade inexistente) para poder salvar.</div></div><div class="modal-actions" style="margin-top:20px;"><button class="btn-cancel" onclick="cancelarImportacao()">Voltar</button><button class="btn-importar" id="btnSalvarImportacao" style="display:none;" onclick="salvarTarefasImportadas()">Salvar Tarefas</button></div></div></div>
 <div class="modal-overlay" id="modalSelecionarTarefaRegistro"><div class="modal"><div class="modal-title">Vincular Tempo</div><p style="font-size: 14px;">Selecione a Tarefa (não concluída) para registrar este tempo:</p><div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 8px;"></div><div class="modal-actions" style="margin-top: 15px;"><button class="btn-cancel" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button></div></div></div>
 <div class="modal-overlay" id="modalGerenciarTipos"><div class="modal" style="max-height: 90vh; overflow-y: auto;"><div class="modal-title" style="color:#f57f17; border-color:#f57f17;">📝 Tipos de Atividade</div><div style="display:flex; gap:10px; margin-bottom: 15px; align-items:flex-end;"><div style="flex:1;"><label style="font-size:12px; font-weight:bold;">Nome da Atividade:</label><input type="text" id="novoTipoInput" placeholder="Ex: Questões" style="padding:8px; border:1px solid var(--border-input); border-radius:4px; width:100%; box-sizing:border-box;"></div><div style="flex:none;"><label style="font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Tem Desempenho?</label><div style="background:var(--bg-input); padding:7px; border-radius:4px; text-align:center; border: 1px solid var(--border-input);"><input type="checkbox" id="novoTipoDesempenho" style="transform: scale(1.3);"></div></div><button class="btn-action" style="flex:none; padding: 0 15px; height:37px;" onclick="adicionarTipo()">+ Add</button></div><div id="listaTiposCfg" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px;"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharGerenciarTipos()">Voltar</button></div></div></div>
-<div class="modal-overlay" id="modalListagem"><div class="modal"><div class="modal-title" id="tituloListagem">Gerenciar</div><input type="hidden" id="listagemContextoAtivo"><button class="btn-action" id="btnNovoListagem" style="width:100%; margin-bottom:15px;">+ Novo</button><div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div><div class="modal-actions" style="display:flex; gap:10px; width:100%; margin-top: 20px;"><button id="btnListaVerArquivados" class="btn-cancel" style="display:none; flex:1; margin:0; justify-content:center; border-width:2px; font-size:14px; height: 44px; font-weight:bold;" onclick="abrirGerenciar('concursos_arquivados')">📂 Apenas Concursos Arquivados</button><button class="btn-cancel" id="btnVoltarListagem" style="flex:1; margin:0; border-width:2px; height: 44px; display:flex; align-items:center; justify-content:center;">Voltar</button></div></div></div>
+<div class="modal-overlay" id="modalListagem"><div class="modal"><div class="modal-title" id="tituloListagem">Gerenciar</div><input type="hidden" id="listagemContextoAtivo"><button class="btn-action" id="btnNovoListagem" style="width:100%; margin-bottom:15px;">+ Novo</button><div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div><div class="modal-actions"><button id="btnListaVerArquivados" class="btn-importar" style="display:none; width:100%; margin-bottom:10px;" onclick="abrirGerenciar('concursos_arquivados')">📦 Ver Concursos Arquivados</button><button class="btn-cancel" id="btnVoltarListagem" style="width:100%;">Voltar</button></div></div></div>
 
+<!-- ITEM 12 e ITEM 6: Link Duplo e Botão Arquivar no Concurso -->
 <div class="modal-overlay" id="modalFormConcurso"><div class="modal"><div class="modal-title">Concurso</div><input type="hidden" id="concNomeOriginal"><div class="form-group"><label>Nome do Concurso (Ex: AFRFB):</label><input type="text" id="concNome"></div>
 <div style="display:flex; gap:10px;">
     <div class="form-group" style="flex:1;"><label>Link do Curso (URL):</label><input type="url" id="concLink" placeholder="Ex: https://estrategia..."></div>
@@ -566,7 +569,6 @@
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
-
 <script>
 window.addEventListener('error', function(event) { console.error('CRASH:', event.message); });
 window.addEventListener('unhandledrejection', function(event) { console.error('REJECTION:', event.reason); });
@@ -635,12 +637,7 @@ let contextoRetornoImportacao = null, contextoRetornoListagem = null, contextoRe
 function formatarHorasMinutos(segs){if(!segs||segs===0)return "0h 0m";let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60);return h+"h "+m.toString().padStart(2,'0')+"m";}
 function formataData(dataStrYMD){if(!dataStrYMD)return '--/--/----';let p=dataStrYMD.split('-');if(p.length!==3)return dataStrYMD;return `${p[2]}/${p[1]}/${p[0]}`;}
 function shiftDateByDays(dateStringYMD,daysToShift){if(!dateStringYMD)return getHojeYMD();let d=new Date(dateStringYMD+"T00:00:00");d.setDate(d.getDate()+daysToShift);return d.toISOString().split('T')[0];}
-function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
-function getHojeYMD(){const hj=new Date();return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`;}
-function formatarTempoTimer(segs){let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60),s=Math.floor(segs%60);return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}
-function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
 
-// LÓGICA DE OFENSIVA DE ESTUDOS (ITEM B)
 function calcularOfensiva() {
     if (!db.historico || db.historico.length === 0) return 0;
     let dias = new Set();
@@ -667,7 +664,9 @@ function calcularOfensiva() {
         if (datas[i] === expected.getTime()) {
             streak++;
             currTime = datas[i];
-        } else { break; }
+        } else {
+            break;
+        }
     }
     return streak;
 }
@@ -678,19 +677,24 @@ function atualizarOfensivaUI() {
     if(el) el.innerText = streak;
 }
 
-// NOTIFICAÇÕES DO SISTEMA (ITEM C)
 function dispararNotificacao() {
     if ("Notification" in window && Notification.permission === "granted") {
-        new Notification("Alô RFB - Tempo Esgotado", { body: "Seu ciclo terminou! Hora da pausa ou de salvar.", icon: "icon.png" });
+        new Notification("Alô RFB - Tempo Esgotado", { body: "Seu ciclo terminou! É hora de salvar ou pausar.", icon: "icon.png" });
     }
 }
 
-function toggleFocusMode() { document.body.classList.toggle('focus-mode'); }
+function toggleFocusMode() {
+    document.body.classList.toggle('focus-mode');
+}
 
 const paletasDeCores={azul:{primaria:'#1565C0',secundaria:'#E3F2FD',fundo:'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},verde:{primaria:'#2e7d32',secundaria:'#e8f5e9',fundo:'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},vermelho:{primaria:'#c62828',secundaria:'#ffebee',fundo:'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},rosa:{primaria:'#d81b60',secundaria:'#fce4ec',fundo:'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},roxo:{primaria:'#673ab7',secundaria:'#ede7f6',fundo:'linear-gradient(135deg, #c471ed 0%, #f64f59 100%)',bgApp:'rgba(255,255,255,0.6)',bgItem:'rgba(255,255,255,0.7)',bgHeader:'rgba(255,255,255,0.8)'},escuro:{primaria:'#e0e0e0',secundaria:'#333333',fundo:'linear-gradient(135deg, #212121 0%, #000000 100%)',bgApp:'rgba(30,30,30,0.8)',bgItem:'rgba(40,40,40,0.9)',bgHeader:'rgba(20,20,20,0.95)'},transparente:{primaria:'#4fc3f7',secundaria:'rgba(255,255,255,0.1)',fundo:'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',bgApp:'rgba(255,255,255,0.05)',bgItem:'rgba(255,255,255,0.1)',bgHeader:'rgba(20, 35, 45, 0.98)'},medieval:{primaria:'#8b4513',secundaria:'#e6d2b5',fundo:'radial-gradient(circle at center, #5c4033 0%, #27140c 100%)',bgApp:'rgba(244, 233, 216, 0.95)',bgItem:'rgba(250, 240, 230, 0.95)',bgHeader:'rgba(210, 180, 140, 0.98)'}};
+function getDataHoraAtual(){const hj=new Date();return `${String(hj.getDate()).padStart(2,'0')}/${String(hj.getMonth()+1).padStart(2,'0')}/${hj.getFullYear()} ${String(hj.getHours()).padStart(2,'0')}:${String(hj.getMinutes()).padStart(2,'0')}`}
+function getHojeYMD(){const hj=new Date();return `${hj.getFullYear()}-${String(hj.getMonth()+1).padStart(2,'0')}-${String(hj.getDate()).padStart(2,'0')}`;}
+function formatarTempoTimer(segs){let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60),s=Math.floor(segs%60);return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}
+function mostrarToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.bottom='20px';clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>{t.style.bottom='-60px'},3000)}
 
 function carregarBanco(){
-    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,ocultarPctMeta:false,ocultarTempoMeta:false,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
+    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,ocultarPctMeta:false,ocultarTempoMeta:false,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
     try{
         let txt=localStorage.getItem('estudos_db');
         if(txt){
@@ -713,7 +717,6 @@ function carregarBanco(){
             if(!l.configs||typeof l.configs!=='object')l.configs=d.configs;
             if(!l.configs.audioLink)l.configs.audioLink="https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3";
             if(!l.configs.atalhos)l.configs.atalhos=d.configs.atalhos;else{for(let k in d.configs.atalhos){if(!l.configs.atalhos[k])l.configs.atalhos[k]=d.configs.atalhos[k];else if(typeof l.configs.atalhos[k]==='string')l.configs.atalhos[k]=[l.configs.atalhos[k]];}}
-            if(!l.configs.atalhos.focus) l.configs.atalhos.focus = ['Enter','NumpadEnter'];
             if(!l.configs.pomodoro)l.configs.pomodoro=d.configs.pomodoro;if(!l.configs.regressivo)l.configs.regressivo=d.configs.regressivo;
             if(l.configs.exibirMeta===undefined)l.configs.exibirMeta=true;if(l.configs.ocultarPctMeta===undefined)l.configs.ocultarPctMeta=false;if(l.configs.ocultarTempoMeta===undefined)l.configs.ocultarTempoMeta=false;if(l.configs.tocarRestart===undefined)l.configs.tocarRestart=true;if(!l.configs.tiposAtividade)l.configs.tiposAtividade=d.configs.tiposAtividade;if(l.configs.estadoTimer===undefined)l.configs.estadoTimer=null;
             if(l.configs.tiposAtividade.length>0&&typeof l.configs.tiposAtividade[0]==='string'){l.configs.tiposAtividade=l.configs.tiposAtividade.map(t=>{return{nome:t,comDesempenho:/quest|teste/i.test(t)};});}
@@ -730,9 +733,7 @@ function salvarBancoLocal(){localStorage.setItem('estudos_db',JSON.stringify(db)
 let temaAtivo='azul';
 function aplicarTemaCores(){let opAtual=localStorage.getItem('estudos_operadorAtual');let opObj=db.operadores.find(o=>o.nome===opAtual);let t=(opObj&&opObj.tema)?opObj.tema:(db.configs.tema||'azul');let c=paletasDeCores[t]||paletasDeCores.azul;temaAtivo=t;document.body.setAttribute('data-theme',t);document.documentElement.style.setProperty('--primaria',c.primaria);document.documentElement.style.setProperty('--secundaria',c.secundaria);document.documentElement.style.setProperty('--fundo',c.fundo);document.documentElement.style.setProperty('--bg-app',c.bgApp);document.documentElement.style.setProperty('--bg-item',c.bgItem);document.documentElement.style.setProperty('--bg-header',c.bgHeader);document.body.style.fontFamily='';document.body.style.color='';document.getElementById('display-timer').style.color='';if(t==='transparente'||t==='escuro'){if(t==='escuro'){document.documentElement.style.setProperty('--primaria','#e0e0e0');}document.body.style.color='#eee';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(255,255,255,0.15)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#eee');}else if(t==='medieval'){document.body.style.fontFamily='"Palatino Linotype", "Book Antiqua", Palatino, serif';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(139, 90, 43, 0.3)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#3e2723');}else{document.body.style.color='#333';document.getElementById('display-timer').style.color='var(--primaria)';document.documentElement.style.setProperty('--glass-border','rgba(0,0,0,0.1)');document.documentElement.style.setProperty('--title-color','var(--primaria)');document.documentElement.style.setProperty('--text-color','#333333');document.documentElement.style.setProperty('--bg-modal','#ffffff');document.documentElement.style.setProperty('--text-modal','#333333');document.documentElement.style.setProperty('--border-input','#cccccc');document.documentElement.style.setProperty('--bg-input','#ffffff');document.documentElement.style.setProperty('--text-input','#333333');document.documentElement.style.setProperty('--bg-hover','#f9f9f9');}}
 
-let modoTimer='progressive',isRunningTimer=false,intervalTimer,tempoTimer=0,targetTimer=25*60,pomoFase='estudo',pomoCicloAtual=0,tempoAcumulado=0;
-let playerAudio=new Audio(),playlist=[],musicaIndex=0,isMutedTimer=false,volumeSalvoTimer=1.0,audioRestart=new Audio();audioRestart.loop=true;
-
+let modoTimer='progressive',isRunningTimer=false,intervalTimer,tempoTimer=0,targetTimer=25*60,pomoFase='estudo',pomoCicloAtual=0,playerAudio=new Audio(),playlist=[],musicaIndex=0,isMutedTimer=false,volumeSalvoTimer=1.0,audioRestart=new Audio();audioRestart.loop=true;
 function initAudioRestart(){if(db.configs.audioLink&&db.configs.audioLink.trim()!=="")audioRestart.src=db.configs.audioLink.trim();}initAudioRestart();
 playerAudio.onended=()=>{if(playlist.length>0&&isRunningTimer){musicaIndex=(musicaIndex+1)%playlist.length;tocarMusicaTimer();}};
 function carregarMusicas(event){const files=event.target.files;if(files.length===0)return;playlist.forEach(u=>URL.revokeObjectURL(u));playlist=[];musicaIndex=0;playerAudio.pause();playerAudio.src="";for(let i=0;i<files.length;i++){playlist.push(URL.createObjectURL(files[i]));}document.getElementById('btnLimparMusica').style.display='flex';mostrarToast(`${files.length} músicas prontas!`);if(isRunningTimer)tocarMusicaTimer();event.target.value='';}
@@ -752,28 +753,15 @@ function exibirFraseAleatoria() {
     }
 }
 
-// LOGICA DE TEMPO ACUMULADO NO CRONÔMETRO (ITEM 7 e 8)
 function atualizarDisplayTimer(){
     let dSegs=tempoTimer;
     if(modoTimer!=='progressive'){
         dSegs=Math.max(0,targetTimer-tempoTimer);
         if(dSegs===0&&isRunningTimer){
-            if (modoTimer === 'regressive') {
-                tempoAcumulado += targetTimer;
-            } else if (modoTimer === 'pomodoro' && pomoFase === 'estudo') {
-                tempoAcumulado += targetTimer;
-            }
             startPauseTimer();
             dispararNotificacao();
             mostrarToast("Tempo esgotado!");
-            if(modoTimer==='pomodoro'){
-                avancarFasePomodoro();
-                dSegs = targetTimer;
-            } else if(modoTimer==='regressive') {
-                tempoTimer = 0;
-                dSegs = targetTimer;
-                atualizarStatusModo();
-            }
+            if(modoTimer==='pomodoro')avancarFasePomodoro();
         }
     }
     document.getElementById('display-timer').innerText=formatarTempoTimer(dSegs);
@@ -784,63 +772,20 @@ function atualizarDisplayTimer(){
     }
 }
 
-function avancarFasePomodoro(){if(pomoFase==='estudo'){pomoCicloAtual++;if(pomoCicloAtual%db.configs.pomodoro.ciclos===0){pomoFase='longa';targetTimer=db.configs.pomodoro.longa*60;}else{pomoFase='curta';targetTimer=db.configs.pomodoro.curta*60;}}else{pomoFase='estudo';targetTimer=db.configs.pomodoro.estudo*60;}tempoTimer=0;atualizarStatusModo();}
-function atualizarStatusModo(){
-    const s=document.getElementById('pomo-status-side');
-    let acumStr = tempoAcumulado > 0 ? `<br><span style="color:#ffb300; font-size:12px; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);">Acumulado: ${Math.floor(tempoAcumulado/60)}m</span>` : '';
-    if(modoTimer==='pomodoro'){
-        s.style.display='block';
-        let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'Pausa Curta':'Pausa Longa');
-        s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}${acumStr}`;
-    }else if(modoTimer==='regressive'){
-        s.style.display='block';
-        s.innerHTML=`Inicial: ${Math.floor(db.configs.regressivo.estudo)} min${acumStr}`;
-    }else{
-        if (tempoAcumulado > 0) {
-            s.style.display='block';
-            s.innerHTML=`<span style="color:#ffb300; font-size:12px; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);">Acumulado:<br>${Math.floor(tempoAcumulado/60)}m</span>`;
-        } else {
-            s.style.display='none';
-        }
-    }
-}
-
-function startPauseTimer(){
-    isRunningTimer=!isRunningTimer;
-    let btnPlay=document.getElementById('btn-play-timer');
-    if(isRunningTimer){
-        audioRestart.pause();
-        audioRestart.currentTime=0;
-        btnPlay.innerHTML='<span style="font-size:50px;">⏸️</span>';
-        btnPlay.classList.add('is-paused');
-        if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();
-        intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);
-    }else{
-        clearInterval(intervalTimer);
-        playerAudio.pause();
-        btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';
-        btnPlay.classList.remove('is-paused');
-        if(tempoTimer>0&&db.configs.tocarRestart){
-            audioRestart.currentTime=0;
-            audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
-            audioRestart.play().catch(()=>{});
-        }
-        db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual,acumulado:tempoAcumulado};
-        salvarModificacaoBasica();
-    }
-}
-
-function resetTimer(){if(tempoTimer>0 || tempoAcumulado>0){if(isRunningTimer)startPauseTimer();abrirSelecionadorDeTarefaParaRegistro();}}
-function zeroTimerConfirm(){if(confirm("Deseja ZERAR o cronômetro (descartar os "+formatarHorasMinutos(tempoTimer + tempoAcumulado)+")?")){tempoTimer=0;tempoAcumulado=0;atualizarDisplayTimer();atualizarStatusModo();atualizarBarraMeta();audioRestart.pause();audioRestart.currentTime=0;db.configs.estadoTimer=null;salvarModificacaoBasica();}}
+function avancarFasePomodoro(){if(pomoFase==='estudo'){pomoCicloAtual++;if(pomoCicloAtual%db.configs.pomodoro.ciclos===0){pomoFase='longa';targetTimer=db.configs.pomodoro.longa*60;}else{pomoFase='curta';targetTimer=db.configs.pomodoro.curta*60;}}else{pomoFase='estudo';targetTimer=db.configs.pomodoro.estudo*60;}tempoTimer=0;atualizarStatusModo();atualizarDisplayTimer();}
+function atualizarStatusModo(){const s=document.getElementById('pomo-status-side');if(modoTimer==='pomodoro'){s.style.display='block';let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'Pausa Curta':'Pausa Longa');s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}`;}else if(modoTimer==='regressive'){s.style.display='block';s.innerHTML=`Tempo Inicial:<br>${db.configs.regressivo.estudo} min`;}else{s.style.display='none';}}
+function startPauseTimer(){isRunningTimer=!isRunningTimer;let btnPlay=document.getElementById('btn-play-timer');if(isRunningTimer){audioRestart.pause();audioRestart.currentTime=0;btnPlay.innerHTML='<span style="font-size:50px;">⏸️</span>';btnPlay.classList.add('is-paused');if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);}else{clearInterval(intervalTimer);playerAudio.pause();btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';btnPlay.classList.remove('is-paused');if(tempoTimer>0&&db.configs.tocarRestart){audioRestart.currentTime=0;audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;audioRestart.play().catch(()=>{});}db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};salvarModificacaoBasica();}}
+function resetTimer(){if(tempoTimer>0){if(isRunningTimer)startPauseTimer();abrirSelecionadorDeTarefaParaRegistro();}}
+function zeroTimerConfirm(){if(confirm("Deseja ZERAR o cronômetro (descartar os "+formatarHorasMinutos(tempoTimer)+")?")){tempoTimer=0;atualizarDisplayTimer();atualizarBarraMeta();audioRestart.pause();audioRestart.currentTime=0;db.configs.estadoTimer=null;salvarModificacaoBasica();}}
 function fecharModalEPararAlarme(id){fecharModal(id);audioRestart.pause();audioRestart.currentTime=0;}
 function setModoTimer(novoModo){modoTimer=novoModo;document.getElementById('btn-prog').classList.remove('active');document.getElementById('btn-reg').classList.remove('active');document.getElementById('btn-pomo').classList.remove('active');document.getElementById(novoModo==='progressive'?'btn-prog':novoModo==='regressive'?'btn-reg':'btn-pomo').classList.add('active');if(novoModo==='pomodoro')targetTimer=db.configs.pomodoro.estudo*60;else if(novoModo==='regressive')targetTimer=(db.configs.regressivo.estudo||60)*60;atualizarStatusModo();atualizarDisplayTimer();}
 function abrirEdicaoTempo(){if(isRunningTimer)startPauseTimer();let dSegs=modoTimer==='progressive'?tempoTimer:Math.max(0,targetTimer-tempoTimer);document.getElementById('editHoras').value=String(Math.floor(dSegs/3600)).padStart(2,'0');document.getElementById('editMins').value=String(Math.floor((dSegs%3600)/60)).padStart(2,'0');document.getElementById('editSegs').value=String(Math.floor(dSegs%60)).padStart(2,'0');abrirModal('modalEditarTempo');setTimeout(()=>{let el=document.getElementById('editHoras');el.focus();el.select();},50);}
-function confirmarEdicaoTempo(){let h=parseInt(document.getElementById('editHoras').value, 10)||0,m=parseInt(document.getElementById('editMins').value, 10)||0,s=parseInt(document.getElementById('editSegs').value, 10)||0,totalSegs=(h*3600)+(m*60)+s;if(modoTimer==='progressive')tempoTimer=totalSegs;else tempoTimer=Math.max(0,targetTimer-totalSegs);atualizarDisplayTimer();db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual,acumulado:tempoAcumulado};salvarModificacaoBasica();fecharModal('modalEditarTempo');}
+function confirmarEdicaoTempo(){let h=parseInt(document.getElementById('editHoras').value, 10)||0,m=parseInt(document.getElementById('editMins').value, 10)||0,s=parseInt(document.getElementById('editSegs').value, 10)||0,totalSegs=(h*3600)+(m*60)+s;if(modoTimer==='progressive')tempoTimer=totalSegs;else tempoTimer=Math.max(0,targetTimer-totalSegs);atualizarDisplayTimer();db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};salvarModificacaoBasica();fecharModal('modalEditarTempo');}
 
 // EMOJI FOGUETE GIRO 45 GRAUS 🚀 OU ESPELHADO
 function atualizarBarraMeta(){
     if(!db.configs.exibirMeta||db.configs.metaDiariaHrs===0){document.getElementById('meta-container').style.display='none';return;}
-    document.getElementById('meta-container').style.display='flex';
+    document.getElementById('meta-container').style.display='block';
     
     let opAtualName = localStorage.getItem('estudos_operadorAtual');
     let opObj = db.operadores.find(o => o.nome === opAtualName);
@@ -849,9 +794,9 @@ function atualizarBarraMeta(){
     
     runnerEl.innerText = runnerEmoji;
     if(runnerEmoji === '🚀') {
-        runnerEl.style.transform = 'translateY(-50%) rotate(45deg)';
+        runnerEl.style.transform = 'rotate(45deg)';
     } else {
-        runnerEl.style.transform = 'translateY(-50%) scaleX(-1)';
+        runnerEl.style.transform = 'scaleX(-1)';
     }
 
     const metaSegs=db.configs.metaDiariaHrs*3600;
@@ -874,49 +819,10 @@ function atualizarBarraMeta(){
     }
 }
 
-const dictTeclas={'Space':'Espaço','Delete':'Deletar','Period':'Ponto(.)','Equal':'Igual(=)','Minus':'Menos(-)','Escape':'Esc','NumpadAdd':'Num +','NumpadSubtract':'Num -','Enter':'Enter','NumpadEnter':'Enter Num'};
+const dictTeclas={'Space':'Espaço','Delete':'Deletar','Period':'Ponto(.)','Equal':'Igual(=)','Minus':'Menos(-)','Escape':'Esc','NumpadAdd':'Num +','NumpadSubtract':'Num -','Enter':'Enter'};
 function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr){if(!arr||arr.length===0)return "Nenhum";return arr.map(t=>trTecla(t)).join(' ou ');}
-
-document.addEventListener('keydown',function(event){
-    if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;
-    let k=event.code;
-    let a=db.configs.atalhos;
-    
-    // Trava do MODO FOCO: Escape sempre sai do foco, sem falhar
-    if (k === 'Escape' && document.body.classList.contains('focus-mode')) {
-        event.preventDefault();
-        toggleFocusMode();
-        return;
-    }
-
-    if(a.focus && a.focus.includes(k)){
-        event.preventDefault();
-        toggleFocusMode();
-    } else if(a.play.includes(k)){
-        event.preventDefault();startPauseTimer();
-    } else if(a.reset.includes(k)){
-        event.preventDefault();resetTimer();
-    } else if(a.mute.includes(k)){
-        event.preventDefault();toggleMuteTimer();
-    } else if(a.volUp.includes(k)){
-        event.preventDefault();ajustarVolumeTimer(Math.min(100,(volumeSalvoTimer*100)+2));
-    } else if(a.volDown.includes(k)){
-        event.preventDefault();ajustarVolumeTimer(Math.max(0,(volumeSalvoTimer*100)-2));
-    }
-});
-
-let atalhosTemp={};function abrirConfigAtalhos(){fecharModal('modalConfigGerais');atalhosTemp=JSON.parse(JSON.stringify(db.configs.atalhos));atualizarInputsAtalhos();abrirModal('modalAtalhos');}
-function atualizarInputsAtalhos(){
-    document.getElementById('keyPlay').value=renderizarTextoAtalho(atalhosTemp.play);
-    document.getElementById('keyReset').value=renderizarTextoAtalho(atalhosTemp.reset);
-    document.getElementById('keyMute').value=renderizarTextoAtalho(atalhosTemp.mute);
-    document.getElementById('keyVolUp').value=renderizarTextoAtalho(atalhosTemp.volUp);
-    document.getElementById('keyVolDown').value=renderizarTextoAtalho(atalhosTemp.volDown);
-    document.getElementById('keyFocus').value=renderizarTextoAtalho(atalhosTemp.focus);
-}
-function capturarAtalho(e,field){e.preventDefault();if(!atalhosTemp[field].includes(e.code))atalhosTemp[field].push(e.code);atualizarInputsAtalhos();}
-function limparUmAtalho(field){atalhosTemp[field]=[];atualizarInputsAtalhos();}
-function salvarAtalhos(){db.configs.atalhos=JSON.parse(JSON.stringify(atalhosTemp));salvarModificacaoBasica();mostrarToast("Atalhos salvos!");fecharModal('modalAtalhos');abrirConfigGeraisModal();}
+document.addEventListener('keydown',function(event){if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;let k=event.code;let a=db.configs.atalhos;if(a.play.includes(k)){event.preventDefault();startPauseTimer();}else if(a.reset.includes(k)){event.preventDefault();resetTimer();}else if(a.mute.includes(k)){event.preventDefault();toggleMuteTimer();}else if(a.volUp.includes(k)){event.preventDefault();ajustarVolumeTimer(Math.min(100,(volumeSalvoTimer*100)+2));}else if(a.volDown.includes(k)){event.preventDefault();ajustarVolumeTimer(Math.max(0,(volumeSalvoTimer*100)-2));}});
+let atalhosTemp={};function abrirConfigAtalhos(){fecharModal('modalConfigGerais');atalhosTemp=JSON.parse(JSON.stringify(db.configs.atalhos));atualizarInputsAtalhos();abrirModal('modalAtalhos');}function atualizarInputsAtalhos(){document.getElementById('keyPlay').value=renderizarTextoAtalho(atalhosTemp.play);document.getElementById('keyReset').value=renderizarTextoAtalho(atalhosTemp.reset);document.getElementById('keyMute').value=renderizarTextoAtalho(atalhosTemp.mute);document.getElementById('keyVolUp').value=renderizarTextoAtalho(atalhosTemp.volUp);document.getElementById('keyVolDown').value=renderizarTextoAtalho(atalhosTemp.volDown);}function capturarAtalho(e,field){e.preventDefault();if(!atalhosTemp[field].includes(e.code))atalhosTemp[field].push(e.code);atualizarInputsAtalhos();}function limparUmAtalho(field){atalhosTemp[field]=[];atualizarInputsAtalhos();}function salvarAtalhos(){db.configs.atalhos=JSON.parse(JSON.stringify(atalhosTemp));salvarModificacaoBasica();mostrarToast("Atalhos salvos!");fecharModal('modalAtalhos');abrirConfigGeraisModal();}
 
 function abrirConfigFrases(){
     document.getElementById('cfgFraseAuto').checked = db.configs.fraseAuto !== false;
@@ -957,7 +863,7 @@ function prepararTelaLogin(){const s=document.getElementById('loginOperador');s.
 function checarSenhaLoginInicial(){const n=document.getElementById('loginOperador').value,o=db.operadores.find(x=>x.nome===n),c=document.getElementById('loginSenhaContainer');if(o&&o.senha!==""){c.style.display="flex";setTimeout(()=>document.getElementById('loginSenha').focus(),10);}else c.style.display="none";}
 function fazerLoginInicial(){const n=document.getElementById('loginOperador').value;if(!n)return alert("Selecione um perfil!");const o=db.operadores.find(x=>x.nome===n);if(o&&o.senha!==""){const s=document.getElementById('loginSenha').value;if(s!==o.senha){alert("Senha Incorreta!");document.getElementById('loginSenha').value='';return;}}localStorage.setItem('estudos_operadorAtual',n);document.getElementById('seletorOperador').value=n;operadorAnteriorSelect=n;audioRestart.play().then(()=>audioRestart.pause()).catch(()=>{});aplicarTemaCores();const l=document.getElementById('login-screen');l.style.opacity='0';setTimeout(()=>l.style.display='none',500);renderizarCabecalhoTrilhas();exibirFraseAleatoria();atualizarOfensivaUI();}
 function verificarTrocaOperador(sel){if(sel.value==='sair'){localStorage.removeItem('estudos_operadorAtual');location.reload();}else{localStorage.setItem('estudos_operadorAtual',sel.value);operadorAnteriorSelect=sel.value;aplicarTemaCores();renderizarCabecalhoTrilhas();atualizarOfensivaUI();}}
-function exportarBackup(){db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual,acumulado:tempoAcumulado};let dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(JSON.stringify(db));let dl=document.createElement('a');dl.setAttribute("href",dataStr);dl.setAttribute("download","AloRFB_Backup_"+getHojeYMD()+".txt");document.body.appendChild(dl);dl.click();dl.remove();mostrarToast("Backup exportado com sucesso!");}
+function exportarBackup(){db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual};let dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(JSON.stringify(db));let dl=document.createElement('a');dl.setAttribute("href",dataStr);dl.setAttribute("download","AloRFB_Backup_"+getHojeYMD()+".txt");document.body.appendChild(dl);dl.click();dl.remove();mostrarToast("Backup exportado com sucesso!");}
 function importarBackup(event){let file=event.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=function(e){try{let importedDb=JSON.parse(e.target.result);if(importedDb&&importedDb.concursos&&importedDb.configs){db=importedDb;salvarModificacaoBasica();alert("Backup importado com sucesso! O aplicativo será recarregado para aplicar.");location.reload();}else alert("Arquivo de backup inválido ou corrompido.");}catch(err){alert("Erro ao ler o arquivo de backup: "+err.message);}};reader.readAsText(file);event.target.value='';}
 
 function getConcursoAtivoNome(){
@@ -1042,7 +948,6 @@ function renderizarCabecalhoTrilhas(){
     renderizarDashboardTrilha();
     renderizarListaTarefas();
 }
-
 function mudarTrilhaAtiva(nome){trilhaAtivaNome=nome;renderizarCabecalhoTrilhas();}
 function renderizarDashboardTrilha(){
     const box=document.getElementById('dash-trilha-box');let conc=getConcursoAtivoNome();
@@ -1064,7 +969,6 @@ function renderizarDashboardTrilha(){
     
     box.innerHTML=`<div class="dash-box" style="flex: 1.2; border: 2px solid var(--primaria); background: rgba(0,0,0,0.02);"><div class="dash-box-title">Progresso</div><div class="dash-box-val">${strProgresso}</div></div><div class="dash-box"><div class="dash-box-title">Desempenho</div><div class="dash-box-val">${desempenho} <span style="font-weight:normal; opacity:0.8;">(${acTot}/${qTot})</span></div></div><div class="dash-box"><div class="dash-box-title">Horas Estudadas</div><div class="dash-box-val">${hFormat}</div></div><div class="dash-box"><div class="dash-box-title">Média Diária</div><div class="dash-box-val">${mediaFormat}</div></div>`;
 }
-
 function criarTrilhaAutoModal(){let conc=getConcursoAtivoNome();if(!conc)return alert("Sem concurso ativo!");document.getElementById('edtTrilhaId').value='';document.getElementById('edtTrilhaConcurso').value=conc;let trilhasConc=db.trilhas.filter(tr=>tr.concurso===conc);let nums=trilhasConc.map(tr=>{let m=tr.nome.match(/\d+/);return m?parseInt(m[0]):0;});let nextNum=1;while(nums.includes(nextNum))nextNum++;document.getElementById('edtTrilhaNome').value="Trilha "+String(nextNum).padStart(2,'0');document.getElementById('edtTrilhaDataInicio').value="";document.getElementById('edtTrilhaDias').value=7;abrirModal('modalFormTrilha');}
 function renderizarListaTarefas(){
     const l=document.getElementById('listaTarefas');l.innerHTML='';let conc=getConcursoAtivoNome();if(!conc)return;
@@ -1112,7 +1016,6 @@ function iniciar(){
             modoTimer=db.configs.estadoTimer.modo;
             pomoFase=db.configs.estadoTimer.fase;
             pomoCicloAtual=db.configs.estadoTimer.ciclo;
-            tempoAcumulado=db.configs.estadoTimer.acumulado||0;
             document.getElementById('btn-prog').classList.remove('active');
             document.getElementById('btn-reg').classList.remove('active');
             document.getElementById('btn-pomo').classList.remove('active');
@@ -1218,7 +1121,7 @@ function abrirGerenciar(t,context){
         trs.forEach((tr)=>{let tarefasTr=db.tarefas.filter(x=>x.concurso===context&&x.trilha===tr.nome);let statusBadge='<span style="color:#757575; font-size:12px; font-weight:bold;">Não iniciada</span>';if(tr.dataInicio){let todasFeitas=tarefasTr.length>0&&tarefasTr.every(x=>x.concluida===true);if(todasFeitas)statusBadge='<span style="color:#4CAF50; font-size:12px; font-weight:bold;">🟢 Concluída</span>';else statusBadge='<span style="color:#1976D2; font-size:12px; font-weight:bold;">Em execução</span>';}l.innerHTML+=`<div class="gerenciar-item"><div class="gerenciar-info"><strong>${tr.nome}</strong> ${statusBadge}<br><small>Duração: ${tr.duracaoDias||7} dias</small></div><div class="gerenciar-actions"><button onclick="abrirEdicaoTrilha(${tr.id})">✏️</button><button onclick="excluirItem('trilhas',${tr.id}, '${context}')">🗑️</button></div></div>`;});
     }else if(t==='concursos'){
         b.style.display='block';
-        document.getElementById('btnListaVerArquivados').style.display = 'flex';
+        document.getElementById('btnListaVerArquivados').style.display = 'block';
         tit.innerText="Gerenciar Concursos";
         b.onclick=()=>abrirFormConcurso(-1);
         bVoltar.onclick=()=>{fecharModal('modalListagem');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);};
@@ -1253,17 +1156,8 @@ function salvarEdicaoTrilha(importarDepois = false){let idStr=document.getElemen
 function abrirFormDisciplina(id,concursoNome){fecharModal('modalListagem');document.getElementById('discConcursoPai').value=concursoNome;if(id>=0){const d=db.disciplinas.find(x=>x.id===id);document.getElementById('discIdOriginal').value=d.id;document.getElementById('discNome').value=d.nome;document.getElementById('discAulaInicio').value=d.aulaInicio!==undefined?d.aulaInicio:1;document.getElementById('discAulas').value=d.aulas||0;}else{document.getElementById('discIdOriginal').value='';document.getElementById('discNome').value='';document.getElementById('discAulaInicio').value=0;document.getElementById('discAulas').value='';}abrirModal('modalFormDisciplina');}
 function salvarDisciplina(){const idOriginal=document.getElementById('discIdOriginal').value,nome=document.getElementById('discNome').value.trim(),conc=document.getElementById('discConcursoPai').value,aInit=parseInt(document.getElementById('discAulaInicio').value)||0,aulas=parseInt(document.getElementById('discAulas').value)||0;if(!nome)return alert("Preencha o nome!");let obj={id:idOriginal?parseInt(idOriginal):Date.now(),nome:nome,concurso:conc,aulaInicio:aInit,aulas:aulas};if(idOriginal!=="")db.disciplinas[db.disciplinas.findIndex(d=>d.id===parseInt(idOriginal))]=obj;else db.disciplinas.push(obj);salvarModificacaoBasica();fecharModal('modalFormDisciplina');abrirGerenciar('disciplinas',conc);}
 
-// LÓGICA DE CONFIRMAÇÃO DO ARQUIVAMENTO (ITEM 6)
-document.getElementById('concArquivado').addEventListener('change', function() {
-    if(this.checked) abrirModal('modalConfirmarArquivar');
-});
-function confirmarArquivarConcurso() {
-    fecharModal('modalConfirmarArquivar');
-}
-
 function abrirFormConcurso(i){
     fecharModal('modalListagem');
-    document.getElementById('divExcluirConcurso').style.display = 'none'; // Sumindo com exclusão (Item 6)
     if(i>=0){
         const c=db.concursos[i];
         document.getElementById('concNomeOriginal').value=c.nome;
@@ -1388,9 +1282,7 @@ function vincularTempoTarefaAtual() {
     abrirRegistroEstudo(parseInt(idO));
 }
 
-function abrirFormTarefa(id,numSugerido=1){if(document.getElementById('modalListagem').style.display==='flex')fecharModal('modalListagem');const conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo!");document.getElementById('tarHeaderConcurso').innerText=conc;const selD=document.getElementById('tarDisciplina');selD.innerHTML='<option value="">-- Nenhuma / Extra --</option>';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selD.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);const selTr=document.getElementById('tarTrilhaSelect');selTr.innerHTML='';db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selTr.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);selTr.value=trilhaAtivaNome;const selT=document.getElementById('tarTipo');selT.innerHTML='';db.configs.tiposAtividade.forEach(x=>selT.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);let contStatus=document.getElementById('containerStatusConcluida'),divEdicao=document.getElementById('divEdicaoConcluida');document.getElementById('tarAulasOptions').style.display='none';document.getElementById('btnExcluirTarefa').style.display=(id>=0)?'block':'none';document.getElementById('tarExtra').checked=false;document.getElementById('tarNumero').disabled=false;document.getElementById('tarTrilhaSelect').disabled=false;document.getElementById('tarDisciplina').disabled=false;document.getElementById('tarTipo').disabled=false;document.getElementById('tarTituloPersonalizado').disabled=false;document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';document.getElementById('tarAulasOptionsBox').style.opacity='1';let btnVincular=document.getElementById('btnVincularTempoTarefa');if(id>=0){const t=db.tarefas.find(x=>x.id===id);document.getElementById('tarefaIdOriginal').value=t.id;let m=t.titulo.match(/\d+/);document.getElementById('tarNumero').value=m?parseInt(m[0]):1;if(t.isExtra){document.getElementById('tarExtra').checked=true;document.getElementById('tarNumero').disabled=true;document.getElementById('tarNumero').value='';document.getElementById('tarTituloPersonalizado').value=t.titulo;}else{let splitTit=t.titulo.split(' - ');document.getElementById('tarTituloPersonalizado').value=splitTit.length>1?splitTit.slice(1).join(' - '):"";}selTr.value=t.trilha;selD.value=t.disciplina||"";popularDropdownAulasCustom();let selectedAulas=t.aulas?t.aulas.split(', '):[];document.querySelectorAll('#tarAulasOptions input[type="checkbox"]').forEach(cb=>{if(selectedAulas.includes(cb.value))cb.checked=true;});atualizarDisplayAulas();if(!db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade))selT.innerHTML+=`<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;selT.value=t.tipoAtividade;let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnImportar.style.display='none';let isConc=t.concluida&&!t.pulada;if(isConc){document.getElementById('tarNumero').disabled=true;document.getElementById('tarTrilhaSelect').disabled=true;document.getElementById('tarDisciplina').disabled=true;document.getElementById('tarTipo').disabled=true;document.getElementById('tarTituloPersonalizado').disabled=true;document.getElementById('tarExtra').disabled=true;document.getElementById('tarAulasOptionsBox').style.pointerEvents='none';document.getElementById('tarAulasOptionsBox').style.opacity='0.6';}else{document.getElementById('tarExtra').disabled=false;}document.getElementById('tarTempoMinutos').value=isConc?Math.round((t.tempoRegistrado||0)/60):0;
-if(!isConc&&!t.pulada&&(tempoTimer>0 || tempoAcumulado>0)){btnVincular.style.display='flex';}else{btnVincular.style.display='none';}
-if(t.pulada){contStatus.style.display='none';document.getElementById('tarConcluida').checked=false;divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:18px; margin-right:4px;'>↩️</span> Desfazer";btnPular.onclick=()=>abrirModal('modalConfirmarDesfazerPulo');}else if(t.concluida){contStatus.style.display='flex';document.getElementById('tarConcluida').checked=true;divEdicao.style.display='block';let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);if(configTipo&&configTipo.comDesempenho){document.getElementById('tarQtdQuestoes').parentElement.style.display='block';document.getElementById('tarQtdAcertos').parentElement.style.display='block';document.getElementById('tarQtdQuestoes').value=t.questoes||0;document.getElementById('tarQtdAcertos').value=t.acertos||0;}else{document.getElementById('tarQtdQuestoes').parentElement.style.display='none';document.getElementById('tarQtdAcertos').parentElement.style.display='none';}document.getElementById('tarObs').value=t.obs||"";btnPular.style.display='none';}else{contStatus.style.display='none';divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:22px; margin-right:4px;'>⏭️</span> Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}else{document.getElementById('tarefaIdOriginal').value='';document.getElementById('tarNumero').value=numSugerido;document.getElementById('tarTituloPersonalizado').value='';document.getElementById('tarExtra').disabled=false;contStatus.style.display='none';divEdicao.style.display='none';let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnVincular.style.display='none';btnPular.style.display='none';btnImportar.style.display='flex';popularDropdownAulasCustom();}abrirModal('modalFormTarefa');}
+function abrirFormTarefa(id,numSugerido=1){if(document.getElementById('modalListagem').style.display==='flex')fecharModal('modalListagem');const conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo!");document.getElementById('tarHeaderConcurso').innerText=conc;const selD=document.getElementById('tarDisciplina');selD.innerHTML='<option value="">-- Nenhuma / Extra --</option>';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selD.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);const selTr=document.getElementById('tarTrilhaSelect');selTr.innerHTML='';db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selTr.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);selTr.value=trilhaAtivaNome;const selT=document.getElementById('tarTipo');selT.innerHTML='';db.configs.tiposAtividade.forEach(x=>selT.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);let contStatus=document.getElementById('containerStatusConcluida'),divEdicao=document.getElementById('divEdicaoConcluida');document.getElementById('tarAulasOptions').style.display='none';document.getElementById('btnExcluirTarefa').style.display=(id>=0)?'block':'none';document.getElementById('tarExtra').checked=false;document.getElementById('tarNumero').disabled=false;document.getElementById('tarTrilhaSelect').disabled=false;document.getElementById('tarDisciplina').disabled=false;document.getElementById('tarTipo').disabled=false;document.getElementById('tarTituloPersonalizado').disabled=false;document.getElementById('tarAulasOptionsBox').style.pointerEvents='auto';document.getElementById('tarAulasOptionsBox').style.opacity='1';let btnVincular=document.getElementById('btnVincularTempoTarefa');if(id>=0){const t=db.tarefas.find(x=>x.id===id);document.getElementById('tarefaIdOriginal').value=t.id;let m=t.titulo.match(/\d+/);document.getElementById('tarNumero').value=m?parseInt(m[0]):1;if(t.isExtra){document.getElementById('tarExtra').checked=true;document.getElementById('tarNumero').disabled=true;document.getElementById('tarNumero').value='';document.getElementById('tarTituloPersonalizado').value=t.titulo;}else{let splitTit=t.titulo.split(' - ');document.getElementById('tarTituloPersonalizado').value=splitTit.length>1?splitTit.slice(1).join(' - '):"";}selTr.value=t.trilha;selD.value=t.disciplina||"";popularDropdownAulasCustom();let selectedAulas=t.aulas?t.aulas.split(', '):[];document.querySelectorAll('#tarAulasOptions input[type="checkbox"]').forEach(cb=>{if(selectedAulas.includes(cb.value))cb.checked=true;});atualizarDisplayAulas();if(!db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade))selT.innerHTML+=`<option value="${t.tipoAtividade}">${t.tipoAtividade}</option>`;selT.value=t.tipoAtividade;let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnImportar.style.display='none';let isConc=t.concluida&&!t.pulada;if(isConc){document.getElementById('tarNumero').disabled=true;document.getElementById('tarTrilhaSelect').disabled=true;document.getElementById('tarDisciplina').disabled=true;document.getElementById('tarTipo').disabled=true;document.getElementById('tarTituloPersonalizado').disabled=true;document.getElementById('tarExtra').disabled=true;document.getElementById('tarAulasOptionsBox').style.pointerEvents='none';document.getElementById('tarAulasOptionsBox').style.opacity='0.6';}else{document.getElementById('tarExtra').disabled=false;}document.getElementById('tarTempoMinutos').value=isConc?Math.round((t.tempoRegistrado||0)/60):0;if(!isConc&&!t.pulada&&tempoTimer>0){btnVincular.style.display='flex';}else{btnVincular.style.display='none';}if(t.pulada){contStatus.style.display='none';document.getElementById('tarConcluida').checked=false;divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:18px; margin-right:4px;'>↩️</span> Desfazer";btnPular.onclick=()=>abrirModal('modalConfirmarDesfazerPulo');}else if(t.concluida){contStatus.style.display='flex';document.getElementById('tarConcluida').checked=true;divEdicao.style.display='block';let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);if(configTipo&&configTipo.comDesempenho){document.getElementById('tarQtdQuestoes').parentElement.style.display='block';document.getElementById('tarQtdAcertos').parentElement.style.display='block';document.getElementById('tarQtdQuestoes').value=t.questoes||0;document.getElementById('tarQtdAcertos').value=t.acertos||0;}else{document.getElementById('tarQtdQuestoes').parentElement.style.display='none';document.getElementById('tarQtdAcertos').parentElement.style.display='none';}document.getElementById('tarObs').value=t.obs||"";btnPular.style.display='none';}else{contStatus.style.display='none';divEdicao.style.display='none';btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:22px; margin-right:4px;'>⏭️</span> Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}else{document.getElementById('tarefaIdOriginal').value='';document.getElementById('tarNumero').value=numSugerido;document.getElementById('tarTituloPersonalizado').value='';document.getElementById('tarExtra').disabled=false;contStatus.style.display='none';divEdicao.style.display='none';let btnPular=document.getElementById('btnPularTarefa');let btnImportar=document.getElementById('btnImportarEmTarefa');btnVincular.style.display='none';btnPular.style.display='none';btnImportar.style.display='flex';popularDropdownAulasCustom();}abrirModal('modalFormTarefa');}
 function irParaImportacaoDaTarefa(){fecharModal('modalFormTarefa');contextoRetornoImportacao = 'tarefa';abrirModalImportacao();}
 function ajustarTravaAcertos(){let q=parseInt(document.getElementById('tarQtdQuestoes').value)||0,a=parseInt(document.getElementById('tarQtdAcertos').value)||0;if(a>q)document.getElementById('tarQtdAcertos').value=q;}
 function ajustarTravaAcertosReg(){let q=parseInt(document.getElementById('qtdQuestoes').value)||0,a=parseInt(document.getElementById('qtdAcertos').value)||0;if(a>q)document.getElementById('qtdAcertos').value=q;}
@@ -1406,95 +1298,9 @@ function processarTextoImportacao(){let txt=document.getElementById('textoImport
 function checarErrosImportacao(){let temErro=document.querySelectorAll('#tabelaPreviewImportacao .error-import').length>0;document.getElementById('btnSalvarImportacao').style.display=temErro?'none':'block';document.getElementById('msgErroImportacao').style.display=temErro?'block':'none';}
 function salvarTarefasImportadas(){let conc=getConcursoAtivoNome(),rows=document.querySelectorAll('.import-row');if(rows.length===0)return;let timestampBase=Date.now();rows.forEach((row,index)=>{let numStr=row.querySelector('.imp-num').value.trim();let disc=row.querySelector('.imp-disc').value.trim();let aula=row.querySelector('.imp-aula').value.trim();let titCustom=row.querySelector('.imp-tit').value.trim();let ativ=row.querySelector('.imp-ativ').value.trim();let numFormatado=numStr.replace(/\D/g,'');let numVisual=numFormatado?String(numFormatado).padStart(2,'0'):String(index+1).padStart(2,'0');let titFull="Tarefa "+numVisual;if(titCustom!=="")titFull+=" - "+titCustom;db.tarefas.push({id:timestampBase+index,titulo:titFull,concurso:conc,trilha:trilhaAtivaNome,disciplina:disc,aulas:aula,tipoAtividade:ativ,concluida:false,pulada:false,questoes:0,acertos:0,obs:"",isExtra:false});});salvarModificacaoBasica();fecharModal('modalImportacaoEmLote');renderizarListaTarefas();renderizarDashboardTrilha();mostrarToast("Tarefas importadas com sucesso!");}
 function abrirSelecionadorDeTarefaParaRegistro(){let l=document.getElementById('listaTarefasParaRegistro');l.innerHTML='';let btnZerar=`<button onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;let conc=getConcursoAtivoNome();let filtradas=db.tarefas.filter(t=>t.concurso===conc&&!t.concluida);filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra)return 1;if(!a.isExtra&&b.isExtra)return -1;return numA-numB;});filtradas.forEach(t=>{let discNome=t.disciplina||"Extra";let tIco=t.isExtra?"⭐":"📚";let tipoBadge=t.tipoAtividade?` • ${t.tipoAtividade}`:'';l.innerHTML+=`<div style="padding:15px; border-bottom:1px solid var(--border-input); cursor:pointer; color:var(--text-modal); background: var(--bg-hover); margin-bottom: 5px; border-radius: 8px;" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); abrirRegistroEstudo(${t.id})"><strong style="color:var(--primaria);">${tIco} ${t.titulo}</strong><br><small>${discNome}${tipoBadge} • ${t.trilha}</small></div>`;});if(filtradas.length===0)l.innerHTML=`<div style="padding:15px;">Nenhuma tarefa pendente para associar. Crie uma!</div>`;l.innerHTML+=btnZerar;abrirModal('modalSelecionarTarefaRegistro');}
-
-// LOGICA INTEGRADA DO ACUMULADOR DE TEMPO (ITEM 7 e 8)
-function abrirRegistroEstudo(id){
-    const t=db.tarefas.find(x=>x.id===id);
-    if(!t)return;
-    document.getElementById('regNomeTarefa').innerText=t.titulo;
-    let discNome=t.disciplina||"Extra";
-    let tipoAtiv=t.tipoAtividade?` • ${t.tipoAtividade}`:"";
-    document.getElementById('regSubTituloTarefa').innerText=discNome+tipoAtiv+(t.aulas?" - "+t.aulas:"");
-    document.getElementById('regIdTarefa').value=t.id;
-    document.getElementById('regObs').value='';
-    const sel=document.getElementById('regTipoAtividade');
-    sel.innerHTML='';
-    db.configs.tiposAtividade.forEach(x=>sel.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);
-    sel.value=t.tipoAtividade;
-    
-    // SOMA O TEMPO ROLANDO AGORA COM O TEMPO GUARDADO NO COFRINHO
-    let segs=tempoTimer + tempoAcumulado;
-    
-    if(segs>0){
-        document.getElementById('containerTempoCapturado').style.display='block';
-        document.getElementById('displayTempoCapturado').innerText=formatarTempoTimer(segs);
-        document.getElementById('regDuracaoTimer').value=segs;
-    }else{
-        document.getElementById('containerTempoCapturado').style.display='none';
-        document.getElementById('regDuracaoTimer').value=0;
-    }
-    checarTipoAtividade();
-    abrirModal('modalRegistrarEstudo');
-}
-
+function abrirRegistroEstudo(id){const t=db.tarefas.find(x=>x.id===id);if(!t)return;document.getElementById('regNomeTarefa').innerText=t.titulo;let discNome=t.disciplina||"Extra";let tipoAtiv=t.tipoAtividade?` • ${t.tipoAtividade}`:"";document.getElementById('regSubTituloTarefa').innerText=discNome+tipoAtiv+(t.aulas?" - "+t.aulas:"");document.getElementById('regIdTarefa').value=t.id;document.getElementById('regObs').value='';const sel=document.getElementById('regTipoAtividade');sel.innerHTML='';db.configs.tiposAtividade.forEach(x=>sel.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);sel.value=t.tipoAtividade;let segs=tempoTimer;if(segs>0){document.getElementById('containerTempoCapturado').style.display='block';document.getElementById('displayTempoCapturado').innerText=formatarTempoTimer(segs);document.getElementById('regDuracaoTimer').value=segs;}else{document.getElementById('containerTempoCapturado').style.display='none';document.getElementById('regDuracaoTimer').value=0;}checarTipoAtividade();abrirModal('modalRegistrarEstudo');}
 function checarTipoAtividade(){let nomeT=document.getElementById('regTipoAtividade').value,obj=db.configs.tiposAtividade.find(x=>x.nome===nomeT);document.getElementById('divQuestoes').style.display=(obj&&obj.comDesempenho)?'flex':'none';}
-
-function salvarRegistroEstudo(){
-    const idTar=parseInt(document.getElementById('regIdTarefa').value),t=db.tarefas.find(x=>x.id===idTar),tipo=document.getElementById('regTipoAtividade').value,op=document.getElementById('seletorOperador').value;
-    let obs=document.getElementById('regObs').value.trim();
-    const duracaoCronometro=parseInt(document.getElementById('regDuracaoTimer').value)||0;
-    let q=0,a=0;
-    let objConfig=db.configs.tiposAtividade.find(x=>x.nome===tipo);
-    if(objConfig&&objConfig.comDesempenho){
-        q=parseInt(document.getElementById('qtdQuestoes').value)||0;
-        a=parseInt(document.getElementById('qtdAcertos').value)||0;
-        if(q>0){let pct=Math.round((a/q)*100);obs+=` [🎯 ${a}/${q} - ${pct}%]`;}
-    }
-    
-    let baseHist={disciplina:(t.disciplina||"Extra"),tarefa:t.titulo,concurso:t.concurso,trilha:t.trilha,tipoAtividade:tipo,operador:op,questoes:q,acertos:a};
-    db.historico = db.historico.filter(h => !(h.concurso===t.concurso && h.trilha===t.trilha && h.tarefa===t.titulo));
-    let infoTempo=duracaoCronometro>0?` (⏱️ ${Math.round(duracaoCronometro/60)} min)`:"";
-    let dataFim=new Date(),dataInicio=new Date(dataFim.getTime()-(duracaoCronometro*1000));
-    
-    if(duracaoCronometro>0&&dataInicio.getDate()!==dataFim.getDate()){
-        let dataMeiaNoite=new Date(dataFim.getFullYear(),dataFim.getMonth(),dataFim.getDate(),0,0,0);
-        let segsDia1=Math.floor((dataMeiaNoite.getTime()-dataInicio.getTime())/1000);
-        let segsDia2=duracaoCronometro-segsDia1;
-        let dForm1=`${String(dataInicio.getDate()).padStart(2,'0')}/${String(dataInicio.getMonth()+1).padStart(2,'0')}/${dataInicio.getFullYear()} 23:59`;
-        db.historico.push({id:Date.now()-1,...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia1/60)}m - Ant)`,duracaoRegistrada:segsDia1,data:dForm1});
-        db.historico.push({id:Date.now(),...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia2/60)}m - Hj)`,duracaoRegistrada:segsDia2,data:getDataHoraAtual()});
-    }else{
-        db.historico.push({id:Date.now(),...baseHist,observacao:obs+infoTempo,duracaoRegistrada:duracaoCronometro,data:getDataHoraAtual()});
-    }
-    
-    t.concluida=true;
-    t.pulada=false;
-    t.tempoRegistrado=duracaoCronometro;
-    t.questoes=q;
-    t.acertos=a;
-    t.obs=document.getElementById('regObs').value.trim();
-    t.dataConclusao=getDataHoraAtual().split(' ')[0];
-    mostrarToast("✅ Tarefa Concluída e Registrada!");
-    
-    if(duracaoCronometro>0){
-        clearInterval(intervalTimer);
-        isRunningTimer=false;
-        tempoTimer=0;
-        tempoAcumulado=0; // ZERA O ACUMULADOR APÓS SALVAR
-        atualizarDisplayTimer();
-        atualizarStatusModo();
-        document.getElementById('btn-play-timer').innerHTML='<span style="font-size:50px;">▶️</span>';
-        document.getElementById('btn-play-timer').classList.remove('is-paused');
-    }
-    
-    document.getElementById('qtdQuestoes').value=0;
-    document.getElementById('qtdAcertos').value=0;
-    db.configs.estadoTimer=null;
-    salvarModificacaoBasica();
-    fecharModal('modalRegistrarEstudo');
-    renderizarCabecalhoTrilhas();
-    atualizarOfensivaUI();
-}
+function salvarRegistroEstudo(){const idTar=parseInt(document.getElementById('regIdTarefa').value),t=db.tarefas.find(x=>x.id===idTar),tipo=document.getElementById('regTipoAtividade').value,op=document.getElementById('seletorOperador').value;let obs=document.getElementById('regObs').value.trim();const duracaoCronometro=parseInt(document.getElementById('regDuracaoTimer').value)||0;let q=0,a=0;let objConfig=db.configs.tiposAtividade.find(x=>x.nome===tipo);if(objConfig&&objConfig.comDesempenho){q=parseInt(document.getElementById('qtdQuestoes').value)||0;a=parseInt(document.getElementById('qtdAcertos').value)||0;if(q>0){let pct=Math.round((a/q)*100);obs+=` [🎯 ${a}/${q} - ${pct}%]`;}}let baseHist={disciplina:(t.disciplina||"Extra"),tarefa:t.titulo,concurso:t.concurso,trilha:t.trilha,tipoAtividade:tipo,operador:op,questoes:q,acertos:a};db.historico = db.historico.filter(h => !(h.concurso===t.concurso && h.trilha===t.trilha && h.tarefa===t.titulo));let infoTempo=duracaoCronometro>0?` (⏱️ ${Math.round(duracaoCronometro/60)} min)`:"";let dataFim=new Date(),dataInicio=new Date(dataFim.getTime()-(duracaoCronometro*1000));if(duracaoCronometro>0&&dataInicio.getDate()!==dataFim.getDate()){let dataMeiaNoite=new Date(dataFim.getFullYear(),dataFim.getMonth(),dataFim.getDate(),0,0,0);let segsDia1=Math.floor((dataMeiaNoite.getTime()-dataInicio.getTime())/1000);let segsDia2=duracaoCronometro-segsDia1;let dForm1=`${String(dataInicio.getDate()).padStart(2,'0')}/${String(dataInicio.getMonth()+1).padStart(2,'0')}/${dataInicio.getFullYear()} 23:59`;db.historico.push({id:Date.now()-1,...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia1/60)}m - Ant)`,duracaoRegistrada:segsDia1,data:dForm1});db.historico.push({id:Date.now(),...baseHist,observacao:obs+` (⏱️ ${Math.round(segsDia2/60)}m - Hj)`,duracaoRegistrada:segsDia2,data:getDataHoraAtual()});}else db.historico.push({id:Date.now(),...baseHist,observacao:obs+infoTempo,duracaoRegistrada:duracaoCronometro,data:getDataHoraAtual()});t.concluida=true;t.pulada=false;t.tempoRegistrado=duracaoCronometro;t.questoes=q;t.acertos=a;t.obs=document.getElementById('regObs').value.trim();t.dataConclusao=getDataHoraAtual().split(' ')[0];mostrarToast("✅ Tarefa Concluída e Registrada!");if(duracaoCronometro>0){clearInterval(intervalTimer);isRunningTimer=false;tempoTimer=0;atualizarDisplayTimer();document.getElementById('btn-play-timer').innerHTML='<span style="font-size:50px;">▶️</span>';document.getElementById('btn-play-timer').classList.remove('is-paused');}document.getElementById('qtdQuestoes').value=0;document.getElementById('qtdAcertos').value=0;db.configs.estadoTimer=null;salvarModificacaoBasica();fecharModal('modalRegistrarEstudo');renderizarCabecalhoTrilhas();atualizarOfensivaUI();}
 
 function abrirHistorico(){
     const l=document.getElementById('listaHistorico');l.innerHTML='';
@@ -1631,6 +1437,7 @@ function renderizarConteudoProdutividade(){
     let despGeral=totalQuest>0?((totalAcertos/totalQuest)*100).toFixed(1)+"%":"0%",hFormGeral=Math.floor(totalSegs/3600)+"h "+Math.floor((totalSegs%3600)/60).toString().padStart(2,'0')+"m",mediaGeral="0h 00m";
     if(diasUnicos.size>0){let mediaSegs=totalSegs/diasUnicos.size;mediaGeral=Math.floor(mediaSegs/3600)+"h "+Math.floor((mediaSegs%3600)/60).toString().padStart(2,'0')+"m";}
     
+    // ITEM 7 - Ordem Invertida (Desempenho(Azul), Questões(Verde), Horas(Laranja), Média(Amarelo))
     document.getElementById('prodDashCards').innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
     
     let tbody=document.getElementById('prodTableBody');tbody.innerHTML='';
@@ -1851,7 +1658,6 @@ function toggleDetailsRow(idClean,discNome){
         }else{document.getElementById('chartDisc_'+idClean).parentElement.style.display='none';}
     }
 }
-
 function abrirHabilidades(){let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");let opAtual=document.getElementById('seletorOperador').value,histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc&&t.concluida&&!t.pulada&&!t.isExtra),discs=db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)),html='';discs.forEach((d,index)=>{let dNome=d.nome,totalAulas=d.aulas||0,aulasSet=new Set();tarefasOp.filter(t=>t.disciplina===dNome).forEach(t=>{if(t.aulas){t.aulas.split(',').forEach(a=>{let aClean=a.trim();if(aClean)aulasSet.add(aClean);});}});let unqAulas=aulasSet.size,pctAulas=totalAulas>0?Math.min(80,(unqAulas/totalAulas)*80):0,acertos=0,questoes=0;histOp.filter(h=>h.disciplina===dNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});let pctDesemp=questoes>0?(acertos/questoes)*20:0,bonus=Math.floor(acertos/1000),totalRaw=pctAulas+pctDesemp+bonus,totalPct=Math.min(100,Math.max(0,totalRaw)),displayPct=totalPct.toFixed(1).replace('.0','')+'%',nivel="Neófito",corBg="#eeeeee",corTxt="#333333";if(totalPct<40){nivel="Neófito";corBg="#eeeeee";corTxt="#555555";}else if(totalPct<50){nivel="Noviço";corBg="#fff9c4";corTxt="#f57f17";}else if(totalPct<60){nivel="Aprendiz";corBg="#dcedc8";corTxt="#33691e";}else if(totalPct<70){nivel="Amador";corBg="#b3e5fc";corTxt="#01579b";}else if(totalPct<80){nivel="Profissional";corBg="#c5cae9";corTxt="#1a237e";}else if(totalPct<90){nivel="Perito";corBg="#ffe0b2";corTxt="#e65100";}else if(totalPct<100){nivel="Mestre";corBg="#ffccbc";corTxt="#bf360c";}else{nivel="Gr. Mestre";corBg="#ffd54f";corTxt="#b45f06";}html+=`<div class="hab-row"><div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div><div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div><div class="hab-bar-bg"><div class="hab-bar-fill" style="width: ${totalPct}%;"></div><div class="hab-bar-text">${displayPct}</div></div></div>`;});if(html==='')html='<div style="padding: 20px; text-align: center; color: var(--text-modal);">Nenhuma disciplina.</div>';document.getElementById('listaHabilidades').innerHTML=html;abrirModal('modalHabilidades');}
 async function pushParaNuvemSilencioso(){if(!navigator.onLine||!db.configs.urlAppScript)return;try{await fetch(db.configs.urlAppScript,{method:'POST',body:JSON.stringify({action:'salvar_banco_completo',dados:db})});}catch(e){}}
 function salvarModificacaoBasica(){db.configs.ultimaModificacaoLocal=Date.now();salvarBancoLocal();pushParaNuvemSilencioso();}
