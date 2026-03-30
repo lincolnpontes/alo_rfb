@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.4</title>
+    <title>Alô RFB v1.0.5</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -47,6 +47,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
             background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png'), linear-gradient(to bottom, #d6c2a5, #e6d2b5, #d6c2a5);
         }
+        body[data-theme="medieval"] #sticky-header { border-bottom: 2px solid #8b5a2b; border-top:none; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); border: 4px solid #8b5a2b; border-radius: 4px;
         }
@@ -166,7 +167,7 @@
         .meta-bar { width: 100%; height: 14px; background: rgba(0,0,0,0.15); border-radius: 6px; position: relative;}
         body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
         .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; z-index: 1;}
-        .meta-runner { position: absolute; right: 0; font-size: 42px; z-index: 2; line-height: 1; transition: all 0.2s ease;}
+        .meta-runner { position: absolute; right: -20px; font-size: 42px; z-index: 2; line-height: 1; transition: all 0.2s ease;}
         .meta-flag { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 30px; z-index: 0; line-height: 1; transition: all 0.2s ease;}
         .meta-text { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; color: var(--text-color); padding: 0 5px;}
         #meta-valores { margin-right: 25px; }
@@ -240,7 +241,7 @@
             margin-top: auto; 
         }
 
-        body.focus-mode * { outline: none !important; }
+        body.focus-mode * { outline: none !important; box-shadow: none !important; }
         body.focus-mode #sticky-header .header,
         body.focus-mode .trilhas-top-bar,
         body.focus-mode #dash-trilha-box,
@@ -287,7 +288,7 @@
         body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
         body.focus-mode .meta-fill { background: #ffffff !important; }
         
-        body.focus-mode #frase-motivacional-container { position: fixed; bottom: 8%; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
+        body.focus-mode #frase-motivacional-container { position: fixed; bottom: 5%; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
 
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -300,7 +301,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.4</div>
+    <div class="splash-version">v1.0.5</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -395,7 +396,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.4</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.5</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -845,6 +846,12 @@ function atualizarDisplayTimer(){
     let dSegs = tempoTimer;
     if(modoTimer !== 'progressive'){
         dSegs = Math.max(0, targetTimer - tempoTimer);
+        let durAudio = (!isNaN(audioRestart.duration) && audioRestart.duration > 0) ? Math.floor(audioRestart.duration) : 0;
+        if(isRunningTimer && db.configs.tocarRestart && durAudio > 0 && dSegs === durAudio) {
+            audioRestart.currentTime = 0;
+            audioRestart.volume = isMutedTimer ? 0 : volumeSalvoTimer;
+            audioRestart.play().catch(()=>{});
+        }
         if(dSegs === 0 && isRunningTimer){
             tempoAcumulado += targetTimer;
             startPauseTimer();
@@ -873,13 +880,13 @@ function avancarFasePomodoro(){
     if(pomoFase==='estudo'){
         if(pomoCicloAtual >= db.configs.pomodoro.ciclos){
             pomoFase='longa'; targetTimer=db.configs.pomodoro.longa*60;
-            pomoCicloAtual = 0;
         }else{
             pomoFase='curta'; targetTimer=db.configs.pomodoro.curta*60;
         }
     }else{
         pomoFase='estudo'; targetTimer=db.configs.pomodoro.estudo*60;
         pomoCicloAtual++;
+        if(pomoCicloAtual > db.configs.pomodoro.ciclos) pomoCicloAtual = 1;
     }
     tempoTimer=0;
     atualizarStatusModo();
@@ -887,18 +894,18 @@ function avancarFasePomodoro(){
 function atualizarStatusModo(){
     const s=document.getElementById('pomo-status-side');
     if(!s)return;
-    let acumStr = tempoAcumulado > 0 ? `<br>Tempo Acumulado: ${Math.floor(tempoAcumulado/60)} min` : '';
+    let acumStr = tempoAcumulado > 0 ? `<br>Tempo Acumulado: <br>${Math.floor(tempoAcumulado/60)} min` : '';
     if(modoTimer==='pomodoro'){
         s.style.display='block';
         let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'P. Curta':'P. Longa');
         s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}${acumStr}`;
     }else if(modoTimer==='regressive'){
         s.style.display='block';
-        s.innerHTML=`Tempo Inicial: ${Math.floor(db.configs.regressivo.estudo)} min${acumStr}`;
+        s.innerHTML=`Tempo Inicial: <br>${Math.floor(db.configs.regressivo.estudo)} min${acumStr}`;
     }else{
         if (tempoAcumulado > 0) {
             s.style.display='block';
-            s.innerHTML=`Tempo Acumulado:<br>${Math.floor(tempoAcumulado/60)} min`;
+            s.innerHTML=`Tempo Acumulado: <br>${Math.floor(tempoAcumulado/60)} min`;
         } else {
             s.style.display='none';
         }
@@ -917,7 +924,7 @@ function startPauseTimer(){
         clearInterval(intervalTimer);
         playerAudio.pause();
         if(btnPlay){btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';btnPlay.classList.remove('is-paused');}
-        if(tempoTimer>0&&db.configs.tocarRestart){
+        if((tempoTimer>0 || tempoAcumulado>0) && db.configs.tocarRestart && audioRestart.paused){
             audioRestart.currentTime=0;
             audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
             audioRestart.play().catch(()=>{});
@@ -930,7 +937,22 @@ function resetTimer(){if(tempoTimer>0 || tempoAcumulado>0){if(isRunningTimer)sta
 function zeroTimerConfirm(){if(confirm("Deseja ZERAR o cronômetro (descartar os "+formatarHorasMinutos(tempoTimer + tempoAcumulado)+")?")){tempoTimer=0;tempoAcumulado=0;atualizarDisplayTimer();atualizarStatusModo();atualizarBarraMeta();audioRestart.pause();audioRestart.currentTime=0;db.configs.estadoTimer=null;salvarModificacaoBasica();}}
 function fecharModalEPararAlarme(id){fecharModal(id);audioRestart.pause();audioRestart.currentTime=0;}
 function setModoTimer(novoModo){
-    if(modoTimer !== novoModo) { tempoAcumulado += tempoTimer; tempoTimer = 0; modoTimer = novoModo; }
+    if(modoTimer !== novoModo) { 
+        let totalSegs = tempoAcumulado + tempoTimer;
+        if(novoModo === 'progressive'){
+            tempoAcumulado = 0;
+            tempoTimer = totalSegs;
+        } else if(novoModo === 'regressive') {
+            let base = (db.configs.regressivo.estudo || 60) * 60;
+            tempoAcumulado = totalSegs - (totalSegs % base);
+            tempoTimer = totalSegs % base;
+        } else if(novoModo === 'pomodoro') {
+            let base = (db.configs.pomodoro.estudo || 25) * 60;
+            tempoAcumulado = totalSegs - (totalSegs % base);
+            tempoTimer = totalSegs % base;
+        }
+        modoTimer = novoModo; 
+    }
     let b1=document.getElementById('btn-prog'),b2=document.getElementById('btn-reg'),b3=document.getElementById('btn-pomo');
     if(b1)b1.classList.remove('active');if(b2)b2.classList.remove('active');if(b3)b3.classList.remove('active');
     let bAt=document.getElementById(novoModo==='progressive'?'btn-prog':novoModo==='regressive'?'btn-reg':'btn-pomo');
@@ -969,11 +991,11 @@ function atualizarBarraMeta(){
     let flagEl = document.querySelector('.meta-flag');
     if(runnerEl) runnerEl.innerText = runnerEmoji;
     if(runnerEmoji === '🚀') {
-        if(runnerEl) { runnerEl.style.top = '50%'; runnerEl.style.bottom = 'auto'; runnerEl.style.transform = 'translateY(-50%) rotate(45deg)'; runnerEl.style.transformOrigin = 'center';}
+        if(runnerEl) { runnerEl.style.top = '50%'; runnerEl.style.bottom = 'auto'; runnerEl.style.transform = 'translateY(-50%) rotate(45deg)'; runnerEl.style.transformOrigin = 'center'; runnerEl.style.right = '-20px'; }
         if(flagEl) flagEl.innerText = '🌕';
     } else {
         let isCar = runnerEmoji === '🏎️' || runnerEmoji === '🚗';
-        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right';}
+        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '0px'; }
         if(flagEl) flagEl.innerText = '🏁';
     }
     const metaSegs=db.configs.metaDiariaHrs*3600;
@@ -1872,4 +1894,3 @@ iniciar();
 </script>
 </body>
 </html>
-    
