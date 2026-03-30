@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.1</title>
+    <title>Alô RFB v1.0.2</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -149,7 +149,7 @@
         .crono-display { font-size: 70px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--title-color); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1; z-index: 2;}
         .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 13px; font-weight: bold; color: var(--text-color); text-align: left; line-height: 1.4; width: max-content; display:none; padding-left: 10px; border-left: 2px solid var(--text-color);}
         .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 5px;}
-        .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif;}
+        .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent;}
         .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
         .crono-play, .crono-stop { width: 55px; height: 55px;}
@@ -250,16 +250,23 @@
         body.focus-mode .crono-modos-vert { flex-direction: row; justify-content: center; gap: 20px;}
         body.focus-mode .vol-vert-container { flex-direction: row; justify-content: center; gap: 30px; margin-top: 10px;}
         body.focus-mode input[type=range][orient=vertical] { appearance: auto; -webkit-appearance: auto; width: 120px; height: 8px; }
-        body.focus-mode .crono-display { color: #ffffff !important; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        body.focus-mode .crono-display { color: #ffffff !important; text-shadow: 0 0 20px rgba(255,255,255,0.2); font-size: 85px;}
         body.focus-mode .crono-btn-vert { background: rgba(255,255,255,0.1); color: #fff; font-size: 14px; padding: 10px 15px;}
         body.focus-mode .crono-btn-vert.active { background: var(--primaria); }
         body.focus-mode .crono-btn-icon { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); color: #fff; font-size: 32px;}
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 70px; height: 70px; font-size: 70px !important;}
+        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 75px; height: 75px; font-size: 70px !important;}
         body.focus-mode .crono-play span, body.focus-mode .crono-stop span { font-size: 70px !important; }
         body.focus-mode .pomo-status-side { color: #aaa; left: auto; position: relative; margin-top: 20px; text-align: center; border-left: none; font-size: 16px;}
         body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 20px;}
         body.focus-mode .meta-text { color: #aaa; font-size: 16px;}
         body.focus-mode #frase-motivacional-container { position: fixed; bottom: 5%; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
+        
+        body.focus-mode .crono-btn-icon, 
+        body.focus-mode .crono-btn-vert { outline: none !important; box-shadow: none !important; border: none !important; -webkit-tap-highlight-color: transparent; }
+        body.focus-mode .crono-btn-icon:focus, 
+        body.focus-mode .crono-btn-icon:active { background-color: transparent !important; }
+        body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
+        body.focus-mode .meta-fill { background: #ffffff !important; }
 
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
@@ -268,12 +275,11 @@
 <body>
 
 <div id="globalTooltip"></div>
-
 <div id="toast">Aviso!</div>
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.1</div>
+    <div class="splash-version">v1.0.2</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -323,7 +329,7 @@
                     <div style="display:flex; justify-content:center; gap:8px;">
                         <button class="crono-btn-icon crono-edit" onclick="abrirConfigCronometroModal()" title="Configurações" style="margin: 0;">⏱️</button>
                         <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo" style="margin: 0;">✏️</button>
-                        <button class="crono-btn-icon crono-edit" onclick="toggleFocusMode()" title="Modo Foco (Atalho: Enter)" style="margin: 0;">👁️</button>
+                        <button class="crono-btn-icon crono-edit" onclick="toggleFocusMode()" title="Modo Foco" style="margin: 0;">👁️</button>
                     </div>
                 </div>
                 <div class="crono-display-box">
@@ -331,15 +337,15 @@
                     <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
+                        <div class="meta-text">
+                            <span id="meta-label">Meta Diária: 0%</span>
+                            <span id="meta-valores">0h00m / 4h</span>
+                        </div>
                         <div class="meta-bar">
                             <div class="meta-fill" id="meta-fill">
                                 <div class="meta-runner" id="meta-runner">🏎️</div>
                             </div>
                             <div class="meta-flag">🏁</div>
-                        </div>
-                        <div class="meta-text">
-                            <span id="meta-label">Meta Diária: 0%</span>
-                            <span id="meta-valores">0h00m / 4h</span>
                         </div>
                     </div>
 
@@ -368,7 +374,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.1</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.2</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -418,7 +424,82 @@
     </div>
 </div>
 
-<div class="modal-overlay" id="modalConfigCronometro"><div class="modal"><div class="modal-title">⏱️ Configurações</div><fieldset class="fieldset-config"><legend>Meta Diária</legend><div style="display:flex; gap:10px; align-items:stretch; margin-bottom: 10px;"><div class="switch-container" style="margin:0; padding:5px 10px; flex:1;"><span style="font-weight:bold;font-size:12px;">Exibir Meta Diária</span><label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label></div><div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;"><label style="font-size:12px; margin:0; flex:1;">Meta (h):</label><input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;"></div></div><div style="display:flex; gap:10px; align-items:center;"><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar Tempo</span><label class="switch"><input type="checkbox" id="cfgOcultarTempoMeta"><span class="slider"></span></label></div><div class="switch-container" style="margin:0; flex:1; padding:5px;"><span style="font-weight:bold;font-size:12px;">Ocultar %</span><label class="switch"><input type="checkbox" id="cfgOcultarPctMeta"><span class="slider"></span></label></div></div></fieldset><fieldset class="fieldset-config"><legend>Áudio e Geral</legend><div class="switch-container" style="padding:5px;"><span style="font-weight:bold;font-size:13px;">Tocar alarme ao Pausar</span><label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:12px;">Link do Áudio MP3 (Alarme Restart):</label><input type="text" id="cfgAudioLink" placeholder="Deixe como está ou cole outro link"></div></fieldset><fieldset class="fieldset-config"><legend>Regressivo & Pomodoro</legend><div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Regressivo (min):</label><input type="number" id="cfgRegEstudo" value="60" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pomo Estudo (min):</label><input type="number" id="cfgPomoEstudo" value="25" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Curta (min):</label><input type="number" id="cfgPomoCurta" value="5" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0;"><label style="font-size:11px;">Pausa Longa (min):</label><input type="number" id="cfgPomoLonga" value="15" style="padding: 6px;"></div><div class="form-group" style="margin-bottom:0; grid-column: span 2;"><label style="font-size:11px;">Ciclos p/ Longa:</label><input type="number" id="cfgPomoCiclos" value="4" style="padding: 6px;"></div></div></fieldset><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button><button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button></div></div></div>
+<div class="modal-overlay" id="modalConfigCronometro">
+    <div class="modal">
+        <div class="modal-title">⏱️ Configurações</div>
+        <fieldset class="fieldset-config">
+            <legend>Meta Diária</legend>
+            <div style="display:flex; gap:10px; align-items:stretch; margin-bottom: 10px;">
+                <div class="switch-container" style="margin:0; padding:5px 10px; flex:1;">
+                    <span style="font-weight:bold;font-size:12px;">Exibir Meta Diária</span>
+                    <label class="switch"><input type="checkbox" id="cfgExibirMeta" onchange="toggleInputsMeta()"><span class="slider"></span></label>
+                </div>
+                <div class="form-group" id="divMetaHoras" style="margin:0; flex:1; display:flex; align-items:center; gap:5px; border:1px solid var(--border-input); padding:5px 10px; border-radius:8px; background:var(--bg-input); box-sizing:border-box;">
+                    <label style="font-size:12px; margin:0; flex:1;">Meta (h):</label>
+                    <input type="number" id="cfgMetaHoras" value="4" min="1" max="24" style="padding: 4px; width: 60px; flex:none;">
+                </div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div class="switch-container" style="margin:0; flex:1; padding:5px;">
+                    <span style="font-weight:bold;font-size:12px;">Mostrar Tempo</span>
+                    <label class="switch"><input type="checkbox" id="cfgMostrarTempoMeta"><span class="slider"></span></label>
+                </div>
+                <div class="switch-container" style="margin:0; flex:1; padding:5px;">
+                    <span style="font-weight:bold;font-size:12px;">Mostrar %</span>
+                    <label class="switch"><input type="checkbox" id="cfgMostrarPctMeta"><span class="slider"></span></label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset-config">
+            <legend>Áudio e Geral</legend>
+            <div class="switch-container" style="padding:5px;">
+                <span style="font-weight:bold;font-size:13px;">Tocar Música Repetitiva ao Pausar</span>
+                <label class="switch"><input type="checkbox" id="cfgTocarRestart"><span class="slider"></span></label>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+                <label style="font-size:12px;">Link do Áudio MP3:</label>
+                <input type="text" id="cfgAudioLink" placeholder="Deixe como está ou cole outro link">
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset-config">
+            <legend>Regressivo</legend>
+            <div class="form-group" style="margin-bottom:0;">
+                <label style="font-size:11px;">Tempo (min):</label>
+                <input type="number" id="cfgRegEstudo" value="60" style="padding: 6px;">
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset-config">
+            <legend>Pomodoro</legend>
+            <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11px;">Tempo de Estudo (min):</label>
+                    <input type="number" id="cfgPomoEstudo" value="25" style="padding: 6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11px;">Pausa Curta (min):</label>
+                    <input type="number" id="cfgPomoCurta" value="5" style="padding: 6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11px;">Pausa Longa (min):</label>
+                    <input type="number" id="cfgPomoLonga" value="15" style="padding: 6px;">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label style="font-size:11px;">Ciclos p/ Longa:</label>
+                    <input type="number" id="cfgPomoCiclos" value="4" style="padding: 6px;">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="fecharModal('modalConfigCronometro');">Voltar</button>
+            <button class="btn-action" onclick="salvarConfigCronometro()">💾 Salvar</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="modalAtalhos"><div class="modal"><div class="modal-title">⌨️ Teclas de Atalho</div><p style="font-size: 12px; margin-top:-10px;">Clique no campo e pressione a tecla. Pressione o botão vermelho para limpar.</p><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Play / Pause:</label><input type="text" id="keyPlay" readonly onkeydown="capturarAtalho(event, 'play')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('play')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Zerar / Parar:</label><input type="text" id="keyReset" readonly onkeydown="capturarAtalho(event, 'reset')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('reset')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Mudo:</label><input type="text" id="keyMute" readonly onkeydown="capturarAtalho(event, 'mute')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('mute')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume +:</label><input type="text" id="keyVolUp" readonly onkeydown="capturarAtalho(event, 'volUp')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volUp')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div><div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Volume -:</label><input type="text" id="keyVolDown" readonly onkeydown="capturarAtalho(event, 'volDown')" style="cursor:pointer;" placeholder="Clique e digite"></div><button onclick="limparUmAtalho('volDown')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div>
 <div class="form-group" style="display:flex; align-items:flex-end; gap:5px;"><div style="flex:1"><label>Entrar no Modo Foco:</label><input type="text" id="keyFocus" readonly onkeydown="capturarAtalho(event, 'focus')" style="cursor:pointer;" placeholder="Padrão: Enter"></div><button onclick="limparUmAtalho('focus')" style="background:#d32f2f;color:#fff;border:none;border-radius:5px;height:44px;width:44px;font-weight:bold;cursor:pointer;">X</button></div>
 <div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalAtalhos');abrirConfigGeraisModal();">Voltar</button><button class="btn-action" onclick="salvarAtalhos()">💾 Salvar</button></div></div></div>
@@ -481,7 +562,7 @@
 <div class="modal-overlay" id="modalImportacaoEmLote"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title" style="display:flex; justify-content:space-between; align-items:center; gap: 10px; flex-wrap: wrap;"><span>📥 Importar em Lote</span><div style="display:flex; gap:10px;"><button class="btn-sub-gerenciar" onclick="irParaGerenciarDeImportacao('disciplinas')">📚 Editar Disciplinas</button><button class="btn-sub-gerenciar" onclick="irParaGerenciarDeImportacao('atividades')">📝 Editar Atividades</button></div></div><div style="background:var(--bg-hover); padding:10px 15px; border-radius:8px; margin-bottom:15px; border:1px solid var(--border-input); font-size:13px; color: var(--text-modal);"><p style="margin-top:0;"><strong>Dica:</strong> Tire <b>print</b> (captura de tela) das suas metas/tarefas e envie para sua IA preferida junto com o prompt perfeito abaixo:</p><button class="btn-action" onclick="copiarPromptImportacao()" style="width:100%; background:#f57f17; font-size:14px; padding:10px; display:flex; justify-content:center; align-items:center; gap: 8px;">📋 Copiar Prompt Perfeito</button></div><p style="font-size:12px; margin-bottom: 5px;">Cole aqui a resposta da IA (Formato: <i>Tarefa; Disciplina; Aula; Título da Tarefa; Atividade</i>)</p><div class="form-group"><textarea id="textoImportacao" rows="5" placeholder="01; Direito Constitucional; Aula 01; Poder Constituinte; Teoria&#10;02; Direito Tributário; Aula 04; Suspensão do Crédito; Questões" style="width:100%; padding:10px; border:1px solid var(--border-input); border-radius:5px; background:var(--bg-input); color:var(--text-input); font-family:monospace;"></textarea></div><button class="btn-action" style="width:100%; margin-bottom:15px; padding:12px; font-size:16px;" onclick="processarTextoImportacao()">⚙️ Processar Dados</button><div id="previewImportacao" style="display:none;"><h4 style="margin: 0 0 10px 0; color:var(--primaria);">Revisar e Ajustar <span style="font-size: 11px; color:#d32f2f; font-weight:normal;">(Itens em vermelho não existem nas configurações)</span></h4><div style="display:grid; grid-template-columns: 60px 1.5fr 1fr 2fr 1.5fr; gap:5px; margin-bottom:5px; font-weight:bold; font-size:12px; color:var(--primaria); text-align:center; padding-right: 15px;"><div>Nº</div><div>Disciplina</div><div>Aula</div><div>Título</div><div>Atividade</div></div><div style="max-height: 40vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 5px; padding: 10px; background:var(--bg-item);" id="tabelaPreviewImportacao"></div><div id="msgErroImportacao" style="display:none; color:#d32f2f; font-size:13px; font-weight:bold; margin-top:10px; text-align:center; background: rgba(211, 47, 47, 0.1); padding: 8px; border-radius: 5px;">Corrija os campos em vermelho (conflitos de número, disciplina, aula ou atividade inexistente) para poder salvar.</div></div><div class="modal-actions" style="margin-top:20px;"><button class="btn-cancel" onclick="cancelarImportacao()">Voltar</button><button class="btn-importar" id="btnSalvarImportacao" style="display:none;" onclick="salvarTarefasImportadas()">Salvar Tarefas</button></div></div></div>
 <div class="modal-overlay" id="modalSelecionarTarefaRegistro"><div class="modal"><div class="modal-title">Vincular Tempo</div><p style="font-size: 14px;">Selecione a Tarefa (não concluída) para registrar este tempo:</p><div id="listaTarefasParaRegistro" style="max-height: 50vh; overflow-y:auto; border: 1px solid var(--border-input); border-radius: 8px;"></div><div class="modal-actions" style="margin-top: 15px;"><button class="btn-cancel" onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro');">Voltar (Manter tempo)</button></div></div></div>
 <div class="modal-overlay" id="modalGerenciarTipos"><div class="modal" style="max-height: 90vh; overflow-y: auto;"><div class="modal-title" style="color:#f57f17; border-color:#f57f17;">📝 Tipos de Atividade</div><div style="display:flex; gap:10px; margin-bottom: 15px; align-items:flex-end;"><div style="flex:1;"><label style="font-size:12px; font-weight:bold;">Nome da Atividade:</label><input type="text" id="novoTipoInput" placeholder="Ex: Questões" style="padding:8px; border:1px solid var(--border-input); border-radius:4px; width:100%; box-sizing:border-box;"></div><div style="flex:none;"><label style="font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Tem Desempenho?</label><div style="background:var(--bg-input); padding:7px; border-radius:4px; text-align:center; border: 1px solid var(--border-input);"><input type="checkbox" id="novoTipoDesempenho" style="transform: scale(1.3);"></div></div><button class="btn-action" style="flex:none; padding: 0 15px; height:37px;" onclick="adicionarTipo()">+ Add</button></div><div id="listaTiposCfg" style="display:flex; flex-direction:column; gap:8px; margin-bottom: 15px;"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharGerenciarTipos()">Voltar</button></div></div></div>
-<div class="modal-overlay" id="modalListagem"><div class="modal"><div class="modal-title" id="tituloListagem">Gerenciar</div><input type="hidden" id="listagemContextoAtivo"><button class="btn-action" id="btnNovoListagem" style="width:100%; margin-bottom:15px;">+ Novo</button><div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div><div class="modal-actions" style="display:flex; gap:10px; width:100%; margin-top: 20px;"><button id="btnListaVerArquivados" class="btn-outline" style="display:none; flex:1; margin:0; justify-content:center; border-width:2px; font-size:14px; height: 44px; font-weight:bold;" onclick="abrirGerenciar('concursos_arquivados')">📂 Arquivados</button><button class="btn-cancel" id="btnVoltarListagem" style="flex:1; margin:0; border-width:2px; height: 44px; display:flex; align-items:center; justify-content:center;">Voltar</button></div></div></div>
+<div class="modal-overlay" id="modalListagem"><div class="modal"><div class="modal-title" id="tituloListagem">Gerenciar</div><input type="hidden" id="listagemContextoAtivo"><button class="btn-action" id="btnNovoListagem" style="width:100%; margin-bottom:15px;">+ Novo</button><div id="conteudoListagem" style="max-height:50vh;overflow-y:auto;padding-right:5px"></div><div class="modal-actions" style="display:flex; gap:10px; width:100%; margin-top: 20px;"><button id="btnListaVerArquivados" class="btn-outline" style="display:none; flex:1; margin:0; justify-content:center; border-width:2px; font-size:14px; height: 44px; font-weight:bold; color:var(--text-input);" onclick="abrirGerenciar('concursos_arquivados')">📂 Arquivados</button><button class="btn-cancel" id="btnVoltarListagem" style="flex:1; margin:0; border-width:2px; height: 44px; display:flex; align-items:center; justify-content:center;">Voltar</button></div></div></div>
 
 <div class="modal-overlay" id="modalFormConcurso"><div class="modal"><div class="modal-title">Concurso</div><input type="hidden" id="concNomeOriginal"><div class="form-group"><label>Nome do Concurso (Ex: AFRFB):</label><input type="text" id="concNome"></div>
 <div style="display:flex; gap:10px;">
@@ -496,7 +577,12 @@
 <div class="modal-overlay" id="modalFormTrilha"><div class="modal"><div class="modal-title">Configurar Trilha</div><input type="hidden" id="edtTrilhaId"><input type="hidden" id="edtTrilhaConcurso"><div class="form-group"><label>Nome da Trilha:</label><input type="text" id="edtTrilhaNome"></div><div class="form-group"><label>Data de Início (Vazio = Não iniciada):</label><input type="date" id="edtTrilhaDataInicio"></div><div class="form-group"><label>Duração Prevista (em dias):</label><input type="number" id="edtTrilhaDias" min="1" placeholder="Ex: 7"></div><div class="modal-actions" style="flex-wrap: wrap; gap: 10px;"><button class="btn-cancel" onclick="fecharModal('modalFormTrilha'); if(document.getElementById('listagemContextoAtivo').value === 'trilhas') abrirGerenciar('trilhas', document.getElementById('edtTrilhaConcurso').value)">Cancelar</button><button class="btn-importar" onclick="salvarEdicaoTrilha(true)">Importar</button><button class="btn-action" onclick="salvarEdicaoTrilha(false)">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalFormDisciplina"><div class="modal"><div class="modal-title">Disciplina</div><input type="hidden" id="discIdOriginal"><input type="hidden" id="discConcursoPai"><div class="form-group"><label>Nome da Disciplina:</label><input type="text" id="discNome" placeholder="Ex: Direito Constitucional"></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Inicia na Aula:</label><input type="number" id="discAulaInicio" placeholder="Ex: 0" value="0"></div><div class="form-group" style="flex:1;"><label>Qtd Aulas:</label><input type="number" id="discAulas" placeholder="Ex: 15" min="0"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormDisciplina'); if(contextoRetornoListagem === 'importacao') abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value); else abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button><button class="btn-action" onclick="salvarDisciplina()">Salvar</button></div></div></div>
 
-<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal"><div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;">
+<div class="modal-overlay" id="modalFormTarefa"><div class="modal" style="max-width: 600px;"><div class="modal-title">Tarefa <span id="tarHeaderConcurso" style="color:var(--primaria); margin-left: 5px;"></span></div><input type="hidden" id="tarefaIdOriginal">
+
+<!-- ITEM 9: Switch de Tarefa Pulada -->
+<div class="switch-container" id="containerStatusPulada" style="display:none; border:2px solid #d32f2f; background: rgba(211, 47, 47, 0.05);"><span style="font-weight:900;font-size:14px; color:#d32f2f;">⏭️ Tarefa Pulada</span><label class="switch"><input type="checkbox" id="tarPulada"><span class="slider" style="background-color: #d32f2f;"></span></label></div>
+
+<div class="switch-container" id="containerStatusConcluida" style="display:none; border:2px solid #4CAF50;"><span style="font-weight:900;font-size:14px; color:#4CAF50;">✅ Tarefa Concluída</span><label class="switch"><input type="checkbox" id="tarConcluida"><span class="slider"></span></label></div><div style="display:flex; gap:10px;">
     <div class="form-group" style="flex:1;"><label>Tarefa Nº:</label><input type="number" id="tarNumero" placeholder="Ex: 1" min="1" style="height:38px; padding:0 12px; box-sizing:border-box;"></div>
     <div class="form-group" style="flex:2;"><label>Trilha:</label><select id="tarTrilhaSelect" class="modal-select" style="margin-bottom:0;"></select></div>
 </div>
@@ -675,7 +761,7 @@ function dispararNotificacao() {
 }
 function toggleFocusMode() { document.body.classList.toggle('focus-mode'); }
 function carregarBanco(){
-    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,ocultarPctMeta:false,ocultarTempoMeta:false,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
+    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,mostrarPctMeta:true,mostrarTempoMeta:true,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
     try{
         let txt=localStorage.getItem('estudos_db');
         if(txt){
@@ -698,7 +784,10 @@ function carregarBanco(){
             if(!l.configs.atalhos)l.configs.atalhos=d.configs.atalhos;else{for(let k in d.configs.atalhos){if(!l.configs.atalhos[k])l.configs.atalhos[k]=d.configs.atalhos[k];else if(typeof l.configs.atalhos[k]==='string')l.configs.atalhos[k]=[l.configs.atalhos[k]];}}
             if(!l.configs.atalhos.focus) l.configs.atalhos.focus = ['Enter','NumpadEnter'];
             if(!l.configs.pomodoro)l.configs.pomodoro=d.configs.pomodoro;if(!l.configs.regressivo)l.configs.regressivo=d.configs.regressivo;
-            if(l.configs.exibirMeta===undefined)l.configs.exibirMeta=true;if(l.configs.ocultarPctMeta===undefined)l.configs.ocultarPctMeta=false;if(l.configs.ocultarTempoMeta===undefined)l.configs.ocultarTempoMeta=false;if(l.configs.tocarRestart===undefined)l.configs.tocarRestart=true;if(!l.configs.tiposAtividade)l.configs.tiposAtividade=d.configs.tiposAtividade;if(l.configs.estadoTimer===undefined)l.configs.estadoTimer=null;
+            if(l.configs.exibirMeta===undefined)l.configs.exibirMeta=true;
+            if(l.configs.mostrarTempoMeta===undefined) l.configs.mostrarTempoMeta = l.configs.ocultarTempoMeta !== undefined ? !l.configs.ocultarTempoMeta : true;
+            if(l.configs.mostrarPctMeta===undefined) l.configs.mostrarPctMeta = l.configs.ocultarPctMeta !== undefined ? !l.configs.ocultarPctMeta : true;
+            if(l.configs.tocarRestart===undefined)l.configs.tocarRestart=true;if(!l.configs.tiposAtividade)l.configs.tiposAtividade=d.configs.tiposAtividade;if(l.configs.estadoTimer===undefined)l.configs.estadoTimer=null;
             if(l.configs.tiposAtividade.length>0&&typeof l.configs.tiposAtividade[0]==='string'){l.configs.tiposAtividade=l.configs.tiposAtividade.map(t=>{return{nome:t,comDesempenho:/quest|teste/i.test(t)};});}
             if(!l.configs.frases) l.configs.frases = d.configs.frases;
             if(l.configs.fraseAuto === undefined) l.configs.fraseAuto = d.configs.fraseAuto;
@@ -732,27 +821,25 @@ function exibirFraseAleatoria() {
     }
 }
 function atualizarDisplayTimer(){
-    let dSegs=tempoTimer;
-    if(modoTimer!=='progressive'){
-        dSegs=Math.max(0,targetTimer-tempoTimer);
-        if(dSegs===0&&isRunningTimer){
-            if (modoTimer === 'regressive') {
-                tempoAcumulado += targetTimer;
-            } else if (modoTimer === 'pomodoro' && pomoFase === 'estudo') {
-                tempoAcumulado += targetTimer;
-            }
+    let dSegs = tempoTimer;
+    if(modoTimer !== 'progressive'){
+        dSegs = Math.max(0, targetTimer - tempoTimer);
+        if(dSegs === 0 && isRunningTimer){
+            tempoAcumulado += targetTimer;
             startPauseTimer();
             dispararNotificacao();
             mostrarToast("Tempo esgotado!");
-            if(modoTimer==='pomodoro'){
+            if(modoTimer === 'pomodoro'){
                 avancarFasePomodoro();
                 dSegs = targetTimer;
-            } else if(modoTimer==='regressive') {
+            } else if(modoTimer === 'regressive') {
                 tempoTimer = 0;
                 dSegs = targetTimer;
                 atualizarStatusModo();
             }
         }
+    } else {
+        dSegs = tempoAcumulado + tempoTimer;
     }
     let dt=document.getElementById('display-timer');
     if(dt)dt.innerText=formatarTempoTimer(dSegs);
@@ -764,7 +851,7 @@ function atualizarDisplayTimer(){
 function avancarFasePomodoro(){
     if(pomoFase==='estudo'){
         pomoCicloAtual++;
-        if(pomoCicloAtual % db.configs.pomodoro.ciclos===0){
+        if(pomoCicloAtual >= db.configs.pomodoro.ciclos){
             pomoFase='longa'; targetTimer=db.configs.pomodoro.longa*60;
         }else{
             pomoFase='curta'; targetTimer=db.configs.pomodoro.curta*60;
@@ -779,18 +866,18 @@ function avancarFasePomodoro(){
 function atualizarStatusModo(){
     const s=document.getElementById('pomo-status-side');
     if(!s)return;
-    let acumStr = tempoAcumulado > 0 ? ` | Acumulado: ${Math.floor(tempoAcumulado/60)}m` : '';
+    let acumStr = tempoAcumulado > 0 ? ` | Tempo Acumulado: ${Math.floor(tempoAcumulado/60)} min` : '';
     if(modoTimer==='pomodoro'){
         s.style.display='block';
         let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'Pausa Curta':'Pausa Longa');
-        s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}${acumStr}`;
+        s.innerHTML=`Fase: ${lbl} | Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}${acumStr}`;
     }else if(modoTimer==='regressive'){
         s.style.display='block';
-        s.innerHTML=`Inicial: ${Math.floor(db.configs.regressivo.estudo)} min${acumStr}`;
+        s.innerHTML=`Tempo Inicial: ${Math.floor(db.configs.regressivo.estudo)} min${acumStr}`;
     }else{
         if (tempoAcumulado > 0) {
             s.style.display='block';
-            s.innerHTML=`Acumulado: ${Math.floor(tempoAcumulado/60)}m`;
+            s.innerHTML=`Tempo Acumulado: ${Math.floor(tempoAcumulado/60)} min`;
         } else {
             s.style.display='none';
         }
@@ -821,7 +908,8 @@ function startPauseTimer(){
 function resetTimer(){if(tempoTimer>0 || tempoAcumulado>0){if(isRunningTimer)startPauseTimer();abrirSelecionadorDeTarefaParaRegistro();}}
 function zeroTimerConfirm(){if(confirm("Deseja ZERAR o cronômetro (descartar os "+formatarHorasMinutos(tempoTimer + tempoAcumulado)+")?")){tempoTimer=0;tempoAcumulado=0;atualizarDisplayTimer();atualizarStatusModo();atualizarBarraMeta();audioRestart.pause();audioRestart.currentTime=0;db.configs.estadoTimer=null;salvarModificacaoBasica();}}
 function fecharModalEPararAlarme(id){fecharModal(id);audioRestart.pause();audioRestart.currentTime=0;}
-function setModoTimer(novoModo){modoTimer=novoModo;
+function setModoTimer(novoModo){
+    if(modoTimer !== novoModo) { tempoAcumulado += tempoTimer; tempoTimer = 0; modoTimer = novoModo; }
     let b1=document.getElementById('btn-prog'),b2=document.getElementById('btn-reg'),b3=document.getElementById('btn-pomo');
     if(b1)b1.classList.remove('active');if(b2)b2.classList.remove('active');if(b3)b3.classList.remove('active');
     let bAt=document.getElementById(novoModo==='progressive'?'btn-prog':novoModo==='regressive'?'btn-reg':'btn-pomo');
@@ -829,7 +917,7 @@ function setModoTimer(novoModo){modoTimer=novoModo;
     if(novoModo==='pomodoro')targetTimer=db.configs.pomodoro.estudo*60;else if(novoModo==='regressive')targetTimer=(db.configs.regressivo.estudo||60)*60;
     atualizarStatusModo();atualizarDisplayTimer();
 }
-function abrirEdicaoTempo(){if(isRunningTimer)startPauseTimer();let dSegs=modoTimer==='progressive'?tempoTimer:Math.max(0,targetTimer-tempoTimer);
+function abrirEdicaoTempo(){if(isRunningTimer)startPauseTimer();let dSegs=modoTimer==='progressive'?(tempoTimer+tempoAcumulado):Math.max(0,targetTimer-tempoTimer);
     let eh=document.getElementById('editHoras'),em=document.getElementById('editMins'),es=document.getElementById('editSegs');
     if(eh)eh.value=String(Math.floor(dSegs/3600)).padStart(2,'0');
     if(em)em.value=String(Math.floor((dSegs%3600)/60)).padStart(2,'0');
@@ -841,7 +929,7 @@ function confirmarEdicaoTempo(){
     let eh=document.getElementById('editHoras'),em=document.getElementById('editMins'),es=document.getElementById('editSegs');
     let h=parseInt(eh?eh.value:0, 10)||0,m=parseInt(em?em.value:0, 10)||0,s=parseInt(es?es.value:0, 10)||0;
     let totalSegs=(h*3600)+(m*60)+s;
-    if(modoTimer==='progressive')tempoTimer=totalSegs;else tempoTimer=Math.max(0,targetTimer-totalSegs);
+    if(modoTimer==='progressive') { tempoAcumulado = 0; tempoTimer = totalSegs; } else { tempoTimer=Math.max(0,targetTimer-totalSegs); }
     atualizarDisplayTimer();
     db.configs.estadoTimer={tempo:tempoTimer,target:targetTimer,modo:modoTimer,fase:pomoFase,ciclo:pomoCicloAtual,acumulado:tempoAcumulado};
     salvarModificacaoBasica();
@@ -859,26 +947,26 @@ function atualizarBarraMeta(){
     let flagEl = document.querySelector('.meta-flag');
     if(runnerEl) runnerEl.innerText = runnerEmoji;
     if(runnerEmoji === '🚀') {
-        if(runnerEl) { runnerEl.style.top = '50%'; runnerEl.style.bottom = 'auto'; runnerEl.style.transform = 'translateY(-50%) rotate(45deg)'; }
+        if(runnerEl) { runnerEl.style.top = '50%'; runnerEl.style.bottom = 'auto'; runnerEl.style.transform = 'translateY(-50%) rotate(45deg)'; runnerEl.style.transformOrigin = 'center';}
         if(flagEl) flagEl.innerText = '🌕';
     } else {
-        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)'; }
+        let isCar = runnerEmoji === '🏎️' || runnerEmoji === '🚗';
+        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right';}
         if(flagEl) flagEl.innerText = '🏁';
     }
     const metaSegs=db.configs.metaDiariaHrs*3600;
     let estudadoHoje=0;
     let hojeStr=getDataHoraAtual().split(' ')[0];
     db.historico.forEach(h=>{if(h.duracaoRegistrada&&h.data.startsWith(hojeStr))estudadoHoje+=h.duracaoRegistrada;});
-    let atual=estudadoHoje;
-    if(modoTimer==='progressive'||(modoTimer==='pomodoro'&&pomoFase==='estudo')||modoTimer==='regressive')atual+=tempoTimer;
+    let atual = estudadoHoje + tempoTimer + tempoAcumulado;
     let pct=Math.min(100,(atual/metaSegs)*100);
     let mFill = document.getElementById('meta-fill');
     if(mFill) mFill.style.width=pct+'%';
     let mLab = document.getElementById('meta-label');
-    if(mLab) mLab.innerText=db.configs.ocultarPctMeta?`Meta Diária`:`Meta Diária: ${Math.round(pct)}%`;
+    if(mLab) { mLab.style.display = db.configs.mostrarPctMeta ? 'inline' : 'none'; mLab.innerText = `Meta Diária: ${Math.round(pct)}%`; }
     let mVal = document.getElementById('meta-valores');
     if(mVal) {
-        if(db.configs.ocultarTempoMeta){ mVal.style.display='none'; }
+        if(!db.configs.mostrarTempoMeta){ mVal.style.display='none'; }
         else{ mVal.style.display='inline'; let hFormat=Math.floor(atual/3600),mFormat=Math.floor((atual%3600)/60).toString().padStart(2,'0'); mVal.innerText=`${hFormat}h${mFormat}m / ${db.configs.metaDiariaHrs}h`; }
     }
 }
@@ -1062,6 +1150,7 @@ function renderizarListaTarefas(){
 function abrirModal(id){let m=document.getElementById(id);if(m)m.style.display='flex';document.body.classList.add('modal-open')}
 function fecharModal(id){let m=document.getElementById(id);if(m)m.style.display='none';if(!Array.from(document.querySelectorAll('.modal-overlay')).some(mo=>mo.style.display==='flex'))document.body.classList.remove('modal-open')}
 let tc=document.getElementById('tarConcluida');if(tc)tc.addEventListener('change',function(e){if(!this.checked){this.checked=true;abrirModal('modalConfirmarDesmarcar');}});
+let tpul=document.getElementById('tarPulada');if(tpul)tpul.addEventListener('change',function(e){if(!this.checked){this.checked=true;abrirModal('modalConfirmarDesfazerPulo');}});
 function confirmarDesmarcar(){
     let tid=document.getElementById('tarefaIdOriginal');
     if(!tid) return;
@@ -1100,8 +1189,8 @@ function abrirPainelUnificadoComNivel(mestre){db.configs.mestreAtivo=mestre;let 
 function abrirConfigGeraisModal(){fecharModal('modalPainelUnificado');let ct=document.getElementById('cfgTema');if(ct)ct.value=db.configs.tema||"azul";abrirModal('modalConfigGerais');}
 function salvarConfigGerais(){let ct=document.getElementById('cfgTema');if(ct)db.configs.tema=ct.value;let csa=document.getElementById('cfgSenhaAdmin');if(csa)db.configs.senhaAdmin=csa.value;salvarModificacaoBasica();aplicarTemaCores();renderizarListaTarefas();fecharModal('modalConfigGerais');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);}
 function toggleInputsMeta(){let cem=document.getElementById('cfgExibirMeta');let dmh=document.getElementById('divMetaHoras');if(cem&&dmh)dmh.style.display=cem.checked?'flex':'none';}
-function abrirConfigCronometroModal(){fecharModal('modalPainelUnificado');let a=document.getElementById('cfgExibirMeta'),b=document.getElementById('cfgOcultarTempoMeta'),c=document.getElementById('cfgOcultarPctMeta'),d=document.getElementById('cfgMetaHoras'),e=document.getElementById('cfgTocarRestart'),f=document.getElementById('cfgAudioLink'),g=document.getElementById('cfgPomoEstudo'),h=document.getElementById('cfgPomoCurta'),i=document.getElementById('cfgPomoLonga'),j=document.getElementById('cfgPomoCiclos'),k=document.getElementById('cfgRegEstudo');if(a)a.checked=db.configs.exibirMeta;if(b)b.checked=db.configs.ocultarTempoMeta;if(c)c.checked=db.configs.ocultarPctMeta;if(d)d.value=db.configs.metaDiariaHrs;toggleInputsMeta();if(e)e.checked=db.configs.tocarRestart;if(f)f.value=db.configs.audioLink||"";if(g)g.value=db.configs.pomodoro.estudo;if(h)h.value=db.configs.pomodoro.curta;if(i)i.value=db.configs.pomodoro.longa;if(j)j.value=db.configs.pomodoro.ciclos;if(k)k.value=db.configs.regressivo.estudo||60;abrirModal('modalConfigCronometro');}
-function salvarConfigCronometro(){let a=document.getElementById('cfgExibirMeta'),b=document.getElementById('cfgOcultarTempoMeta'),c=document.getElementById('cfgOcultarPctMeta'),d=document.getElementById('cfgMetaHoras'),e=document.getElementById('cfgTocarRestart'),f=document.getElementById('cfgAudioLink'),g=document.getElementById('cfgPomoEstudo'),h=document.getElementById('cfgPomoCurta'),i=document.getElementById('cfgPomoLonga'),j=document.getElementById('cfgPomoCiclos'),k=document.getElementById('cfgRegEstudo');if(a)db.configs.exibirMeta=a.checked;if(b)db.configs.ocultarTempoMeta=b.checked;if(c)db.configs.ocultarPctMeta=c.checked;if(d)db.configs.metaDiariaHrs=parseInt(d.value)||4;if(e)db.configs.tocarRestart=e.checked;let oldAudio=db.configs.audioLink;if(f)db.configs.audioLink=f.value.trim();if(oldAudio!==db.configs.audioLink)initAudioRestart();if(g&&h&&i&&j)db.configs.pomodoro={estudo:parseInt(g.value)||25,curta:parseInt(h.value)||5,longa:parseInt(i.value)||15,ciclos:parseInt(j.value)||4};if(k)db.configs.regressivo={estudo:parseInt(k.value)||60};if(modoTimer==='pomodoro')setModoTimer('pomodoro');else if(modoTimer==='regressive')setModoTimer('regressive');salvarModificacaoBasica();atualizarBarraMeta();fecharModal('modalConfigCronometro');}
+function abrirConfigCronometroModal(){fecharModal('modalPainelUnificado');let a=document.getElementById('cfgExibirMeta'),b=document.getElementById('cfgMostrarTempoMeta'),c=document.getElementById('cfgMostrarPctMeta'),d=document.getElementById('cfgMetaHoras'),e=document.getElementById('cfgTocarRestart'),f=document.getElementById('cfgAudioLink'),g=document.getElementById('cfgPomoEstudo'),h=document.getElementById('cfgPomoCurta'),i=document.getElementById('cfgPomoLonga'),j=document.getElementById('cfgPomoCiclos'),k=document.getElementById('cfgRegEstudo');if(a)a.checked=db.configs.exibirMeta;if(b)b.checked=db.configs.mostrarTempoMeta;if(c)c.checked=db.configs.mostrarPctMeta;if(d)d.value=db.configs.metaDiariaHrs;toggleInputsMeta();if(e)e.checked=db.configs.tocarRestart;if(f)f.value=db.configs.audioLink||"";if(g)g.value=db.configs.pomodoro.estudo;if(h)h.value=db.configs.pomodoro.curta;if(i)i.value=db.configs.pomodoro.longa;if(j)j.value=db.configs.pomodoro.ciclos;if(k)k.value=db.configs.regressivo.estudo||60;abrirModal('modalConfigCronometro');}
+function salvarConfigCronometro(){let a=document.getElementById('cfgExibirMeta'),b=document.getElementById('cfgMostrarTempoMeta'),c=document.getElementById('cfgMostrarPctMeta'),d=document.getElementById('cfgMetaHoras'),e=document.getElementById('cfgTocarRestart'),f=document.getElementById('cfgAudioLink'),g=document.getElementById('cfgPomoEstudo'),h=document.getElementById('cfgPomoCurta'),i=document.getElementById('cfgPomoLonga'),j=document.getElementById('cfgPomoCiclos'),k=document.getElementById('cfgRegEstudo');if(a)db.configs.exibirMeta=a.checked;if(b)db.configs.mostrarTempoMeta=b.checked;if(c)db.configs.mostrarPctMeta=c.checked;if(d)db.configs.metaDiariaHrs=parseInt(d.value)||4;if(e)db.configs.tocarRestart=e.checked;let oldAudio=db.configs.audioLink;if(f)db.configs.audioLink=f.value.trim();if(oldAudio!==db.configs.audioLink)initAudioRestart();if(g&&h&&i&&j)db.configs.pomodoro={estudo:parseInt(g.value)||25,curta:parseInt(h.value)||5,longa:parseInt(i.value)||15,ciclos:parseInt(j.value)||4};if(k)db.configs.regressivo={estudo:parseInt(k.value)||60};if(modoTimer==='pomodoro')setModoTimer('pomodoro');else if(modoTimer==='regressive')setModoTimer('regressive');salvarModificacaoBasica();atualizarBarraMeta();fecharModal('modalConfigCronometro');}
 function abrirGerenciarTiposAtividade(){let ml=document.getElementById('modalListagem');if(ml&&ml.style.display==='flex') contextoRetornoTipos = 'concursos';fecharModal('modalListagem');fecharModal('modalPainelUnificado');renderizarTiposCfg();abrirModal('modalGerenciarTipos');}
 function fecharGerenciarTipos(){fecharModal('modalGerenciarTipos');if(contextoRetornoTipos === 'importacao'){abrirModalImportacao();} else if (contextoRetornoTipos === 'concursos') {abrirGerenciar('concursos');} else {abrirPainelUnificadoComNivel(db.configs.mestreAtivo);}}
 function renderizarTiposCfg(){let l=document.getElementById('listaTiposCfg');if(!l)return;l.innerHTML='';db.configs.tiposAtividade.forEach(t=>{l.innerHTML+=`<div data-nome="${t.nome}" data-desempenho="${t.comDesempenho}" style="background:var(--bg-hover);padding:8px 12px;border-radius:8px;font-size:14px;font-weight:bold;display:flex;align-items:center;gap:10px; color:var(--text-modal); border: 1px solid var(--border-input);"><span class="drag-handle" style="cursor:grab;font-size:18px;color:#666;padding:0 5px">☰</span> <span style="flex:1;">${t.nome}</span> <label style="font-size:11px; display:flex; align-items:center; gap:4px; cursor:pointer;"><input type="checkbox" ${t.comDesempenho?'checked':''} onchange="toggleDesempenhoTipo('${t.nome}', this.checked)"> Desempenho</label><span style="cursor:pointer;color:#d32f2f;font-weight:900;padding:0 10px" onclick="removerTipo('${t.nome}')">X</span></div>`;});if(sortableTipos)sortableTipos.destroy();sortableTipos=new Sortable(l,{animation:150,handle:'.drag-handle',onEnd:function(){let novaOrdem=[];Array.from(l.children).forEach(e=>{novaOrdem.push({nome:e.dataset.nome,comDesempenho:e.dataset.desempenho==="true"});});db.configs.tiposAtividade=novaOrdem;salvarModificacaoBasica();}});}
@@ -1186,7 +1275,6 @@ function confirmarArquivarConcurso() {
 
 function abrirFormConcurso(i){
     fecharModal('modalListagem');
-    let dec=document.getElementById('divExcluirConcurso');if(dec)dec.style.display = 'none';
     let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome'),cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),cc=document.getElementById('concCor'),cct=document.getElementById('concCorTexto'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
     if(i>=0){
         const c=db.concursos[i];
@@ -1293,7 +1381,7 @@ function abrirFormTarefa(id,numSugerido=1){
     const selD=document.getElementById('tarDisciplina');if(selD){selD.innerHTML='<option value="">-- Nenhuma / Extra --</option>';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selD.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);}
     const selTr=document.getElementById('tarTrilhaSelect');if(selTr){selTr.innerHTML='';db.trilhas.filter(t=>t.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(x=>selTr.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);selTr.value=trilhaAtivaNome;}
     const selT=document.getElementById('tarTipo');if(selT){selT.innerHTML='';db.configs.tiposAtividade.forEach(x=>selT.innerHTML+=`<option value="${x.nome}">${x.nome}</option>`);}
-    let contStatus=document.getElementById('containerStatusConcluida'),divEdicao=document.getElementById('divEdicaoConcluida'),tao=document.getElementById('tarAulasOptions'),bet=document.getElementById('btnExcluirTarefa'),te=document.getElementById('tarExtra'),tn=document.getElementById('tarNumero'),ttp=document.getElementById('tarTituloPersonalizado'),aob=document.getElementById('tarAulasOptionsBox'),bvt=document.getElementById('btnVincularTempoTarefa');
+    let contStatus=document.getElementById('containerStatusConcluida'),contStatusPulada=document.getElementById('containerStatusPulada'),divEdicao=document.getElementById('divEdicaoConcluida'),tao=document.getElementById('tarAulasOptions'),bet=document.getElementById('btnExcluirTarefa'),te=document.getElementById('tarExtra'),tn=document.getElementById('tarNumero'),ttp=document.getElementById('tarTituloPersonalizado'),aob=document.getElementById('tarAulasOptionsBox'),bvt=document.getElementById('btnVincularTempoTarefa'),tpulada=document.getElementById('tarPulada');
     if(tao)tao.style.display='none';if(bet)bet.style.display=(id>=0)?'block':'none';if(te)te.checked=false;
     if(tn)tn.disabled=false;if(selTr)selTr.disabled=false;if(selD)selD.disabled=false;if(selT)selT.disabled=false;if(ttp)ttp.disabled=false;if(aob){aob.style.pointerEvents='auto';aob.style.opacity='1';}
     if(id>=0){
@@ -1309,14 +1397,22 @@ function abrirFormTarefa(id,numSugerido=1){
         if(isConc){if(tn)tn.disabled=true;if(selTr)selTr.disabled=true;if(selD)selD.disabled=true;if(selT)selT.disabled=true;if(ttp)ttp.disabled=true;if(te)te.disabled=true;if(aob){aob.style.pointerEvents='none';aob.style.opacity='0.6';}}else{if(te)te.disabled=false;}
         let ttm=document.getElementById('tarTempoMinutos');if(ttm)ttm.value=isConc?Math.round((t.tempoRegistrado||0)/60):0;
         if(!isConc&&!t.pulada&&(tempoTimer>0 || tempoAcumulado>0)){if(bvt)bvt.style.display='flex';}else{if(bvt)bvt.style.display='none';}
-        if(t.pulada){if(contStatus)contStatus.style.display='none';let tcon=document.getElementById('tarConcluida');if(tcon)tcon.checked=false;if(divEdicao)divEdicao.style.display='none';if(btnPular){btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:18px; margin-right:4px;'>↩️</span> Desfazer";btnPular.onclick=()=>abrirModal('modalConfirmarDesfazerPulo');}}
-        else if(t.concluida){if(contStatus)contStatus.style.display='flex';let tcon=document.getElementById('tarConcluida');if(tcon)tcon.checked=true;if(divEdicao)divEdicao.style.display='block';let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);
-        let tqq=document.getElementById('tarQtdQuestoes'),tqa=document.getElementById('tarQtdAcertos');
-        if(configTipo&&configTipo.comDesempenho){if(tqq){tqq.parentElement.style.display='block';tqq.value=t.questoes||0;}if(tqa){tqa.parentElement.style.display='block';tqa.value=t.acertos||0;}}else{if(tqq)tqq.parentElement.style.display='none';if(tqa)tqa.parentElement.style.display='none';}
-        let to=document.getElementById('tarObs');if(to)to.value=t.obs||"";if(btnPular)btnPular.style.display='none';}
-        else{if(contStatus)contStatus.style.display='none';if(divEdicao)divEdicao.style.display='none';if(btnPular){btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:22px; margin-right:4px;'>⏭️</span> Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}
+        if(t.pulada){
+            if(contStatus)contStatus.style.display='none';if(contStatusPulada)contStatusPulada.style.display='flex';if(tpulada)tpulada.checked=true;
+            let tcon=document.getElementById('tarConcluida');if(tcon)tcon.checked=false;
+            if(divEdicao)divEdicao.style.display='none';if(btnPular)btnPular.style.display='none';
+        }
+        else if(t.concluida){
+            if(contStatus)contStatus.style.display='flex';if(contStatusPulada)contStatusPulada.style.display='none';
+            let tcon=document.getElementById('tarConcluida');if(tcon)tcon.checked=true;if(divEdicao)divEdicao.style.display='block';
+            let configTipo=db.configs.tiposAtividade.find(x=>x.nome===t.tipoAtividade);
+            let tqq=document.getElementById('tarQtdQuestoes'),tqa=document.getElementById('tarQtdAcertos');
+            if(configTipo&&configTipo.comDesempenho){if(tqq){tqq.parentElement.style.display='block';tqq.value=t.questoes||0;}if(tqa){tqa.parentElement.style.display='block';tqa.value=t.acertos||0;}}else{if(tqq)tqq.parentElement.style.display='none';if(tqa)tqa.parentElement.style.display='none';}
+            let to=document.getElementById('tarObs');if(to)to.value=t.obs||"";if(btnPular)btnPular.style.display='none';
+        }
+        else{if(contStatus)contStatus.style.display='none';if(contStatusPulada)contStatusPulada.style.display='none';if(divEdicao)divEdicao.style.display='none';if(btnPular){btnPular.style.display='flex';btnPular.innerHTML="<span style='font-size:22px; margin-right:4px;'>⏭️</span> Pular";btnPular.onclick=()=>abrirModal('modalConfirmarPular');}}
     }else{
-        let tio=document.getElementById('tarefaIdOriginal');if(tio)tio.value='';if(tn)tn.value=numSugerido;if(ttp)ttp.value='';if(te)te.disabled=false;if(contStatus)contStatus.style.display='none';if(divEdicao)divEdicao.style.display='none';
+        let tio=document.getElementById('tarefaIdOriginal');if(tio)tio.value='';if(tn)tn.value=numSugerido;if(ttp)ttp.value='';if(te)te.disabled=false;if(contStatus)contStatus.style.display='none';if(contStatusPulada)contStatusPulada.style.display='none';if(divEdicao)divEdicao.style.display='none';
         let btnPular=document.getElementById('btnPularTarefa'),btnImportar=document.getElementById('btnImportarEmTarefa');if(bvt)bvt.style.display='none';if(btnPular)btnPular.style.display='none';if(btnImportar)btnImportar.style.display='flex';popularDropdownAulasCustom();
     }
     abrirModal('modalFormTarefa');
@@ -1326,7 +1422,17 @@ function irParaImportacaoDaTarefa(){fecharModal('modalFormTarefa');contextoRetor
 function ajustarTravaAcertos(){let q=parseInt(document.getElementById('tarQtdQuestoes')?document.getElementById('tarQtdQuestoes').value:0)||0,a=parseInt(document.getElementById('tarQtdAcertos')?document.getElementById('tarQtdAcertos').value:0)||0;let ta=document.getElementById('tarQtdAcertos');if(ta&&a>q)ta.value=q;}
 function ajustarTravaAcertosReg(){let q=parseInt(document.getElementById('qtdQuestoes')?document.getElementById('qtdQuestoes').value:0)||0,a=parseInt(document.getElementById('qtdAcertos')?document.getElementById('qtdAcertos').value:0)||0;let qa=document.getElementById('qtdAcertos');if(qa&&a>q)qa.value=q;}
 function confirmarPularTarefa(){salvarTarefa(true);fecharModal('modalConfirmarPular');}
-function confirmarDesfazerPulo(){let tio=document.getElementById('tarefaIdOriginal');if(tio&&tio.value!==""){let t=db.tarefas.find(x=>x.id===parseInt(tio.value));if(t){t.pulada=false;t.concluida=false;salvarModificacaoBasica();}}fecharModal('modalConfirmarDesfazerPulo');fecharModal('modalFormTarefa');renderizarListaTarefas();renderizarDashboardTrilha();}
+function confirmarDesfazerPulo(){
+    let tio=document.getElementById('tarefaIdOriginal');
+    if(tio&&tio.value!==""){
+        let t=db.tarefas.find(x=>x.id===parseInt(tio.value));
+        if(t){t.pulada=false;t.concluida=false;salvarModificacaoBasica();}
+    }
+    fecharModal('modalConfirmarDesfazerPulo');
+    fecharModal('modalFormTarefa');
+    renderizarListaTarefas();
+    renderizarDashboardTrilha();
+}
 function confirmarExcluirTarefaDefinitivo(){let tio=document.getElementById('tarefaIdOriginal');if(tio){const id=parseInt(tio.value);db.tarefas=db.tarefas.filter(t=>t.id!==id);salvarModificacaoBasica();}fecharModal('modalConfirmarExcluirTarefa');fecharModal('modalFormTarefa');renderizarListaTarefas();mostrarToast("🗑️ Tarefa Excluída!");}
 function salvarTarefa(isPulo=false){
     let tio=document.getElementById('tarefaIdOriginal'),tn=document.getElementById('tarNumero'),te=document.getElementById('tarExtra');
