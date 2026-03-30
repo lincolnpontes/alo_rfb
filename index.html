@@ -327,7 +327,7 @@
                         <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; z-index: 1;">👤</span>
                         <select id="seletorOperador" class="modern-select" style="padding-left: 36px !important; font-size: 18px; height: 42px; width: 100%;" onchange="verificarTrocaOperador(this)"></select>
                     </div>
-                    <div id="streak-container" style="font-size: 32px; cursor: help; display: flex; align-items: center; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));" title="Ofensiva de Estudos" onclick="mostrarToast('Sua ofensiva de dias consecutivos!')">
+                    <div id="streak-container" style="font-size: 32px; cursor: help; display: flex; align-items: center; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));" title="Dias Seguidos de Estudo" onclick="mostrarToast('Número de dias consecutivos de estudo!')">
                         🔥<span id="streak-count" style="font-size:20px; font-weight:900; margin-left:4px; color:#ffb300; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);">0</span>
                     </div>
                 </div>
@@ -995,7 +995,7 @@ function atualizarBarraMeta(){
         if(flagEl) flagEl.innerText = '🌕';
     } else {
         let isCar = runnerEmoji === '🏎️' || runnerEmoji === '🚗';
-        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '50px'; }
+        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '55px'; }
         if(flagEl) flagEl.innerText = '🏁';
     }
     const metaSegs=db.configs.metaDiariaHrs*3600;
