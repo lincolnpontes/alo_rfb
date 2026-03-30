@@ -897,7 +897,7 @@ function atualizarStatusModo(){
     let acumStr = tempoAcumulado > 0 ? `<br>Tempo Acumulado: <br>${Math.floor(tempoAcumulado/60)} min` : '';
     if(modoTimer==='pomodoro'){
         s.style.display='block';
-        let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'P. Curta':'P. Longa');
+        let lbl=pomoFase==='estudo'?'Estudo':(pomoFase==='curta'?'Pausa Curta':'Pausa Longa');
         s.innerHTML=`Fase: ${lbl}<br>Ciclo: ${pomoCicloAtual}/${db.configs.pomodoro.ciclos}${acumStr}`;
     }else if(modoTimer==='regressive'){
         s.style.display='block';
@@ -995,7 +995,7 @@ function atualizarBarraMeta(){
         if(flagEl) flagEl.innerText = '🌕';
     } else {
         let isCar = runnerEmoji === '🏎️' || runnerEmoji === '🚗';
-        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '40px'; }
+        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '50px'; }
         if(flagEl) flagEl.innerText = '🏁';
     }
     const metaSegs=db.configs.metaDiariaHrs*3600;
