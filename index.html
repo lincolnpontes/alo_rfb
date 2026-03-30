@@ -995,7 +995,7 @@ function atualizarBarraMeta(){
         if(flagEl) flagEl.innerText = '🌕';
     } else {
         let isCar = runnerEmoji === '🏎️' || runnerEmoji === '🚗';
-        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '0px'; }
+        if(runnerEl) { runnerEl.style.top = 'auto'; runnerEl.style.bottom = '0px'; runnerEl.style.transform = 'scaleX(-1)' + (isCar ? ' scale(1.2)' : ''); runnerEl.style.transformOrigin = 'bottom right'; runnerEl.style.right = '10px'; }
         if(flagEl) flagEl.innerText = '🏁';
     }
     const metaSegs=db.configs.metaDiariaHrs*3600;
