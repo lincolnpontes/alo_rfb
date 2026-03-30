@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.2</title>
+    <title>Alô RFB v1.0.4</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -47,7 +47,6 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
             background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png'), linear-gradient(to bottom, #d6c2a5, #e6d2b5, #d6c2a5);
         }
-        body[data-theme="medieval"] #sticky-header { border-bottom: 2px solid #8b5a2b; border-top:none; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); border: 4px solid #8b5a2b; border-radius: 4px;
         }
@@ -56,6 +55,7 @@
         html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
         body.modal-open{touch-action:none}
         input,select,textarea{user-select:auto;-webkit-user-select:auto; font-family: inherit;}
+        button:focus, a:focus, input:focus, select:focus, textarea:focus, .crono-btn-icon:focus { outline: none !important; box-shadow: none !important; }
         
         .app-container{width:100%;max-width:1400px;background:var(--bg-app);height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
         #sticky-header{flex: none; z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
@@ -240,6 +240,7 @@
             margin-top: auto; 
         }
 
+        body.focus-mode * { outline: none !important; }
         body.focus-mode #sticky-header .header,
         body.focus-mode .trilhas-top-bar,
         body.focus-mode #dash-trilha-box,
@@ -258,8 +259,18 @@
         body.focus-mode .crono-display-box { flex: none; justify-content: center; align-items: center; position: relative; width: 100%; display: flex; flex-direction: column; }
         body.focus-mode .crono-display-wrapper { position: relative; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
         body.focus-mode .pomo-status-side { 
-            position: absolute; left: 100%; margin-left: 35px; top: 50%; transform: translateY(-50%);
-            text-align: left; border-left: 2px solid rgba(255,255,255,0.4); padding-left: 15px; font-size: 18px; color: #ccc; white-space: nowrap;
+            position: absolute !important; 
+            left: 100% !important; 
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin-left: 30px !important; 
+            text-align: left !important; 
+            border-left: 2px solid rgba(255,255,255,0.3) !important; 
+            color: #fff !important; 
+            font-size: 18px !important; 
+            padding-left: 15px !important;
+            white-space: nowrap !important;
+            line-height: 1.5;
         }
 
         body.focus-mode .crono-btn-vert { background: rgba(255,255,255,0.1); color: #fff; font-size: 14px; padding: 10px 15px;}
@@ -271,8 +282,8 @@
         body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 75px; height: 75px; font-size: 70px !important;}
         body.focus-mode .crono-play span, body.focus-mode .crono-stop span { font-size: 70px !important; }
         
-        body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 30px;}
-        body.focus-mode .meta-text { color: #aaa; font-size: 16px;}
+        body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 20px;}
+        body.focus-mode .meta-text { color: #ffffff !important; font-size: 16px;}
         body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
         body.focus-mode .meta-fill { background: #ffffff !important; }
         
@@ -289,397 +300,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.2</div>
-    <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
-</div>
-
-<div id="login-screen">
-    <div style="font-size: 70px; margin-bottom: 10px;">👤</div><h2 style="margin-top: 0; margin-bottom: 20px; font-size: 24px;">Identificação</h2>
-    <select id="loginOperador" style="padding: 15px; font-size: 18px; width: 85%; max-width: 350px; border-radius: 8px; margin-bottom: 15px; border: none; outline: none; font-weight: bold; color: #333;" onchange="checarSenhaLoginInicial()"></select>
-    <div id="loginSenhaContainer" style="display: none; flex-direction: column; align-items: center; width: 100%;">
-        <input type="password" id="loginSenha" inputmode="numeric" placeholder="Senha Numérica" style="padding: 15px; font-size: 20px; width: 85%; max-width: 350px; margin-bottom: 25px; border-radius: 8px; border: none; text-align: center; outline: none; font-weight: bold; color: #333;" onkeypress="if(event.key === 'Enter') fazerLoginInicial()">
-    </div>
-    <button id="btn-login-entrar" onclick="fazerLoginInicial()" style="padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; border: none; background: #4CAF50; color: white; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">ENTRAR</button>
-</div>
-
-<div class="app-container">
-    <div id="sticky-header">
-        <div class="header">
-            <div style="flex: 1; display: flex; align-items: center; gap: 15px;">
-                <div style="font-weight: 900; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center;">
-                    <img src="icon.png" alt="RFB Logo" style="height: 82px; max-height: 82px; margin: -28px 5px -29px -5px; width: auto; object-fit: contain; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));"> Alô RFB
-                </div>
-                
-                <div style="display: flex; align-items: center; gap: 10px; width: 100%; max-width: 300px;">
-                    <div style="position: relative; flex: 1;">
-                        <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; z-index: 1;">👤</span>
-                        <select id="seletorOperador" class="modern-select" style="padding-left: 36px !important; font-size: 18px; height: 42px; width: 100%;" onchange="verificarTrocaOperador(this)"></select>
-                    </div>
-                    <div id="streak-container" style="font-size: 32px; cursor: help; display: flex; align-items: center; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));" title="Ofensiva de Estudos" onclick="mostrarToast('Sua ofensiva de dias consecutivos!')">
-                        🔥<span id="streak-count" style="font-size:20px; font-weight:900; margin-left:4px; color:#ffb300; text-shadow: 1px 1px 1px rgba(0,0,0,0.5);">0</span>
-                    </div>
-                </div>
-
-            </div>
-            <div style="flex: 1.5; display: flex; justify-content: flex-end; align-items: center; gap: 15px;">
-                <div id="indicadorConexao" class="status-conexao" title="Sincronização" style="display:none;">🌐</div>
-                <button onclick="abrirHistorico()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Diário de Estudos">📅</button>
-                <button onclick="abrirRitmoEstudo()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Ritmo de Estudo">⌛</button>
-                <button onclick="abrirProdutividade()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Produtividade">📊</button>
-                <button onclick="abrirHabilidades()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Habilidades">📜</button>
-                <button id="btnConfigGear" onclick="abrirLoginAdmin()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;">⚙️</button>
-            </div>
-        </div>
-        <div class="crono-container">
-            <div class="crono-layout">
-                <div class="crono-modos-vert">
-                    <button class="crono-btn-vert active" id="btn-prog" onclick="setModoTimer('progressive')">Progressivo</button>
-                    <button class="crono-btn-vert" id="btn-reg" onclick="setModoTimer('regressive')">Regressivo</button>
-                    <button class="crono-btn-vert" id="btn-pomo" onclick="setModoTimer('pomodoro')">Pomodoro</button>
-                    <div style="display:flex; justify-content:center; gap:8px;">
-                        <button class="crono-btn-icon crono-edit" onclick="abrirConfigCronometroModal()" title="Configurações" style="margin: 0;">⏱️</button>
-                        <button class="crono-btn-icon crono-edit" onclick="abrirEdicaoTempo()" title="Editar Tempo" style="margin: 0;">✏️</button>
-                        <button class="crono-btn-icon crono-edit" onclick="toggleFocusMode()" title="Modo Foco (Atalho: Enter)" style="margin: 0;">👁️</button>
-                    </div>
-                </div>
-                <div class="crono-display-box">
-                    <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
-                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
-                    
-                    <div class="meta-container" id="meta-container" style="display: none;">
-                        <div class="meta-bar">
-                            <div class="meta-fill" id="meta-fill">
-                                <div class="meta-runner" id="meta-runner">🏎️</div>
-                            </div>
-                            <div class="meta-flag">🏁</div>
-                        </div>
-                        <div class="meta-text">
-                            <span id="meta-label">Meta Diária: 0%</span>
-                            <span id="meta-valores">0h00m / 4h</span>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="vol-vert-container">
-                    <button class="crono-btn-icon crono-mute" id="btn-mute-timer" onclick="toggleMuteTimer()" title="Mute">🔊</button>
-                    <input type="range" id="volume-slider-timer" min="0" max="100" value="100" orient="vertical" oninput="ajustarVolumeTimer(this.value)">
-                    <input type="file" id="file-input-musica" accept="audio/*" multiple style="display: none;" onchange="carregarMusicas(event)">
-                    <div class="crono-btn-icon crono-music" onclick="document.getElementById('file-input-musica').click()" title="Músicas">🎶<button id="btnLimparMusica" class="btn-limpar-musica" onclick="event.stopPropagation(); limparMusica();">X</button></div>
-                </div>
-            </div>
-        </div>
-        <div class="trilhas-top-bar" id="trilhas-bar-container"></div>
-        <div id="dash-trilha-box" class="dash-trilha-container" style="display: none;"></div>
-    </div>
-    
-    <div id="listaTarefas"></div>
-    <div id="frase-motivacional-container" style="display:none;"></div>
-
-</div>
-
-<div class="modal-overlay" id="modalConfirmarDesmarcar" style="z-index: 1005;"><div class="modal" style="max-width: 400px; text-align:center;"><div style="font-size: 40px; margin-bottom: 10px;">⚠️</div><h3 style="margin-top:0; color:#d32f2f;">Atenção!</h3><p style="font-size: 14px;">Deseja realmente desmarcar esta tarefa? O tempo registrado NELA será zerado e o registro no Diário de Estudos será <b>EXCLUÍDO</b>.</p><div class="modal-actions" style="justify-content: center; gap: 15px;"><button class="btn-cancel" onclick="cancelarDesmarcar()">Não, manter concluída</button><button class="btn-danger" onclick="confirmarDesmarcar()" style="Tudo perfeitamente entendido. Sem desculpas dessa vez, apenas ação. Refiz o cálculo de acumulação de forma que o tempo flua perfeitamente de um lado para o outro. E eliminei todas as linhas e bordas indesejadas (o famigerado `outline`) dos emojis no modo foco, garantindo que o cronômetro continue estritamente no centro.
-
-A barra de meta também foi reordenada (texto embaixo da barra) e o carrinho `🏎️` recebeu um belo aumento de tamanho sem sair do lugar.
-
-Aqui está a **PARTE 1** (HTML/CSS). Substitua todo o conteúdo desde o início do seu arquivo até a abertura da tag `<script>`.
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1565C0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.3</title>
-    <script src="[https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js](https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js](https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js](https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js)"></script>
-    <style>
-        :root {
-            --primaria:#1565C0; --secundaria:#E3F2FD; --fundo:linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%);
-            --bg-app:rgba(255,255,255,0.6); --bg-item:rgba(255,255,255,0.7); --bg-header:rgba(255,255,255,0.8);
-            --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;
-            --bg-modal: #ffffff; --text-modal: #333333; --border-input: #cccccc; --bg-input: #ffffff; --text-input: #333333; --bg-hover: #f9f9f9;
-        }
-        body[data-theme="escuro"] {
-            --primaria: #b0bec5; --secundaria: #333333; --fundo: linear-gradient(135deg, #121212 0%, #000000 100%);
-            --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(45,45,45,0.9); --bg-header: rgba(20,20,20,0.95);
-            --text-color: #eeeeee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.1);
-            --bg-modal: #222222; --text-modal: #eeeeee; --border-input: #555555; --bg-input: #333333; --text-input: #eeeeee; --bg-hover: #444444;
-        }
-        body[data-theme="transparente"] {
-            --bg-app: rgba(255,255,255,0.15); --bg-item: rgba(255,255,255,0.25); --bg-header: rgba(20, 35, 45, 0.98);
-            --text-color: #eee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.2);
-            --bg-modal: rgba(20, 35, 45, 0.98); --text-modal: #eeeeee; --border-input: rgba(255,255,255,0.2); --bg-input: rgba(0,0,0,0.4); --text-input: #eeeeee; --bg-hover: rgba(255,255,255,0.1);
-        }
-        body[data-theme="medieval"] {
-            --primaria: #5c3a21; --secundaria: #e6d2b5; --fundo: radial-gradient(circle at center, #3b2415 0%, #170b06 100%);
-            --bg-app: url('[https://www.transparenttextures.com/patterns/aged-paper.png](https://www.transparenttextures.com/patterns/aged-paper.png)'), #e6d2b5; 
-            --bg-item: rgba(245, 230, 205, 0.85); --bg-header: rgba(210, 180, 140, 0.95);
-            --text-color: #3e2723; --title-color: #4e2916; --glass-border: rgba(92, 58, 33, 0.5);
-            --bg-modal: url('[https://www.transparenttextures.com/patterns/parchment.png](https://www.transparenttextures.com/patterns/parchment.png)'), #fdf5e6;
-            --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: rgba(250,235,215,0.6); --text-input: #3e2723; --bg-hover: #e6d2b5;
-            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
-        }
-        body[data-theme="medieval"] .app-container { 
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
-            background-image: url('[https://www.transparenttextures.com/patterns/aged-paper.png](https://www.transparenttextures.com/patterns/aged-paper.png)'), linear-gradient(to bottom, #d6c2a5, #e6d2b5, #d6c2a5);
-        }
-        body[data-theme="medieval"] #sticky-header { border-bottom: 2px solid #8b5a2b; border-top:none; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        body[data-theme="medieval"] .modal { 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); border: 4px solid #8b5a2b; border-radius: 4px;
-        }
-        body[data-theme="medieval"] .btn-action { background: #5c3a21; color: #fdf5e6; border-color: #3e2723; }
-        
-        html,body{font-family:Arial,sans-serif;background:var(--fundo);background-size: cover; background-attachment: fixed; margin:0;padding:0;width:100%;height:100vh;overflow:hidden;transition:background .3s ease;user-select:none;-webkit-user-select:none; color: var(--text-color);}
-        body.modal-open{touch-action:none}
-        input,select,textarea{user-select:auto;-webkit-user-select:auto; font-family: inherit;}
-        button:focus, a:focus, input:focus, select:focus, textarea:focus, .crono-btn-icon:focus { outline: none !important; box-shadow: none !important; }
-        
-        .app-container{width:100%;max-width:1400px;background:var(--bg-app);height:100vh;display:flex;flex-direction:column;position:relative;margin:0 auto;box-shadow:0 0 15px rgba(0,0,0,.1);transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px);}
-        #sticky-header{flex: none; z-index:100;background:var(--bg-header);box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:background .3s ease, background-color .3s ease; backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);}
-        #splash-screen{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--primaria);transition:opacity .5s ease;background-color:#ffffff !important}
-        #splash-screen.hidden{opacity:0;pointer-events:none}
-        .splash-title{font-size:26px;font-weight:900;margin-bottom:5px;letter-spacing:1px}
-        .splash-version{font-size:14px;font-weight:700;opacity:.8;background:var(--secundaria);padding:4px 10px;border-radius:12px; color: var(--primaria);}
-        #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--primaria);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:5vh;color:#fff;transition:opacity .5s ease}
-        .header{background:var(--primaria);color:#fff;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-        .modern-select{height:32px;border-radius:20px!important;border:1px solid rgba(255,255,255,.4)!important;background:rgba(255,255,255,.1)!important;color:#fff!important;font-size:16px;font-weight:700;width:100%;padding:0 12px!important;outline:0;cursor:pointer}
-        .modern-select option{color:#333;background:#fff}
-        .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:1000;backdrop-filter: blur(3px)}
-        .modal{background:var(--bg-modal);padding:20px;border-radius:12px;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;box-sizing:border-box; box-shadow: 0 10px 25px rgba(0,0,0,0.4); color: var(--text-modal); border: 1px solid var(--border-input);}
-        .modal-title{font-size:20px;font-weight:700;margin-bottom:20px;color:var(--primaria);border-bottom:2px solid var(--primaria);padding-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-        .modal p, .modal label, .modal legend, .modal div:not(.modal-actions):not(.tarefa-row):not(.tarefa-col):not(.prod-dash-card):not(.prod-dash-val):not(.prod-table-row):not(.prod-table-cell):not(.dash-box):not(.dash-box-title):not(.dash-box-val):not(.hab-nivel):not(.ritmo-square) { color: var(--text-modal); }
-        .form-group{margin-bottom:15px;position:relative}
-        .form-group label{display:block;margin-bottom:5px;font-weight:700;font-size:14px}
-        .form-group input:not([type=color]):not([type=checkbox]), .form-group select, .form-group textarea { width:100%;padding:10px;border:1px solid var(--border-input);border-radius:5px;box-sizing:border-box;font-size:16px; color: var(--text-input); background: var(--bg-input); }
-        .form-group input:disabled, .form-group select:disabled, .form-group textarea:disabled { opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.05); }
-        .form-group input[type=color]{padding:0;border:1px solid var(--border-input);height:44px;width:100%;border-radius:8px;cursor:pointer; background: var(--bg-input);}
-        .modal-select{height:38px;border-radius:8px!important;border:1px solid var(--border-input)!important;background:var(--bg-input)!important;color:var(--text-input)!important;padding:0 12px!important;width:100%;max-width:none;font-size:14px;font-weight:700;outline:0;margin-bottom:10px}
-        .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
-        .btn-cancel{background:var(--bg-input);color:var(--text-input);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:1px solid var(--border-input);flex:1; transition: 0.2s; display:flex; align-items:center; justify-content:center;}
-        .btn-cancel:hover { filter: brightness(0.9); }
-        .btn-action{background:var(--primaria);color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:900;border:1px solid var(--primaria);flex:1; transition: 0.2s;}
-        .btn-importar { background: var(--secundaria); color: var(--primaria); padding: 10px; border-radius: 5px; cursor: pointer; font-weight: 900; border: 2px solid var(--primaria); flex: 1; transition: 0.2s; display: flex; justify-content: center; align-items: center;}
-        .btn-importar:hover { background: var(--primaria); color: #ffffff; }
-        body[data-theme="escuro"] .btn-action { color: #111; }
-        .btn-danger{background:#d32f2f;color:#ffffff;padding:10px;border-radius:5px;cursor:pointer;font-weight:700;border:none;width:100%;margin-bottom:10px}
-        .btn-outline{background:transparent;color:var(--primaria);border:2px solid var(--primaria);padding:10px;border-radius:5px;cursor:pointer;font-weight:700;width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:flex-start;gap:15px;}
-        .btn-outline .emoji-icon { font-size: 24px; width: 30px; text-align: center; }
-        .btn-outline span.texto-btn { color: var(--text-modal); font-size: 15px; font-weight: bold; }
-        .custom-select-box { border: 1px solid var(--border-input); border-radius: 5px; background: var(--bg-input); padding: 10px; cursor: pointer; font-size: 14px; min-height: 20px; color: var(--text-input); display:flex; align-items:center; justify-content:space-between; }
-        .custom-select-options { display: none; position: absolute; width: 100%; background: var(--bg-modal); border: 1px solid var(--border-input); border-radius: 0 0 5px 5px; max-height: 150px; overflow-y: auto; z-index: 99; top: 100%; margin-top:-1px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .custom-select-option { padding: 8px 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border-input); cursor: pointer; transition: 0.1s; color: var(--text-modal);}
-        .custom-select-option:hover { background: var(--bg-hover); }
-        .custom-select-option input[type="checkbox"] { transform: scale(1.2); cursor: pointer; }
-        .trilhas-top-bar { display: flex; align-items: center; justify-content: space-between; gap: 15px; background: rgba(0,0,0,0.03); border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); padding: 10px; flex-wrap: wrap;}
-        .trilhas-left { display: flex; align-items: center; gap: 10px; flex: none; }
-        .trilhas-center { flex: 1; display: flex; justify-content: center; min-width: 300px; }
-        .trilhas-right { display: flex; align-items: center; gap: 10px; flex: none; }
-        .concurso-badge { font-weight: 900; font-size: 22px; color: var(--primaria); text-shadow: 1px 1px 0 rgba(255,255,255,0.3); white-space: nowrap; cursor: pointer; text-decoration: none; transition: opacity 0.2s;}
-        .concurso-badge:hover { opacity: 0.8; text-decoration: underline; }
-        body[data-theme="escuro"] .concurso-badge { text-shadow: 1px 1px 0 rgba(0,0,0,0.8); }
-        .sel-trilha-header { background: var(--bg-item); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
-        .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
-        body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
-        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
-        .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
-        #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
-        .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
-        .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.2fr 1fr 120px 3fr 100px 100px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
-        .tarefa-row:last-child { border-bottom: none; }
-        .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
-        
-        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 10; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
-        body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
-        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; }
-        
-        .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
-        .tarefa-col.bold { font-weight: bold; }
-        .tarefa-col.center { text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .dot-status { width: 16px; height: 16px; border-radius: 50%; background: rgba(0,0,0,0.15); display: inline-block; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); margin: 0 auto;}
-        body[data-theme="transparente"] .dot-status, body[data-theme="escuro"] .dot-status { background: rgba(255,255,255,0.2); }
-        .dot-concluida { background: #64dd17 !important; box-shadow: 0 0 8px #64dd17 !important; }
-        .dot-pulada { background: #d32f2f !important; box-shadow: 0 0 8px rgba(211, 47, 47, 0.6) !important;}
-        .row-concluida { background: rgba(100, 221, 23, 0.05); }
-        .row-pulada { opacity: 0.65; background: rgba(211, 47, 47, 0.03); }
-        .gerenciar-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-input)}
-        .gerenciar-info{flex:1;font-size:14px}
-        .gerenciar-actions button{background:var(--bg-input); border:1px solid var(--border-input); color:var(--text-modal); cursor:pointer;font-size:16px;margin-left:5px;padding:8px;border-radius:4px; font-weight:bold;}
-        .switch-container{display:flex;justify-content:space-between;align-items:center;background:var(--bg-input);padding:10px;border-radius:8px;margin-bottom:10px;border:1px solid var(--border-input)}
-        .switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
-        .switch input{opacity:0;width:0;height:0}
-        .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:34px}
-        .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:#fff;transition:.4s;border-radius:50%}
-        input:checked+.slider{background-color:var(--primaria)}
-        input:checked+.slider:before{transform:translateX(20px)}
-        #toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.9);color:#fff;padding:12px 24px;border-radius:25px;font-weight:700;font-size:14px;box-shadow:0 4px 10px rgba(0,0,0,.3);transition:bottom .3s cubic-bezier(.175,.885,.32,1.275);z-index:999999;pointer-events:none;white-space:nowrap}
-        
-        .crono-container { background: var(--bg-item); margin: 4px 10px; border-radius: 12px; padding: 10px 15px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.08); backdrop-filter: blur(5px); transition: all 0.3s ease;}
-        .crono-layout { display: flex; justify-content: center; align-items: center; gap: 20px; }
-        .crono-modos-vert { display: flex; flex-direction: column; gap: 8px; align-items: stretch;}
-        .crono-btn-vert { background: rgba(0,0,0,0.05); color: var(--text-color); border: 1px solid transparent; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-align:center;}
-        .crono-btn-vert.active { background: var(--primaria); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
-        body[data-theme="escuro"] .crono-btn-vert.active { color: #111; }
-        .crono-display-box { display: flex; flex-direction: column; align-items: center; flex:1.5; position:relative;}
-        .crono-display-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center;}
-        .crono-display { font-size: 70px; font-weight: bold; font-family: 'Verdana', sans-serif; letter-spacing: 2px; color: var(--title-color); text-shadow: 1px 1px 2px rgba(0,0,0,0.1); line-height: 1; z-index: 2;}
-        .pomo-status-side { position: absolute; left: 100%; margin-left: 20px; font-size: 13px; font-weight: bold; color: var(--text-color); text-align: left; line-height: 1.4; width: max-content; display:none; padding-left: 10px; border-left: 2px solid var(--text-color);}
-        .crono-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 5px;}
-        .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent;}
-        .crono-btn-icon:hover { transform: scale(1.15); }
-        .crono-btn-icon:active { transform: scale(0.9); }
-        .crono-play, .crono-stop { width: 55px; height: 55px;}
-        .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
-        .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
-        .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .crono-mute { color: var(--text-color); font-size: 20px;}
-        input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 55px; accent-color: var(--primaria); cursor: pointer; }
-        
-        .meta-container { width: 100%; margin: 15px 0 5px 0; text-align: left; display: flex; flex-direction: column; gap: 5px; max-width: 85%;}
-        .meta-bar { width: 100%; height: 14px; background: rgba(0,0,0,0.15); border-radius: 6px; position: relative;}
-        body[data-theme="escuro"] .meta-bar, body[data-theme="transparente"] .meta-bar { background: rgba(255,255,255,0.2); }
-        .meta-fill { height: 100%; background: var(--primaria); border-radius: 6px; width: 0%; transition: width 0.5s ease; position: relative; z-index: 1;}
-        .meta-runner { position: absolute; right: -20px; font-size: 38px; z-index: 2; transition: all 0.2s ease; line-height: 1;}
-        .meta-flag { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 30px; z-index: 0; line-height: 1; transition: all 0.2s ease;}
-        .meta-text { display: flex; justify-content: space-between; font-size: 14px; font-weight: bold; color: var(--text-color); margin-top: 2px; padding: 0 5px;}
-        #meta-valores { margin-right: 25px; }
-        
-        .fieldset-config { border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; margin-bottom: 15px; }
-        .fieldset-config legend { font-size: 12px; font-weight: bold; color: var(--primaria); padding: 0 5px; }
-        .dash-trilha-container { background: var(--bg-item); margin: 0 10px 10px 10px; padding: 10px; border-radius: 12px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; gap: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); backdrop-filter: blur(5px);}
-        .dash-box { background: var(--bg-input); padding: 10px; border-radius: 8px; text-align: center; flex: 1; border: 1px solid var(--border-input);}
-        .dash-box-title { font-size: 13px; font-weight: bold; color: var(--text-modal); text-transform: uppercase; margin-bottom: 4px; }
-        .dash-box-val { font-size: 22px; font-weight: 900; color: var(--primaria); }
-        .btn-sub-gerenciar { background:transparent; color:var(--primaria) !important; border:1px solid var(--primaria); padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:bold; font-size:12px; flex:1; white-space: nowrap;}
-        .prod-layout { display: flex; gap: 20px; align-items: stretch; margin-top: 15px; flex-wrap: wrap; }
-        .prod-col-left { flex: 0 0 250px; display: flex; flex-direction: column; gap: 15px; }
-        .prod-col-right { flex: 1; min-width: 400px; display: flex; flex-direction: column; gap: 15px;}
-        .prod-dash-card { border-radius: 12px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white !important;}
-        .prod-dash-card::after { content: ''; position: absolute; right: -15px; bottom: -15px; font-size: 60px; opacity: 0.2; }
-        .prod-dash-title { font-size: 14px; font-weight: bold; z-index: 1; color: white !important;}
-        .prod-dash-val { font-size: 32px; font-weight: 900; margin-top: 10px; z-index: 1; color: white !important;}
-        
-        .c-blue { background: linear-gradient(135deg, #29b6f6, #0288d1); } .c-blue::after { content: '⭐'; }
-        .c-green { background: linear-gradient(135deg, #66bb6a, #388e3c); } .c-green::after { content: '🎯'; }
-        .c-orange { background: linear-gradient(135deg, #ffa726, #f57c00); } .c-orange::after { content: '⏱️'; }
-        .c-yellow { background: linear-gradient(135deg, #ffca28, #fbc02d); } .c-yellow::after { content: '⏳'; }
-        
-        .prod-table-container { background: var(--bg-item); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid var(--border-input);}
-        .prod-table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--border-input); color: var(--text-color) !important; cursor: pointer; transition: 0.2s;}
-        .prod-table-row:hover:not(.prod-table-header) { background: var(--bg-hover); }
-        .prod-table-header { font-weight: bold; background: var(--secundaria); font-size: 13px; color: var(--text-color) !important; cursor: default; }
-        .prod-table-cell { padding: 12px 10px; font-size: 14px; display: flex; align-items: center; color: var(--text-color) !important;}
-        .prod-table-cell.center { justify-content: center; text-align: center; }
-        .prod-table-row.total { background: var(--bg-input); font-weight: bold; }
-        .prod-details-row { display: none; background: var(--bg-modal); border-bottom: 1px solid var(--border-input); padding: 20px; grid-column: 1 / -1; color: var(--text-modal);}
-        .btn-tree { background: transparent; border: none; font-size: 15px; font-weight: bold; color: var(--text-modal); opacity: 0.6; cursor: pointer; padding: 10px 15px; transition: 0.2s; border-bottom: 3px solid transparent; outline: none;}
-        .btn-tree.active { color: var(--primaria); opacity: 1; border-bottom: 3px solid var(--primaria); }
-        .hab-row { display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
-        .hab-nivel { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);}
-        .hab-bar-bg { background: rgba(0,0,0,0.1); border-radius: 10px; height: 18px; width: 100%; position: relative; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);}
-        body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
-        .hab-bar-fill { background: #4fc3f7; height: 100%; position: absolute; left: 0; top: 0; transition: width 0.5s ease;}
-        .hab-bar-text { position: absolute; left: 8px; top: 1px; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 2;}
-        .ritmo-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); }
-        .ritmo-tab { padding: 8px 15px; cursor: pointer; font-weight: bold; opacity: 0.6; transition: 0.2s; }
-        .ritmo-tab:hover { opacity: 0.8; }
-        .ritmo-tab.active { opacity: 1; border-bottom: 3px solid var(--primaria); margin-bottom: -2px; }
-        .ritmo-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; font-size: 12px; font-weight: bold; color: var(--text-modal);}
-        .ritmo-legend-item { display: flex; align-items: center; gap: 6px; }
-        .ritmo-legend-color { width: 14px; height: 14px; border-radius: 3px; }
-        .ritmo-grid { display: flex; flex-wrap: wrap; gap: 6px; padding: 15px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; min-height: 200px; align-content: flex-start;}
-        .ritmo-square { width: 60px; height: 60px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; color: rgba(0,0,0,0.7); cursor: pointer; transition: transform 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); text-shadow: 1px 1px 0 rgba(255,255,255,0.2); position: relative;}
-        .ritmo-square:hover { transform: scale(1.15); z-index: 2; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        
-        .ritmo-summary-box { flex: 1; min-width: 100px; background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 12px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .ritmo-summary-title { font-size: 12px; font-weight: bold; color: var(--text-modal); margin-bottom: 5px; opacity: 0.8; }
-        .ritmo-summary-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
-
-        #globalTooltip {
-            pointer-events: none !important;
-            display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        
-        #frase-motivacional-container {
-            text-align: center; font-style: italic; color: var(--text-color); opacity: 0.8; background: var(--bg-item); 
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; 
-            padding: 15px 20px; 
-            min-height: 50px; 
-            font-size: 28px;
-            border-top: 1px solid var(--glass-border);
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-            margin-top: auto; 
-        }
-
-        body.focus-mode * { outline: none !important; }
-        body.focus-mode #sticky-header .header,
-        body.focus-mode .trilhas-top-bar,
-        body.focus-mode #dash-trilha-box,
-        body.focus-mode #listaTarefas { display: none !important; }
-        body.focus-mode { background: #121212 !important; } 
-        body.focus-mode .app-container { background: transparent !important; box-shadow: none; justify-content: center; align-items: center; }
-        body.focus-mode #sticky-header { border: none; background: transparent !important; box-shadow: none; width: 100%; display: flex; justify-content: center; align-items: center;}
-        body.focus-mode .crono-container { border: none; box-shadow: none; background: transparent; transform: scale(1.3); padding: 40px; display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 800px; margin-top: -10vh;}
-        body.focus-mode .crono-layout { flex-direction: column; gap: 30px; align-items: center; width: 100%; }
-        body.focus-mode .crono-modos-vert { flex-direction: row; justify-content: center; gap: 20px;}
-        body.focus-mode .vol-vert-container { flex-direction: row; justify-content: center; gap: 30px; margin-top: 10px;}
-        body.focus-mode input[type=range][orient=vertical] { appearance: auto; -webkit-appearance: auto; width: 120px; height: 8px; }
-        body.focus-mode .crono-display { color: #ffffff !important; text-shadow: 0 0 20px rgba(255,255,255,0.2); font-size: 85px;}
-        body.focus-mode .crono-btn-vert { background: rgba(255,255,255,0.1); color: #fff; font-size: 14px; padding: 10px 15px;}
-        body.focus-mode .crono-btn-vert.active { background: var(--primaria); }
-        body.focus-mode .crono-btn-icon { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); color: #fff; font-size: 32px;}
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 75px; height: 75px; font-size: 70px !important;}
-        body.focus-mode .crono-play span, body.focus-mode .crono-stop span { font-size: 70px !important; }
-        
-        body.focus-mode .crono-display-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center; }
-        body.focus-mode .pomo-status-side { 
-            position: absolute !important; 
-            left: 100% !important; 
-            top: 50% !important;
-            transform: translateY(-50%) !important;
-            margin-left: 30px !important; 
-            text-align: left !important; 
-            border-left: 2px solid rgba(255,255,255,0.3) !important; 
-            color: #fff !important; 
-            font-size: 18px !important; 
-            padding-left: 15px !important;
-            white-space: nowrap !important;
-            line-height: 1.5;
-        }
-
-        body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 20px;}
-        body.focus-mode .meta-text { color: #ffffff !important; font-size: 16px;}
-        body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
-        body.focus-mode .meta-fill { background: #ffffff !important; }
-        
-        body.focus-mode #frase-motivacional-container { position: fixed; bottom: 5%; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
-
-        .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
-        body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
-    </style>
-</head>
-<body>
-
-<div id="globalTooltip"></div>
-<div id="toast">Aviso!</div>
-<div id="splash-screen">
-    <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
-    <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.3</div>
+    <div class="splash-version">v1.0.4</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -774,7 +395,7 @@ Aqui está a **PARTE 1** (HTML/CSS). Substitua todo o conteúdo desde o início 
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.3</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.4</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -1161,7 +782,7 @@ function dispararNotificacao() {
 }
 function toggleFocusMode() { document.body.classList.toggle('focus-mode'); }
 function carregarBanco(){
-    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"[https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3](https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3)",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,mostrarPctMeta:true,mostrarTempoMeta:true,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
+    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#1565C0",corTexto:"#ffffff",pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,mostrarPctMeta:true,mostrarTempoMeta:true,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
     try{
         let txt=localStorage.getItem('estudos_db');
         if(txt){
@@ -1180,7 +801,7 @@ function carregarBanco(){
             l.trilhas.forEach(tr=>{if(!tr.dataInicio)tr.dataInicio="";if(!tr.duracaoDias)tr.duracaoDias=7;});
             l.tarefas.forEach(tar=>{if(tar.questoes===undefined)tar.questoes=0;if(tar.acertos===undefined)tar.acertos=0;if(tar.obs===undefined)tar.obs="";if(tar.pulada===undefined)tar.pulada=false;if(tar.isExtra===undefined)tar.isExtra=false;if(tar.tipoAtividade==="Pulada"){tar.pulada=true;tar.concluida=true;tar.tipoAtividade="Teoria";}});
             if(!l.configs||typeof l.configs!=='object')l.configs=d.configs;
-            if(!l.configs.audioLink)l.configs.audioLink="[https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3](https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3)";
+            if(!l.configs.audioLink)l.configs.audioLink="https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3";
             if(!l.configs.atalhos)l.configs.atalhos=d.configs.atalhos;else{for(let k in d.configs.atalhos){if(!l.configs.atalhos[k])l.configs.atalhos[k]=d.configs.atalhos[k];else if(typeof l.configs.atalhos[k]==='string')l.configs.atalhos[k]=[l.configs.atalhos[k]];}}
             if(!l.configs.atalhos.focus) l.configs.atalhos.focus = ['Enter','NumpadEnter'];
             if(!l.configs.pomodoro)l.configs.pomodoro=d.configs.pomodoro;if(!l.configs.regressivo)l.configs.regressivo=d.configs.regressivo;
@@ -1277,7 +898,7 @@ function atualizarStatusModo(){
     }else{
         if (tempoAcumulado > 0) {
             s.style.display='block';
-            s.innerHTML=`Tempo Acumulado: ${Math.floor(tempoAcumulado/60)} min`;
+            s.innerHTML=`Tempo Acumulado:<br>${Math.floor(tempoAcumulado/60)} min`;
         } else {
             s.style.display='none';
         }
@@ -1676,6 +1297,7 @@ function confirmarArquivarConcurso() {
 
 function abrirFormConcurso(i){
     fecharModal('modalListagem');
+    let dec=document.getElementById('divExcluirConcurso');if(dec)dec.style.display = 'none';
     let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome'),cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),cc=document.getElementById('concCor'),cct=document.getElementById('concCorTexto'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
     if(i>=0){
         const c=db.concursos[i];
