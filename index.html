@@ -34,7 +34,7 @@
             --bg-modal: rgba(20, 35, 45, 0.98); --text-modal: #eeeeee; --border-input: rgba(255,255,255,0.2); --bg-input: rgba(0,0,0,0.4); --text-input: #eeeeee; --bg-hover: rgba(255,255,255,0.1);
         }
 body[data-theme="medieval"] {
-            --primaria: #5c3a21; --secundaria: transparent; --fundo: #2b1b12;
+            --primaria: #5c3a21; --secundaria: transparent; --fundo: #5c3a21;
             --bg-app: transparent; 
             --bg-item: transparent; 
             --bg-header: transparent;
@@ -46,18 +46,33 @@ body[data-theme="medieval"] {
         body[data-theme="medieval"] .app-container { 
             border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
+            background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
-            background-size: 100% 100%; /* Estica a imagem para preencher exatamente a tela toda */
-            background-repeat: no-repeat; /* Impede que apareça aquele 10% de imagem repetida ao lado */
+            background-size: 100% 100%; 
+            background-repeat: no-repeat; 
             background-position: center;
         }
-        body[data-theme="medieval"] #sticky-header { border-bottom: 2px solid #8b5a2b; border-top:none; box-shadow: none; }
-        body[data-theme="medieval"] .tarefa-header { background: transparent; border-bottom-color: #8b5a2b; }
+        body[data-theme="medieval"] #sticky-header,
+        body[data-theme="medieval"] .crono-container,
+        body[data-theme="medieval"] .dash-trilha-container,
+        body[data-theme="medieval"] .tarefa-header {
+            backdrop-filter: none !important;
+            background: rgba(0, 0, 0, 0.05) !important;
+            box-shadow: none !important;
+            border-color: rgba(139, 90, 43, 0.3) !important;
+        }
+        body[data-theme="medieval"] .dash-box {
+            background: rgba(0, 0, 0, 0.08) !important;
+            backdrop-filter: none !important;
+            border-color: rgba(139, 90, 43, 0.3) !important;
+        }
+        body[data-theme="medieval"] #frase-motivacional-container {
+            position: relative;
+            top: -25px;
+            border-top: none;
+        }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); border: 4px solid #8b5a2b; border-radius: 4px;
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            background-position: center;
         }
         body[data-theme="medieval"] .btn-action { background: #5c3a21; color: #fdf5e6; border-color: #3e2723; }
         
