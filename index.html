@@ -43,24 +43,38 @@ body[data-theme="medieval"] {
             --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: rgba(250,235,215,0.4); --text-input: #3e2723; --bg-hover: rgba(139, 90, 43, 0.15);
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
         }
-        body[data-theme="medieval"] .app-container { 
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
-            background-color: #5c3a21; 
-            background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
-            background-size: 100% 100%; 
-            background-repeat: no-repeat; 
-            background-position: center;
-        }
-        body[data-theme="medieval"] #sticky-header,
-        body[data-theme="medieval"] .crono-container,
-        body[data-theme="medieval"] .dash-trilha-container,
-        body[data-theme="medieval"] .tarefa-header {
-            backdrop-filter: none !important;
-            background: rgba(0, 0, 0, 0.05) !important;
-            box-shadow: none !important;
-            border-color: rgba(139, 90, 43, 0.3) !important;
-        }
+        body[data-theme="medieval"] .app-container { 
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
+            background-color: #5c3a21; 
+            background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
+            background-attachment: fixed;
+            background-size: cover; 
+            background-repeat: no-repeat; 
+            background-position: center;
+        }
+        body[data-theme="medieval"] #sticky-header,
+        body[data-theme="medieval"] .crono-container,
+        body[data-theme="medieval"] .dash-trilha-container {
+            backdrop-filter: none !important;
+            background: rgba(0, 0, 0, 0.05) !important;
+            box-shadow: none !important;
+            border-color: rgba(139, 90, 43, 0.3) !important;
+        }
+        body[data-theme="medieval"] .tarefa-header {
+            backdrop-filter: none !important;
+            background-color: transparent !important;
+            background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
+            background-attachment: fixed !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border-bottom: 2px solid #8b5a2b !important;
+            z-index: 20 !important;
+        }
+        body[data-theme="medieval"] .tarefa-row {
+            backdrop-filter: none !important;
+            background-color: transparent !important;
+        }
         body[data-theme="medieval"] .dash-box {
             background: rgba(0, 0, 0, 0.08) !important;
             backdrop-filter: none !important;
@@ -623,7 +637,7 @@ body[data-theme="medieval"] {
 <div class="switch-container"><span style="font-weight:bold;font-size:14px;">🟢 Ativar Concurso</span><label class="switch"><input type="checkbox" id="concAtivo"><span class="slider"></span></label></div>
 <div class="switch-container" style="border:1px solid #ffb74d;"><span style="font-weight:bold;font-size:14px; color:#ef6c00;">⏸️ Pausar Concurso</span><label class="switch"><input type="checkbox" id="concPausado"><span class="slider"></span></label></div>
 <div class="switch-container" style="border:1px solid #d32f2f; background: rgba(211, 47, 47, 0.05);"><span style="font-weight:bold;font-size:14px; color:#d32f2f;">📦 Arquivar Concurso</span><label class="switch"><input type="checkbox" id="concArquivado" onchange="changeArquivado(this)"><span class="slider" style="background-color: #d32f2f;"></span></label></div>
-<div style="display:flex;gap:10px"><div class="form-group" style="flex:1"><label>Fundo:</label><input type="color" id="concCor" value="#1565C0"></div><div class="form-group" style="flex:1"><label>Texto:</label><input type="color" id="concCorTexto" value="#ffffff"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormConcurso');abrirGerenciar('concursos')">Cancelar</button><button class="btn-action" onclick="salvarConcurso()">Salvar</button></div></div></div>
+<div style="display:flex;gap:5px;align-items:flex-end;"><div class="form-group" style="flex:1; margin-bottom:0;"><label style="font-size:11px;">Cor Letra:</label><input type="color" id="concCorTexto" value="#ffffff"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label style="font-size:11px;">Cor Fundo:</label><input type="color" id="concCorFundo" value="#1565C0"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label style="font-size:11px;">Contorno:</label><input type="color" id="concCor" value="#000000"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label style="font-size:11px;">Tam(px):</label><input type="number" id="concTamContorno" value="1" min="0" max="10" step="0.5" style="height:44px; padding:0 5px;"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormConcurso');abrirGerenciar('concursos')">Cancelar</button><button class="btn-action" onclick="salvarConcurso()">Salvar</button></div></div></div>
 
 <div class="modal-overlay" id="modalFormTrilha"><div class="modal"><div class="modal-title">Configurar Trilha</div><input type="hidden" id="edtTrilhaId"><input type="hidden" id="edtTrilhaConcurso"><div class="form-group"><label>Nome da Trilha:</label><input type="text" id="edtTrilhaNome"></div><div class="form-group"><label>Data de Início (Vazio = Não iniciada):</label><input type="date" id="edtTrilhaDataInicio"></div><div class="form-group"><label>Duração Prevista (em dias):</label><input type="number" id="edtTrilhaDias" min="1" placeholder="Ex: 7"></div><div class="modal-actions" style="flex-wrap: wrap; gap: 10px;"><button class="btn-cancel" onclick="fecharModal('modalFormTrilha'); if(document.getElementById('listagemContextoAtivo').value === 'trilhas') abrirGerenciar('trilhas', document.getElementById('edtTrilhaConcurso').value)">Cancelar</button><button class="btn-importar" onclick="salvarEdicaoTrilha(true)">Importar</button><button class="btn-action" onclick="salvarEdicaoTrilha(false)">Salvar</button></div></div></div>
 <div class="modal-overlay" id="modalFormDisciplina"><div class="modal"><div class="modal-title">Disciplina</div><input type="hidden" id="discIdOriginal"><input type="hidden" id="discConcursoPai"><div class="form-group"><label>Nome da Disciplina:</label><input type="text" id="discNome" placeholder="Ex: Direito Constitucional"></div><div style="display:flex; gap:10px;"><div class="form-group" style="flex:1;"><label>Inicia na Aula:</label><input type="number" id="discAulaInicio" placeholder="Ex: 0" value="0"></div><div class="form-group" style="flex:1;"><label>Qtd Aulas:</label><input type="number" id="discAulas" placeholder="Ex: 15" min="0"></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormDisciplina'); if(contextoRetornoListagem === 'importacao') abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value); else abrirGerenciar('disciplinas', document.getElementById('discConcursoPai').value)">Cancelar</button><button class="btn-action" onclick="salvarDisciplina()">Salvar</button></div></div></div>
@@ -1171,8 +1185,14 @@ function renderizarCabecalhoTrilhas(){
     trilhasDeste.forEach(t=>{selHtml+=`<option value="${t.nome}" ${t.nome===trilhaAtivaNome?'selected':''}>${t.nome}</option>`;});
     selHtml+=`</select>`;
     let clickAttr = (objConc.link || objConc.linkTrilha) ? `onclick="clicarConcursoBadge('${concNome}')"` : '';
-    let linkCursor = (objConc.link || objConc.linkTrilha) ? 'cursor:pointer; text-decoration:none;' : 'cursor:default;';
-    cont.innerHTML=`<div class="trilhas-left"><span class="concurso-badge" ${clickAttr} style="color:${objConc.cor}; ${linkCursor}">${concNome}</span>${selHtml}</div><div class="trilhas-center"><div class="dash-prazo-bar"><strong>Início:</strong> ${dataInicioFormatada} &nbsp;|&nbsp; <strong>Previsto:</strong> ${datePrevistaFormatada} &nbsp;|&nbsp;<strong>${numDisc} Disciplina(s) | ${numAtiv} Atividade(s)</strong> &nbsp;|&nbsp;<span style="color:${colorPrazo}; font-weight:bold;">${msgPrazo}</span></div></div><div class="trilhas-right"><button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button><button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Tarefa</button></div>`;
+    let linkCursor = (objConc.link || objConc.linkTrilha) ? 'cursor:pointer; text-decoration:none;' : 'cursor:default;';
+    let cCorL = objConc.corTexto || '#ffffff';
+    let cCorC = objConc.cor || '#000000';
+    let cCorF = objConc.corFundo || '#1565C0';
+    let cTamC = objConc.tamContorno !== undefined ? objConc.tamContorno : 0;
+    let styleBadge = `color:${cCorL}; background-color:${cCorF}; padding: 6px 16px; border-radius: 20px; text-shadow: none;`;
+    if(cTamC > 0) styleBadge += ` -webkit-text-stroke: ${cTamC}px ${cCorC};`;
+    cont.innerHTML=`<div class="trilhas-left"><span class="concurso-badge" ${clickAttr} style="${styleBadge} ${linkCursor}">${concNome}</span>${selHtml}</div><div class="trilhas-center"><div class="dash-prazo-bar"><strong>Início:</strong> ${dataInicioFormatada} &nbsp;|&nbsp; <strong>Previsto:</strong> ${datePrevistaFormatada} &nbsp;|&nbsp;<strong>${numDisc} Disciplina(s) | ${numAtiv} Atividade(s)</strong> &nbsp;|&nbsp;<span style="color:${colorPrazo}; font-weight:bold;">${msgPrazo}</span></div></div><div class="trilhas-right"><button class="btn-add-trilha-header" onclick="criarTrilhaAutoModal()">+ Trilha</button><button class="btn-nova-tarefa" onclick="criarTarefaAutoModal()">+ Tarefa</button></div>`;
     renderizarDashboardTrilha();
     renderizarListaTarefas();
 }
@@ -1306,7 +1326,9 @@ function abrirGerenciar(t,context){
         bVoltar.onclick=()=>{fecharModal('modalListagem');abrirPainelUnificadoComNivel(db.configs.mestreAtivo);};
         let ativosOuPausados = db.concursos.map((c, idx) => ({...c, originalIndex: idx})).filter(c => !c.arquivado);
         ativosOuPausados.forEach((c)=>{
-            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="background:${c.cor};color:${c.corTexto||'#000'};padding:6px 12px;border-radius:20px;font-weight:bold;font-size:14px">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
+            let strokeStr = c.tamContorno > 0 ? `-webkit-text-stroke: ${c.tamContorno}px ${c.cor||'#000000'}; text-shadow: none;` : '';
+            let bgStr = `background-color:${c.corFundo||'#1565C0'}; padding: 6px 12px; border-radius: 20px;`;
+            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="color:${c.corTexto||'#ffffff'}; ${strokeStr} ${bgStr} font-size: 22px; font-weight:900; letter-spacing:1px; display:inline-block; margin-bottom:5px;">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
         });
     }else if(t==='concursos_arquivados'){
         b.style.display='none';
@@ -1347,63 +1369,65 @@ function confirmarArquivarConcurso() {
 }
 
 function abrirFormConcurso(i){
-    fecharModal('modalListagem');
-    let dec=document.getElementById('divExcluirConcurso');if(dec)dec.style.display = 'none';
-    let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome'),cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),cc=document.getElementById('concCor'),cct=document.getElementById('concCorTexto'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
-    if(i>=0){
-        const c=db.concursos[i];
-        if(cno)cno.value=c.nome;if(cn)cn.value=c.nome;if(cl)cl.value=c.link||"";if(clt)clt.value=c.linkTrilha||"";if(cc)cc.value=c.cor;if(cct)cct.value=c.corTexto;if(ca)ca.checked=c.ativo;if(cp)cp.checked=c.pausado||false;if(car)car.checked=c.arquivado||false;
-    }else{
-        if(cno)cno.value='';if(cn)cn.value='';if(cl)cl.value='';if(clt)clt.value='';if(cc)cc.value='#1565C0';if(cct)cct.value='#ffffff';if(ca)ca.checked=true;if(cp)cp.checked=false;if(car)car.checked=false;
-    }
-    abrirModal('modalFormConcurso');
+    fecharModal('modalListagem');
+    let dec=document.getElementById('divExcluirConcurso');if(dec)dec.style.display = 'none';
+    let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome'),cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),cc=document.getElementById('concCor'),cct=document.getElementById('concCorTexto'),ccf=document.getElementById('concCorFundo'),ctc=document.getElementById('concTamContorno'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
+    if(i>=0){
+        const c=db.concursos[i];
+        if(cno)cno.value=c.nome;if(cn)cn.value=c.nome;if(cl)cl.value=c.link||"";if(clt)clt.value=c.linkTrilha||"";
+        if(cc)cc.value=c.cor||'#000000'; if(cct)cct.value=c.corTexto||'#ffffff'; if(ccf)ccf.value=c.corFundo||'#1565C0';
+        if(ctc)ctc.value=c.tamContorno!==undefined?c.tamContorno:1;
+        if(ca)ca.checked=c.ativo;if(cp)cp.checked=c.pausado||false;if(car)car.checked=c.arquivado||false;
+    }else{
+        if(cno)cno.value='';if(cn)cn.value='';if(cl)cl.value='';if(clt)clt.value='';
+        if(cc)cc.value='#000000';if(cct)cct.value='#ffffff';if(ccf)ccf.value='#1565C0';if(ctc)ctc.value=1;
+        if(ca)ca.checked=true;if(cp)cp.checked=false;if(car)car.checked=false;
+    }
+    abrirModal('modalFormConcurso');
 }
 
 function salvarConcurso(){
-    let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome');if(!cno||!cn)return;
-    const o=cno.value,n=cn.value.trim();
-    if(!n)return alert("Preencha o nome do Concurso!");
-    let cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
-    let lkA=cl?cl.value.trim():"",lkT=clt?clt.value.trim():"";
-    let isAtivo=ca?ca.checked:false;
-    let isPausadoNow=cp?cp.checked:false;
-    let isArquivadoNow=car?car.checked:false;
-    if(isAtivo && !isArquivadoNow){db.concursos.forEach(c=>c.ativo=false);}
-    if(isArquivadoNow){isAtivo = false;}
-    let objToUpdate=null;
-    if(o!==""){
-        objToUpdate=db.concursos.find(x=>x.nome===o);
-        let wasPausado=objToUpdate.pausado;
-        if(!wasPausado&&isPausadoNow){
-            objToUpdate.dataPausa=getHojeYMD();
-        }else if(wasPausado&&!isPausadoNow){
-            if(objToUpdate.dataPausa){
-                let d1=new Date(objToUpdate.dataPausa+"T00:00:00"),d2=new Date(getHojeYMD()+"T00:00:00"),diffDays=Math.ceil((d2-d1)/(1000*60*60*24));
-                if(diffDays>0){db.trilhas.filter(t=>t.concurso===o&&t.dataInicio).forEach(t=>{t.dataInicio=shiftDateByDays(t.dataInicio,diffDays);});}
-            }
-            objToUpdate.dataPausa=null;
-        }
-        objToUpdate.nome=n;objToUpdate.link=lkA;objToUpdate.linkTrilha=lkT;
-        let ccol=document.getElementById('concCor'),ccolt=document.getElementById('concCorTexto');
-        if(ccol)objToUpdate.cor=ccol.value;if(ccolt)objToUpdate.corTexto=ccolt.value;
-        objToUpdate.ativo=isAtivo;objToUpdate.pausado=isPausadoNow;objToUpdate.arquivado=isArquivadoNow;
-        if(o!==n){
-            db.trilhas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
-            db.tarefas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
-            db.disciplinas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
-        }
-    }else{
-        objToUpdate={nome:n, link:lkA, linkTrilha:lkT, cor:document.getElementById('concCor')?document.getElementById('concCor').value:'#1565C0', corTexto:document.getElementById('concCorTexto')?document.getElementById('concCorTexto').value:'#fff', ativo:isAtivo, pausado:isPausadoNow, arquivado:isArquivadoNow};
-        if(isPausadoNow)objToUpdate.dataPausa=getHojeYMD();
-        db.concursos.push(objToUpdate);
-    }
-    salvarModificacaoBasica();
-    fecharModal('modalFormConcurso');
-    if(isArquivadoNow) abrirGerenciar('concursos_arquivados');
-    else abrirGerenciar('concursos');
-    renderizarCabecalhoTrilhas();
+    let cno=document.getElementById('concNomeOriginal'),cn=document.getElementById('concNome');if(!cno||!cn)return;
+    const o=cno.value,n=cn.value.trim();
+    if(!n)return alert("Preencha o nome do Concurso!");
+    let cl=document.getElementById('concLink'),clt=document.getElementById('concLinkTrilha'),ca=document.getElementById('concAtivo'),cp=document.getElementById('concPausado'),car=document.getElementById('concArquivado');
+    let lkA=cl?cl.value.trim():"",lkT=clt?clt.value.trim():"";
+    let isAtivo=ca?ca.checked:false, isPausadoNow=cp?cp.checked:false, isArquivadoNow=car?car.checked:false;
+    let corC=document.getElementById('concCor')?document.getElementById('concCor').value:'#000000';
+    let corT=document.getElementById('concCorTexto')?document.getElementById('concCorTexto').value:'#ffffff';
+    let corF=document.getElementById('concCorFundo')?document.getElementById('concCorFundo').value:'#1565C0';
+    let tamC=document.getElementById('concTamContorno')?parseFloat(document.getElementById('concTamContorno').value):1;
+    if(isAtivo && !isArquivadoNow){db.concursos.forEach(c=>c.ativo=false);}
+    if(isArquivadoNow){isAtivo = false;}
+    let objToUpdate=null;
+    if(o!==""){
+        objToUpdate=db.concursos.find(x=>x.nome===o);
+        let wasPausado=objToUpdate.pausado;
+        if(!wasPausado&&isPausadoNow){ objToUpdate.dataPausa=getHojeYMD();
+        }else if(wasPausado&&!isPausadoNow){
+            if(objToUpdate.dataPausa){
+                let d1=new Date(objToUpdate.dataPausa+"T00:00:00"),d2=new Date(getHojeYMD()+"T00:00:00"),diffDays=Math.ceil((d2-d1)/(1000*60*60*24));
+                if(diffDays>0){db.trilhas.filter(t=>t.concurso===o&&t.dataInicio).forEach(t=>{t.dataInicio=shiftDateByDays(t.dataInicio,diffDays);});}
+            }
+            objToUpdate.dataPausa=null;
+        }
+        objToUpdate.nome=n;objToUpdate.link=lkA;objToUpdate.linkTrilha=lkT;
+        objToUpdate.cor=corC; objToUpdate.corTexto=corT; objToUpdate.corFundo=corF; objToUpdate.tamContorno=tamC;
+        objToUpdate.ativo=isAtivo;objToUpdate.pausado=isPausadoNow;objToUpdate.arquivado=isArquivadoNow;
+        if(o!==n){
+            db.trilhas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
+            db.tarefas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
+            db.disciplinas.forEach(t=>{if(t.concurso===o)t.concurso=n;});
+        }
+    }else{
+        objToUpdate={nome:n, link:lkA, linkTrilha:lkT, cor:corC, corTexto:corT, corFundo:corF, tamContorno:tamC, ativo:isAtivo, pausado:isPausadoNow, arquivado:isArquivadoNow};
+        if(isPausadoNow)objToUpdate.dataPausa=getHojeYMD();
+        db.concursos.push(objToUpdate);
+    }
+    salvarModificacaoBasica(); fecharModal('modalFormConcurso');
+    if(isArquivadoNow) abrirGerenciar('concursos_arquivados'); else abrirGerenciar('concursos');
+    renderizarCabecalhoTrilhas();
 }
-
 function abrirFormOperador(i){
     fecharModal('modalListagem');
     let ono=document.getElementById('opNomeOriginal'),on=document.getElementById('opNome'),os=document.getElementById('opSenha'),oem=document.getElementById('opEmojiMeta');
