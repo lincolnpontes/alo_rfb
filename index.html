@@ -63,7 +63,7 @@
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 105vw 105vh; 
+            background-size: 100vw 100vh; 
             background-repeat: no-repeat; 
             background-position: center;
         }
@@ -80,7 +80,7 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 105vw 105vh !important;
+            background-size: 100vw 100vh !important;
             background-position: center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
@@ -94,10 +94,10 @@
             backdrop-filter: none !important;
             border-color: rgba(139, 90, 43, 0.3) !important;
         }
-        body[data-theme="medieval"] .prod-chart-container {
-            background: rgba(0, 0, 0, 0.05) !important;
-            box-shadow: inset 0 0 20px rgba(92, 58, 33, 0.2) !important;
-            border-color: rgba(139, 90, 43, 0.3) !important;
+        body[data-theme="medieval"] .prod-chart-bg {
+            background-image: none !important;
+            background-color: #fdf5e6 !important;
+            box-shadow: inset 0 0 15px rgba(92, 58, 33, 0.1) !important;
         }
         body[data-theme="medieval"] #frase-motivacional-container {
             position: relative;
@@ -167,10 +167,12 @@
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
         
-        .btn-nova-tarefa { background: var(--primaria); color:#fff; opacity: 0.85; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap; transition: 0.2s;}
+        /* Botões de Tarefa - Ajuste de Cor Mais Clara e Tema Medieval */
+        .btn-nova-tarefa { background: var(--primaria); color:white; opacity: 0.75; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap; transition: 0.2s;}
         .btn-nova-tarefa:hover { opacity: 1; }
         body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
-        body[data-theme="medieval"] .btn-nova-tarefa { color: #fdf5e6; opacity: 0.9; }
+        body[data-theme="medieval"] .btn-nova-tarefa { background: #8b5a2b; color: #fdf5e6; opacity: 0.9; }
+        body[data-theme="medieval"] .btn-nova-tarefa:hover { opacity: 1; filter: brightness(1.1); }
 
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -181,7 +183,7 @@
         .tarefa-row:last-child { border-bottom: none; }
         .tarefa-row:hover:not(.tarefa-header) { filter: brightness(0.95); }
         
-        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
+        .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; }
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
@@ -229,8 +231,12 @@
         .crono-mute { color: var(--text-color); font-size: 20px;}
         input[type=range][orient=vertical] { appearance: slider-vertical; -webkit-appearance: slider-vertical; width: 8px; height: 55px; accent-color: var(--primaria); cursor: pointer; }
         
-        .ctrl-icon { font-size: 42px; color: var(--primaria); filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); line-height: 1; display:inline-block; }
-        body.focus-mode .ctrl-icon { color: #ffffff !important; font-size: 70px !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
+        /* Botões Estilizados Play/Stop baseados na Cor Primária do Tema */
+        .ctrl-icon { font-size: 42px; color: var(--primaria); filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); line-height: 1; display:inline-block; transition: 0.2s; }
+        .stop-icon { font-size: 48px; position: relative; top: -3px; }
+        body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
+        body.focus-mode .play-icon { font-size: 70px !important; }
+        body.focus-mode .stop-icon { font-size: 80px !important; top: -5px; }
 
         .meta-container { width: 100%; margin: 15px 0 5px 0; text-align: left; display: flex; flex-direction: column; gap: 6px; max-width: 85%;}
         .meta-bar { width: 100%; height: 14px; background: rgba(0,0,0,0.15); border-radius: 6px; position: relative;}
@@ -274,6 +280,7 @@
         .hab-row { display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 12px 10px; border-bottom: 1px solid var(--border-input); gap: 15px; }
         .hab-nivel { padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; text-align: center; white-space: nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);}
         .hab-bar-bg { background: rgba(0,0,0,0.1); border-radius: 10px; height: 18px; width: 100%; position: relative; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);}
+        body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
         .hab-bar-fill { background: #4fc3f7; height: 100%; position: absolute; left: 0; top: 0; transition: width 0.5s ease;}
         .hab-bar-text { position: absolute; left: 8px; top: 1px; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 2;}
         
@@ -346,6 +353,8 @@
         body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
         body.focus-mode .meta-fill { background: #ffffff !important; }
         
+        body.focus-mode #frase-motivacional-container { position: relative; margin-top: 40px; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
+
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -412,7 +421,7 @@
                 </div>
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
-                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon">&#9632;</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon">&#9654;</span></button></div>
+                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon stop-icon">&#9632;</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon play-icon">&#9654;</span></button></div>
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
                         <div class="meta-bar">
@@ -713,48 +722,6 @@
     </div>
 </div></div></div>
 
-<div class="modal-overlay" id="modalFormOperador">
-    <div class="modal">
-        <div class="modal-title">Usuário</div>
-        <input type="hidden" id="opNomeOriginal">
-        <div class="form-group"><label>Nome:</label><input type="text" id="opNome"></div>
-        <div class="form-group"><label>Senha (Vazio = sem senha):</label><input type="password" id="opSenha" inputmode="numeric"></div>
-        <div class="form-group">
-            <label>Emoji da Meta Diária:</label>
-            <select id="opEmojiMeta" class="modal-select">
-                <option value="🏎️">🏎️ Carrinho</option>
-                <option value="🏃🏻">🏃🏻 Corredor</option>
-                <option value="🚀">🚀 Foguete</option>
-                <option value="⛵">⛵ Barco</option>
-                <option value="🚴‍♂️">🚴‍♂️ Ciclista</option>
-            </select>
-        </div>
-        <div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalFormOperador');abrirGerenciar('estudantes')">Cancelar</button><button class="btn-action" onclick="salvarEstudante()">Salvar</button></div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="modalRegistrarEstudo"><div class="modal"><div class="modal-title" id="regNomeTarefa" style="font-size:18px; color:var(--primaria);">Tarefa</div><input type="hidden" id="regIdTarefa"><div id="regSubTituloTarefa" style="font-size:13px; font-weight:bold; margin-top:-15px; margin-bottom:15px;"></div><div class="form-group" id="containerTempoCapturado" style="display:none; background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50; padding: 10px; border-radius: 4px; margin-bottom: 15px;"><label style="color: #4CAF50; font-size:13px;">⏱️ Tempo Estudado:</label><div id="displayTempoCapturado" style="font-size: 18px; font-weight: bold; color: #4CAF50;">00:00:00</div><input type="hidden" id="regDuracaoTimer" value="0"></div><div class="form-group"><label>Tipo Final de Atividade:</label><select id="regTipoAtividade" class="modal-select" style="margin-bottom:0;" disabled></select></div><div id="divQuestoes" style="display:none; gap:10px; margin-bottom: 15px; background: var(--bg-input); padding: 10px; border-radius: 8px; border: 1px solid var(--border-input);"><div class="form-group" style="flex:1; margin-bottom:0;"><label>Qtd. Questões</label><input type="number" id="qtdQuestoes" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div><div class="form-group" style="flex:1; margin-bottom:0;"><label>Acertos</label><input type="number" id="qtdAcertos" value="0" onfocus="this.select()" oninput="ajustarTravaAcertosReg()"></div></div><div class="form-group"><label>Observação Extra:</label><input type="text" id="regObs" placeholder=""></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalRegistrarEstudo')">Voltar</button><button class="btn-action" id="btnSalvarRegistro" onclick="salvarRegistroEstudo()">✅ Concluir Tarefa</button></div></div></div>
-<div class="modal-overlay" id="modalHistorico"><div class="modal" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;"><div class="modal-title"><div>📅 Diário de Estudos</div><button onclick="fecharModal('modalHistorico')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height: 1;">&times;</button></div><div id="listaHistorico" style="display:flex; flex-direction:column; gap:10px;"></div></div></div>
-
-<div class="modal-overlay" id="modalRitmo"><div class="modal" style="max-width: 900px; width: 95%;"><div class="modal-title">⌛ Ritmo de Estudo</div>
-<div id="ritmoTempoSummary" style="display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;"></div>
-<div class="ritmo-tabs"><div class="ritmo-tab active" id="tabRitmoDesemp" onclick="switchRitmoTab('desemp')">Desempenho por trilha</div><div class="ritmo-tab" id="tabRitmoTempo" onclick="switchRitmoTab('tempo')">Atrasos e adiamentos</div></div><div id="ritmoDesempContent"><div class="ritmo-legend" id="ritmoDesempLegend"></div><div class="ritmo-grid" id="ritmoDesempGrid"></div></div><div id="ritmoTempoContent" style="display: none;"><div class="ritmo-legend" id="ritmoTempoLegend"></div><div class="ritmo-grid" id="ritmoTempoGrid"></div></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalRitmo')">Fechar</button></div></div></div>
-
-<div class="modal-overlay" id="modalProdutividade"><div class="modal" style="max-width: 1300px; width: 95%; max-height: 95vh; overflow-y: auto;"><div class="modal-title">📊 Produtividade Geral</div>
-<div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom: 15px;">
-    <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Trilha:</label><select id="filtroProdTrilha" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
-    <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Disciplina:</label><select id="filtroProdDisciplina" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
-</div>
-<div class="prod-layout"><div class="prod-col-left" id="prodDashCards"></div><div class="prod-col-right"><div class="prod-table-container"><div class="prod-table-row prod-table-header"><div class="prod-table-cell">Disciplina</div><div class="prod-table-cell center">Acertos</div><div class="prod-table-cell center">Questões</div><div class="prod-table-cell center">% Acertos</div><div class="prod-table-cell center">Tempo</div></div><div id="prodTableBody"></div></div></div></div><div style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-<div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px; flex-wrap: wrap;">
-    <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button>
-    <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button>
-    <button id="btnTreeDesempTrilha" class="btn-tree" onclick="setTreeMode('desemp_trilha')">Desempenho médio por trilha</button>
-    <button id="btnTreeHorasTrilha" class="btn-tree" onclick="setTreeMode('horas_trilha')">Média de horas de estudo</button>
-</div>
-<div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;"><canvas id="chartTreemap"></canvas></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar Painel</button></div></div></div>
-
-<div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
 <script>
@@ -976,13 +943,13 @@ function startPauseTimer(){
     if(isRunningTimer){
         audioRestart.pause();
         audioRestart.currentTime=0;
-        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon">&#10074;&#10074;</span>';btnPlay.classList.add('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon stop-icon">&#9632;</span>';btnPlay.classList.add('is-paused');}
         if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();
         intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);
     }else{
         clearInterval(intervalTimer);
         playerAudio.pause();
-        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon">&#9654;</span>';btnPlay.classList.remove('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';btnPlay.classList.remove('is-paused');}
         if((tempoTimer>0 || tempoAcumulado>0) && db.configs.tocarRestart && audioRestart.paused){
             audioRestart.currentTime=0;
             audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
@@ -1344,7 +1311,7 @@ function abrirGerenciar(t,context){
         ativosOuPausados.forEach((c)=>{
             let strokeStr = c.tamContorno > 0 ? `-webkit-text-stroke: ${c.tamContorno}px ${c.cor||'#000000'}; text-shadow: none;` : '';
             let bgStr = `background-color:${c.corFundo||'#1565C0'}; padding: 6px 12px; border-radius: 20px;`;
-            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="color:${c.corTexto||'#ffffff'}; ${strokeStr} ${bgStr} font-size: 22px; font-weight:900; letter-spacing:1px; display:inline-block; margin-bottom:5px;">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
+            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="color:${c.corTexto||'#ffffff'}; ${strokeStr} ${bgStr} font-size: 22px; font-weight:900; letter-spacing:1px; display:inline-block; margin-bottom:5px; border-radius:8px;">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
         });
     }else if(t==='concursos_arquivados'){
         b.style.display='none';
@@ -1668,7 +1635,7 @@ function salvarRegistroEstudo(){
         atualizarDisplayTimer();
         atualizarStatusModo();
         let bpt=document.getElementById('btn-play-timer');
-        if(bpt){bpt.innerHTML='<span class="ctrl-icon">&#9654;</span>';bpt.classList.remove('is-paused');}
+        if(bpt){bpt.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';bpt.classList.remove('is-paused');}
     }
     
     if(qq)qq.value=0;
