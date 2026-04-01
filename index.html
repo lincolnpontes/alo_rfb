@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1</title>
+    <title>Alô RFB v1.0.1</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -22,17 +22,28 @@
             --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;
             --bg-modal: #ffffff; --text-modal: #333333; --border-input: #cccccc; --bg-input: #ffffff; --text-input: #333333; --bg-hover: #f9f9f9;
         }
+        
+        /* Barra de rolagem personalizada */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--primaria); border-radius: 4px; opacity: 0.7; }
+        ::-webkit-scrollbar-thumb:hover { filter: brightness(1.2); }
+        
         body[data-theme="escuro"] {
             --primaria: #b0bec5; --secundaria: #333333; --fundo: linear-gradient(135deg, #121212 0%, #000000 100%);
             --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(45,45,45,0.9); --bg-header: rgba(20,20,20,0.95);
             --text-color: #eeeeee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.1);
             --bg-modal: #222222; --text-modal: #eeeeee; --border-input: #555555; --bg-input: #333333; --text-input: #eeeeee; --bg-hover: #444444;
         }
+        body[data-theme="escuro"] ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+
         body[data-theme="transparente"] {
             --bg-app: rgba(255,255,255,0.15); --bg-item: rgba(255,255,255,0.25); --bg-header: rgba(20, 35, 45, 0.98);
             --text-color: #eee; --title-color: #ffffff; --glass-border: rgba(255,255,255,0.2);
             --bg-modal: rgba(20, 35, 45, 0.98); --text-modal: #eeeeee; --border-input: rgba(255,255,255,0.2); --bg-input: rgba(0,0,0,0.4); --text-input: #eeeeee; --bg-hover: rgba(255,255,255,0.1);
         }
+        body[data-theme="transparente"] ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+
         body[data-theme="medieval"] {
             --primaria: #5c3a21; --secundaria: transparent; --fundo: #5c3a21;
             --bg-app: transparent; 
@@ -43,13 +54,16 @@
             --text-modal: #3e2723; --border-input: #8b5a2b; --bg-input: rgba(250,235,215,0.4); --text-input: #3e2723; --bg-hover: rgba(139, 90, 43, 0.15);
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif !important;
         }
+        body[data-theme="medieval"] ::-webkit-scrollbar-track { background: rgba(92,58,33,0.1); }
+        body[data-theme="medieval"] ::-webkit-scrollbar-thumb { background: #8b5a2b; }
+
         body[data-theme="medieval"] .app-container { 
             border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.9), inset 0 0 50px rgba(92, 58, 33, 0.7);
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 100% 100%; 
+            background-size: 100vw 100vh; 
             background-repeat: no-repeat; 
             background-position: center;
         }
@@ -66,7 +80,7 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 100% 100% !important;
+            background-size: 100vw 100vh !important;
             background-position: center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
@@ -79,6 +93,11 @@
             background: rgba(0, 0, 0, 0.08) !important;
             backdrop-filter: none !important;
             border-color: rgba(139, 90, 43, 0.3) !important;
+        }
+        body[data-theme="medieval"] .prod-chart-bg {
+            background-image: none !important;
+            background-color: #fdf5e6 !important;
+            box-shadow: inset 0 0 15px rgba(92, 58, 33, 0.1) !important;
         }
         body[data-theme="medieval"] #frase-motivacional-container {
             position: relative;
@@ -147,7 +166,13 @@
         .sel-trilha-header { background: var(--bg-item); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
-        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
+        
+        /* Botões de Tarefa - Ajuste de Cor e 60% Opacidade */
+        .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.6; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: 0.2s; }
+        .btn-nova-tarefa:hover { opacity: 1; }
+        body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
+        body[data-theme="medieval"] .btn-nova-tarefa { color: #fdf5e6; opacity: 0.7; }
+
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
@@ -159,7 +184,7 @@
         
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
-        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; }
+        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; background-size: 100vw 100vh !important; }
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -198,7 +223,15 @@
         .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent;}
         .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
-        .crono-play, .crono-stop { width: 55px; height: 55px;}
+        .crono-play, .crono-stop { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;}
+        
+        /* Botões Estilizados Play/Stop baseados na Cor Primária do Tema */
+        .ctrl-icon { font-size: 46px; color: var(--primaria); filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); line-height: 1; display:inline-block; transition: 0.2s; }
+        .stop-icon { font-size: 58px; position: relative; top: -4px; }
+        body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
+        body.focus-mode .play-icon { font-size: 75px !important; }
+        body.focus-mode .stop-icon { font-size: 98px !important; top: -6px; }
+
         .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
@@ -251,6 +284,9 @@
         body[data-theme="escuro"] .hab-bar-bg, body[data-theme="transparente"] .hab-bar-bg { background: rgba(255,255,255,0.1); }
         .hab-bar-fill { background: #4fc3f7; height: 100%; position: absolute; left: 0; top: 0; transition: width 0.5s ease;}
         .hab-bar-text { position: absolute; left: 8px; top: 1px; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); z-index: 2;}
+        
+        .prod-chart-container { margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
         .ritmo-tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); }
         .ritmo-tab { padding: 8px 15px; cursor: pointer; font-weight: bold; opacity: 0.6; transition: 0.2s; }
         .ritmo-tab:hover { opacity: 0.8; }
@@ -321,7 +357,7 @@
         body.focus-mode .crono-btn-vert.active { background: var(--primaria); }
         
         body.focus-mode .crono-controls { margin-top: 20px; gap: 40px; }
-        body.focus-mode .crono-btn-icon { color: #fff; font-size: 32px; outline: none !important; box-shadow: none !important; border: none !important; background: transparent !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); -webkit-tap-highlight-color: transparent !important;}
+        body.focus-mode .crono-btn-icon { color: #fff; font-size: 32px; outline: none !important; box-shadow: none !important; border: none !important; background: transparent !important; filter: none !important; -webkit-tap-highlight-color: transparent !important;}
         body.focus-mode .crono-btn-icon:hover, body.focus-mode .crono-btn-icon:focus, body.focus-mode .crono-btn-icon:active { background: transparent !important; outline: none !important; box-shadow: none !important; border: none !important; }
         body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 75px; height: 75px; font-size: 70px !important;}
         body.focus-mode .crono-play span, body.focus-mode .crono-stop span { font-size: 70px !important; }
@@ -331,8 +367,6 @@
         body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
         body.focus-mode .meta-fill { background: #ffffff !important; }
         
-        body.focus-mode #frase-motivacional-container { position: relative; margin-top: 40px; left: 0; width: 100%; border: none; background: transparent; font-size: 56px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
-
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -344,7 +378,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1</div>
+    <div class="splash-version">v1.0.1</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -399,7 +433,7 @@
                 </div>
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
-                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
+                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon stop-icon">&#9632;</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon play-icon">&#9654;</span></button></div>
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
                         <div class="meta-bar">
@@ -439,7 +473,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.1</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -732,7 +766,7 @@
     <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Trilha:</label><select id="filtroProdTrilha" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
     <div class="form-group" style="max-width:300px; flex:1; margin-bottom:0;"><label>Filtrar por Disciplina:</label><select id="filtroProdDisciplina" class="modal-select" style="margin-bottom:0;" onchange="renderizarConteudoProdutividade()"></select></div>
 </div>
-<div class="prod-layout"><div class="prod-col-left" id="prodDashCards"></div><div class="prod-col-right"><div class="prod-table-container"><div class="prod-table-row prod-table-header"><div class="prod-table-cell">Disciplina</div><div class="prod-table-cell center">Acertos</div><div class="prod-table-cell center">Questões</div><div class="prod-table-cell center">% Acertos</div><div class="prod-table-cell center">Tempo</div></div><div id="prodTableBody"></div></div></div></div><div style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+<div class="prod-layout"><div class="prod-col-left" id="prodDashCards"></div><div class="prod-col-right"><div class="prod-table-container"><div class="prod-table-row prod-table-header"><div class="prod-table-cell">Disciplina</div><div class="prod-table-cell center">Acertos</div><div class="prod-table-cell center">Questões</div><div class="prod-table-cell center">% Acertos</div><div class="prod-table-cell center">Tempo</div></div><div id="prodTableBody"></div></div></div></div><div class="prod-chart-bg" style="margin-top: 25px; background: var(--bg-modal); padding: 20px; border-radius: 12px; border: 1px solid var(--border-input); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
 <div style="display:flex; justify-content:flex-start; gap:10px; margin-bottom: 15px; border-bottom: 2px solid var(--border-input); padding-bottom: 10px; flex-wrap: wrap;">
     <button id="btnTreeTempo" class="btn-tree active" onclick="setTreeMode('tempo')">Tempo gasto por disciplina</button>
     <button id="btnTreeQuest" class="btn-tree" onclick="setTreeMode('questoes')">Questões resolvidas por disciplina</button>
@@ -963,13 +997,13 @@ function startPauseTimer(){
     if(isRunningTimer){
         audioRestart.pause();
         audioRestart.currentTime=0;
-        if(btnPlay){btnPlay.innerHTML='<span style="font-size:50px;">⏸️</span>';btnPlay.classList.add('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon play-icon" style="transform: scaleY(1.2);">&#10074;&#10074;</span>';btnPlay.classList.add('is-paused');}
         if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();
         intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);
     }else{
         clearInterval(intervalTimer);
         playerAudio.pause();
-        if(btnPlay){btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';btnPlay.classList.remove('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';btnPlay.classList.remove('is-paused');}
         if((tempoTimer>0 || tempoAcumulado>0) && db.configs.tocarRestart && audioRestart.paused){
             audioRestart.currentTime=0;
             audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
@@ -1331,7 +1365,7 @@ function abrirGerenciar(t,context){
         ativosOuPausados.forEach((c)=>{
             let strokeStr = c.tamContorno > 0 ? `-webkit-text-stroke: ${c.tamContorno}px ${c.cor||'#000000'}; text-shadow: none;` : '';
             let bgStr = `background-color:${c.corFundo||'#1565C0'}; padding: 6px 12px; border-radius: 20px;`;
-            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="color:${c.corTexto||'#ffffff'}; ${strokeStr} ${bgStr} font-size: 22px; font-weight:900; letter-spacing:1px; display:inline-block; margin-bottom:5px;">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
+            l.innerHTML+=`<div class="gerenciar-item" style="flex-direction:column; align-items:flex-start;"><div style="display:flex; width:100%; justify-content:space-between; align-items:center;"><div><span style="color:${c.corTexto||'#ffffff'}; ${strokeStr} ${bgStr} font-size: 22px; font-weight:900; letter-spacing:1px; display:inline-block; margin-bottom:5px; border-radius:8px;">${c.nome}</span></div><div class="gerenciar-actions" style="display:flex; align-items:center;">${c.pausado?'<span style="font-size:12px; color:#ef6c00; font-weight:bold; margin-right:5px;">⏸️ Pausado</span>':''}<small style="color:var(--text-modal); margin-right:5px; font-weight:bold">${c.ativo?'🟢 Ativo':'⚪ Inativo'}</small><button onclick="clonarConcurso('${c.nome}')" title="Clonar Concurso">📋</button><button onclick="abrirFormConcurso(${c.originalIndex})">✏️</button></div></div><div style="margin-top:10px; display:flex; gap:10px; width:100%; flex-wrap:wrap;"><button class="btn-sub-gerenciar" onclick="abrirGerenciar('disciplinas', '${c.nome}')">📚 Disciplinas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciar('trilhas', '${c.nome}')">👣 Trilhas</button><button class="btn-sub-gerenciar" onclick="abrirGerenciarTiposAtividade()">📝 Atividades</button></div></div>`;
         });
     }else if(t==='concursos_arquivados'){
         b.style.display='none';
@@ -1354,7 +1388,7 @@ function abrirGerenciar(t,context){
 }
 
 function excluirItem(t,id,context){if(t==='disciplinas'){if(!confirm("Excluir esta disciplina?"))return;db.disciplinas=db.disciplinas.filter(i=>i.id!==id);salvarModificacaoBasica();abrirGerenciar(t,context);}if(t==='trilhas'){if(!confirm("Tem certeza? As TAREFAS não serão apagadas, mas ficarão órfãs."))return;db.trilhas=db.trilhas.filter(i=>i.id!==id);salvarModificacaoBasica();renderizarCabecalhoTrilhas();abrirGerenciar(t,context);}if(t==='operadores'){if(!confirm("Excluir usuário?"))return;db.operadores=db.operadores.filter(i=>i.nome!==id);salvarModificacaoBasica();abrirGerenciar(t);}}
-function clonarConcurso(nomeOrig){let cOrig=db.concursos.find(c=>c.nome===nomeOrig);if(!cOrig)return;let novoNome=prompt("Nome do novo concurso:",nomeOrig+" (Cópia)");if(!novoNome||db.concursos.find(c=>c.nome===novoNome))return alert("Nome inválido ou já existe.");db.concursos.push({nome:novoNome,cor:cOrig.cor,corTexto:cOrig.corTexto,ativo:false,pausado:false,arquivado:false,link:"",linkTrilha:""});let oldTrilhas=db.trilhas.filter(t=>t.concurso===nomeOrig);oldTrilhas.forEach(t=>{db.trilhas.push({...t,id:Date.now()+Math.random(),concurso:novoNome});});let oldDisc=db.disciplinas.filter(d=>d.concurso===nomeOrig);oldDisc.forEach(d=>{db.disciplinas.push({...d,id:Date.now()+Math.random(),concurso:novoNome});});let oldTar=db.tarefas.filter(t=>t.concurso===nomeOrig);oldTar.forEach(t=>{db.tarefas.push({...t,id:Date.now()+Math.random(),concurso:novoNome,concluida:false,pulada:false,tempoRegistrado:0,questoes:0,acertos:0,obs:""});});salvarModificacaoBasica();abrirGerenciar('concursos');mostrarToast("Concurso Clonado com Sucesso!");}
+function clonarConcurso(nomeOrig){let cOrig=db.concursos.find(c=>c.nome===nomeOrig);if(!cOrig)return;let novoNome=prompt("Nome do novo concurso:",nomeOrig+" (Cópia)");if(!novoNome||db.concursos.find(c=>c.nome===novoNome))return alert("Nome inválido ou já existe.");db.concursos.push({nome:novoNome,cor:cOrig.cor,corTexto:cOrig.corTexto,corFundo:cOrig.corFundo,tamContorno:cOrig.tamContorno,ativo:false,pausado:false,arquivado:false,link:"",linkTrilha:""});let oldTrilhas=db.trilhas.filter(t=>t.concurso===nomeOrig);oldTrilhas.forEach(t=>{db.trilhas.push({...t,id:Date.now()+Math.random(),concurso:novoNome});});let oldDisc=db.disciplinas.filter(d=>d.concurso===nomeOrig);oldDisc.forEach(d=>{db.disciplinas.push({...d,id:Date.now()+Math.random(),concurso:novoNome});});let oldTar=db.tarefas.filter(t=>t.concurso===nomeOrig);oldTar.forEach(t=>{db.tarefas.push({...t,id:Date.now()+Math.random(),concurso:novoNome,concluida:false,pulada:false,tempoRegistrado:0,questoes:0,acertos:0,obs:""});});salvarModificacaoBasica();abrirGerenciar('concursos');mostrarToast("Concurso Clonado com Sucesso!");}
 function abrirEdicaoTrilha(id){fecharModal('modalListagem');let tr=db.trilhas.find(t=>t.id===id);if(!tr)return;let eti=document.getElementById('edtTrilhaId'),etc=document.getElementById('edtTrilhaConcurso'),etn=document.getElementById('edtTrilhaNome'),etdi=document.getElementById('edtTrilhaDataInicio'),etd=document.getElementById('edtTrilhaDias');if(eti)eti.value=tr.id;if(etc)etc.value=tr.concurso;if(etn)etn.value=tr.nome;if(etdi)etdi.value=tr.dataInicio||"";if(etd)etd.value=tr.duracaoDias||7;abrirModal('modalFormTrilha');}
 function salvarEdicaoTrilha(importarDepois = false){let ids=document.getElementById('edtTrilhaId'),tn=document.getElementById('edtTrilhaNome'),tdi=document.getElementById('edtTrilhaDataInicio'),td=document.getElementById('edtTrilhaDias'),tc=document.getElementById('edtTrilhaConcurso');if(!ids||!tn||!tdi||!td||!tc)return;let idStr=ids.value,n=tn.value.trim(),dInit=tdi.value,dias=parseInt(td.value)||7,conc=tc.value;if(!n)return alert("Preencha o nome!");if(idStr){let obj=db.trilhas.find(t=>t.id===parseInt(idStr));if(obj){let oldName=obj.nome;obj.nome=n;obj.dataInicio=dInit;obj.duracaoDias=dias;if(oldName!==n){db.tarefas.forEach(t=>{if(t.concurso===conc&&t.trilha===oldName)t.trilha=n;});db.historico.forEach(h=>{if(h.concurso===conc&&h.trilha===oldName)h.trilha=n;});if(trilhaAtivaNome===oldName)trilhaAtivaNome=n;}}}else{db.trilhas.push({id:Date.now(),nome:n,concurso:conc,dataInicio:dInit,duracaoDias:dias});trilhaAtivaNome=n;}salvarModificacaoBasica();fecharModal('modalFormTrilha');renderizarCabecalhoTrilhas();if(importarDepois){contextoRetornoImportacao = 'trilha';abrirModalImportacao();}else{let lca=document.getElementById('listagemContextoAtivo');if(lca&&lca.value === 'trilhas') abrirGerenciar('trilhas', conc);}}
 function abrirFormDisciplina(id,concursoNome){fecharModal('modalListagem');let dcp=document.getElementById('discConcursoPai');if(dcp)dcp.value=concursoNome;let dio=document.getElementById('discIdOriginal'),dn=document.getElementById('discNome'),dai=document.getElementById('discAulaInicio'),da=document.getElementById('discAulas');if(id>=0){const d=db.disciplinas.find(x=>x.id===id);if(dio)dio.value=d.id;if(dn)dn.value=d.nome;if(dai)dai.value=d.aulaInicio!==undefined?d.aulaInicio:1;if(da)da.value=d.aulas||0;}else{if(dio)dio.value='';if(dn)dn.value='';if(dai)dai.value=0;if(da)da.value='';}abrirModal('modalFormDisciplina');}
@@ -1379,11 +1413,11 @@ function abrirFormConcurso(i){
         const c=db.concursos[i];
         if(cno)cno.value=c.nome;if(cn)cn.value=c.nome;if(cl)cl.value=c.link||"";if(clt)clt.value=c.linkTrilha||"";
         if(cc)cc.value=c.cor||'#000000'; if(cct)cct.value=c.corTexto||'#ffffff'; if(ccf)ccf.value=c.corFundo||'#1565C0';
-        if(ctc)ctc.value=c.tamContorno!==undefined?c.tamContorno:1;
+        if(ctc)ctc.value=c.tamContorno!==undefined?c.tamContorno:0;
         if(ca)ca.checked=c.ativo;if(cp)cp.checked=c.pausado||false;if(car)car.checked=c.arquivado||false;
     }else{
         if(cno)cno.value='';if(cn)cn.value='';if(cl)cl.value='';if(clt)clt.value='';
-        if(cc)cc.value='#000000';if(cct)cct.value='#ffffff';if(ccf)ccf.value='#1565C0';if(ctc)ctc.value=1;
+        if(cc)cc.value='#000000';if(cct)cct.value='#ffffff';if(ccf)ccf.value='#1565C0';if(ctc)ctc.value=0;
         if(ca)ca.checked=true;if(cp)cp.checked=false;if(car)car.checked=false;
     }
     abrirModal('modalFormConcurso');
@@ -1399,7 +1433,7 @@ function salvarConcurso(){
     let corC=document.getElementById('concCor')?document.getElementById('concCor').value:'#000000';
     let corT=document.getElementById('concCorTexto')?document.getElementById('concCorTexto').value:'#ffffff';
     let corF=document.getElementById('concCorFundo')?document.getElementById('concCorFundo').value:'#1565C0';
-    let tamC=document.getElementById('concTamContorno')?parseFloat(document.getElementById('concTamContorno').value):1;
+    let tamC=document.getElementById('concTamContorno')?parseFloat(document.getElementById('concTamContorno').value):0;
     if(isAtivo && !isArquivadoNow){db.concursos.forEach(c=>c.ativo=false);}
     if(isArquivadoNow){isAtivo = false;}
     let objToUpdate=null;
@@ -1655,7 +1689,7 @@ function salvarRegistroEstudo(){
         atualizarDisplayTimer();
         atualizarStatusModo();
         let bpt=document.getElementById('btn-play-timer');
-        if(bpt){bpt.innerHTML='<span style="font-size:50px;">▶️</span>';bpt.classList.remove('is-paused');}
+        if(bpt){bpt.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';bpt.classList.remove('is-paused');}
     }
     
     if(qq)qq.value=0;
@@ -1771,7 +1805,7 @@ function renderizarConteudoProdutividade(){
     let pdc=document.getElementById('prodDashCards');if(pdc)pdc.innerHTML=`<div class="prod-dash-card c-blue"><div class="prod-dash-title">Desempenho atingido</div><div class="prod-dash-val">${despGeral}</div></div><div class="prod-dash-card c-green"><div class="prod-dash-title">Questões resolvidas</div><div class="prod-dash-val">${totalQuest}</div></div><div class="prod-dash-card c-orange"><div class="prod-dash-title">Horas estudadas</div><div class="prod-dash-val">${hFormGeral}</div></div><div class="prod-dash-card c-yellow"><div class="prod-dash-title">Média de horas diárias</div><div class="prod-dash-val">${mediaGeral}</div></div>`;
     let tbody=document.getElementById('prodTableBody');if(!tbody)return;tbody.innerHTML='';
     for(let d in estatisticas){
-        let e=estatisticas[d],pct=e.questoes>0?((e.acertos/e.questoes)*100).toFixed(1)+"%":"-",hForm=Math.floor(e.tempo/3600)+"h "+Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')+"m",idClean=d.replace(/[^a-zA-Z0-9]/g,''),htmlHist=`<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico e Histórico</div><div style="background:#ffffff; padding:10px; border-radius:8px; margin-bottom:15px;"><canvas id="chartDisc_${idClean}" style="max-height: 200px;"></canvas></div>`;
+        let e=estatisticas[d],pct=e.questoes>0?((e.acertos/e.questoes)*100).toFixed(1)+"%":"-",hForm=Math.floor(e.tempo/3600)+"h "+Math.floor((e.tempo%3600)/60).toString().padStart(2,'0')+"m",idClean=d.replace(/[^a-zA-Z0-9]/g,''),htmlHist=`<div style="margin-bottom: 10px; font-weight: bold; color: var(--primaria);">Gráfico e Histórico</div><div class="prod-chart-container" style="background:#ffffff; padding:10px; border-radius:8px; margin-bottom:15px;"><canvas id="chartDisc_${idClean}" style="max-height: 200px;"></canvas></div>`;
         rawItemsByDisc[d].reverse().forEach(reg=>{
             let rPct=reg.questoes>0?Math.round((reg.acertos/reg.questoes)*100):0,pts=reg.questoes>0?`🎯 ${reg.acertos}/${reg.questoes} (${rPct}%)`:'';
             htmlHist+=`<div style="padding: 6px 0; border-bottom: 1px dashed var(--border-input); display: flex; justify-content: space-between; font-size:13px;"><span style="flex:1;"><b>${reg.data.split(' ')[0]}</b> - ${reg.tarefa||reg.tipoAtividade}</span><span style="text-align:right;">⏱️ ${Math.round((reg.duracaoRegistrada||0)/60)}m<br>${pts}</span></div>`;
