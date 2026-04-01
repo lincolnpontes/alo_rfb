@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.1</title>
+    <title>Alô RFB v1.0.2</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -63,7 +63,7 @@
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 100vw 100vh; 
+            background-size: 98vw 98vh; 
             background-repeat: no-repeat; 
             background-position: center;
         }
@@ -80,7 +80,7 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 100vw 100vh !important;
+            background-size: 98vw 98vh !important;
             background-position: center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
@@ -167,11 +167,11 @@
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
         
-        /* Botões de Tarefa - Ajuste de Cor e 60% Opacidade */
-        .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.6; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: 0.2s; }
+        /* Botões de Tarefa - Ajuste de Cor e 75% Opacidade */
+        .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.75; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: 0.2s; }
         .btn-nova-tarefa:hover { opacity: 1; }
         body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
-        body[data-theme="medieval"] .btn-nova-tarefa { color: #fdf5e6; opacity: 0.7; }
+        body[data-theme="medieval"] .btn-nova-tarefa { color: #fdf5e6; opacity: 0.85; }
 
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -184,7 +184,7 @@
         
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
-        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; background-size: 100vw 100vh !important; }
+        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; background-size: 98vw 98vh !important; }
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -226,13 +226,14 @@
         .crono-play, .crono-stop { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;}
         
         /* Botões Estilizados Play/Stop baseados na Cor Primária do Tema */
-        .ctrl-icon { font-size: 46px; color: var(--primaria); filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); line-height: 1; display:inline-block; transition: 0.2s; }
-        .stop-icon { font-size: 58px; position: relative; top: -4px; }
+        .ctrl-icon { font-size: 48px; color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
+        .stop-icon { font-size: 64px; position: relative; top: -5px; }
         body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
-        body.focus-mode .play-icon { font-size: 75px !important; }
-        body.focus-mode .stop-icon { font-size: 98px !important; top: -6px; }
+        body.focus-mode .play-icon { font-size: 80px !important; }
+        body.focus-mode .stop-icon { font-size: 110px !important; top: -8px; }
 
-        .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .crono-music { font-size: 26px; color: var(--text-color); position: relative; background: transparent; padding: 6px; box-shadow: none; cursor: pointer; transition: 0.2s;}
+        .crono-music:hover { transform: scale(1.15); }
         .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
         .vol-vert-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -307,19 +308,6 @@
             display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         
-        #frase-motivacional-container {
-            text-align: center; font-style: italic; color: var(--text-color); opacity: 0.8; background: var(--bg-item); 
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; 
-            padding: 15px 20px; 
-            min-height: 50px; 
-            font-size: 28px;
-            border-top: 1px solid var(--glass-border);
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-            margin-top: auto; 
-        }
-
         body.focus-mode * { outline: none !important; box-shadow: none !important; }
         body.focus-mode #sticky-header .header,
         body.focus-mode .trilhas-top-bar,
@@ -367,6 +355,8 @@
         body.focus-mode .meta-bar { background: rgba(255,255,255,0.3) !important; }
         body.focus-mode .meta-fill { background: #ffffff !important; }
         
+        body.focus-mode #frase-motivacional-container { position: relative; margin-top: 10px; left: 0; width: 100%; border: none; background: transparent; font-size: 70px; opacity: 1; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.8); z-index: 1000; line-height: 1.3;}
+
         .error-import { border: 2px solid #d32f2f !important; background-color: #ffebee !important; color: #c62828 !important; }
         body[data-theme="escuro"] .error-import { background-color: rgba(211, 47, 47, 0.2) !important; color: #ff8a80 !important;}
     </style>
@@ -378,7 +368,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.1</div>
+    <div class="splash-version">v1.0.2</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -473,7 +463,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.1</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.2</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
