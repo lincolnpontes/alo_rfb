@@ -213,12 +213,12 @@
         .crono-btn-icon:active { transform: scale(0.9); }
         .crono-play, .crono-stop { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
         
-        /* Botões Estilizados Play/Stop baseados na Cor Primária do Tema */
-        .ctrl-icon { font-size: 44px; color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
-        .stop-icon { font-size: 58px; position: relative; top: -4px; }
+         /* Botões Estilizados Play/Stop baseados na Cor Primária do Tema */
+        .ctrl-icon { font-size: 48px; color: var(--primaria); filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); line-height: 1; display:inline-block; transition: 0.2s; }
+        .stop-icon { font-size: 56px; position: relative; top: -3px; }
         body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
-        body.focus-mode .play-icon { font-size: 75px !important; }
-        body.focus-mode .stop-icon { font-size: 98px !important; top: -6px; }
+        body.focus-mode .play-icon { font-size: 80px !important; }
+        body.focus-mode .stop-icon { font-size: 100px !important; top: -5px; }
 
         .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
@@ -420,10 +420,8 @@
                 </div>
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
-                    <div class="crono-controls">
-                        <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon stop-icon">&#9632;</span></button>
-                        <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon play-icon">&#9654;</span></button></div>
-                </div>        
+                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon" style="font-size: 50px;">&#9632;</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon">&#9654;</span></button></div>
+                    
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
                         <div class="meta-bar">
@@ -987,7 +985,7 @@ function startPauseTimer(){
     if(isRunningTimer){
         audioRestart.pause();
         audioRestart.currentTime=0;
-        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon" style="font-size:38px; transform: scaleY(1.2);">&#10074;&#10074;</span>';btnPlay.classList.add('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';btnPlay.classList.remove('is-paused');}
         if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();
         intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);
     }else{
@@ -1679,7 +1677,7 @@ function salvarRegistroEstudo(){
         atualizarDisplayTimer();
         atualizarStatusModo();
         let bpt=document.getElementById('btn-play-timer');
-        if(bpt){bpt.innerHTML='<span style="font-size:50px;">▶️</span>';bpt.classList.remove('is-paused');}
+        if(bpt){bpt.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';bpt.classList.remove('is-paused');}
     }
     
     if(qq)qq.value=0;
