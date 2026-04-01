@@ -22,6 +22,16 @@
             --glass-border: rgba(255,255,255,0.3); --title-color: #1565C0; --text-color: #333;
             --bg-modal: #ffffff; --text-modal: #333333; --border-input: #cccccc; --bg-input: #ffffff; --text-input: #333333; --bg-hover: #f9f9f9;
         }
+        /* Barra de rolagem personalizada */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--primaria); border-radius: 4px; opacity: 0.7; }
+        ::-webkit-scrollbar-thumb:hover { filter: brightness(1.2); }
+        body[data-theme="escuro"] ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        body[data-theme="transparente"] ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+        body[data-theme="medieval"] ::-webkit-scrollbar-track { background: rgba(92,58,33,0.1); }
+        body[data-theme="medieval"] ::-webkit-scrollbar-thumb { background: #8b5a2b; }
+
         body[data-theme="escuro"] {
             --primaria: #b0bec5; --secundaria: #333333; --fundo: linear-gradient(135deg, #121212 0%, #000000 100%);
             --bg-app: rgba(30,30,30,0.8); --bg-item: rgba(45,45,45,0.9); --bg-header: rgba(20,20,20,0.95);
@@ -147,7 +157,10 @@
         .sel-trilha-header { background: var(--bg-item); border: 2px solid var(--primaria); color: var(--primaria); font-weight: bold; border-radius: 8px; padding: 6px 12px; font-size: 16px; width: auto; flex: none; outline: none; cursor:pointer;}
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
-        .btn-nova-tarefa { background: #2e7d32; color:white; border:none; padding: 10px 15px; font-size: 15px; font-weight:bold; border-radius: 8px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
+        .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.4; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: opacity 0.2s; }
+        .btn-nova-tarefa:hover { opacity: 1; }
+        body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
+        body[data-theme="medieval"] .btn-nova-tarefa { color: #fdf5e6; opacity: 0.6; }
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
@@ -198,7 +211,9 @@
         .crono-btn-icon { background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent;}
         .crono-btn-icon:hover { transform: scale(1.15); }
         .crono-btn-icon:active { transform: scale(0.9); }
-        .crono-play, .crono-stop { width: 55px; height: 55px;}
+        .crono-play, .crono-stop { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
+        .ctrl-icon { font-size: 42px; color: var(--primaria); line-height: 1; display: block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.2)); transition: 0.2s; }
+        body.focus-mode .ctrl-icon { color: #ffffff !important; font-size: 70px !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important; }
         .crono-music { font-size: 22px; color: #2e7d32; position: relative; background: #e8f5e9; padding: 6px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         .crono-edit { font-size: 26px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;}
         .btn-limpar-musica { position: absolute; top: -5px; right: -5px; background: #d32f2f; color: white; border-radius: 50%; width: 14px; height: 14px; font-size: 8px; font-weight: bold; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);}
@@ -399,7 +414,10 @@
                 </div>
                 <div class="crono-display-box">
                     <div class="crono-display-wrapper"><div class="crono-display" id="display-timer">00:00:00</div><div class="pomo-status-side" id="pomo-status-side"></div></div>
-                    <div class="crono-controls"><button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span style="font-size:50px;">⏹️</span></button><button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span style="font-size:50px;">▶️</span></button></div>
+                    <div class="crono-controls">
+                        <button class="crono-btn-icon crono-stop" onclick="resetTimer()" title="Parar/Salvar"><span class="ctrl-icon" style="font-size: 50px;">&#9632;</span></button>
+                        <button class="crono-btn-icon crono-play" id="btn-play-timer" onclick="startPauseTimer()" title="Play/Pause"><span class="ctrl-icon">&#9654;</span></button>
+                </div>        
                     
                     <div class="meta-container" id="meta-container" style="display: none;">
                         <div class="meta-bar">
@@ -963,13 +981,13 @@ function startPauseTimer(){
     if(isRunningTimer){
         audioRestart.pause();
         audioRestart.currentTime=0;
-        if(btnPlay){btnPlay.innerHTML='<span style="font-size:50px;">⏸️</span>';btnPlay.classList.add('is-paused');}
+        if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon" style="font-size:38px; transform: scaleY(1.2);">&#10074;&#10074;</span>';btnPlay.classList.add('is-paused');}
         if(playlist.length>0&&playerAudio.src)playerAudio.play().catch(()=>{});else if(playlist.length>0&&!playerAudio.src)tocarMusicaTimer();
         intervalTimer=setInterval(()=>{tempoTimer++;atualizarDisplayTimer();},1000);
     }else{
         clearInterval(intervalTimer);
         playerAudio.pause();
-        if(btnPlay){btnPlay.innerHTML='<span style="font-size:50px;">▶️</span>';btnPlay.classList.remove('is-paused');}
+        if(bpt){bpt.innerHTML='<span class="ctrl-icon">&#9654;</span>';bpt.classList.remove('is-paused');}
         if((tempoTimer>0 || tempoAcumulado>0) && db.configs.tocarRestart && audioRestart.paused){
             audioRestart.currentTime=0;
             audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
