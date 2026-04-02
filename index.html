@@ -63,9 +63,9 @@
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 100vw 110vh; 
+            background-size: 96vw 96vh; 
             background-repeat: no-repeat; 
-            background-position: center top;
+            background-position: center;
         }
         body[data-theme="medieval"] #sticky-header,
         body[data-theme="medieval"] .crono-container,
@@ -80,8 +80,8 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 100vw 110vh !important;
-            background-position: center top !important;
+            background-size: 96vw 96vh !important;
+            background-position: center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
         }
@@ -101,7 +101,7 @@
         }
         body[data-theme="medieval"] #frase-motivacional-container {
             background-color: transparent !important;
-            border-top: 2px dashed rgba(139, 90, 43, 0.5) !important;
+            border-top: none !important;
         }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); 
@@ -166,7 +166,7 @@
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
         
-        /* Botões de Tarefa */
+        /* Botões de Tarefa - Ajuste de Cor e 75% Opacidade */
         .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.75; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: 0.2s; }
         .btn-nova-tarefa:hover { opacity: 1; }
         body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
@@ -183,7 +183,6 @@
         
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
-        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; background-size: 100vw 110vh !important; background-position: center top !important; }
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -226,11 +225,11 @@
         
         /* Botões Estilizados Play/Stop */
         .ctrl-icon { font-size: 46px; color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
-        .stop-icon { font-size: 74px; position: relative; top: -6px; }
+        .stop-icon { font-size: 82px; position: relative; top: -6px; }
         
         body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
         body.focus-mode .play-icon { font-size: clamp(60px, 10vh, 80px) !important; }
-        body.focus-mode .stop-icon { font-size: clamp(90px, 15vh, 126px) !important; top: -8px; }
+        body.focus-mode .stop-icon { font-size: clamp(100px, 17vh, 140px) !important; top: -8px; }
 
         .crono-music { font-size: 26px; color: var(--text-color); position: relative; background: transparent; padding: 6px; box-shadow: none; cursor: pointer; transition: 0.2s;}
         .crono-music:hover { transform: scale(1.15); }
@@ -312,9 +311,9 @@
             text-align: center; font-style: italic; color: var(--text-color); opacity: 0.8; background: var(--bg-item); 
             display: flex; align-items: center; justify-content: center;
             font-weight: 900; 
-            padding: 10px 20px; 
-            min-height: 40px; 
-            font-size: 26px;
+            padding: 15px 20px; 
+            min-height: 50px; 
+            font-size: 28px;
             border-top: 1px solid var(--glass-border);
             box-sizing: border-box;
             transition: all 0.3s ease;
@@ -360,7 +359,7 @@
         body.focus-mode .crono-controls { margin-top: 1vh; gap: 5vw; }
         body.focus-mode .crono-btn-icon { color: #fff; font-size: 32px; outline: none !important; box-shadow: none !important; border: none !important; background: transparent !important; filter: none !important; -webkit-tap-highlight-color: transparent !important;}
         body.focus-mode .crono-btn-icon:hover, body.focus-mode .crono-btn-icon:focus, body.focus-mode .crono-btn-icon:active { background: transparent !important; outline: none !important; box-shadow: none !important; border: none !important; }
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 70px; height: 70px;}
+        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 80px; height: 80px;}
         
         body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 15px;}
         body.focus-mode .meta-text { color: #ffffff !important; font-size: 16px;}
@@ -379,7 +378,7 @@
             color: #fff; 
             text-shadow: 0 4px 10px rgba(0,0,0,0.8); 
             z-index: 1000; 
-            line-height: 1.2;
+            line-height: 1.3;
             text-align: center;
             justify-content: center;
             font-weight: 900;
@@ -1113,12 +1112,28 @@ function atualizarBarraMeta(){
         else{ mVal.style.display='inline'; let hFormat=Math.floor(atual/3600),mFormat=Math.floor((atual%3600)/60).toString().padStart(2,'0'); mVal.innerText=`${hFormat}h${mFormat}m / ${db.configs.metaDiariaHrs}h`; }
     }
 }
+
 const dictTeclas={'Space':'Espaço','Delete':'Deletar','Period':'Ponto(.)','Equal':'Igual(=)','Minus':'Menos(-)','Escape':'Esc','NumpadAdd':'Num +','NumpadSubtract':'Num -','Enter':'Enter','NumpadEnter':'Enter Num'};
 function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr){if(!arr||arr.length===0)return "Nenhum";return arr.map(t=>trTecla(t)).join(' ou ');}
 document.addEventListener('keydown',function(event){
     if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;
     let k=event.code;
     let a=db.configs.atalhos;
+    
+    if ((k === 'ArrowUp' || k === 'ArrowDown') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
+        let scrollContainer = document.querySelector('.table-scroll-container');
+        if (scrollContainer) {
+            event.preventDefault();
+            let scrollAmount = 100;
+            if (k === 'ArrowUp') {
+                scrollContainer.scrollBy({top: -scrollAmount, left: 0, behavior: 'smooth'});
+            } else {
+                scrollContainer.scrollBy({top: scrollAmount, left: 0, behavior: 'smooth'});
+            }
+        }
+        return;
+    }
+
     if (k === 'Escape' && document.body.classList.contains('focus-mode')) {
         event.preventDefault(); toggleFocusMode(); return;
     }
