@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.4</title>
+    <title>Alô RFB v1.0.5</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -63,9 +63,9 @@
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 96vw 96vh; 
+            background-size: 110vw 110vh; /* Escondendo as bordas irregulares fora da tela */
             background-repeat: no-repeat; 
-            background-position: center;
+            background-position: center center;
         }
         body[data-theme="medieval"] #sticky-header,
         body[data-theme="medieval"] .crono-container,
@@ -80,8 +80,8 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 96vw 96vh !important;
-            background-position: center !important;
+            background-size: 110vw 110vh !important;
+            background-position: center center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
         }
@@ -101,7 +101,7 @@
         }
         body[data-theme="medieval"] #frase-motivacional-container {
             background-color: transparent !important;
-            border-top: none !important;
+            border-top: none !important; /* Retirado o tracejado */
         }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); 
@@ -175,7 +175,7 @@
         .dash-prazo-bar { font-size: 17px; color: var(--text-color); display:flex; justify-content:center; align-items:center; gap:12px; width:100%; white-space: nowrap;}
         #listaTarefas { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .table-wrapper { flex: 1; display: flex; flex-direction: column; padding: 10px; box-sizing: border-box; overflow: hidden; }
-        .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .table-scroll-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid var(--glass-border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); scroll-behavior: smooth;}
         .tarefas-grid { min-width: 1000px; display: flex; flex-direction: column; }
         .tarefa-row { display: grid; grid-template-columns: 35px 40px 1.2fr 1fr 120px 3fr 100px 100px; align-items: center; padding: 12px 10px; background: var(--bg-item); border-bottom: 1px solid var(--glass-border); cursor: pointer; transition: 0.2s; color: var(--text-color); backdrop-filter: blur(5px);}
         .tarefa-row:last-child { border-bottom: none; }
@@ -183,6 +183,7 @@
         
         .tarefa-header { position: sticky; top: 0; font-weight: 900; font-size: 16px; color: var(--text-color); background: var(--secundaria); border-bottom: 2px solid var(--primaria); cursor: default; z-index: 20; padding-top: 4px; padding-bottom: 4px; backdrop-filter: blur(10px);}
         body[data-theme="transparente"] .tarefa-header, body[data-theme="escuro"] .tarefa-header { background: rgba(0,0,0,0.8); border-bottom-color: #888; color: #fff;}
+        body[data-theme="medieval"] .tarefa-header { border-bottom-color: #8b5a2b; background-size: 110vw 110vh !important; background-position: center center !important; }
         
         .tarefa-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 5px; }
         .tarefa-col.bold { font-weight: bold; }
@@ -225,11 +226,11 @@
         
         /* Botões Estilizados Play/Stop */
         .ctrl-icon { font-size: 46px; color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
-        .stop-icon { font-size: 82px; position: relative; top: -6px; }
+        .stop-icon { font-size: 90px; position: relative; top: -10px; }
         
         body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
         body.focus-mode .play-icon { font-size: clamp(60px, 10vh, 80px) !important; }
-        body.focus-mode .stop-icon { font-size: clamp(100px, 17vh, 140px) !important; top: -8px; }
+        body.focus-mode .stop-icon { font-size: clamp(110px, 18vh, 150px) !important; top: -15px; }
 
         .crono-music { font-size: 26px; color: var(--text-color); position: relative; background: transparent; padding: 6px; box-shadow: none; cursor: pointer; transition: 0.2s;}
         .crono-music:hover { transform: scale(1.15); }
@@ -359,7 +360,7 @@
         body.focus-mode .crono-controls { margin-top: 1vh; gap: 5vw; }
         body.focus-mode .crono-btn-icon { color: #fff; font-size: 32px; outline: none !important; box-shadow: none !important; border: none !important; background: transparent !important; filter: none !important; -webkit-tap-highlight-color: transparent !important;}
         body.focus-mode .crono-btn-icon:hover, body.focus-mode .crono-btn-icon:focus, body.focus-mode .crono-btn-icon:active { background: transparent !important; outline: none !important; box-shadow: none !important; border: none !important; }
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 80px; height: 80px;}
+        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 70px; height: 70px;}
         
         body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 15px;}
         body.focus-mode .meta-text { color: #ffffff !important; font-size: 16px;}
@@ -396,7 +397,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.4</div>
+    <div class="splash-version">v1.0.5</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -491,7 +492,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.4</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.5</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -1118,20 +1119,39 @@ function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr)
 document.addEventListener('keydown',function(event){
     if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;
     let k=event.code;
+    let key=event.key;
     let a=db.configs.atalhos;
     
-    if ((k === 'ArrowUp' || k === 'ArrowDown') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
+    if ((k === 'ArrowUp' || key === 'ArrowUp' || k === 'ArrowDown' || key === 'ArrowDown' || key === 'PageUp' || key === 'PageDown' || key === 'Home' || key === 'End') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
         let scrollContainer = document.querySelector('.table-scroll-container');
         if (scrollContainer) {
-            event.preventDefault();
-            let scrollAmount = 100;
-            if (k === 'ArrowUp') {
+            let scrollAmount = 300; 
+            if (k === 'ArrowUp' || key === 'ArrowUp') {
+                event.preventDefault();
                 scrollContainer.scrollBy({top: -scrollAmount, left: 0, behavior: 'smooth'});
-            } else {
+                return;
+            } else if (k === 'ArrowDown' || key === 'ArrowDown') {
+                event.preventDefault();
                 scrollContainer.scrollBy({top: scrollAmount, left: 0, behavior: 'smooth'});
+                return;
+            } else if (key === 'PageUp') {
+                event.preventDefault();
+                scrollContainer.scrollBy({top: -scrollContainer.clientHeight, left: 0, behavior: 'smooth'});
+                return;
+            } else if (key === 'PageDown') {
+                event.preventDefault();
+                scrollContainer.scrollBy({top: scrollContainer.clientHeight, left: 0, behavior: 'smooth'});
+                return;
+            } else if (key === 'Home') {
+                event.preventDefault();
+                scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                return;
+            } else if (key === 'End') {
+                event.preventDefault();
+                scrollContainer.scrollTo({top: scrollContainer.scrollHeight, left: 0, behavior: 'smooth'});
+                return;
             }
         }
-        return;
     }
 
     if (k === 'Escape' && document.body.classList.contains('focus-mode')) {
@@ -1151,6 +1171,7 @@ document.addEventListener('keydown',function(event){
         event.preventDefault();ajustarVolumeTimer(Math.max(0,(volumeSalvoTimer*100)-2));
     }
 });
+
 let atalhosTemp={};function abrirConfigAtalhos(){fecharModal('modalConfigGerais');atalhosTemp=JSON.parse(JSON.stringify(db.configs.atalhos));atualizarInputsAtalhos();abrirModal('modalAtalhos');}
 function atualizarInputsAtalhos(){
     let kp=document.getElementById('keyPlay'),kr=document.getElementById('keyReset'),km=document.getElementById('keyMute'),kvu=document.getElementById('keyVolUp'),kvd=document.getElementById('keyVolDown'),kf=document.getElementById('keyFocus');
