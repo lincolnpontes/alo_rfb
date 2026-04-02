@@ -1124,36 +1124,31 @@ document.addEventListener('keydown',function(event){
     let key=event.key;
     let a=db.configs.atalhos;
     
-    /* Regra de Rolagem das Tarefas */
+    /* Regra de Rolagem das Tarefas - Dinâmica e Responsiva */
     if ((k === 'ArrowUp' || key === 'ArrowUp' || k === 'ArrowDown' || key === 'ArrowDown' || key === 'PageUp' || key === 'PageDown' || key === 'Home' || key === 'End') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
         let scrollContainer = document.querySelector('.table-scroll-container');
         if (scrollContainer) {
-            let scrollAmount = 120; 
+            event.preventDefault();
+            
+            // Pega a altura exata de uma linha na tela atual (aprox. 45px)
+            let rowElement = document.querySelector('.tarefa-row');
+            let rowHeight = rowElement ? rowElement.offsetHeight : 45; 
+            
+            // Usamos behavior: 'auto' para que segurar a tecla seja rápido e fluido como em programas nativos
             if (k === 'ArrowUp' || key === 'ArrowUp') {
-                event.preventDefault();
-                scrollContainer.scrollBy({top: -scrollAmount, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollBy({top: -(rowHeight * 2), left: 0, behavior: 'auto'});
             } else if (k === 'ArrowDown' || key === 'ArrowDown') {
-                event.preventDefault();
-                scrollContainer.scrollBy({top: scrollAmount, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollBy({top: (rowHeight * 2), left: 0, behavior: 'auto'});
             } else if (key === 'PageUp') {
-                event.preventDefault();
-                scrollContainer.scrollBy({top: -scrollContainer.clientHeight, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollBy({top: -(rowHeight * 5), left: 0, behavior: 'auto'});
             } else if (key === 'PageDown') {
-                event.preventDefault();
-                scrollContainer.scrollBy({top: scrollContainer.clientHeight, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollBy({top: (rowHeight * 5), left: 0, behavior: 'auto'});
             } else if (key === 'Home') {
-                event.preventDefault();
-                scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollTo({top: 0, left: 0, behavior: 'auto'});
             } else if (key === 'End') {
-                event.preventDefault();
-                scrollContainer.scrollTo({top: scrollContainer.scrollHeight, left: 0, behavior: 'smooth'});
-                return;
+                scrollContainer.scrollTo({top: scrollContainer.scrollHeight, left: 0, behavior: 'auto'});
             }
+            return;
         }
     }
 
