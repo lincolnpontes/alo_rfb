@@ -1124,29 +1124,30 @@ document.addEventListener('keydown',function(event){
     let key=event.key;
     let a=db.configs.atalhos;
     
-    /* Regra de Rolagem das Tarefas - Dinâmica e Responsiva */
+    /* Regra de Rolagem das Tarefas - Dinâmica e Sem Engasgo */
     if ((k === 'ArrowUp' || key === 'ArrowUp' || k === 'ArrowDown' || key === 'ArrowDown' || key === 'PageUp' || key === 'PageDown' || key === 'Home' || key === 'End') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
         let scrollContainer = document.querySelector('.table-scroll-container');
         if (scrollContainer) {
             event.preventDefault();
             
-            // Pega a altura exata de uma linha na tela atual (aprox. 45px)
+            // Quebra a animação "smooth" do CSS temporariamente para não ter lag ao segurar a tecla
+            scrollContainer.style.scrollBehavior = 'auto';
+            
             let rowElement = document.querySelector('.tarefa-row');
             let rowHeight = rowElement ? rowElement.offsetHeight : 45; 
             
-            // Usamos behavior: 'auto' para que segurar a tecla seja rápido e fluido como em programas nativos
             if (k === 'ArrowUp' || key === 'ArrowUp') {
-                scrollContainer.scrollBy({top: -(rowHeight * 2), left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop -= (rowHeight * 2); // Sobe 2 linhas exatas
             } else if (k === 'ArrowDown' || key === 'ArrowDown') {
-                scrollContainer.scrollBy({top: (rowHeight * 2), left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop += (rowHeight * 2); // Desce 2 linhas exatas
             } else if (key === 'PageUp') {
-                scrollContainer.scrollBy({top: -(rowHeight * 5), left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop -= scrollContainer.clientHeight; // Lógica original: pula uma tela visual inteira
             } else if (key === 'PageDown') {
-                scrollContainer.scrollBy({top: (rowHeight * 5), left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop += scrollContainer.clientHeight; // Lógica original: pula uma tela visual inteira
             } else if (key === 'Home') {
-                scrollContainer.scrollTo({top: 0, left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop = 0; // Topo
             } else if (key === 'End') {
-                scrollContainer.scrollTo({top: scrollContainer.scrollHeight, left: 0, behavior: 'auto'});
+                scrollContainer.scrollTop = scrollContainer.scrollHeight; // Fim
             }
             return;
         }
@@ -1169,7 +1170,7 @@ document.addEventListener('keydown',function(event){
         event.preventDefault();ajustarVolumeTimer(Math.max(0,(volumeSalvoTimer*100)-2));
     }
 });
-
+    
 let atalhosTemp={};function abrirConfigAtalhos(){fecharModal('modalConfigGerais');atalhosTemp=JSON.parse(JSON.stringify(db.configs.atalhos));atualizarInputsAtalhos();abrirModal('modalAtalhos');}
 function atualizarInputsAtalhos(){
     let kp=document.getElementById('keyPlay'),kr=document.getElementById('keyReset'),km=document.getElementById('keyMute'),kvu=document.getElementById('keyVolUp'),kvd=document.getElementById('keyVolDown'),kf=document.getElementById('keyFocus');
