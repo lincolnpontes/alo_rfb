@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon.png" type="image/png">
-    <title>Alô RFB v1.0.5</title>
+    <title>Alô RFB v1</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.0.2/dist/chartjs-chart-treemap.min.js"></script>
@@ -63,9 +63,9 @@
             background-color: #5c3a21; 
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png');
             background-attachment: fixed;
-            background-size: 110vw 110vh; /* Escondendo as bordas irregulares fora da tela */
+            background-size: 96vw 96vh; 
             background-repeat: no-repeat; 
-            background-position: center center;
+            background-position: center;
         }
         body[data-theme="medieval"] #sticky-header,
         body[data-theme="medieval"] .crono-container,
@@ -80,8 +80,8 @@
             background-color: transparent !important;
             background-image: url('https://raw.githubusercontent.com/lincolnpontes/alo_rfb/refs/heads/main/pergaminho.png') !important;
             background-attachment: fixed !important;
-            background-size: 110vw 110vh !important;
-            background-position: center center !important;
+            background-size: 96vw 96vh !important;
+            background-position: center !important;
             border-bottom: 2px solid #8b5a2b !important;
             z-index: 20 !important;
         }
@@ -101,7 +101,7 @@
         }
         body[data-theme="medieval"] #frase-motivacional-container {
             background-color: transparent !important;
-            border-top: none !important; /* Retirado o tracejado */
+            border-top: none !important;
         }
         body[data-theme="medieval"] .modal { 
             box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 50px rgba(139, 90, 43, 0.3); 
@@ -166,7 +166,7 @@
         .btn-add-trilha-header { background: var(--primaria); color: white; border: none; font-weight: bold; font-size: 15px; padding: 10px 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); flex:none; white-space: nowrap;}
         body[data-theme="escuro"] .btn-add-trilha-header { color: #111; }
         
-        /* Botões de Tarefa - Ajuste de Cor e 75% Opacidade */
+        /* Botões de Tarefa */
         .btn-nova-tarefa { background: var(--primaria); color: white; opacity: 0.75; border: none; padding: 10px 15px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); flex: none; white-space: nowrap; transition: 0.2s; }
         .btn-nova-tarefa:hover { opacity: 1; }
         body[data-theme="escuro"] .btn-nova-tarefa { color: #111; }
@@ -224,13 +224,14 @@
         .crono-btn-icon:active { transform: scale(0.9); }
         .crono-play, .crono-stop { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;}
         
-        /* Botões Estilizados Play/Stop */
-        .ctrl-icon { font-size: 46px; color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
-        .stop-icon { font-size: 90px; position: relative; top: -10px; }
+        /* Botões Estilizados Play/Stop balanceados perfeitamente */
+        .ctrl-icon { color: var(--primaria); line-height: 1; display: inline-block; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.3)); transition: 0.2s; }
+        .play-icon { font-size: 76px; position: relative; top: 0px; }
+        .stop-icon { font-size: 82px; position: relative; top: -6px; }
         
         body.focus-mode .ctrl-icon { color: #ffffff !important; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;}
-        body.focus-mode .play-icon { font-size: clamp(60px, 10vh, 80px) !important; }
-        body.focus-mode .stop-icon { font-size: clamp(110px, 18vh, 150px) !important; top: -15px; }
+        body.focus-mode .play-icon { font-size: clamp(90px, 14vh, 120px) !important; top: 0px; }
+        body.focus-mode .stop-icon { font-size: clamp(100px, 15.5vh, 130px) !important; top: -8px; }
 
         .crono-music { font-size: 26px; color: var(--text-color); position: relative; background: transparent; padding: 6px; box-shadow: none; cursor: pointer; transition: 0.2s;}
         .crono-music:hover { transform: scale(1.15); }
@@ -330,8 +331,8 @@
         body.focus-mode .app-container { background: transparent !important; box-shadow: none; justify-content: center; align-items: center; }
         body.focus-mode #sticky-header { border: none; background: transparent !important; box-shadow: none; width: 100%; display: flex; justify-content: center; align-items: center;}
         
-        body.focus-mode .crono-container { border: none; box-shadow: none; background: transparent; padding: 1vh 20px; display: flex; flex-direction: column; gap: 2vh; align-items: center; justify-content: center; width: 100%; max-width: 800px; margin-top: 0;}
-        body.focus-mode .crono-layout { flex-direction: column; gap: 2vh; align-items: center; width: 100%; }
+        body.focus-mode .crono-container { border: none; box-shadow: none; background: transparent; padding: 1vh 20px; display: flex; flex-direction: column; gap: 4vh; align-items: center; justify-content: center; width: 100%; max-width: 800px; margin-top: 0;}
+        body.focus-mode .crono-layout { flex-direction: column; gap: 4vh; align-items: center; width: 100%; }
         body.focus-mode .crono-modos-vert { flex-direction: row; justify-content: center; gap: 15px; flex-wrap: wrap;}
         body.focus-mode .vol-vert-container { flex-direction: row; justify-content: center; gap: 20px; margin-top: 5px;}
         body.focus-mode input[type=range][orient=vertical] { appearance: auto; -webkit-appearance: auto; width: 100px; height: 8px; }
@@ -360,7 +361,7 @@
         body.focus-mode .crono-controls { margin-top: 1vh; gap: 5vw; }
         body.focus-mode .crono-btn-icon { color: #fff; font-size: 32px; outline: none !important; box-shadow: none !important; border: none !important; background: transparent !important; filter: none !important; -webkit-tap-highlight-color: transparent !important;}
         body.focus-mode .crono-btn-icon:hover, body.focus-mode .crono-btn-icon:focus, body.focus-mode .crono-btn-icon:active { background: transparent !important; outline: none !important; box-shadow: none !important; border: none !important; }
-        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 70px; height: 70px;}
+        body.focus-mode .crono-play, body.focus-mode .crono-stop { width: 80px; height: 80px;}
         
         body.focus-mode .meta-container { width: 150%; max-width: 600px; margin-top: 15px;}
         body.focus-mode .meta-text { color: #ffffff !important; font-size: 16px;}
@@ -397,7 +398,7 @@
 <div id="splash-screen">
     <img src="icon.png" alt="Logo" style="width: 210px; height: auto; margin-bottom: 15px; filter: drop-shadow(0px 5px 15px rgba(0,0,0,0.3));">
     <div class="splash-title">Alô RFB</div>
-    <div class="splash-version">v1.0.5</div>
+    <div class="splash-version">v1</div>
     <button onclick="hardReloadApp()" style="margin-top: 20px; padding: 10px 20px; font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.05); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 20px; cursor: pointer;">🔄 Forçar Atualização</button>
 </div>
 
@@ -492,7 +493,7 @@
 
 <div class="modal-overlay" id="modalPainelUnificado">
     <div class="modal">
-        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1.0.5</div>
+        <div style="text-align: center; color: var(--text-modal); font-size: 13px; font-weight: bold; margin-bottom: 15px;">Alô RFB - v1</div>
         <button class="btn-outline" onclick="abrirConfigGeraisModal()"><span class="emoji-icon">📱</span> <span class="texto-btn">Configurações do App</span></button>
         <hr style="border: 0; border-top: 1px solid var(--border-input); margin: 20px 0;">
         
@@ -1116,16 +1117,18 @@ function atualizarBarraMeta(){
 
 const dictTeclas={'Space':'Espaço','Delete':'Deletar','Period':'Ponto(.)','Equal':'Igual(=)','Minus':'Menos(-)','Escape':'Esc','NumpadAdd':'Num +','NumpadSubtract':'Num -','Enter':'Enter','NumpadEnter':'Enter Num'};
 function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr){if(!arr||arr.length===0)return "Nenhum";return arr.map(t=>trTecla(t)).join(' ou ');}
+
 document.addEventListener('keydown',function(event){
     if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;
     let k=event.code;
     let key=event.key;
     let a=db.configs.atalhos;
     
+    /* Regra de Rolagem das Tarefas */
     if ((k === 'ArrowUp' || key === 'ArrowUp' || k === 'ArrowDown' || key === 'ArrowDown' || key === 'PageUp' || key === 'PageDown' || key === 'Home' || key === 'End') && !document.body.classList.contains('modal-open') && !document.body.classList.contains('focus-mode')) {
         let scrollContainer = document.querySelector('.table-scroll-container');
         if (scrollContainer) {
-            let scrollAmount = 300; 
+            let scrollAmount = 120; 
             if (k === 'ArrowUp' || key === 'ArrowUp') {
                 event.preventDefault();
                 scrollContainer.scrollBy({top: -scrollAmount, left: 0, behavior: 'smooth'});
@@ -1273,7 +1276,7 @@ function renderizarCabecalhoTrilhas(){
             }
         }
     }
-    let selHtml=`<select class="sel-trilha-header" style="border-color: ${colorPrazo}; border-width: 2px;" onchange="mudarTrilhaAtiva(this.value)">`;
+    let selHtml=`<select class="sel-trilha-header" style="border-color: var(--primaria); border-width: 2px;" onchange="mudarTrilhaAtiva(this.value)">`;
     trilhasDeste.forEach(t=>{selHtml+=`<option value="${t.nome}" ${t.nome===trilhaAtivaNome?'selected':''}>${t.nome}</option>`;});
     selHtml+=`</select>`;
     let clickAttr = (objConc.link || objConc.linkTrilha) ? `onclick="clicarConcursoBadge('${concNome}')"` : '';
