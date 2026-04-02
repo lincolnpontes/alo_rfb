@@ -1317,7 +1317,7 @@ function renderizarListaTarefas(){
     let filtradas=db.tarefas.filter(t=>t.concurso===conc&&t.trilha===trilhaAtivaNome);
     if(filtradas.length===0){l.innerHTML=`<div style="text-align:center; padding: 20px; color: var(--text-color);">Nenhuma tarefa cadastrada.</div>`;return;}
     filtradas.sort((a,b)=>{let numA=parseInt(a.titulo.match(/\d+/)?a.titulo.match(/\d+/)[0]:0),numB=parseInt(b.titulo.match(/\d+/)?b.titulo.match(/\d+/)[0]:0);if(a.isExtra&&!b.isExtra) return 1; if(!a.isExtra&&b.isExtra) return -1; return numA-numB;});
-    let html=`<div class="table-wrapper"><div class="table-scroll-container"><div class="tarefas-grid"><div class="tarefa-row tarefa-header"><div class="tarefa-col"></div><div class="tarefa-col">#</div><div class="tarefa-col">Disciplina</div><div class="tarefa-col">Atividade</div><div class="tarefa-col">Aula</div><div class="tarefa-col">Título da Tarefa</div><div class="tarefa-col center">Tempo</div><div class="tarefa-col center">Desempenho</div></div>`;
+    let html=`<div class="table-wrapper"><div class="table-scroll-container"><div class="tarefas-grid"><div class="tarefa-row tarefa-header"><div class="tarefa-col"></div><div class="tarefa-col">#</div><div class="tarefa-col">Disciplina</div><div class="tarefa-col">Atividade</div><div class="tarefa-col">Aula</div><div class="tarefa-col">Título da Tarefa</div><div class="tarefa-col center">Tempo</div><div class="tarefa-col center">Acertos</div></div>`;
     filtradas.forEach(t=>{
         const isConcluida=t.concluida===true,isPulada=t.pulada===true;
         let dotClass=isPulada?"dot-pulada":(isConcluida?"dot-concluida":""),rowClass=isPulada?"row-pulada":(isConcluida?"row-concluida":"");
