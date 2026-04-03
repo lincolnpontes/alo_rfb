@@ -1650,7 +1650,10 @@ function salvarTarefa(isPulo=false){
     salvarModificacaoBasica();fecharModal('modalFormTarefa');renderizarListaTarefas();renderizarDashboardTrilha();
 }
 
-function copiarPromptImportacao(){const promptText=`Cada tarefa deve estar em uma linha. Se alguma informação faltar na imagem (ex: sem número de aula), deixe o campo correspondente vazio, mas mantenha o ponto e vírgula e coloque os dados no seguinte formato: \nTarefa; Disciplina; Aula; Título da Tarefa; Atividade \nOnde:\n- Tarefa é o número da tarefa [formato ##]. (NOTA: Se for uma Tarefa Extra, escreva a palavra "Extra" nesta coluna no lugar do número).\n- Disciplina é a própria disciplina; [em Title Case para palavras importantes]\n- Aula está dentro do Título da Tarefa e pode ser mais de uma Aula. Digitar apenas "Aula 00" ou "Aula 01" ou "Aula 01, Aula 02"; [em Title Case para palavras importantes]\n- Título da Tarefa é o próprio Título da Tarefa completo [atenção: caso tenha ; (ponto e vírgula) no título, substitua por . (ponto) e bote a letra da proxima palavra em maiúsculo;\n- Atividade pode ser 1 ou mais juntas: Teoria [também chamado de Estudo ou Estudo/Revisão], Revisão [quando tiver sozinho o nome revisão], Questões [sempre quando tiver questões no meio, bote essa também]. Pode ser: Teoria; Revisão; Questões; Mapeamento; Teste; Teoria, Questões; Revisão, Questões. [em Title Case para palavras importantes]\nRetorne APENAS o texto processado, pronto para ser copiado e colado.`;navigator.clipboard.writeText(promptText).then(()=>mostrarToast("📋 Prompt copiado com sucesso!")).catch(()=>alert("Erro ao copiar."));}
+function copiarPromptImportacao(){
+    const promptText=`Cada tarefa deve estar em uma linha. Se alguma informação faltar na imagem (ex: sem número de aula), deixe o campo vazio, mantendo o ponto e vírgula. Formato: \nTarefa; Disciplina; Aula; Título da Tarefa; Atividade \n\nOnde:\n- Tarefa é o número [ex: 01]. (🚨 NOTA: Se for uma Tarefa Extra, escreva APENAS a palavra "Extra" nesta coluna e deixe as colunas de Disciplina e Aula completamente VAZIAS).\n- Disciplina é a própria disciplina;\n- Aula é a aula (ex: "Aula 00");\n- Título da Tarefa é o próprio título completo (troque ; por . se houver);\n- Atividade pode ser: Teoria; Revisão; Questões; Mapeamento; Teste; etc.\nRetorne APENAS o texto processado, pronto para ser colado.`;
+    navigator.clipboard.writeText(promptText).then(()=>mostrarToast("📋 Prompt copiado com sucesso!")).catch(()=>alert("Erro ao copiar."));
+}
 function abrirModalImportacao(){let conc=getConcursoAtivoNome();if(!conc)return alert("Sem concurso ativo!");if(!trilhaAtivaNome){criarTrilhaAutoModal(); return;}let ti=document.getElementById('textoImportacao'),pi=document.getElementById('previewImportacao'),bsi=document.getElementById('btnSalvarImportacao');if(ti)ti.value="";if(pi)pi.style.display='none';if(bsi)bsi.style.display='none';abrirModal('modalImportacaoEmLote');}
 function cancelarImportacao(){fecharModal('modalImportacaoEmLote');if(contextoRetornoImportacao === 'tarefa'){let tn=document.getElementById('tarNumero'),tio=document.getElementById('tarefaIdOriginal');let numSug = tn?tn.value||1:1;let idOrig = tio?tio.value:null;abrirFormTarefa(idOrig?parseInt(idOrig):-1, numSug);}else{let conc=getConcursoAtivoNome();if(conc&&trilhaAtivaNome){let tr=db.trilhas.find(t=>t.nome===trilhaAtivaNome&&t.concurso===conc);if(tr)abrirEdicaoTrilha(tr.id);}}}
 function irParaGerenciarDeImportacao(tipo){fecharModal('modalImportacaoEmLote');if(tipo==='disciplinas'){contextoRetornoListagem='importacao';abrirGerenciar('disciplinas',getConcursoAtivoNome());}else{contextoRetornoTipos='importacao';abrirGerenciarTiposAtividade();}}
@@ -1672,44 +1675,41 @@ function processarTextoImportacao(){
         let ativ=cols[4]?cols[4].trim():"";
         let classNum="",classDisc="",classAula="",classAtiv="";
         
-        // MÁGICA 1: Detecta se é Extra (seja por ter "Extra" na numeração, na disciplina ou já ter a estrela)
+        // MÁGICA: Verifica se é Extra (pelo número ou disciplina)
         let isExtra = (num.toLowerCase() === 'extra' || disc.toLowerCase() === 'extra' || num === '⭐');
         
         if (isExtra) {
-            num = '⭐'; // Troca a visualização para estrela na tabela de preview
-            if (!disc || disc.toLowerCase() === 'extra') disc = 'Extra'; // Garante que a disciplina seja "Extra"
+            num = '⭐'; // Bota a estrelinha
+            disc = '';  // Força disciplina a ficar vazia
+            aula = '';  // Força aula a ficar vazia
         } else {
-            // Validação de número (Apenas se NÃO for Extra)
+            // Se NÃO for extra, faz as validações normais de número e disciplina
             let nInt=num?parseInt(num.replace(/\D/g,''),10):NaN;
             if(isNaN(nInt)||numsExistentes.includes(nInt)||numsPuxados.includes(nInt)){classNum="error-import";}else{numsPuxados.push(nInt);}
+            
+            let objDisc=db.disciplinas.find(d=>d.concurso===conc&&d.nome.toLowerCase()===disc.toLowerCase());
+            if(disc && !objDisc) classDisc="error-import";
+            
+            if(aula && objDisc){
+                let aInit=objDisc.aulaInicio!==undefined?objDisc.aulaInicio:1;
+                let aMax=aInit+(objDisc.aulas||0)-1;
+                let nums=aula.match(/\d+/g);
+                if(nums){nums.forEach(n=>{let val=parseInt(n,10);if(val<aInit||val>aMax)classAula="error-import";});}
+                else classAula="error-import";
+            }else if(aula && !objDisc){
+                classAula="error-import";
+            }
         }
-
-        // Validação da Disciplina (Ignora erro se for "Extra")
-        let objDisc=db.disciplinas.find(d=>d.concurso===conc&&d.nome.toLowerCase()===disc.toLowerCase());
-        if(disc && !objDisc && disc.toLowerCase() !== 'extra') classDisc="error-import";
         
-        // Validação da Atividade
         if(ativ){
             let ativs=ativ.split(',').map(a=>a.trim());
             ativs.forEach(a=>{if(!db.configs.tiposAtividade.find(x=>x.nome.toLowerCase()===a.toLowerCase()))classAtiv="error-import";});
         }
         
-        // Validação de Aula (só exige validar se NÃO for Extra)
-        if(!isExtra && aula && objDisc){
-            let aInit=objDisc.aulaInicio!==undefined?objDisc.aulaInicio:1;
-            let aMax=aInit+(objDisc.aulas||0)-1;
-            let nums=aula.match(/\d+/g);
-            if(nums){nums.forEach(n=>{let val=parseInt(n,10);if(val<aInit||val>aMax)classAula="error-import";});}
-            else classAula="error-import";
-        }else if(!isExtra && aula && !objDisc){
-            classAula="error-import";
-        }
-        
-        // MÁGICA 2: Injetamos um 'data-extra' no HTML para o salvamento saber o que é
         html+=`<div class="import-row" data-extra="${isExtra}" style="display:grid; grid-template-columns: 60px 1.5fr 1fr 2fr 1.5fr; gap:5px; margin-bottom:5px; padding-bottom:5px; border-bottom:1px solid var(--border-input);">
             <input type="text" class="imp-num ${classNum}" value="${num}" placeholder="Nº" style="width:100%; padding:4px; font-size:12px; text-align:center;" oninput="this.classList.remove('error-import'); checarErrosImportacao();" ${isExtra ? 'readonly' : ''}>
-            <input type="text" class="imp-disc ${classDisc}" value="${disc}" placeholder="Disciplina" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();">
-            <input type="text" class="imp-aula ${classAula}" value="${aula}" placeholder="Aula" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();">
+            <input type="text" class="imp-disc ${classDisc}" value="${disc}" placeholder="Disciplina" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();" ${isExtra ? 'readonly' : ''}>
+            <input type="text" class="imp-aula ${classAula}" value="${aula}" placeholder="Aula" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();" ${isExtra ? 'readonly' : ''}>
             <input type="text" class="imp-tit" value="${tit}" placeholder="Título da Tarefa" style="width:100%; padding:4px; font-size:12px;">
             <input type="text" class="imp-ativ ${classAtiv}" value="${ativ}" placeholder="Atividade" style="width:100%; padding:4px; font-size:12px;" oninput="this.classList.remove('error-import'); checarErrosImportacao();">
         </div>`;
@@ -1726,7 +1726,7 @@ function salvarTarefasImportadas(){
     let timestampBase=Date.now();
     
     rows.forEach((row,index)=>{
-        let isExtra = row.getAttribute('data-extra') === 'true';
+        let isExtra = row.getAttribute('data-extra') === 'true'; // Lê a flag
         let numStr=row.querySelector('.imp-num').value.trim();
         let disc=row.querySelector('.imp-disc').value.trim();
         let aula=row.querySelector('.imp-aula').value.trim();
@@ -1734,8 +1734,6 @@ function salvarTarefasImportadas(){
         let ativ=row.querySelector('.imp-ativ').value.trim();
         
         let titFull = "";
-        
-        // MÁGICA 3: Montagem do Título dependendo se é Extra ou Normal
         if (isExtra) {
             titFull = titCustom !== "" ? titCustom : "Tarefa Extra";
         } else {
@@ -1750,15 +1748,15 @@ function salvarTarefasImportadas(){
             titulo: titFull,
             concurso: conc,
             trilha: trilhaAtivaNome,
-            disciplina: disc,
-            aulas: aula,
+            disciplina: disc,  // Se for extra, já vai entrar limpo
+            aulas: aula,       // Se for extra, já vai entrar limpo
             tipoAtividade: ativ,
             concluida: false,
             pulada: false,
             questoes: 0,
             acertos: 0,
             obs: "",
-            isExtra: isExtra // Salvando a tag no banco!
+            isExtra: isExtra   // Ativa a estrela oficialmente
         });
     });
     
@@ -1767,8 +1765,7 @@ function salvarTarefasImportadas(){
     renderizarListaTarefas();
     renderizarDashboardTrilha();
     mostrarToast("Tarefas importadas com sucesso!");
-}
-    
+}    
 function abrirSelecionadorDeTarefaParaRegistro(){
     let l=document.getElementById('listaTarefasParaRegistro');if(!l)return;l.innerHTML='';
     let btnZerar=`<button onclick="fecharModalEPararAlarme('modalSelecionarTarefaRegistro'); zeroTimerConfirm();" style="width:100%; padding: 12px; margin-top:10px; border-radius:8px; background:#ffebee; color:#c62828; font-weight:bold; border:1px solid #ffcdd2;">🗑️ ZERAR E DESCARTAR TEMPO</button>`;
