@@ -1026,7 +1026,8 @@ function startPauseTimer(){
         clearInterval(intervalTimer);
         playerAudio.pause();
         if(btnPlay){btnPlay.innerHTML='<span class="ctrl-icon play-icon">&#9654;</span>';btnPlay.classList.remove('is-paused');}
-        if((tempoTimer>0 || tempoAcumulado>0) && db.configs.tocarRestart && audioRestart.paused){
+        let tempoVisivelAtual=modoTimer==='progressive'?(tempoTimer+tempoAcumulado):Math.max(0,targetTimer-tempoTimer);
+        if(tempoVisivelAtual>0 && db.configs.tocarRestart && audioRestart.paused){
             audioRestart.currentTime=0;
             audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;
             audioRestart.play().catch(()=>{});
@@ -1122,6 +1123,7 @@ function trTecla(t){return dictTeclas[t]||t;}function renderizarTextoAtalho(arr)
 
 document.addEventListener('keydown',function(event){
     if(event.target.tagName==='INPUT'||event.target.tagName==='SELECT'||event.target.tagName==='TEXTAREA')return;
+    if(document.body.classList.contains('modal-open'))return;
     let k=event.code;
     let key=event.key;
     let a=db.configs.atalhos;
@@ -2104,9 +2106,10 @@ async function forcarEnvioNuvem(e){if(!db.configs.urlAppScript)return alert("Con
 async function forcarDownloadNuvem(e){if(!db.configs.urlAppScript)return alert("Configure a URL!");if(!confirm("⚠️ Baixar da nuvem?"))return;const btn=e.target;let txt=btn.innerText;btn.innerText="Baixando...";btn.disabled=true;try{let r=await fetch(db.configs.urlAppScript+'?pull=1&t='+Date.now()),d=await r.json();if(d&&d.configs){let urlSalva=db.configs.urlAppScript;db=d;db.configs.urlAppScript=urlSalva;salvarBancoLocal();mostrarToast("Baixado!");setTimeout(()=>location.reload(),1000);}}catch(err){alert("Erro.");}btn.innerText=txt;btn.disabled=false;}
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').then(reg => { console.log('Service Worker registrado com sucesso!', reg); }).catch(err => { console.log('Erro ao registrar Service Worker', err); }); }); }
 
-function iniciar(){
+async function iniciar(){
     try{
         aplicarTemaCores();
+        await sincronizarComNuvemSilencioso(false);
         renderizarOperadores();
         prepararTelaLogin();
         let opAtual=localStorage.getItem('estudos_operadorAtual');
@@ -2135,7 +2138,6 @@ function iniciar(){
         }
         renderizarCabecalhoTrilhas();
         setInterval(sincronizarComNuvemSilencioso,20000);
-        sincronizarComNuvemSilencioso();
         atualizarDisplayTimer();
         exibirFraseAleatoria();
         atualizarOfensivaUI();
