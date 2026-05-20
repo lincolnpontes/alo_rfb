@@ -928,9 +928,45 @@ let modoTimer='progressive',isRunningTimer=false,intervalTimer,tempoTimer=0,targ
 let playerAudio=new Audio(),playlist=[],musicaIndex=0,isMutedTimer=false,volumeSalvoTimer=1.0,audioRestart=new Audio();audioRestart.loop=true;
 function initAudioRestart(){if(db.configs.audioLink&&db.configs.audioLink.trim()!=="")audioRestart.src=db.configs.audioLink.trim();}initAudioRestart();
 playerAudio.onended=()=>{if(playlist.length>0&&isRunningTimer){musicaIndex=(musicaIndex+1)%playlist.length;tocarMusicaTimer();}};
-function carregarMusicas(event){const files=event.target.files;if(files.length===0)return;playlist.forEach(u=>URL.revokeObjectURL(u));playlist=[];musicaIndex=0;playerAudio.pause();playerAudio.src="";for(let i=0;i<files.length;i++){playlist.push(URL.createObjectURL(files[i]));}let b=document.getElementById('btnLimparMusica');if(b)b.style.display='flex';mostrarToast(`${files.length} músicas prontas!`);if(isRunningTimer)tocarMusicaTimer();event.target.value='';}
-function limparMusica(){playlist.forEach(u=>URL.revokeObjectURL(u));playlist=[];musicaIndex=0;playerAudio.pause();playerAudio.src="";let fi=document.getElementById('file-input-musica');if(fi)fi.value='';let b=document.getElementById('btnLimparMusica');if(b)b.style.display='none';mostrarToast("Memória limpa.");}
-function tocarMusicaTimer(){if(playlist.length===0)return;playerAudio.src=playlist[musicaIndex];playerAudio.load();playerAudio.play().catch(()=>{});}
+function prepararMusicaAtual(){
+    if(playlist.length===0)return false;
+    if(musicaIndex>=playlist.length)musicaIndex=0;
+    const srcAtual=playlist[musicaIndex];
+    if(playerAudio.src!==srcAtual){
+        playerAudio.src=srcAtual;
+        playerAudio.load();
+    }
+    return true;
+}
+function carregarMusicas(event){
+    const files=event.target.files;if(files.length===0)return;
+    playlist.forEach(u=>URL.revokeObjectURL(u));
+    playlist=[];musicaIndex=0;playerAudio.pause();playerAudio.removeAttribute('src');playerAudio.load();
+    for(let i=0;i<files.length;i++){playlist.push(URL.createObjectURL(files[i]));}
+    prepararMusicaAtual();
+    let b=document.getElementById('btnLimparMusica');if(b)b.style.display='flex';
+    mostrarToast(`${files.length} músicas prontas!`);
+    if(isRunningTimer)tocarMusicaTimer();
+    event.target.value='';
+}
+function limparMusica(){
+    playlist.forEach(u=>URL.revokeObjectURL(u));playlist=[];musicaIndex=0;
+    playerAudio.pause();playerAudio.removeAttribute('src');playerAudio.load();
+    let fi=document.getElementById('file-input-musica');if(fi)fi.value='';
+    let b=document.getElementById('btnLimparMusica');if(b)b.style.display='none';
+    mostrarToast("Memória limpa.");
+}
+function tocarMusicaTimer(){
+    if(!prepararMusicaAtual())return;
+    playerAudio.volume=isMutedTimer?0:volumeSalvoTimer;
+    const p=playerAudio.play();
+    if(p&&typeof p.catch==='function'){
+        p.catch(()=>{
+            playerAudio.addEventListener('canplay',()=>playerAudio.play().catch(()=>{}),{once:true});
+            playerAudio.load();
+        });
+    }
+}
 function ajustarVolumeTimer(val){let v=val/100;volumeSalvoTimer=v;if(isMutedTimer&&v>0)toggleMuteTimer();playerAudio.volume=isMutedTimer?0:v;audioRestart.volume=isMutedTimer?0:v;let vs=document.getElementById('volume-slider-timer');if(vs)vs.value=val;}
 function toggleMuteTimer(){isMutedTimer=!isMutedTimer;playerAudio.volume=isMutedTimer?0:volumeSalvoTimer;audioRestart.volume=isMutedTimer?0:volumeSalvoTimer;let b=document.getElementById('btn-mute-timer');if(b)b.innerText=isMutedTimer?'🔇':'🔊';let vs=document.getElementById('volume-slider-timer');if(vs)vs.value=isMutedTimer?0:volumeSalvoTimer*100;}
 function exibirFraseAleatoria() {
@@ -2073,8 +2109,36 @@ function toggleDetailsRow(idClean,discNome){
 }
 
 function abrirHabilidades(){let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");let so=document.getElementById('seletorOperador');let opAtual=so?so.value:"",histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc&&t.concluida&&!t.pulada&&!t.isExtra),discs=db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)),html='';discs.forEach((d,index)=>{let dNome=d.nome,totalAulas=d.aulas||0,aulasSet=new Set();tarefasOp.filter(t=>t.disciplina===dNome).forEach(t=>{if(t.aulas){t.aulas.split(',').forEach(a=>{let aClean=a.trim();if(aClean)aulasSet.add(aClean);});}});let unqAulas=aulasSet.size,pctAulas=totalAulas>0?Math.min(80,(unqAulas/totalAulas)*80):0,acertos=0,questoes=0;histOp.filter(h=>h.disciplina===dNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});let pctDesemp=questoes>0?(acertos/questoes)*20:0,bonus=Math.floor(acertos/1000),totalRaw=pctAulas+pctDesemp+bonus,totalPct=Math.min(100,Math.max(0,totalRaw)),displayPct=totalPct.toFixed(1).replace('.0','')+'%',nivel="Neófito",corBg="#eeeeee",corTxt="#333333";if(totalPct<40){nivel="Neófito";corBg="#eeeeee";corTxt="#555555";}else if(totalPct<50){nivel="Noviço";corBg="#fff9c4";corTxt="#f57f17";}else if(totalPct<60){nivel="Aprendiz";corBg="#dcedc8";corTxt="#33691e";}else if(totalPct<70){nivel="Amador";corBg="#b3e5fc";corTxt="#01579b";}else if(totalPct<80){nivel="Profissional";corBg="#c5cae9";corTxt="#1a237e";}else if(totalPct<90){nivel="Perito";corBg="#ffe0b2";corTxt="#e65100";}else if(totalPct<100){nivel="Mestre";corBg="#ffccbc";corTxt="#bf360c";}else{nivel="Gr. Mestre";corBg="#ffd54f";corTxt="#b45f06";}html+=`<div class="hab-row"><div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div><div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div><div class="hab-bar-bg"><div class="hab-bar-fill" style="width: ${totalPct}%;"></div><div class="hab-bar-text">${displayPct}</div></div></div>`;});if(html==='')html='<div style="padding: 20px; text-align: center; color: var(--text-modal);">Nenhuma disciplina.</div>';let lh=document.getElementById('listaHabilidades');if(lh)lh.innerHTML=html;abrirModal('modalHabilidades');}
-async function pushParaNuvemSilencioso(){if(!navigator.onLine||!db.configs.urlAppScript)return;try{await fetch(db.configs.urlAppScript,{method:'POST',body:JSON.stringify({action:'salvar_banco_completo',dados:db})});}catch(e){}}
-function salvarModificacaoBasica(){db.configs.ultimaModificacaoLocal=Date.now();salvarBancoLocal();pushParaNuvemSilencioso();}
+function formatarMarcaSync(ts){if(!ts)return "sem marca";let d=new Date(ts);return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;}
+function atualizarIndicadorSync(emoji,msg,ts){const i=document.getElementById('indicadorConexao');if(!i)return;i.style.display='flex';i.innerText=emoji;i.title=`${msg} • ${formatarMarcaSync(ts)}`;}
+async function baixarBancoNuvem(){
+    if(!navigator.onLine||!db.configs.urlAppScript)return null;
+    let r=await fetch(db.configs.urlAppScript+'?pull=1&t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache','Pragma':'no-cache'}});
+    let txt=await r.text();if(!txt||txt.trim()==="{}")return null;
+    let remoto=JSON.parse(txt);return remoto&&remoto.configs?remoto:null;
+}
+async function pushParaNuvemSilencioso(){
+    if(!navigator.onLine||!db.configs.urlAppScript)return;
+    try{await fetch(db.configs.urlAppScript,{method:'POST',cache:'no-store',body:JSON.stringify({action:'salvar_banco_completo',dados:db})});atualizarIndicadorSync('🟢','Nuvem atualizada',db.configs.ultimaModificacaoLocal);}catch(e){atualizarIndicadorSync('🔴','Falha ao enviar',db.configs.ultimaModificacaoLocal);}
+}
+function salvarModificacaoBasica(){
+    let agora=Date.now();db.configs.ultimaModificacaoLocal=agora;db.configs.ultimaModificacaoISO=new Date(agora).toISOString();
+    salvarBancoLocal();pushParaNuvemSilencioso();
+}
+async function sincronizarComNuvemSilencioso(atualizarUI=true){
+    const i=document.getElementById('indicadorConexao');
+    if(!navigator.onLine){if(i){i.style.display='flex';i.innerText='🔴';i.title='Sem internet: usando dados locais';}return;}
+    if(!db.configs.urlAppScript){if(i)i.style.display='none';return;}
+    if(isSyncing)return;isSyncing=true;if(i){i.style.display='flex';i.innerText='🔄';}
+    try{
+        let remoto=await baixarBancoNuvem(),tsLocal=Number(db.configs.ultimaModificacaoLocal||0),tsNuvem=remoto?Number(remoto.configs.ultimaModificacaoLocal||0):0;
+        if(remoto&&tsNuvem>=tsLocal){let url=db.configs.urlAppScript;db=remoto;db.configs.urlAppScript=url;salvarBancoLocal();atualizarIndicadorSync('🟢','Nuvem mais recente',tsNuvem);}
+        else if(remoto&&tsLocal>tsNuvem){await pushParaNuvemSilencioso();atualizarIndicadorSync('🟡','Local mais recente, enviado à nuvem',tsLocal);}
+        else{await pushParaNuvemSilencioso();}
+        if(atualizarUI){aplicarTemaCores();renderizarOperadores();renderizarCabecalhoTrilhas();atualizarDisplayTimer();atualizarOfensivaUI();}
+    }catch(e){atualizarIndicadorSync('🔴','Erro ao sincronizar',db.configs.ultimaModificacaoLocal);}
+    isSyncing=false;
+}
 function renderizarOperadores(){const s=document.getElementById('seletorOperador');if(!s)return;s.innerHTML='';db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`});s.innerHTML+='<option value="sair">👋 Sair</option>';const u=localStorage.getItem('estudos_operadorAtual');if(u&&db.operadores.find(o=>o.nome===u)){s.value=u;operadorAnteriorSelect=u;}}
 function abrirZonaRisco(){fecharModal('modalPainelUnificado');let cu=document.getElementById('configUrlAppScript');if(cu)cu.value=db.configs.urlAppScript;abrirModal('modalZonaRisco');}
 async function salvarUrlESincronizar(e){let cu=document.getElementById('configUrlAppScript');if(!cu)return;const u=cu.value.trim();db.configs.urlAppScript=u;salvarBancoLocal();if(!u)return alert("URL vazia!");const b=e.target;let t=b.innerText;b.innerText="Salvando...";b.disabled=true;await sincronizarComNuvemSilencioso();b.innerText=t;b.disabled=false;mostrarToast("URL Salva!");}
