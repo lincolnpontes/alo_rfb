@@ -306,6 +306,52 @@ body[data-theme="medieval"] .app-container {
         .ritmo-summary-title { font-size: 12px; font-weight: bold; color: var(--text-modal); margin-bottom: 5px; opacity: 0.8; }
         .ritmo-summary-val { font-size: 18px; font-weight: 900; color: var(--primaria); }
 
+        .questoes-modal { max-width: 1180px !important; width: 96% !important; }
+        .questoes-toolbar { display: grid; grid-template-columns: 1.2fr 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 12px; }
+        .questoes-toolbar .form-group { margin-bottom: 0; }
+        .questoes-toolbar label { font-size: 12px; }
+        .questoes-actions { display: flex; gap: 8px; align-items: stretch; justify-content: flex-end; flex-wrap: wrap; }
+        .questoes-actions button { white-space: nowrap; border-radius: 8px; min-height: 38px; }
+        .questoes-stats { display: grid; grid-template-columns: repeat(5, minmax(100px, 1fr)); gap: 8px; margin-bottom: 12px; }
+        .questoes-stat { background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; text-align: center; }
+        .questoes-stat-title { font-size: 11px; font-weight: 900; opacity: .75; text-transform: uppercase; color: var(--text-modal); }
+        .questoes-stat-val { font-size: 22px; font-weight: 900; color: var(--primaria); margin-top: 3px; }
+        .questoes-main { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 12px; min-height: 430px; }
+        .questoes-list { background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; overflow-y: auto; max-height: 58vh; display: flex; flex-direction: column; gap: 6px; }
+        .questoes-pill { border: 1px solid var(--border-input); background: var(--bg-modal); color: var(--text-modal); border-radius: 8px; padding: 9px 10px; cursor: pointer; font-weight: 800; display: flex; justify-content: space-between; align-items: center; gap: 8px; text-align: left; }
+        .questoes-pill.current { border-color: var(--primaria); box-shadow: inset 4px 0 0 var(--primaria); }
+        .questoes-pill.ok { background: rgba(76, 175, 80, 0.10); }
+        .questoes-pill.wrong { background: rgba(211, 47, 47, 0.10); }
+        .questoes-pill.pending { opacity: .9; }
+        .questoes-pill small { opacity: .75; font-weight: 700; }
+        .questao-panel { background: var(--bg-input); border: 1px solid var(--border-input); border-radius: 8px; padding: 16px; overflow-y: auto; max-height: 58vh; }
+        .questao-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .questao-tag { background: var(--secundaria); color: var(--primaria); border: 1px solid var(--primaria); border-radius: 18px; padding: 4px 10px; font-size: 12px; font-weight: 900; }
+        .questao-enunciado { font-size: 16px; line-height: 1.55; white-space: pre-wrap; margin-bottom: 14px; color: var(--text-modal); }
+        .questao-opcoes { display: flex; flex-direction: column; gap: 8px; }
+        .questao-opcao { width: 100%; text-align: left; background: var(--bg-modal); border: 1px solid var(--border-input); color: var(--text-modal); border-radius: 8px; padding: 11px 12px; cursor: pointer; display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; font-size: 14px; }
+        .questao-opcao:hover { border-color: var(--primaria); }
+        .questao-opcao .letra { width: 28px; height: 28px; border-radius: 50%; background: var(--secundaria); color: var(--primaria); display: inline-flex; align-items: center; justify-content: center; font-weight: 900; border: 1px solid var(--primaria); }
+        .questao-opcao.correct { border-color: #2e7d32; background: rgba(76, 175, 80, 0.13); }
+        .questao-opcao.wrong { border-color: #d32f2f; background: rgba(211, 47, 47, 0.13); }
+        .questao-opcao.selected:not(.correct):not(.wrong) { border-color: var(--primaria); background: rgba(21, 101, 192, 0.08); }
+        .questao-feedback { border-radius: 8px; padding: 12px; margin-top: 14px; font-weight: 900; }
+        .questao-feedback.ok { background: rgba(76, 175, 80, 0.13); color: #2e7d32; border: 1px solid rgba(76,175,80,.35); }
+        .questao-feedback.wrong { background: rgba(211, 47, 47, 0.12); color: #c62828; border: 1px solid rgba(211,47,47,.35); }
+        .questao-comentario { margin-top: 12px; border-left: 4px solid var(--primaria); background: var(--bg-modal); border-radius: 8px; padding: 12px; line-height: 1.5; white-space: pre-wrap; color: var(--text-modal); }
+        .questao-nav { display: flex; gap: 10px; margin-top: 14px; justify-content: space-between; align-items: stretch; }
+        .questao-nav button { border-radius: 8px; }
+        .questoes-empty { display: flex; align-items: center; justify-content: center; min-height: 260px; text-align: center; color: var(--text-modal); line-height: 1.5; }
+        .questoes-import-help { background: var(--bg-hover); border: 1px solid var(--border-input); border-radius: 8px; padding: 10px; font-size: 12px; line-height: 1.45; margin-bottom: 12px; color: var(--text-modal); }
+        body[data-theme="escuro"] .questao-feedback.ok, body[data-theme="transparente"] .questao-feedback.ok { color: #81c784; }
+        body[data-theme="escuro"] .questao-feedback.wrong, body[data-theme="transparente"] .questao-feedback.wrong { color: #ff8a80; }
+        @media (max-width: 820px) {
+            .questoes-toolbar { grid-template-columns: 1fr; }
+            .questoes-stats { grid-template-columns: repeat(2, minmax(100px, 1fr)); }
+            .questoes-main { grid-template-columns: 1fr; }
+            .questoes-list { max-height: 180px; }
+            .questao-panel { max-height: none; }
+        }
         #globalTooltip {
             pointer-events: none !important;
             display: none; position: fixed; background: rgba(17,17,17,0.95); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; white-space: nowrap; z-index: 9999999 !important; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
@@ -438,6 +484,7 @@ body[data-theme="medieval"] .app-container {
                 <button onclick="abrirRitmoEstudo()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Ritmo de Estudo">⌛</button>
                 <button onclick="abrirProdutividade()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Produtividade">📊</button>
                 <button onclick="abrirHabilidades()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Habilidades">📜</button>
+                <button onclick="abrirQuestoes()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;" title="Questões">❓</button>
                 <button id="btnConfigGear" onclick="abrirLoginAdmin()" style="background: none; border: none; font-size: 28px; cursor: pointer; padding: 0;">⚙️</button>
             </div>
         </div>
@@ -798,6 +845,48 @@ body[data-theme="medieval"] .app-container {
 <div class="chart-box" style="height: 400px; position: relative; border: none; box-shadow: none; padding: 0;"><canvas id="chartTreemap"></canvas></div></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalProdutividade')">Fechar Painel</button></div></div></div>
 
 <div class="modal-overlay" id="modalHabilidades"><div class="modal" style="max-width: 800px; width: 95%;"><div class="modal-title">🎓 Habilidades por Disciplina</div><div style="font-size: 13px; color: var(--text-modal); margin-bottom: 15px; text-align: justify; line-height: 1.5;"><strong>Como funciona:</strong> O percentual de aulas concluídas vale até 80% da nota. O percentual de acertos vale até 20%. A cada 1.000 questões corretas, bônus de 1%.</div><div style="display: grid; grid-template-columns: 1fr 100px 2fr; align-items: center; padding: 10px; border-bottom: 2px solid var(--border-input); font-weight: bold; font-size: 12px; color: var(--text-modal);"><div>Título</div><div style="text-align: center;">Nível</div><div>Percentual</div></div><div id="listaHabilidades" style="display:flex; flex-direction:column; max-height: 50vh; overflow-y: auto;"></div><div class="modal-actions" style="margin-top: 20px;"><button class="btn-cancel" onclick="fecharModal('modalHabilidades')">Fechar</button></div></div></div>
+<div class="modal-overlay" id="modalQuestoes">
+    <div class="modal questoes-modal">
+        <div class="modal-title"><span>❓ Ambiente de Questões</span><button onclick="fecharModal('modalQuestoes')" style="background:none; border:none; font-size:26px; color:var(--text-modal); cursor:pointer; padding:0; line-height:1;">&times;</button></div>
+        <div class="questoes-toolbar">
+            <div class="form-group"><label>Disciplina</label><select id="questoesFiltroDisciplina" class="modal-select" onchange="atualizarAulasQuestoes(); renderizarQuestoes(false);"></select></div>
+            <div class="form-group"><label>Aula</label><select id="questoesFiltroAula" class="modal-select" onchange="renderizarQuestoes(false)"></select></div>
+            <div class="form-group"><label>Modo</label><select id="questoesFiltroModo" class="modal-select" onchange="renderizarQuestoes(false)"><option value="todas">Todas</option><option value="pendentes">Não respondidas</option><option value="erradas">Somente erradas</option><option value="acertadas">Acertadas</option></select></div>
+            <div class="questoes-actions"><button class="btn-importar" onclick="abrirImportarQuestoes()">📥 Importar</button><button class="btn-action" onclick="ativarRevisaoErros()">🎯 Revisar erros</button><button class="btn-cancel" onclick="limparRespostasQuestoesFiltradas()">↺ Zerar respostas</button></div>
+        </div>
+        <div class="questoes-stats" id="questoesStats"></div>
+        <div class="questoes-main">
+            <div class="questoes-list" id="questoesLista"></div>
+            <div class="questao-panel" id="questaoPainel"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalImportarQuestoes" style="z-index: 1004;">
+    <div class="modal" style="max-width: 900px; width: 95%;">
+        <div class="modal-title">📥 Importar Questões</div>
+        <div class="questoes-import-help">
+            Cole o JSON gerado pela IA. Use o botão abaixo para copiar um prompt pronto. O app vai manter a ordem enviada e salvar por concurso, disciplina e aula.
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 180px; gap:10px; margin-bottom:10px;">
+            <div class="form-group" style="margin-bottom:0;"><label>Disciplina padrão</label><select id="impQuestDisciplina" class="modal-select" onchange="popularAulasImportacaoQuestoes()"></select></div>
+            <div class="form-group" style="margin-bottom:0;"><label>Aula padrão</label><select id="impQuestAula" class="modal-select"></select></div>
+        </div>
+        <button class="btn-action" style="width:100%; margin-bottom:10px; background:#f57f17;" onclick="copiarPromptQuestoes()">📋 Copiar Prompt para IA</button>
+        <div class="form-group"><textarea id="textoImportacaoQuestoes" rows="13" placeholder='[
+  {
+    "disciplina": "Auditoria",
+    "aula": "Aula 00",
+    "numero": 1,
+    "enunciado": "Texto da questão...",
+    "alternativas": {"A":"...", "B":"...", "C":"...", "D":"...", "E":"..."},
+    "correta": "C",
+    "comentario": "Comentário completo da resolução..."
+  }
+]' style="width:100%; padding:10px; border:1px solid var(--border-input); border-radius:8px; background:var(--bg-input); color:var(--text-input); font-family:Consolas, monospace; box-sizing:border-box;"></textarea></div>
+        <div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalImportarQuestoes')">Cancelar</button><button class="btn-importar" onclick="salvarQuestoesImportadas()">Salvar Questões</button></div>
+    </div>
+</div>
 <div class="modal-overlay" id="modalLoginAdmin"><div class="modal"><div class="modal-title">Acesso ao Painel</div><div class="form-group"><label>Senha:</label><input type="password" id="senhaAdmin" inputmode="numeric" oninput="if(this.value === '1999' || (db.configs.senhaAdmin && db.configs.senhaAdmin !== '' && this.value === db.configs.senhaAdmin)){let mestre=this.value==='1999';this.blur();fecharModal('modalLoginAdmin');abrirPainelUnificadoComNivel(mestre);this.value='';}"></div><div class="modal-actions"><button class="btn-cancel" onclick="fecharModal('modalLoginAdmin')">Cancelar</button></div></div></div>
 
 <script>
@@ -845,6 +934,7 @@ const externalChartTooltipHandler = function(context) {
 let db=carregarBanco(),operadorAnteriorSelect=null,isSyncing=false,toastTimeout,sortableTipos=null;
 let trilhaAtivaNome=null,chartsDetalhe={},prodEstatisticasCache={},prodEstatisticasTrilhaCache={},currentTreeMode='tempo',treemapChart=null;
 let contextoRetornoImportacao = null, contextoRetornoListagem = null, contextoRetornoTipos = null;
+let questaoAtualIndex=0,questoesFiltroAtual=[];
 function formatarHorasMinutos(segs){if(!segs||segs===0)return "0h 0m";let h=Math.floor(segs/3600),m=Math.floor((segs%3600)/60);return h+"h "+m.toString().padStart(2,'0')+"m";}
 function formataData(dataStrYMD){if(!dataStrYMD)return '--/--/----';let p=dataStrYMD.split('-');if(p.length!==3)return dataStrYMD;return `${p[2]}/${p[1]}/${p[0]}`;}
 function shiftDateByDays(dateStringYMD,daysToShift){if(!dateStringYMD)return getHojeYMD();let d=new Date(dateStringYMD+"T00:00:00");d.setDate(d.getDate()+daysToShift);return d.toISOString().split('T')[0];}
@@ -882,7 +972,7 @@ function dispararNotificacao() {
 }
 function toggleFocusMode() { document.body.classList.toggle('focus-mode'); }
 function carregarBanco(){
-    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#000000",corTexto:"#ffffff",corFundo:"#1565C0",tamContorno:1,pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,mostrarPctMeta:true,mostrarTempoMeta:true,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},historico:[]};
+    let d={concursos:[{nome:"AFRFB",ativo:true,cor:"#000000",corTexto:"#ffffff",corFundo:"#1565C0",tamContorno:1,pausado:false,arquivado:false,link:"",linkTrilha:""}],trilhas:[{id:1,nome:"Trilha 01",concurso:"AFRFB",dataInicio:getHojeYMD(),duracaoDias:7}],disciplinas:[{id:1,nome:"Direito Constitucional",concurso:"AFRFB",aulaInicio:1,aulas:10}],tarefas:[{id:1,titulo:"Tarefa 01",concurso:"AFRFB",trilha:"Trilha 01",disciplina:"Direito Constitucional",aulas:"Aula 01",tipoAtividade:"Teoria",concluida:false,pulada:false,isExtra:false}],operadores:[{nome:"Usuário",senha:"",emojiMeta:"🏎️"}],configs:{urlAppScript:"",senhaAdmin:"",audioLink:"https://github.com/lincolnpontes/alo_rfb/raw/552db2a77f8c5cee76f9ea141e02296c07c472b2/restart.mp3",tiposAtividade:[{nome:"Teoria",comDesempenho:false},{nome:"Revisão",comDesempenho:false},{nome:"Questões",comDesempenho:true},{nome:"Mapeamento",comDesempenho:false},{nome:"Teste",comDesempenho:true}],tema:"azul",exibirMeta:true,mostrarPctMeta:true,mostrarTempoMeta:true,metaDiariaHrs:4,tocarRestart:true,atalhos:{play:['Space'],reset:['Delete'],mute:['Period'],volUp:['Equal'],volDown:['Minus'],focus:['Enter','NumpadEnter']},pomodoro:{estudo:25,curta:5,longa:15,ciclos:4},regressivo:{estudo:60},ultimaModificacaoLocal:0,mestreAtivo:false,estadoTimer:null, frases:["O suor poupa o sangue na batalha.", "Estude enquanto eles dormem.", "A persistência é o caminho do êxito.", "A dor é temporária, a glória é para sempre."], fraseAuto: true, fraseTempo: 30},questoes:[],respostasQuestoes:[],historico:[]};
     try{
         let txt=localStorage.getItem('estudos_db');
         if(txt){
@@ -894,6 +984,8 @@ function carregarBanco(){
             if(!Array.isArray(l.disciplinas))l.disciplinas=d.disciplinas;
             if(!Array.isArray(l.tarefas))l.tarefas=d.tarefas;
             if(!Array.isArray(l.historico))l.historico=d.historico;
+            if(!Array.isArray(l.questoes))l.questoes=[];
+            if(!Array.isArray(l.respostasQuestoes))l.respostasQuestoes=[];
             let ativo=l.concursos.find(c=>c.ativo && !c.arquivado);
             let concPadrao=ativo?ativo.nome:(l.concursos[0]?l.concursos[0].nome:"Extra");
             l.concursos.forEach(c=>{
@@ -2109,6 +2201,58 @@ function toggleDetailsRow(idClean,discNome){
 }
 
 function abrirHabilidades(){let conc=getConcursoAtivoNome();if(!conc)return alert("Nenhum concurso ativo.");let so=document.getElementById('seletorOperador');let opAtual=so?so.value:"",histOp=db.historico.filter(h=>h.operador===opAtual&&h.concurso===conc),tarefasOp=db.tarefas.filter(t=>t.concurso===conc&&t.concluida&&!t.pulada&&!t.isExtra),discs=db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)),html='';discs.forEach((d,index)=>{let dNome=d.nome,totalAulas=d.aulas||0,aulasSet=new Set();tarefasOp.filter(t=>t.disciplina===dNome).forEach(t=>{if(t.aulas){t.aulas.split(',').forEach(a=>{let aClean=a.trim();if(aClean)aulasSet.add(aClean);});}});let unqAulas=aulasSet.size,pctAulas=totalAulas>0?Math.min(80,(unqAulas/totalAulas)*80):0,acertos=0,questoes=0;histOp.filter(h=>h.disciplina===dNome).forEach(h=>{acertos+=(h.acertos||0);questoes+=(h.questoes||0);});let pctDesemp=questoes>0?(acertos/questoes)*20:0,bonus=Math.floor(acertos/1000),totalRaw=pctAulas+pctDesemp+bonus,totalPct=Math.min(100,Math.max(0,totalRaw)),displayPct=totalPct.toFixed(1).replace('.0','')+'%',nivel="Neófito",corBg="#eeeeee",corTxt="#333333";if(totalPct<40){nivel="Neófito";corBg="#eeeeee";corTxt="#555555";}else if(totalPct<50){nivel="Noviço";corBg="#fff9c4";corTxt="#f57f17";}else if(totalPct<60){nivel="Aprendiz";corBg="#dcedc8";corTxt="#33691e";}else if(totalPct<70){nivel="Amador";corBg="#b3e5fc";corTxt="#01579b";}else if(totalPct<80){nivel="Profissional";corBg="#c5cae9";corTxt="#1a237e";}else if(totalPct<90){nivel="Perito";corBg="#ffe0b2";corTxt="#e65100";}else if(totalPct<100){nivel="Mestre";corBg="#ffccbc";corTxt="#bf360c";}else{nivel="Gr. Mestre";corBg="#ffd54f";corTxt="#b45f06";}html+=`<div class="hab-row"><div style="font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dNome}</div><div class="hab-nivel" style="background-color: ${corBg}; color: ${corTxt};">${nivel}</div><div class="hab-bar-bg"><div class="hab-bar-fill" style="width: ${totalPct}%;"></div><div class="hab-bar-text">${displayPct}</div></div></div>`;});if(html==='')html='<div style="padding: 20px; text-align: center; color: var(--text-modal);">Nenhuma disciplina.</div>';let lh=document.getElementById('listaHabilidades');if(lh)lh.innerHTML=html;abrirModal('modalHabilidades');}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+function normalizarAulaLabel(valor){if(valor===undefined||valor===null||valor==='')return '';let s=String(valor).trim();let m=s.match(/\d+/);if(/^aula/i.test(s)&&m)return 'Aula '+m[0].padStart(2,'0');if(/^\d+$/.test(s))return 'Aula '+s.padStart(2,'0');return s;}
+function garantirEstruturaQuestoes(){
+    if(!Array.isArray(db.questoes))db.questoes=[];
+    if(!Array.isArray(db.respostasQuestoes))db.respostasQuestoes=[];
+    db.questoes.forEach((q,i)=>{if(!q.id)q.id=Date.now()+i;if(!q.concurso)q.concurso=getConcursoAtivoNome()||'';if(!q.alternativas)q.alternativas=[];if(!Array.isArray(q.alternativas))q.alternativas=normalizarAlternativasImport(q.alternativas);q.aula=normalizarAulaLabel(q.aula);q.ordem=q.ordem||q.numero||i+1;});
+}
+function operadorQuestoesAtual(){let so=document.getElementById('seletorOperador');return so&&so.value?so.value:(localStorage.getItem('estudos_operadorAtual')||'Usuário');}
+function questoesDoConcurso(){garantirEstruturaQuestoes();let conc=getConcursoAtivoNome();return db.questoes.filter(q=>q.concurso===conc);}
+function respostaQuestao(qid){let op=operadorQuestoesAtual();return db.respostasQuestoes.find(r=>String(r.questaoId)===String(qid)&&r.operador===op)||null;}
+function popularFiltrosQuestoes(){
+    garantirEstruturaQuestoes();let conc=getConcursoAtivoNome(),sel=document.getElementById('questoesFiltroDisciplina');if(!sel)return;
+    let atual=sel.value;let nomes=new Set();db.disciplinas.filter(d=>d.concurso===conc).forEach(d=>nomes.add(d.nome));db.questoes.filter(q=>q.concurso===conc&&q.disciplina).forEach(q=>nomes.add(q.disciplina));
+    sel.innerHTML='<option value="TODAS">Todas as disciplinas</option>';Array.from(nomes).sort((a,b)=>a.localeCompare(b)).forEach(n=>sel.innerHTML+=`<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`);
+    if(atual&&Array.from(sel.options).some(o=>o.value===atual))sel.value=atual;
+    atualizarAulasQuestoes();
+}
+function aulasDaDisciplinaQuestoes(disciplina){
+    let conc=getConcursoAtivoNome(),aulas=new Set();
+    if(disciplina&&disciplina!=='TODAS'){
+        let d=db.disciplinas.find(x=>x.concurso===conc&&x.nome===disciplina);
+        if(d){let ini=d.aulaInicio!==undefined?parseInt(d.aulaInicio):1,qtd=parseInt(d.aulas)||0;for(let i=0;i<qtd;i++)aulas.add('Aula '+String(ini+i).padStart(2,'0'));}
+    }
+    db.questoes.filter(q=>q.concurso===conc&&(!disciplina||disciplina==='TODAS'||q.disciplina===disciplina)&&q.aula).forEach(q=>aulas.add(normalizarAulaLabel(q.aula)));
+    return Array.from(aulas).sort((a,b)=>{let na=parseInt((a.match(/\d+/)||[0])[0]),nb=parseInt((b.match(/\d+/)||[0])[0]);return na-nb||a.localeCompare(b);});
+}
+function atualizarAulasQuestoes(){let selD=document.getElementById('questoesFiltroDisciplina'),selA=document.getElementById('questoesFiltroAula');if(!selD||!selA)return;let atual=selA.value;selA.innerHTML='<option value="TODAS">Todas as aulas</option>';aulasDaDisciplinaQuestoes(selD.value).forEach(a=>selA.innerHTML+=`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`);if(atual&&Array.from(selA.options).some(o=>o.value===atual))selA.value=atual;}
+function baseQuestoesFiltrada(){let conc=getConcursoAtivoNome(),disc=document.getElementById('questoesFiltroDisciplina')?.value||'TODAS',aula=document.getElementById('questoesFiltroAula')?.value||'TODAS';return questoesDoConcurso().filter(q=>(disc==='TODAS'||q.disciplina===disc)&&(aula==='TODAS'||q.aula===aula)).sort((a,b)=>(Number(a.ordem||a.numero||0)-Number(b.ordem||b.numero||0))||String(a.id).localeCompare(String(b.id)));}
+function questoesFiltradasPorModo(){let lista=baseQuestoesFiltrada(),modo=document.getElementById('questoesFiltroModo')?.value||'todas';if(modo==='pendentes')return lista.filter(q=>!respostaQuestao(q.id));if(modo==='erradas')return lista.filter(q=>{let r=respostaQuestao(q.id);return r&&r.acertou===false;});if(modo==='acertadas')return lista.filter(q=>{let r=respostaQuestao(q.id);return r&&r.acertou===true;});return lista;}
+function renderizarStatsQuestoes(){let base=baseQuestoesFiltrada(),respondidas=0,acertos=0,erros=0;base.forEach(q=>{let r=respostaQuestao(q.id);if(r){respondidas++;if(r.acertou)acertos++;else erros++;}});let pct=respondidas?Math.round((acertos/respondidas)*100):0;let el=document.getElementById('questoesStats');if(!el)return;el.innerHTML=`<div class="questoes-stat"><div class="questoes-stat-title">Questões</div><div class="questoes-stat-val">${base.length}</div></div><div class="questoes-stat"><div class="questoes-stat-title">Respondidas</div><div class="questoes-stat-val">${respondidas}</div></div><div class="questoes-stat"><div class="questoes-stat-title">Acertos</div><div class="questoes-stat-val">${acertos}</div></div><div class="questoes-stat"><div class="questoes-stat-title">Erros</div><div class="questoes-stat-val">${erros}</div></div><div class="questoes-stat"><div class="questoes-stat-title">Aproveitamento</div><div class="questoes-stat-val">${pct}%</div></div>`;}
+function renderizarQuestoes(manterAtual=true){
+    garantirEstruturaQuestoes();let idAtual=questoesFiltroAtual[questaoAtualIndex]?.id;questoesFiltroAtual=questoesFiltradasPorModo();if(manterAtual&&idAtual){let idx=questoesFiltroAtual.findIndex(q=>String(q.id)===String(idAtual));questaoAtualIndex=idx>=0?idx:Math.min(questaoAtualIndex,Math.max(0,questoesFiltroAtual.length-1));}else questaoAtualIndex=0;
+    renderizarStatsQuestoes();let lista=document.getElementById('questoesLista'),painel=document.getElementById('questaoPainel');if(!lista||!painel)return;
+    if(questoesFiltroAtual.length===0){lista.innerHTML='<div style="padding:15px; text-align:center; color:var(--text-modal);">Nenhuma questão neste filtro.</div>';painel.innerHTML='<div class="questoes-empty"><div><strong>Nenhuma questão para mostrar.</strong><br>Importe questões da IA ou mude os filtros acima.</div></div>';return;}
+    lista.innerHTML='';questoesFiltroAtual.forEach((q,i)=>{let r=respostaQuestao(q.id),st=r?(r.acertou?'ok':'wrong'):'pending',ico=r?(r.acertou?'✅':'❌'):'○';lista.innerHTML+=`<button class="questoes-pill ${st} ${i===questaoAtualIndex?'current':''}" onclick="selecionarQuestaoIndex(${i})"><span>${escapeHtml(q.numero||q.ordem||i+1)}. ${escapeHtml(q.aula||'')}</span><small>${ico}</small></button>`;});
+    renderizarQuestaoAtual();
+}
+function renderizarQuestaoAtual(){let painel=document.getElementById('questaoPainel');if(!painel)return;let q=questoesFiltroAtual[questaoAtualIndex];if(!q){painel.innerHTML='<div class="questoes-empty">Selecione uma questão.</div>';return;}let r=respostaQuestao(q.id);let opts=(q.alternativas||[]).map(alt=>{let letra=String(alt.letra||'').toUpperCase(),cls='questao-opcao';if(r){if(letra===q.correta)cls+=' correct';if(letra===r.selecionada&&letra!==q.correta)cls+=' wrong';if(letra===r.selecionada)cls+=' selected';}return `<button class="${cls}" onclick="responderQuestao('${q.id}','${letra}')"><span class="letra">${escapeHtml(letra)}</span><span>${escapeHtml(alt.texto)}</span></button>`;}).join('');let feedback='';if(r){feedback=r.acertou?`<div class="questao-feedback ok">✅ Você acertou. Gabarito: ${escapeHtml(q.correta)}.</div>`:`<div class="questao-feedback wrong">❌ Você marcou ${escapeHtml(r.selecionada)}. Gabarito: ${escapeHtml(q.correta)}.</div>`;if(q.comentario)feedback+=`<div class="questao-comentario"><strong>Comentário</strong><br>${escapeHtml(q.comentario)}</div>`;}painel.innerHTML=`<div class="questao-meta"><span class="questao-tag">${escapeHtml(q.disciplina||'Disciplina')}</span><span class="questao-tag">${escapeHtml(q.aula||'Aula')}</span><span class="questao-tag">Questão ${escapeHtml(q.numero||questaoAtualIndex+1)}</span></div><div class="questao-enunciado">${escapeHtml(q.enunciado)}</div><div class="questao-opcoes">${opts}</div>${feedback}<div class="questao-nav"><button class="btn-cancel" onclick="irQuestao(-1)">← Anterior</button><button class="btn-danger" onclick="excluirQuestaoAtual()" style="width:auto; margin:0; padding:10px 14px;">🗑️ Excluir</button><button class="btn-action" onclick="irQuestao(1)">Próxima →</button></div>`;}
+function selecionarQuestaoIndex(i){questaoAtualIndex=i;renderizarQuestoes(true);}
+function irQuestao(delta){if(!questoesFiltroAtual.length)return;questaoAtualIndex=Math.max(0,Math.min(questoesFiltroAtual.length-1,questaoAtualIndex+delta));renderizarQuestoes(true);}
+function responderQuestao(qid,letra){let q=db.questoes.find(x=>String(x.id)===String(qid));if(!q)return;let op=operadorQuestoesAtual(),r=respostaQuestao(qid),ok=String(letra).toUpperCase()===String(q.correta).toUpperCase();if(r){r.selecionada=letra;r.acertou=ok;r.data=getDataHoraAtual();r.correta=q.correta;}else db.respostasQuestoes.push({id:Date.now(),questaoId:q.id,operador:op,concurso:q.concurso,disciplina:q.disciplina,aula:q.aula,selecionada:letra,correta:q.correta,acertou:ok,data:getDataHoraAtual()});salvarModificacaoBasica();renderizarQuestoes(true);mostrarToast(ok?'✅ Acertou!':'❌ Errou. Veja o comentário.');}
+function abrirQuestoes(){garantirEstruturaQuestoes();popularFiltrosQuestoes();renderizarQuestoes(false);abrirModal('modalQuestoes');}
+function ativarRevisaoErros(){let m=document.getElementById('questoesFiltroModo');if(m)m.value='erradas';renderizarQuestoes(false);}
+function limparRespostasQuestoesFiltradas(){let base=baseQuestoesFiltrada();if(base.length===0)return;let op=operadorQuestoesAtual();if(!confirm(`Zerar suas respostas das ${base.length} questões filtradas? As questões continuarão cadastradas.`))return;let ids=new Set(base.map(q=>String(q.id)));db.respostasQuestoes=db.respostasQuestoes.filter(r=>!(r.operador===op&&ids.has(String(r.questaoId))));salvarModificacaoBasica();renderizarQuestoes(false);mostrarToast('Respostas zeradas.');}
+function excluirQuestaoAtual(){let q=questoesFiltroAtual[questaoAtualIndex];if(!q)return;if(!confirm('Excluir esta questão do banco?'))return;db.questoes=db.questoes.filter(x=>String(x.id)!==String(q.id));db.respostasQuestoes=db.respostasQuestoes.filter(r=>String(r.questaoId)!==String(q.id));salvarModificacaoBasica();popularFiltrosQuestoes();renderizarQuestoes(false);}
+function popularDisciplinasImportacaoQuestoes(){let conc=getConcursoAtivoNome(),sel=document.getElementById('impQuestDisciplina');if(!sel)return;let atual=document.getElementById('questoesFiltroDisciplina')?.value||'';sel.innerHTML='';db.disciplinas.filter(d=>d.concurso===conc).sort((a,b)=>a.nome.localeCompare(b.nome)).forEach(d=>sel.innerHTML+=`<option value="${escapeHtml(d.nome)}">${escapeHtml(d.nome)}</option>`);if(atual&&atual!=='TODAS'&&Array.from(sel.options).some(o=>o.value===atual))sel.value=atual;popularAulasImportacaoQuestoes();}
+function popularAulasImportacaoQuestoes(){let selD=document.getElementById('impQuestDisciplina'),selA=document.getElementById('impQuestAula');if(!selD||!selA)return;let aulas=aulasDaDisciplinaQuestoes(selD.value);if(!aulas.includes('Aula 00'))aulas.unshift('Aula 00');selA.innerHTML='';aulas.forEach(a=>selA.innerHTML+=`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`);let atual=document.getElementById('questoesFiltroAula')?.value||'';if(atual&&atual!=='TODAS'&&Array.from(selA.options).some(o=>o.value===atual))selA.value=atual;}
+function abrirImportarQuestoes(){popularDisciplinasImportacaoQuestoes();let txt=document.getElementById('textoImportacaoQuestoes');if(txt)txt.value='';abrirModal('modalImportarQuestoes');}
+function copiarPromptQuestoes(){let disc=document.getElementById('impQuestDisciplina')?.value||'DISCIPLINA',aula=document.getElementById('impQuestAula')?.value||'Aula 00';let prompt=`Analise o PDF/material anexado e extraia apenas as questões resolvidas e comentadas. Comece no tópico "QUESTÕES RESOLVIDAS E COMENTADAS" da banca indicada e ignore qualquer repetição final de questões sem comentário.\n\nRetorne APENAS um JSON válido, sem markdown, neste formato:\n[\n  {\n    "disciplina": "${disc}",\n    "aula": "${aula}",\n    "numero": 1,\n    "enunciado": "texto completo da questão",\n    "alternativas": {"A":"texto", "B":"texto", "C":"texto", "D":"texto", "E":"texto"},\n    "correta": "A",\n    "comentario": "comentário/resolução completo da questão"\n  }\n]\n\nRegras: preserve a ordem original; não resuma o enunciado; não invente alternativa; mantenha apenas questões que tenham comentário; se houver itens I/II/III, preserve a formatação no texto.`;navigator.clipboard.writeText(prompt).then(()=>mostrarToast('📋 Prompt copiado!')).catch(()=>alert(prompt));}
+function normalizarAlternativasImport(alts){let letras='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),out=[];if(Array.isArray(alts)){alts.forEach((a,i)=>{if(typeof a==='string'){let m=a.match(/^\s*([A-E])\s*[\)\.-]\s*(.*)$/i);out.push({letra:(m?m[1]:letras[i]).toUpperCase(),texto:m?m[2].trim():a.trim()});}else if(a&&typeof a==='object'){out.push({letra:String(a.letra||a.opcao||letras[i]).toUpperCase().charAt(0),texto:String(a.texto||a.text||a.valor||'').trim()});}});}else if(alts&&typeof alts==='object'){Object.keys(alts).sort().forEach(k=>out.push({letra:String(k).toUpperCase().charAt(0),texto:String(alts[k]).trim()}));}return out.filter(a=>a.letra&&a.texto);}
+function limparJSONImportacaoQuestoes(raw){return raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();}
+function salvarQuestoesImportadas(){let raw=document.getElementById('textoImportacaoQuestoes')?.value||'';raw=limparJSONImportacaoQuestoes(raw);if(!raw)return alert('Cole o JSON das questões.');let arr;try{let parsed=JSON.parse(raw);arr=Array.isArray(parsed)?parsed:(parsed.questoes||parsed.questions||[]);}catch(e){return alert('JSON inválido: '+e.message);}if(!Array.isArray(arr)||arr.length===0)return alert('Nenhuma questão encontrada no JSON.');let conc=getConcursoAtivoNome(),discPadrao=document.getElementById('impQuestDisciplina')?.value||'',aulaPadrao=document.getElementById('impQuestAula')?.value||'Aula 00',baseOrdem=db.questoes.filter(q=>q.concurso===conc).length,novas=[],erros=[];arr.forEach((item,i)=>{let alternativas=normalizarAlternativasImport(item.alternativas||item.opcoes||item.options);let correta=String(item.correta||item.gabarito||item.resposta||'').toUpperCase().replace(/[^A-Z]/g,'').charAt(0);if(!item.enunciado)erros.push(`Item ${i+1}: sem enunciado.`);if(alternativas.length<2)erros.push(`Item ${i+1}: menos de 2 alternativas.`);if(!correta||!alternativas.find(a=>a.letra===correta))erros.push(`Item ${i+1}: gabarito inválido.`);novas.push({id:Date.now()+i,concurso:conc,disciplina:String(item.disciplina||discPadrao).trim(),aula:normalizarAulaLabel(item.aula||aulaPadrao),numero:item.numero||item.num||baseOrdem+i+1,ordem:baseOrdem+i+1,enunciado:String(item.enunciado||'').trim(),alternativas:alternativas,correta:correta,comentario:String(item.comentario||item.resolucao||item.explicacao||'').trim(),origem:String(item.origem||'Importação IA').trim()});});if(erros.length)return alert('Corrija antes de importar:\n'+erros.join('\n'));db.questoes.push(...novas);salvarModificacaoBasica();fecharModal('modalImportarQuestoes');popularFiltrosQuestoes();let fd=document.getElementById('questoesFiltroDisciplina'),fa=document.getElementById('questoesFiltroAula');if(fd&&novas[0].disciplina)fd.value=novas[0].disciplina;if(fa&&novas[0].aula){atualizarAulasQuestoes();fa.value=novas[0].aula;}renderizarQuestoes(false);mostrarToast(`${novas.length} questões importadas.`);}
 function formatarMarcaSync(ts){if(!ts)return "sem marca";let d=new Date(ts);return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;}
 function atualizarIndicadorSync(emoji,msg,ts){const i=document.getElementById('indicadorConexao');if(!i)return;i.style.display='flex';i.innerText=emoji;i.title=`${msg} • ${formatarMarcaSync(ts)}`;}
 async function baixarBancoNuvem(){
@@ -2142,8 +2286,6 @@ async function sincronizarComNuvemSilencioso(atualizarUI=true){
 function renderizarOperadores(){const s=document.getElementById('seletorOperador');if(!s)return;s.innerHTML='';db.operadores.forEach(o=>{s.innerHTML+=`<option value="${o.nome}">${o.nome}</option>`});s.innerHTML+='<option value="sair">👋 Sair</option>';const u=localStorage.getItem('estudos_operadorAtual');if(u&&db.operadores.find(o=>o.nome===u)){s.value=u;operadorAnteriorSelect=u;}}
 function abrirZonaRisco(){fecharModal('modalPainelUnificado');let cu=document.getElementById('configUrlAppScript');if(cu)cu.value=db.configs.urlAppScript;abrirModal('modalZonaRisco');}
 async function salvarUrlESincronizar(e){let cu=document.getElementById('configUrlAppScript');if(!cu)return;const u=cu.value.trim();db.configs.urlAppScript=u;salvarBancoLocal();if(!u)return alert("URL vazia!");const b=e.target;let t=b.innerText;b.innerText="Salvando...";b.disabled=true;await sincronizarComNuvemSilencioso();b.innerText=t;b.disabled=false;mostrarToast("URL Salva!");}
-async function sincronizarComNuvemSilencioso(){const i=document.getElementById('indicadorConexao');if(!i)return;if(!navigator.onLine){i.innerText='🔴';return;}if(!db.configs.urlAppScript){i.style.display='none';return;}if(isSyncing)return;i.style.display='flex';isSyncing=true;i.innerText='🔄';try{let r=await fetch(db.configs.urlAppScript+'?t='+Date.now()),d=await r.json();if(d&&d.configs&&d.configs.ultimaModificacaoLocal>db.configs.ultimaModificacaoLocal){let urlSalva=db.configs.urlAppScript;db=d;db.configs.urlAppScript=urlSalva;salvarBancoLocal();aplicarTemaCores();renderizarCabecalhoTrilhas();}i.innerText='🟢';}catch(e){i.innerText='🔴';}isSyncing=false;}
-
 function hardReloadApp() {
     if (!confirm("Deseja forçar a atualização do aplicativo? Isso limpará o cache de versão para buscar atualizações, mas seus dados e histórico estão a salvo.")) return;
     let promises = [];
